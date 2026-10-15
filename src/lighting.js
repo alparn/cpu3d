@@ -5,6 +5,9 @@
 // Everything that is noisy (AA, soft shadow edges, AO) is jittered per frame and averaged by the
 // renderer's progressive accumulation.
 
+import { evalPattern } from './patterns.js';
+import * as PAT from './patterns.js';
+
 // ---------------------------------------------------------------- color
 export const SRGB_TO_LINEAR = new Float32Array(256).map((_, i) => {
   const c = i / 255;
@@ -313,7 +316,7 @@ function shadowTap(sm, px, py, pz, nx, ny, nz, ju, jv, penWorld, slope) {
 // ---- 2b. lighting of pixel rows [y0, y1)
 export function shadeRows(ctx, y0, y1) {
   const { W, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, matMetal, matRough, lights, environment, softness, invTone, eye, R, U, F,
-    light, tone, shadow, frame, ao, fog, debug, aoBlur } = ctx;
+    light, tone, shadow, frame, ao, fog, debug, aoBlur, OX, OY, OZ, matPat, matPatC, matPatS, matPatB, matNM, matM3 } = ctx;
   const ycc = ctx.post === 'temporal' ? ctx.taa.ycc : null;
   const { colK, rowK, aoW } = prepare(ctx);
   const { lx, ly, lz, lr, lg, lb, sr, sg, sb, gr, gg, gb } = light;
@@ -356,7 +359,39 @@ export function shadeRows(ctx, y0, y1) {
       if (nx * Vx + ny * Vy + nz * Vz < 0 && matTwo[mat]) { nx = -nx; ny = -ny; nz = -nz; }
 
       const c = color[i];
-      const ar = S2L[c & 255], ag = S2L[(c >>> 8) & 255], ab = S2L[(c >>> 16) & 255];
+      let ar = S2L[c & 255], ag = S2L[(c >>> 8) & 255], ab = S2L[(c >>> 16) & 255];
+
+      // procedural pattern: colour from the mix factor, relief by tilting the normal along the height gradient
+      const pt = matPat ? matPat[mat] : 0;
+      if (pt) {
+        const sc = matPatS[mat], is = 1 / sc, j9 = mat * 9, M3 = matM3, NM = matNM;
+        const qx = OX[i] * is, qy = OY[i] * is, qz = OZ[i] * is;
+        // object-space normal (2D patterns use the plane the surface faces)
+        const onx = M3[j9] * nx + M3[j9 + 1] * ny + M3[j9 + 2] * nz, ony = M3[j9 + 3] * nx + M3[j9 + 4] * ny + M3[j9 + 5] * nz, onz = M3[j9 + 6] * nx + M3[j9 + 7] * ny + M3[j9 + 8] * nz;
+        evalPattern(pt, qx, qy, qz, onx, ony, onz);
+        const t = PAT.PT, h0 = PAT.PH, C = matPatC;
+        // three colour stops: 0 -> first, 0.5 -> second, 1 -> third (two colours: the second is repeated)
+        let r8, g8, b8;
+        if (t < 0.5) { const k = t * 2; r8 = C[j9] + (C[j9 + 3] - C[j9]) * k; g8 = C[j9 + 1] + (C[j9 + 4] - C[j9 + 1]) * k; b8 = C[j9 + 2] + (C[j9 + 5] - C[j9 + 2]) * k; }
+        else { const k = t * 2 - 1; r8 = C[j9 + 3] + (C[j9 + 6] - C[j9 + 3]) * k; g8 = C[j9 + 4] + (C[j9 + 7] - C[j9 + 4]) * k; b8 = C[j9 + 5] + (C[j9 + 8] - C[j9 + 5]) * k; }
+        ar = S2L[r8 | 0]; ag = S2L[g8 | 0]; ab = S2L[b8 | 0];
+        const bump = matPatB[mat];
+        if (bump > 0) {
+          const e = 0.04;
+          evalPattern(pt, qx + e, qy, qz, onx, ony, onz); const hx = PAT.PH;
+          evalPattern(pt, qx, qy + e, qz, onx, ony, onz); const hy = PAT.PH;
+          evalPattern(pt, qx, qy, qz + e, onx, ony, onz); const hz = PAT.PH;
+          // gradient in object space -> world (normal matrix), keep only the part along the surface
+          const gx0 = (hx - h0) / e, gy0 = (hy - h0) / e, gz0 = (hz - h0) / e;
+          let gx = NM[j9] * gx0 + NM[j9 + 1] * gy0 + NM[j9 + 2] * gz0, gy = NM[j9 + 3] * gx0 + NM[j9 + 4] * gy0 + NM[j9 + 5] * gz0, gz = NM[j9 + 6] * gx0 + NM[j9 + 7] * gy0 + NM[j9 + 8] * gz0;
+          const gn = gx * nx + gy * ny + gz * nz;
+          gx -= gn * nx; gy -= gn * ny; gz -= gn * nz;
+          const k = bump * 0.12;
+          nx -= gx * k; ny -= gy * k; nz -= gz * k;
+          const l = 1 / (Math.sqrt(nx * nx + ny * ny + nz * nz) || 1);
+          nx *= l; ny *= l; nz *= l;
+        }
+      }
 
       // ambient occlusion: half-resolution buffer, nearest lookup
       const occl = aoBuf ? aoBuf[(y >> 1) * aoW + (x >> 1)] : 1;

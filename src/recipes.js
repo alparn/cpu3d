@@ -223,7 +223,12 @@ material = { color: "#rrggbb", specular 0..2, shininess 1..256, emissive 0..10 (
             metalness 0..1 (1 = metal: colored reflections), roughness 0..1 (0 = mirror/polished, 1 = matte; default 0.7),
             texture: PNG path in the project or "data:image/png;base64,..." (projected along the object's thinnest local
             axis: flat in Z -> image top = +Y, flat in Y like plane -> image top = -Z; multiplied by color),
-            flat: bool (faceted look), doubleSided: bool (for open surfaces) }.
+            flat: bool (faceted look), doubleSided: bool (for open surfaces),
+            mapping: "planar" | "box" | "cylinder" | "sphere" and repeat: n or [u, v] (how a texture wraps and tiles),
+            pattern: { type, colors: [2-3 colours], scale, bump } procedural surface with relief, no image needed:
+              wood (grain along X), marble, leather (pebbled grain), carbon, fabric, brushed (streaks along X), checker,
+              stripes (across Y), knurl (diamond grip around Y). scale = size of one feature in units (leather ~1 mm,
+              wood rings ~1 cm at real scale), bump 0..2. Example: { type: "wood", colors: ["#62402a", "#2e1b0e"], scale: 0.01 } }.
 Animation: set_animation({ id, animation: { spin | swing | bob | orbit | pulse | flow | keys } }), e.g. { "spin": { "axis": [0,1,0], "speed": 90 } }
             or keyframes { "keys": [{ "t": 0, "position": [0,1,0] }, { "t": 2, "position": [3,1,0] }], "ease": "spline" };
             a camera path with set_animation({ camera: { keys: [{ t, yaw, pitch, distance, target }] } }). Details in the

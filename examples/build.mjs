@@ -1021,6 +1021,109 @@ scene('neon', 'Neon district', 'A rainy cyberpunk street at night: towers with t
   await cameraPath(doc, LOOP, [{ t: 8, yaw: 7, pitch: 9, distance: 44, target: [1, 13, -42] }, { t: 16, yaw: -6, pitch: 2, distance: 48, target: [-1, 8, -36] }]);
 });
 
+scene('desk', "Photographer's desk", 'A vintage rangefinder camera on a walnut desk, modelled at real scale: pebbled leather, satin chrome, knurled dials and a coated lens, next to an espresso on a marble coaster, a cloth-bound notebook, a pencil and a film canister. Every surface is a procedural pattern with relief, no image files.', async (doc) => {
+  const LOOP = 16; // 1 unit = 10 cm
+  await tool(doc, 'set_environment', {
+    background: { top: '#121315', bottom: '#2b2a29' }, fog: null, ground: false, reflections: 'studio',
+    light: { direction: [-0.45, 0.85, 0.55], color: '#fff2e2', intensity: 1.25, softness: 0.4 },
+    lights: [{ direction: [0.7, 0.35, -0.6], color: '#cfe0ff', intensity: 0.55 }, { direction: [0.6, 0.3, 0.75], color: '#ffe2c4', intensity: 0.25 }],
+  });
+  // satin chrome: rough enough to spread the studio lights over the flat plates (a mirror would show the dark room)
+  const chrome = { color: '#d6d9de', metalness: 0.72, roughness: 0.34, pattern: { type: 'brushed', colors: ['#c4c8ce', '#e2e5e9'], scale: 2 } };
+  const blackPaint = { color: '#151516', roughness: 0.35, specular: 0.6 };
+  const knurled = (colors, extra = {}) => ({ metalness: 1, roughness: 0.3, color: colors[0], pattern: { type: 'knurl', colors, scale: 0.014, bump: 1 }, ...extra });
+  const darkGlass = { color: '#0a1418', metalness: 1, roughness: 0.03 };
+  const stadium = { type: 'roundedRect', width: 1.38, height: 0.33, radius: 0.164, segments: 10 };
+  const ax = (x, y, z, rot = [90, 0, 0]) => ({ position: [x, y, z], rotation: rot });
+
+  // ---- the camera, built around its own origin (bottom center), then placed on the desk
+  const C = group([0.2, 0, 0.1], [0, 16, 0]);
+  const cam = [
+    { name: 'Bottom plate', shape: { type: 'extrude', shape: stadium, depth: 0.12 }, position: [0, 0.06, 0], rotation: [-90, 0, 0], material: chrome },
+    { name: 'Leather', shape: { type: 'extrude', shape: { ...stadium, width: 1.392, height: 0.342, radius: 0.17 }, depth: 0.47 }, position: [0, 0.355, 0], rotation: [-90, 0, 0],
+      material: { color: '#161413', roughness: 0.6, specular: 0.45, pattern: { type: 'leather', colors: ['#1f1c1a', '#151312', '#0b0a09'], scale: 0.011, bump: 0.9 } } },
+    { name: 'Top plate', shape: { type: 'extrude', shape: stadium, depth: 0.17 }, position: [0, 0.675, 0], rotation: [-90, 0, 0], material: chrome },
+    { name: 'Top plate rim', shape: { type: 'extrude', shape: { ...stadium, width: 1.35, height: 0.3, radius: 0.15 }, depth: 0.02 }, position: [0, 0.77, 0], rotation: [-90, 0, 0], material: { ...chrome, roughness: 0.15 } },
+    // front: viewfinder, frosted illumination window, rangefinder window, red badge
+    { name: 'Viewfinder window', shape: { type: 'roundedBox', width: 0.17, height: 0.105, depth: 0.03, radius: 0.012 }, position: [0.44, 0.665, 0.162], material: darkGlass },
+    { name: 'Frosted window', shape: { type: 'roundedBox', width: 0.21, height: 0.11, depth: 0.03, radius: 0.012 }, position: [0.19, 0.665, 0.162], material: { color: '#dfe3e6', roughness: 0.7, emissive: 0.12 } },
+    { name: 'Rangefinder window', shape: { type: 'roundedBox', width: 0.11, height: 0.1, depth: 0.03, radius: 0.012 }, position: [-0.44, 0.665, 0.162], material: darkGlass },
+    { name: 'Red badge', shape: { type: 'cylinder', radiusTop: 0.042, radiusBottom: 0.042, height: 0.02, segments: 32 }, ...ax(-0.2, 0.675, 0.17), material: { color: '#c9141d', roughness: 0.25, specular: 0.9 } },
+    // lens, front to back along +Z
+    { name: 'Lens mount', shape: { type: 'cylinder', radiusTop: 0.3, radiusBottom: 0.3, height: 0.04, segments: 64 }, ...ax(-0.06, 0.37, 0.185), material: chrome },
+    { name: 'Focus ring', shape: { type: 'cylinder', radiusTop: 0.305, radiusBottom: 0.305, height: 0.12, segments: 96 }, ...ax(-0.06, 0.37, 0.265), material: knurled(['#d3d6db', '#7d8187']) },
+    { name: 'Focus tab', shape: { type: 'roundedBox', width: 0.08, height: 0.05, depth: 0.07, radius: 0.02 }, position: [-0.06, 0.06, 0.265], material: { ...chrome, roughness: 0.18 } },
+    { name: 'Distance scale', shape: { type: 'cylinder', radiusTop: 0.29, radiusBottom: 0.29, height: 0.07, segments: 96 }, ...ax(-0.06, 0.37, 0.36), material: { ...chrome, roughness: 0.15 } },
+    { name: 'Scale marks', shape: { type: 'radial', axis: 'z', count: 18, radius: 0.291, angle: 120, startAngle: 30, shape: { type: 'box', width: 0.004, height: 0.03, depth: 0.004 }, rotation: [0, 0, 90] }, position: [-0.06, 0.37, 0.36], material: { color: '#111', roughness: 0.5 } },
+    { name: 'Aperture ring', shape: { type: 'cylinder', radiusTop: 0.285, radiusBottom: 0.285, height: 0.08, segments: 96 }, ...ax(-0.06, 0.37, 0.435), material: knurled(['#2a2b2e', '#0c0c0d'], { metalness: 0.6 }) },
+    { name: 'Lens barrel', shape: { type: 'cylinder', radiusTop: 0.265, radiusBottom: 0.272, height: 0.12, segments: 96 }, ...ax(-0.06, 0.37, 0.535), material: blackPaint },
+    { name: 'Front rim', shape: { type: 'torus', radius: 0.255, tube: 0.013, segments: 96, sides: 12 }, ...ax(-0.06, 0.37, 0.596), material: { ...chrome, roughness: 0.12 } },
+    // coated glass: a strongly curved front element that mirrors the studio lights, an inner element tinted by
+    // its coating, and the dark retaining ring between them
+    { name: 'Inner element', shape: { type: 'sphere', radius: 1, segments: 48, rings: 24 }, position: [-0.06, 0.37, 0.53], scale: [0.2, 0.2, 0.05], material: { color: '#4a2f78', metalness: 1, roughness: 0.06, emissive: 0.04 } },
+    { name: 'Front glass', shape: { type: 'sphere', radius: 1, segments: 64, rings: 32 }, position: [-0.06, 0.37, 0.54], scale: [0.24, 0.24, 0.085], material: { color: '#1d4650', metalness: 1, roughness: 0.015 } },
+    { name: 'Lens inner ring', shape: { type: 'torus', radius: 0.235, tube: 0.012, segments: 64, sides: 8 }, ...ax(-0.06, 0.37, 0.58), material: { color: '#131416', roughness: 0.4 } },
+    // top: shutter speed dial (clicks a step now and then), release, rewind knob, advance lever, accessory shoe
+    { name: 'Shutter dial', shape: { type: 'cylinder', radiusTop: 0.105, radiusBottom: 0.11, height: 0.07, segments: 64 }, position: [0.4, 0.815, 0.02], material: knurled(['#d3d6db', '#7d8187']),
+      animation: { spin: { axis: [0, 1, 0], speed: 22.5, step: 2 } } },
+    { name: 'Dial index', shape: { type: 'box', width: 0.012, height: 0.006, depth: 0.06 }, position: [0.4, 0.852, 0.06], material: { color: '#c9141d', roughness: 0.4 }, animation: { spin: { axis: [0, 1, 0], speed: 22.5, step: 2, pivot: [0.4, 0.85, 0.02] } } },
+    { name: 'Shutter release', shape: { type: 'cylinder', radiusTop: 0.038, radiusBottom: 0.042, height: 0.05, segments: 32 }, position: [0.58, 0.805, 0.07], material: { ...chrome, roughness: 0.12 } },
+    { name: 'Soft release', shape: { type: 'sphere', radius: 0.03, segments: 24, rings: 12 }, position: [0.58, 0.83, 0.07], scale: [1, 0.45, 1], material: { color: '#b0121a', roughness: 0.3, specular: 0.8 } },
+    { name: 'Rewind knob', shape: { type: 'cylinder', radiusTop: 0.088, radiusBottom: 0.09, height: 0.11, segments: 64 }, position: [-0.5, 0.835, 0], material: knurled(['#d3d6db', '#7d8187']) },
+    { name: 'Advance lever', shape: { type: 'roundedBox', width: 0.3, height: 0.025, depth: 0.055, radius: 0.012 }, position: [0.66, 0.79, -0.07], rotation: [0, 28, 0], material: { ...chrome, roughness: 0.14 } },
+    { name: 'Lever tip', shape: { type: 'roundedBox', width: 0.08, height: 0.035, depth: 0.065, radius: 0.015 }, position: [0.78, 0.792, -0.14], rotation: [0, 28, 0], material: blackPaint },
+    { name: 'Accessory shoe', shape: { type: 'roundedBox', width: 0.2, height: 0.03, depth: 0.19, radius: 0.008 }, position: [-0.02, 0.795, -0.01], material: { ...chrome, roughness: 0.18 } },
+  ];
+  for (const sx of [-1, 1]) cam.push({ name: 'Strap lug', shape: { type: 'torus', radius: 0.03, tube: 0.009, segments: 24, sides: 8 }, position: [sx * 0.705, 0.64, 0], rotation: [0, 90, 0], material: chrome });
+  const o = cam.map(C);
+  // leather strap: a flat band swept along a path from each lug down onto the desk
+  const lugL = C({ position: [-0.73, 0.64, 0] }).position, lugR = C({ position: [0.73, 0.64, 0] }).position;
+  const strapPath = (start, pts) => [start, ...pts].map((p) => P(...p));
+  const strap = { color: '#5a2f17', roughness: 0.55, specular: 0.35, pattern: { type: 'leather', colors: ['#6e3b1d', '#4f2914', '#2b150a'], scale: 0.01, bump: 0.7 } };
+  o.push({ name: 'Strap', shape: { type: 'sweep', shape: { type: 'roundedRect', width: 0.15, height: 0.014, radius: 0.006 }, path: strapPath(lugL, [[lugL[0] - 0.12, 0.42, lugL[2]], [lugL[0] - 0.3, 0.1, lugL[2]], [lugL[0] - 0.55, 0.012, lugL[2]], [lugL[0] - 1.3, 0.012, lugL[2] + 0.2], [lugL[0] - 1.9, 0.012, lugL[2] + 0.7]]) }, material: strap });
+  o.push({ name: 'Strap', shape: { type: 'sweep', shape: { type: 'roundedRect', width: 0.15, height: 0.014, radius: 0.006 }, path: strapPath(lugR, [[lugR[0] + 0.12, 0.42, lugR[2]], [lugR[0] + 0.3, 0.1, lugR[2]], [lugR[0] + 0.55, 0.012, lugR[2] - 0.05], [lugR[0] + 1.1, 0.012, lugR[2] - 0.5], [lugR[0] + 1.3, 0.012, lugR[2] - 1.3]]) }, material: strap });
+
+  // ---- desk: oiled walnut
+  o.push({ name: 'Desk', shape: { type: 'roundedBox', width: 14, height: 0.4, depth: 8, radius: 0.04 }, position: [0, -0.2, 0],
+    material: { color: '#4a2e1a', roughness: 0.34, specular: 0.5, pattern: { type: 'wood', colors: ['#62402a', '#4c301d', '#2e1b0e'], scale: 0.09, bump: 0.22 } } });
+
+  // ---- espresso on a marble coaster
+  const E = [2.7, 0, 1.0];
+  o.push({ name: 'Coaster', shape: { type: 'cylinder', radiusTop: 0.62, radiusBottom: 0.62, height: 0.07, segments: 64 }, position: [E[0], 0.035, E[2]],
+    material: { color: '#e9e6e0', roughness: 0.08, specular: 1, pattern: { type: 'marble', colors: ['#f2efe9', '#c4beb4', '#3e3936'], scale: 0.3 } } });
+  const porcelain = { color: '#f4f2ee', roughness: 0.08, specular: 1, shininess: 140 };
+  o.push({ name: 'Saucer', shape: { type: 'lathe', segments: 64, profile: [[0, 0.07], [0.32, 0.07], [0.46, 0.09], [0.53, 0.125], [0.51, 0.135], [0.44, 0.105], [0.3, 0.1], [0, 0.1]] }, position: [E[0], 0, E[2]], material: porcelain });
+  o.push({ name: 'Cup', shape: { type: 'lathe', segments: 64, profile: [[0, 0.11], [0.17, 0.11], [0.21, 0.13], [0.27, 0.22], [0.3, 0.36], [0.305, 0.47], [0.285, 0.47], [0.275, 0.37], [0.25, 0.24], [0.2, 0.16], [0, 0.15]] }, position: [E[0], 0, E[2]], material: { ...porcelain, doubleSided: true } });
+  o.push({ name: 'Cup handle', shape: { type: 'torus', radius: 0.085, tube: 0.022, segments: 32, sides: 12 }, position: [E[0] + 0.33, 0.32, E[2]], rotation: [90, 0, 0], material: porcelain });
+  o.push({ name: 'Crema', shape: { type: 'cylinder', radiusTop: 0.275, radiusBottom: 0.275, height: 0.01, segments: 64 }, position: [E[0], 0.425, E[2]],
+    material: { color: '#9a6236', roughness: 0.3, specular: 0.5, pattern: { type: 'marble', colors: ['#c99462', '#b47e4a', '#93602f'], scale: 0.1 } } });
+  o.push({ name: 'Spoon', shape: { type: 'roundedBox', width: 0.42, height: 0.012, depth: 0.045, radius: 0.005 }, position: [E[0] + 0.05, 0.142, E[2] + 0.33], rotation: [0, -25, 0], material: { ...chrome, roughness: 0.1 } });
+
+  // ---- cloth-bound notebook with a pencil, a film canister and the lens cap
+  const N = group([-2.6, 0, 1.1], [0, -14, 0]);
+  const cloth = { color: '#1f2a3d', roughness: 0.85, specular: 0.15, pattern: { type: 'fabric', colors: ['#1a2333', '#2a3850', '#425676'], scale: 0.007, bump: 0.7 } };
+  o.push(...[
+    { name: 'Notebook back', shape: { type: 'roundedBox', width: 2.1, height: 0.03, depth: 2.9, radius: 0.012 }, position: [0, 0.015, 0], material: cloth },
+    { name: 'Notebook pages', shape: { type: 'box', width: 2.02, height: 0.12, depth: 2.82 }, position: [0.02, 0.09, 0], material: { color: '#ece3cf', roughness: 0.85, pattern: { type: 'stripes', colors: ['#efe7d4', '#d9cfb8'], scale: 0.006 } } },
+    { name: 'Notebook cover', shape: { type: 'roundedBox', width: 2.1, height: 0.03, depth: 2.9, radius: 0.012 }, position: [0, 0.165, 0], material: cloth },
+    { name: 'Elastic band', shape: { type: 'box', width: 0.05, height: 0.2, depth: 2.92 }, position: [0.82, 0.09, 0], material: { color: '#111214', roughness: 0.6 } },
+    // the pencil lies along -X of the notebook (rotation Z 90 turns its axis), the sharpened tip at that end
+    { name: 'Pencil', shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.04, height: 1.5, segments: 6 }, position: [-0.1, 0.22, 0.55], rotation: [0, 0, 90], material: { color: '#e5b026', roughness: 0.35, specular: 0.6 } },
+    { name: 'Pencil tip', shape: { type: 'cone', radius: 0.04, height: 0.14, segments: 12 }, position: [-0.92, 0.22, 0.55], rotation: [0, 0, 90], material: { color: '#d9b48a', roughness: 0.7, pattern: { type: 'wood', colors: ['#e2c096', '#c79a6a', '#8a5a36'], scale: 0.03, bump: 0.2 } } },
+  ].map(N));
+  o.push({ name: 'Film canister', shape: { type: 'cylinder', radiusTop: 0.13, radiusBottom: 0.13, height: 0.3, segments: 48 }, position: [1.3, 0.15, -1.6], material: { color: '#1b1b1d', roughness: 0.3, specular: 0.7 } });
+  o.push({ name: 'Canister label', shape: { type: 'cylinder', radiusTop: 0.132, radiusBottom: 0.132, height: 0.17, segments: 48, caps: false }, position: [1.3, 0.15, -1.6],
+    material: { color: '#f0b400', roughness: 0.3, specular: 0.6, pattern: { type: 'stripes', colors: ['#f0b400', '#c9141d'], scale: 0.085 } } });
+  o.push({ name: 'Canister lid', shape: { type: 'cylinder', radiusTop: 0.135, radiusBottom: 0.135, height: 0.03, segments: 48 }, position: [1.3, 0.315, -1.6], material: { ...chrome, roughness: 0.25 } });
+  o.push({ name: 'Lens cap', shape: { type: 'cylinder', radiusTop: 0.27, radiusBottom: 0.275, height: 0.06, segments: 64 }, position: [1.5, 0.03, 1.7], material: { color: '#141416', roughness: 0.45, specular: 0.5 } });
+  o.push({ name: 'Lens cap grip', shape: { type: 'cylinder', radiusTop: 0.282, radiusBottom: 0.282, height: 0.04, segments: 96, caps: false }, position: [1.5, 0.03, 1.7], material: knurled(['#2a2b2e', '#0c0c0d'], { metalness: 0.5 }) });
+
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 28, pitch: 20, distance: 4.4, target: [0.2, 0.45, 0.2] });
+  // a slow move: wide, close on the lens, over the top plate, back
+  await cameraPath(doc, LOOP, [{ t: 5, yaw: -8, pitch: 9, distance: 2.3, target: [0.05, 0.42, 0.35] }, { t: 10.5, yaw: -42, pitch: 32, distance: 3.6, target: [0.2, 0.5, 0] }]);
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)

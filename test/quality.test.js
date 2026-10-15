@@ -87,3 +87,24 @@ test('PNG decoder round trip', async () => {
   assert.equal(back.width, 5);
   assert.deepEqual([...back.data], [...px]);
 });
+
+test('procedural patterns and texture mappings', async () => {
+  const { SceneDocument, Renderer, buildRenderScene, cameraFromState } = await import('../src/index.js');
+  const doc = new SceneDocument();
+  doc.addObjects([{ shape: { type: 'sphere', radius: 1, segments: 48, rings: 24 }, material: { color: '#808080' } }], { source: 't' });
+  const cam = cameraFromState({ yaw: 0, pitch: 0, distance: 3.2, target: [0, 0, 0] });
+  const render = () => { const r = new Renderer({ width: 96, height: 96 }); r.render(buildRenderScene(doc.data, (s) => doc.geometry(s), { showGround: false }), cam); return r.pixels.slice(); };
+  const variance = (px) => { let s = 0, q = 0, n = 0; for (let y = 30; y < 66; y++) for (let x = 30; x < 66; x++) { const v = px[(y * 96 + x) * 4]; s += v; q += v * v; n++; } return q / n - (s / n) ** 2; };
+  const plain = variance(render());
+  const id = doc.data.objects[0].id;
+  doc.updateObject(id, { material: { pattern: { type: 'checker', colors: ['#000000', '#ffffff'], scale: 0.4 } } }, { source: 't' });
+  assert.ok(variance(render()) > plain * 3, 'checker pattern shows on the sphere');
+  doc.updateObject(id, { material: { pattern: { type: 'leather', colors: ['#808080', '#808080'] } } }, { source: 't' });
+  assert.equal(doc.data.objects[0].material.pattern.scale, 0.012, 'default scale per pattern type');
+  assert.ok(variance(render()) > plain, 'leather relief changes the shading even with one colour');
+  assert.throws(() => doc.updateObject(id, { material: { pattern: { type: 'lava', colors: ['#000', '#fff'] } } }, { source: 't' }), /pattern.type/);
+  assert.throws(() => doc.updateObject(id, { material: { mapping: 'cube' } }, { source: 't' }), /mapping/);
+  doc.updateObject(id, { material: { pattern: null, mapping: 'sphere', repeat: [4, 2] } }, { source: 't' });
+  assert.equal(doc.data.objects[0].material.pattern, undefined);
+  assert.deepEqual(doc.data.objects[0].material.repeat, [4, 2]);
+});

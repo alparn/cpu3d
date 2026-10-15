@@ -11,15 +11,16 @@
 import { mat4 } from './math.js';
 import { buildToneLUT, buildInverseToneLUT, buildShadowMap, drawShadowCasters, shadePass, accumulateRows, temporalRows, halton, SRGB_TO_LINEAR, TONE_SCALE, TONE_MAX_V, TONE_LAST, WIRE_MATERIAL } from './lighting.js';
 import { getTexture } from './textures.js';
+import { PATTERN_ID } from './patterns.js';
 
 const GUARD = 8; // guard band (in NDC units): only triangles crossing it are clipped in x/y
 const NEAR = 1, FAR = 2, LEFT = 4, RIGHT = 8, BOTTOM = 16, TOP = 32;
 const PLANES = [NEAR, FAR, LEFT, RIGHT, BOTTOM, TOP];
-const STRIDE = 12; // clip vertex: x y z w r g b nx ny nz u v
+const STRIDE = 13; // clip vertex: x y z w r g b nx ny nz ox oy oz (object-space position for textures and patterns)
 
 export class Mesh {
   constructor(geometry, { color = [0.8, 0.8, 0.8], specular = 0.25, shininess = 24, doubleSided = false, emissive = 0,
-    position = [0, 0, 0], rotation = [0, 0, 0], scale = 1, metalness = 0, roughness, texture = null } = {}) {
+    position = [0, 0, 0], rotation = [0, 0, 0], scale = 1, metalness = 0, roughness, texture = null, mapping = 'planar', repeat = 1, pattern = null } = {}) {
     this.geometry = geometry;
     this.color = color;
     this.specular = specular;
@@ -28,7 +29,10 @@ export class Mesh {
     this.emissive = emissive; // self-illumination: adds color * emissive, independent of lights and shadows
     this.metalness = metalness; // 0 dielectric .. 1 metal (colored reflections, no diffuse)
     this.roughness = roughness; // 0 mirror .. 1 matte; undefined = matte default
-    this.texture = texture;     // texture src (see textures.js), mapped planar onto the local XY bounds
+    this.texture = texture;     // texture src (see textures.js)
+    this.mapping = mapping;     // how the texture wraps: 'planar' (thinnest axis), 'box', 'cylinder' (around Y), 'sphere'
+    this.repeat = typeof repeat === 'number' ? [repeat, repeat] : repeat; // tiles across the mapping
+    this.pattern = pattern;     // procedural pattern { type, colors: [[r,g,b] 0..1, ...], scale, bump } (patterns.js)
     this.position = position;
     this.rotation = rotation;
     this.scale = typeof scale === 'number' ? [scale, scale, scale] : scale;
@@ -129,7 +133,7 @@ export class Renderer {
     this._tone = buildToneLUT(this.exposure);
     this._invTone = buildInverseToneLUT(this._tone);
     this._toneExposure = this.exposure;
-    this._tv = new Float64Array(33); // 3 vertices x [x, y, 1/w, nx/w, ny/w, nz/w, r, g, b, u/w, v/w]
+    this._tv = new Float64Array(36); // 3 vertices x [x, y, 1/w, nx/w, ny/w, nz/w, r, g, b, ox/w, oy/w, oz/w]
     this._fn = new Float64Array(3);
     this.pool = null;
     this._shared = false;
@@ -167,6 +171,13 @@ export class Renderer {
     this._matMotion = this._alloc(Float32Array, 65536 * 12);
     this._matMoving = this._alloc(Uint8Array, 65536);
     this._matMesh = this._alloc(Uint16Array, 65536); // draw id -> stable mesh number (index in the scene + 1)
+    // procedural patterns: type, three colors (sRGB 0..255), scale, bump, object -> world normal matrix and model 3x3
+    this._matPat = this._alloc(Uint8Array, 65536);
+    this._matPatC = this._alloc(Float32Array, 65536 * 9);
+    this._matPatS = this._alloc(Float32Array, 65536);
+    this._matPatB = this._alloc(Float32Array, 65536);
+    this._matNM = this._alloc(Float32Array, 65536 * 9);
+    this._matM3 = this._alloc(Float32Array, 65536 * 9);
     this._prevModel = new WeakMap(); // mesh -> model matrix of the previous frame of this renderer
   }
 
@@ -214,6 +225,7 @@ export class Renderer {
     const A = (T, k) => this._alloc(T, k);
     this._gNX = A(Float32Array, n); this._gNY = A(Float32Array, n); this._gNZ = A(Float32Array, n);
     this._gMat = A(Uint16Array, n);
+    this._gOX = A(Float32Array, n); this._gOY = A(Float32Array, n); this._gOZ = A(Float32Array, n); // object position (patterns)
     this._acc = A(Float32Array, n * 3);
     const ao = ((this.width + 1) >> 1) * ((this.height + 1) >> 1);
     this._aoRaw = A(Float32Array, ao); this._aoDepth = A(Float32Array, ao); this._aoBlur = A(Float32Array, ao);
@@ -235,7 +247,6 @@ export class Renderer {
     this._wx = new Float32Array(c); this._wy = new Float32Array(c); this._wz = new Float32Array(c);
     this._r = new Float32Array(c); this._g = new Float32Array(c); this._b = new Float32Array(c);
     this._vnx = new Float32Array(c); this._vny = new Float32Array(c); this._vnz = new Float32Array(c);
-    this._u = new Float32Array(c); this._v = new Float32Array(c);
     this._oc = new Uint8Array(c);
     this._cap = c;
   }
@@ -357,6 +368,8 @@ export class Renderer {
       W, H, depth: this.depth, color: this.color, NX: this._gNX, NY: this._gNY, NZ: this._gNZ, MAT: this._gMat,
       matSpec: this._matSpec, matShin: this._matShin, matTwo: this._matTwo, matEmis: this._matEmis,
       matMetal: this._matMetal, matRough: this._matRough,
+      OX: this._gOX, OY: this._gOY, OZ: this._gOZ, matPat: this._matPat, matPatC: this._matPatC, matPatS: this._matPatS, matPatB: this._matPatB,
+      matNM: this._matNM, matM3: this._matM3,
       lights: (scene.lights || []).map((x) => {
         const dd = x.direction, ll = Math.hypot(dd[0], dd[1], dd[2]) || 1, k = this.sunIntensity * (x.intensity ?? 0.5);
         return { x: dd[0] / ll, y: dd[1] / ll, z: dd[2] / ll, r: lin(x.color[0]) * k, g: lin(x.color[1]) * k, b: lin(x.color[2]) * k };
@@ -545,6 +558,7 @@ export class Renderer {
     const n = geo.vertexCount;
     this._reserve(n);
     const P = geo.positions, NRM = geo.normals, VC = geo.colors;
+    this._P = P;
     const X = this._x, Y = this._y, Z = this._z, CX = this._cx, CY = this._cy, CZ = this._cz, CW = this._cw;
     const WX = this._wx, WY = this._wy, WZ = this._wz, R = this._r, G = this._g, B = this._b, OC = this._oc;
     const W8 = this.width * 8, H8 = this.height * 8; // NDC -> 1/16 sub-pixel units
@@ -557,19 +571,18 @@ export class Renderer {
       ? 0xff000000 | ((wire[2] * 255) << 16) | ((wire[1] * 255) << 8) | (wire[0] * 255) : 0;
     let [mr, mg, mb] = mesh.color;
     const spec = mesh.specular, shin = mesh.shininess, two = mesh.doubleSided;
+    const pat = mesh.pattern;
     if (!this._hq && mesh.texture) {
       const t = getTexture(mesh.texture, this.onTextureLoad);
       if (t) { mr *= t.avg[0]; mg *= t.avg[1]; mb *= t.avg[2]; }
     }
-    const VNX = this._vnx, VNY = this._vny, VNZ = this._vnz, UU = this._u, VV = this._v;
+    if (!this._hq && pat) { const [a, b] = pat.colors; mr = (a[0] + b[0]) / 2; mg = (a[1] + b[1]) / 2; mb = (a[2] + b[2]) / 2; }
+    const VNX = this._vnx, VNY = this._vny, VNZ = this._vnz;
     const tex = mesh.texture ? getTexture(mesh.texture, this.onTextureLoad) : null;
     this._tex = hq ? tex : null;
-    // planar mapping along the thinnest local axis: flat in Z (displays, extrudes) -> u = x, v = y (top = +Y);
-    // flat in Y (planes, floors) -> u = x, v = z (top = -Z); flat in X -> u = -z, v = y (top = +Y)
-    const ext = [0, 1, 2].map((a) => geo.max[a] - geo.min[a]);
-    const thin = ext[2] <= ext[0] && ext[2] <= ext[1] ? 2 : ext[1] <= ext[0] ? 1 : 0;
-    const ua = thin === 0 ? 2 : 0, va = thin === 1 ? 2 : 1, uflip = thin === 0, vflip = thin !== 1;
-    const umin = geo.min[ua], vmin = geo.min[va], uinv = 1 / (ext[ua] || 1), vinv = 1 / (ext[va] || 1);
+    this._pat = hq && !!pat;
+    this._obj = !!(this._tex || this._pat); // the raster stage needs the object position per pixel
+    if (this._tex) this._mapping(geo, mesh, m);
     if (hq) {
       const id = this._matCount = Math.min(this._matCount + 1, WIRE_MATERIAL - 1);
       this._mat = id;
@@ -580,6 +593,14 @@ export class Renderer {
       this._flatHQ = flatMesh;
       this._matMoving[id] = this._motionOf(mesh, id) ? 1 : 0;
       this._matMesh[id] = this._meshNo;
+      this._matPat[id] = pat ? PATTERN_ID[pat.type] || 0 : 0;
+      if (pat) {
+        for (let c = 0; c < 3; c++) { const col = pat.colors[Math.min(c, pat.colors.length - 1)]; for (let q = 0; q < 3; q++) this._matPatC[id * 9 + c * 3 + q] = col[q] * 255; }
+        this._matPatS[id] = pat.scale; this._matPatB[id] = pat.bump;
+        this._matNM.set(nm, id * 9);
+        const M3 = this._matM3, j = id * 9;
+        M3[j] = m[0]; M3[j + 1] = m[1]; M3[j + 2] = m[2]; M3[j + 3] = m[4]; M3[j + 4] = m[5]; M3[j + 5] = m[6]; M3[j + 6] = m[8]; M3[j + 7] = m[9]; M3[j + 8] = m[10];
+      }
     }
 
     // ---- vertex stage
@@ -618,10 +639,6 @@ export class Renderer {
         nx *= il; ny *= il; nz *= il;
         if (mode === 3) {
           VNX[v] = nx; VNY[v] = ny; VNZ[v] = nz;
-          if (tex) {
-            const pu = (P[k + ua] - umin) * uinv, pv = (P[k + va] - vmin) * vinv;
-            UU[v] = uflip ? 1 - pu : pu; VV[v] = vflip ? 1 - pv : pv;
-          }
           const cr = VC ? VC[k] : mr, cg = VC ? VC[k + 1] : mg, cb = VC ? VC[k + 2] : mb;
           R[v] = cr >= 1 ? 255 : cr * 255; G[v] = cg >= 1 ? 255 : cg * 255; B[v] = cb >= 1 ? 255 : cb * 255;
         } else if (mode === 2) {
@@ -656,8 +673,9 @@ export class Renderer {
             T[o] = X[v]; T[o + 1] = Y[v]; T[o + 2] = iw;
             T[o + 3] = (flatMesh ? fn[0] : VNX[v]) * iw; T[o + 4] = (flatMesh ? fn[1] : VNY[v]) * iw; T[o + 5] = (flatMesh ? fn[2] : VNZ[v]) * iw;
             T[o + 6] = R[v]; T[o + 7] = G[v]; T[o + 8] = B[v];
-            T[o + 9] = tex ? UU[v] * iw : 0; T[o + 10] = tex ? VV[v] * iw : 0;
-            o += 11;
+            if (this._obj) { T[o + 9] = P[v * 3] * iw; T[o + 10] = P[v * 3 + 1] * iw; T[o + 11] = P[v * 3 + 2] * iw; }
+            else { T[o + 9] = 0; T[o + 10] = 0; T[o + 11] = 0; }
+            o += 12;
           }
           this._rasterG();
         } else if (mode === 0) {
@@ -713,7 +731,8 @@ export class Renderer {
       if (this._hq) {
         const fl = this._flatHQ, fn = this._fn;
         inp[o + 7] = fl ? fn[0] : this._vnx[v]; inp[o + 8] = fl ? fn[1] : this._vny[v]; inp[o + 9] = fl ? fn[2] : this._vnz[v];
-        inp[o + 10] = this._tex ? this._u[v] : 0; inp[o + 11] = this._tex ? this._v[v] : 0;
+        const Pp = this._P;
+        inp[o + 10] = this._obj ? Pp[v * 3] : 0; inp[o + 11] = this._obj ? Pp[v * 3 + 1] : 0; inp[o + 12] = this._obj ? Pp[v * 3 + 2] : 0;
       }
     }
     for (let p = 0; p < 6; p++) {
@@ -754,8 +773,8 @@ export class Renderer {
           T[o] = inp[p]; T[o + 1] = inp[p + 1]; T[o + 2] = iw;
           T[o + 3] = inp[p + 7] * iw; T[o + 4] = inp[p + 8] * iw; T[o + 5] = inp[p + 9] * iw;
           T[o + 6] = inp[p + 4]; T[o + 7] = inp[p + 5]; T[o + 8] = inp[p + 6];
-          T[o + 9] = inp[p + 10] * iw; T[o + 10] = inp[p + 11] * iw;
-          o += 11;
+          T[o + 9] = inp[p + 10] * iw; T[o + 10] = inp[p + 11] * iw; T[o + 11] = inp[p + 12] * iw;
+          o += 12;
         }
         this._rasterG();
       }
@@ -769,18 +788,67 @@ export class Renderer {
     }
   }
 
+  // Texture mapping of the current mesh (object space):
+  //   planar   along the thinnest local axis (flat in Z -> u = x, v = y, top = +Y; flat in Y -> u = x, v = z,
+  //            top = -Z; flat in X -> u = -z, v = y), stretched over the bounds once
+  //   box      projected along all three axes and blended by the surface direction (no stretching on any shape)
+  //   cylinder wrapped around the local Y axis (labels on bottles and cans)
+  //   sphere   longitude / latitude (balls, globes)
+  // repeat tiles the image; with repeat > 1 or a wrapping mode the image repeats seamlessly.
+  _mapping(geo, mesh, m) {
+    const ext = [0, 1, 2].map((a) => geo.max[a] - geo.min[a]);
+    const thin = ext[2] <= ext[0] && ext[2] <= ext[1] ? 2 : ext[1] <= ext[0] ? 1 : 0;
+    const mode = { planar: 0, box: 1, cylinder: 2, sphere: 3 }[mesh.mapping] ?? 0;
+    const big = Math.max(...ext) || 1;
+    this._map = {
+      mode, ua: thin === 0 ? 2 : 0, va: thin === 1 ? 2 : 1, uflip: thin === 0, vflip: thin !== 1,
+      min: geo.min, inv: ext.map((e) => 1 / (e || 1)), big: 1 / big, ru: mesh.repeat[0], rv: mesh.repeat[1],
+      wrap: mode !== 0 || mesh.repeat[0] !== 1 || mesh.repeat[1] !== 1,
+      c: geo.center, m3: [m[0], m[1], m[2], m[4], m[5], m[6], m[8], m[9], m[10]],
+    };
+  }
+
+  // texel (sRGB 0..255) at object point o with world normal n -> TEX_SAMPLE
+  _texAt(ox, oy, oz, nx, ny, nz) {
+    const M = this._map, t = this._tex, P = [ox, oy, oz];
+    if (M.mode === 0) {
+      let u = (P[M.ua] - M.min[M.ua]) * M.inv[M.ua], v = (P[M.va] - M.min[M.va]) * M.inv[M.va];
+      if (M.uflip) u = 1 - u;
+      if (M.vflip) v = 1 - v;
+      return texel(t, u * M.ru, v * M.rv, M.wrap);
+    }
+    if (M.mode === 2 || M.mode === 3) {
+      const dx = ox - M.c[0], dy = oy - M.c[1], dz = oz - M.c[2];
+      const u = 0.5 + Math.atan2(dx, dz) / (2 * Math.PI);
+      const v = M.mode === 2 ? 1 - (oy - M.min[1]) * M.inv[1] : Math.acos(Math.max(-1, Math.min(1, dy / (Math.hypot(dx, dy, dz) || 1)))) / Math.PI;
+      return texel(t, u * M.ru, v * M.rv, true);
+    }
+    // box: object-space normal (transpose of the model 3x3 times the world normal), weights from its direction
+    const m3 = M.m3;
+    let ax = Math.abs(m3[0] * nx + m3[1] * ny + m3[2] * nz), ay = Math.abs(m3[3] * nx + m3[4] * ny + m3[5] * nz), az = Math.abs(m3[6] * nx + m3[7] * ny + m3[8] * nz);
+    ax *= ax * ax * ax; ay *= ay * ay * ay; az *= az * az * az;
+    const sum = ax + ay + az || 1, k = M.big;
+    let r = 0, g = 0, b = 0;
+    if (ax > 0.01 * sum) { texel(t, -oz * k * M.ru, 1 - oy * k * M.rv, true); r += TEX_SAMPLE[0] * ax; g += TEX_SAMPLE[1] * ax; b += TEX_SAMPLE[2] * ax; }
+    if (ay > 0.01 * sum) { texel(t, ox * k * M.ru, oz * k * M.rv, true); r += TEX_SAMPLE[0] * ay; g += TEX_SAMPLE[1] * ay; b += TEX_SAMPLE[2] * ay; }
+    if (az > 0.01 * sum) { texel(t, ox * k * M.ru, 1 - oy * k * M.rv, true); r += TEX_SAMPLE[0] * az; g += TEX_SAMPLE[1] * az; b += TEX_SAMPLE[2] * az; }
+    TEX_SAMPLE[0] = r / sum; TEX_SAMPLE[1] = g / sum; TEX_SAMPLE[2] = b / sum;
+    return TEX_SAMPLE;
+  }
+
   // High quality path: rasterize into the G-buffer (depth, perspective-correct normal, albedo, material).
-  // Vertices come from this._tv, 11 values each: [x, y (1/16 px), 1/w, nx/w, ny/w, nz/w, r, g, b (sRGB 0..255), u/w, v/w].
-  // With a texture, albedo = bilinear texel * vertex color. Same edge setup and span solving as _raster below.
+  // Vertices come from this._tv, 12 values each: [x, y (1/16 px), 1/w, nx/w, ny/w, nz/w, r, g, b (sRGB 0..255), ox/w, oy/w, oz/w]
+  // (object-space position, for textures and patterns). With a texture, albedo = texel * vertex color.
+  // Same edge setup and span solving as _raster below.
   _rasterG() {
     const T = this._tv;
     const x0 = T[0], y0 = T[1];
-    let o1 = 11, o2 = 22;
-    let area = (T[11] - x0) * (T[23] - y0) - (T[22] - x0) * (T[12] - y0);
+    let o1 = 12, o2 = 24;
+    let area = (T[12] - x0) * (T[25] - y0) - (T[24] - x0) * (T[13] - y0);
     if (area === 0) return;
     if (area > 0) {
       if (this._cull) return; // back face
-    } else { o1 = 22; o2 = 11; area = -area; }
+    } else { o1 = 24; o2 = 12; area = -area; }
     const x1 = T[o1], y1 = T[o1 + 1], x2 = T[o2], y2 = T[o2 + 1];
     const W = this.width, H = this.height;
     let minX = Math.ceil((Math.min(x0, x1, x2) - 8) / 16), maxX = Math.floor((Math.max(x0, x1, x2) - 8) / 16);
@@ -805,7 +873,7 @@ export class Renderer {
     // attribute planes: value(px, py) = base + dx * px + dy * py
     const k = 16 / area, ex1 = x1 - x0, ey1 = y1 - y0, ex2 = x2 - x0, ey2 = y2 - y0;
     const ox = 0.5 - x0 / 16, oy = 0.5 - y0 / 16;
-    for (let a = 2; a < 11; a++) {
+    for (let a = 2; a < 12; a++) {
       const v0 = T[a], v1 = T[o1 + a], v2 = T[o2 + a];
       const dx = ((v1 - v0) * ey2 - (v2 - v0) * ey1) * k, dy = ((v2 - v0) * ex1 - (v1 - v0) * ex2) * k;
       PL[a * 3] = v0 + dx * ox + dy * oy; PL[a * 3 + 1] = dx; PL[a * 3 + 2] = dy;
@@ -814,11 +882,11 @@ export class Renderer {
     const nxb = PL[9], nxdx = PL[10], nxdy = PL[11], nyb = PL[12], nydx = PL[13], nydy = PL[14];
     const nzb = PL[15], nzdx = PL[16], nzdy = PL[17], rb = PL[18], rdx = PL[19], rdy = PL[20];
     const gb = PL[21], gdx = PL[22], gdy = PL[23], bb = PL[24], bdx = PL[25], bdy = PL[26];
-    const ub = PL[27], udx = PL[28], udy = PL[29], vb = PL[30], vdx = PL[31], vdy = PL[32];
+    const pxb = PL[27], pxdx = PL[28], pxdy = PL[29], pyb = PL[30], pydx = PL[31], pydy = PL[32], pzb = PL[33], pzdx = PL[34], pzdy = PL[35];
 
     const depth = this.depth, color = this.color, NX = this._gNX, NY = this._gNY, NZ = this._gNZ, MAT = this._gMat;
     const mat = this._mat, wire = this._wire, wireCol = this._wireCol, LW = this.wireWidth;
-    const tex = this._tex, tw = tex ? tex.w : 0, th = tex ? tex.h : 0, tp = tex ? tex.px : null;
+    const tex = this._tex, obj = this._obj, pat = this._pat, OX = this._gOX, OY = this._gOY, OZ = this._gOZ, TS = TEX_SAMPLE;
     const n0 = wire ? 1 / Math.hypot(A0, B0) : 0, n1 = wire ? 1 / Math.hypot(A1, B1) : 0, n2 = wire ? 1 / Math.hypot(A2, B2) : 0;
     let pix = 0, q;
     for (let py = minY; py <= maxY; py++) {
@@ -834,7 +902,7 @@ export class Renderer {
       let z = zb + zdx * xs + zdy * py;
       let nx = nxb + nxdx * xs + nxdy * py, ny = nyb + nydx * xs + nydy * py, nz = nzb + nzdx * xs + nzdy * py;
       let r = rb + rdx * xs + rdy * py, g = gb + gdx * xs + gdy * py, b = bb + bdx * xs + bdy * py;
-      let uu = ub + udx * xs + udy * py, vv = vb + vdx * xs + vdy * py;
+      let qx = pxb + pxdx * xs + pxdy * py, qy = pyb + pydx * xs + pydy * py, qz = pzb + pzdx * xs + pzdy * py;
       let d0 = (e0 + A0 * xs) * n0, d1 = (e1 + A1 * xs) * n1, d2 = (e2 + A2 * xs) * n2;
       const s0 = A0 * n0, s1 = A1 * n1, s2 = A2 * n2;
       for (; i <= end; i++) {
@@ -846,26 +914,21 @@ export class Renderer {
           } else {
             const iz = 1 / z;
             NX[i] = nx * iz; NY[i] = ny * iz; NZ[i] = nz * iz;
-            if (tp) {
-              // bilinear texel (clamped), tinted by the vertex color
-              let fx = uu * iz * tw - 0.5, fy = vv * iz * th - 0.5;
-              if (fx < 0) fx = 0; else if (fx > tw - 1) fx = tw - 1;
-              if (fy < 0) fy = 0; else if (fy > th - 1) fy = th - 1;
-              const ix = fx | 0, iy = fy | 0, ax = fx - ix, ay = fy - iy;
-              const ix1 = ix + 1 < tw ? ix + 1 : ix, iy1 = iy + 1 < th ? iy + 1 : iy;
-              const c00 = tp[iy * tw + ix], c10 = tp[iy * tw + ix1], c01 = tp[iy1 * tw + ix], c11 = tp[iy1 * tw + ix1];
-              const w00 = (1 - ax) * (1 - ay), w10 = ax * (1 - ay), w01 = (1 - ax) * ay, w11 = ax * ay;
-              const tr = (c00 & 255) * w00 + (c10 & 255) * w10 + (c01 & 255) * w01 + (c11 & 255) * w11;
-              const tg = ((c00 >>> 8) & 255) * w00 + ((c10 >>> 8) & 255) * w10 + ((c01 >>> 8) & 255) * w01 + ((c11 >>> 8) & 255) * w11;
-              const tb = ((c00 >>> 16) & 255) * w00 + ((c10 >>> 16) & 255) * w10 + ((c01 >>> 16) & 255) * w01 + ((c11 >>> 16) & 255) * w11;
-              color[i] = 0xff000000 | (((tb * b) / 255) << 16) | (((tg * g) / 255) << 8) | ((tr * r) / 255);
+            if (obj) {
+              const ox = qx * iz, oy = qy * iz, oz = qz * iz;
+              if (pat) { OX[i] = ox; OY[i] = oy; OZ[i] = oz; }
+              if (tex) {
+                // texel at this point (mapping mode, repeat), tinted by the vertex color
+                this._texAt(ox, oy, oz, NX[i], NY[i], NZ[i]);
+                color[i] = 0xff000000 | (((TS[2] * b) / 255) << 16) | (((TS[1] * g) / 255) << 8) | ((TS[0] * r) / 255);
+              } else color[i] = 0xff000000 | ((b | 0) << 16) | ((g | 0) << 8) | (r | 0);
             } else {
               color[i] = 0xff000000 | ((b | 0) << 16) | ((g | 0) << 8) | (r | 0);
             }
             MAT[i] = mat;
           }
         }
-        z += zdx; nx += nxdx; ny += nydx; nz += nzdx; r += rdx; g += gdx; b += bdx; uu += udx; vv += vdx;
+        z += zdx; nx += nxdx; ny += nydx; nz += nzdx; r += rdx; g += gdx; b += bdx; qx += pxdx; qy += pydx; qz += pzdx;
         d0 += s0; d1 += s1; d2 += s2;
       }
     }
@@ -971,7 +1034,7 @@ export class Renderer {
   }
 }
 
-const PL = new Float64Array(33); // attribute plane scratch for _rasterG
+const PL = new Float64Array(36); // attribute plane scratch for _rasterG
 const DEFAULT_ROUGHNESS = 0.7; // materials without an explicit roughness reflect only faintly
 const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const cross3 = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
@@ -987,4 +1050,23 @@ function planeDist(bit, v, o) {
     case BOTTOM: return y + GUARD * w;
     default: return GUARD * w - y;
   }
+}
+
+// bilinear texel lookup (u, v in texture units 0..1; wrap repeats, otherwise clamps) -> TEX_SAMPLE (sRGB 0..255)
+const TEX_SAMPLE = new Float64Array(3);
+function texel(t, u, v, wrap) {
+  const tw = t.w, th = t.h, tp = t.px;
+  if (wrap) { u -= Math.floor(u); v -= Math.floor(v); }
+  let fx = u * tw - 0.5, fy = v * th - 0.5;
+  let ix = Math.floor(fx), iy = Math.floor(fy);
+  const ax = fx - ix, ay = fy - iy;
+  let ix1 = ix + 1, iy1 = iy + 1;
+  if (wrap) { ix = (ix + tw) % tw; ix1 = ix1 % tw; iy = (iy + th) % th; iy1 = iy1 % th; }
+  else { ix = ix < 0 ? 0 : ix > tw - 1 ? tw - 1 : ix; ix1 = ix1 > tw - 1 ? tw - 1 : ix1 < 0 ? 0 : ix1; iy = iy < 0 ? 0 : iy > th - 1 ? th - 1 : iy; iy1 = iy1 > th - 1 ? th - 1 : iy1 < 0 ? 0 : iy1; }
+  const c00 = tp[iy * tw + ix], c10 = tp[iy * tw + ix1], c01 = tp[iy1 * tw + ix], c11 = tp[iy1 * tw + ix1];
+  const w00 = (1 - ax) * (1 - ay), w10 = ax * (1 - ay), w01 = (1 - ax) * ay, w11 = ax * ay;
+  TEX_SAMPLE[0] = (c00 & 255) * w00 + (c10 & 255) * w10 + (c01 & 255) * w01 + (c11 & 255) * w11;
+  TEX_SAMPLE[1] = ((c00 >>> 8) & 255) * w00 + ((c10 >>> 8) & 255) * w10 + ((c01 >>> 8) & 255) * w01 + ((c11 >>> 8) & 255) * w11;
+  TEX_SAMPLE[2] = ((c00 >>> 16) & 255) * w00 + ((c10 >>> 16) & 255) * w10 + ((c01 >>> 16) & 255) * w01 + ((c11 >>> 16) & 255) * w11;
+  return TEX_SAMPLE;
 }

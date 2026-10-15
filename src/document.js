@@ -5,6 +5,7 @@
 import { buildShape } from './recipes.js';
 import { isValidTextureSrc } from './textures.js';
 import { mat4 } from './math.js';
+import { PATTERN_TYPES } from './patterns.js';
 
 const HISTORY = 100;
 const GEOMETRY_CACHE = 128;
@@ -58,6 +59,18 @@ function range(v, name, min, max) {
   return v;
 }
 
+// procedural pattern { type, colors: [2..3 colours], scale (size of one feature in units), bump 0..2 }
+const PATTERN_SCALE = { wood: 0.25, marble: 0.6, leather: 0.012, carbon: 0.02, fabric: 0.006, brushed: 1, checker: 0.25, stripes: 0.2, knurl: 0.02 };
+const PATTERN_BUMP = { wood: 0.35, marble: 0, leather: 0.9, carbon: 0.5, fabric: 0.8, brushed: 0.12, checker: 0, stripes: 0, knurl: 1.2 };
+function normalizePattern(p) {
+  if (!p || typeof p !== 'object' || Array.isArray(p)) fail('"material.pattern" must be an object like { "type": "wood", "colors": ["#8a5a35", "#4a2c18"] }');
+  if (!PATTERN_TYPES.includes(p.type)) fail(`"material.pattern.type" must be one of ${PATTERN_TYPES.join(', ')}`);
+  if (!Array.isArray(p.colors) || p.colors.length < 2 || p.colors.length > 3) fail('"material.pattern.colors" must be 2 or 3 colours');
+  return { type: p.type, colors: p.colors.map((c, i) => parseColor(c, `material.pattern.colors[${i}]`)),
+    scale: p.scale === undefined ? PATTERN_SCALE[p.type] : range(p.scale, 'material.pattern.scale', 0.0001, 1000),
+    bump: p.bump === undefined ? PATTERN_BUMP[p.type] : range(p.bump, 'material.pattern.bump', 0, 2) };
+}
+
 function normalizeMaterial(m = {}, base = {}) {
   if (typeof m !== 'object' || Array.isArray(m)) fail('"material" must be an object');
   const out = { color: '#c8c8c8', specular: 0.25, shininess: 24, emissive: 0, flat: false, doubleSided: false, ...base };
@@ -74,6 +87,21 @@ function normalizeMaterial(m = {}, base = {}) {
     if (m.texture === null || m.texture === '') delete out.texture;
     else if (!isValidTextureSrc(m.texture)) fail('"material.texture" must be a PNG path inside the project (e.g. "examples/textures/screen.png") or a "data:image/png;base64,..." URL');
     else out.texture = m.texture;
+  }
+  if (m.mapping !== undefined) {
+    if (m.mapping === null || m.mapping === 'planar') delete out.mapping;
+    else if (!['box', 'cylinder', 'sphere'].includes(m.mapping)) fail('"material.mapping" must be "planar", "box", "cylinder" or "sphere"');
+    else out.mapping = m.mapping;
+  }
+  if (m.repeat !== undefined) {
+    if (m.repeat === null || m.repeat === 1) delete out.repeat;
+    else if (typeof m.repeat === 'number') out.repeat = range(m.repeat, 'material.repeat', 0.01, 1000);
+    else if (Array.isArray(m.repeat) && m.repeat.length === 2) out.repeat = m.repeat.map((v, i) => range(v, `material.repeat[${i}]`, 0.01, 1000));
+    else fail('"material.repeat" must be a number or [u, v]');
+  }
+  if (m.pattern !== undefined) {
+    if (m.pattern === null) delete out.pattern;
+    else out.pattern = normalizePattern(m.pattern);
   }
   if (m.flat !== undefined) out.flat = !!m.flat;
   if (m.doubleSided !== undefined) out.doubleSided = !!m.doubleSided;

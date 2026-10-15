@@ -32,6 +32,10 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 ## Gallery
 
+<img src="docs/desk.png" alt="Photographer's desk: a vintage rangefinder camera with leather, chrome and a coated lens on a walnut desk" width="100%">
+
+<sub>Photographer's desk: a vintage rangefinder at real scale on oiled walnut. Pebbled leather, satin chrome, knurled dials, the walnut grain, the cloth of the notebook and the marble of the coaster are all procedural <code>pattern</code>s with relief, evaluated per pixel in object space on any shape. 49 objects, 34 KB of JSON, no image files.</sub>
+
 <img src="docs/neon.png" alt="Neon district: a rainy cyberpunk street at night with neon signs, lit towers, lanterns and a hologram" width="100%">
 
 <p align="center"><img src="docs/neon.gif" alt="Neon district animation" width="420"></p>
@@ -54,7 +58,7 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 <sub>Turbofan cutaway: about 1,350 NACA-profiled blades in radial arrays and casings revolved through 240°. 47 KB of recipes, 4.15 MB once exported as triangles.</sub>
 
-Thirteen scenes ship with cpu3d, all of them animated. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
+Fourteen scenes ship with cpu3d, all of them animated. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
 All of them are built in [`examples/build.mjs`](examples/build.mjs) through the same tool API an agent uses, including `probe_height` to put things on terrain.
 
 <table>
@@ -64,21 +68,22 @@ All of them are built in [`examples/build.mjs`](examples/build.mjs) through the 
 <td width="33%" valign="top"><img src="examples/thumbs/watch.png" alt="Skeleton watch"><br><b>Skeleton watch</b><br><sub>170 objects · 32,758 tris<br>recipes 172.0 KB · as .obj 1.25 MB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/engine.png" alt="Turbofan cutaway"><br><b>Turbofan cutaway</b><br><sub>70 objects · 113,968 tris<br>recipes 70.1 KB · as .obj 4.23 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/fair.png" alt="Fairground at dusk"><br><b>Fairground at dusk</b><br><sub>339 objects · 98,046 tris<br>recipes 409.0 KB · as .obj 3.37 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/engine.png" alt="Turbofan cutaway"><br><b>Turbofan cutaway</b><br><sub>69 objects · 143,338 tris<br>recipes 74.2 KB · as .obj 5.16 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/fair.png" alt="Fairground at dusk"><br><b>Fairground at dusk</b><br><sub>339 objects · 98,046 tris<br>recipes 409.2 KB · as .obj 3.37 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/plush.png" alt="Plush dancer"><br><b>Plush dancer</b><br><sub>62 objects · 76,990 tris<br>recipes 270.8 KB · as .obj 2.43 MB</sub></td>
 </tr>
 <tr>
 <td width="33%" valign="top"><img src="examples/thumbs/neon.png" alt="Neon district"><br><b>Neon district</b><br><sub>462 objects · 29,082 tris<br>recipes 534.9 KB · as .obj 1.26 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/desk.png" alt="Photographer's desk"><br><b>Photographer's desk</b><br><sub>49 objects · 28,308 tris<br>recipes 34.0 KB · as .obj 946.6 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 77.4 KB · as .obj 191.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 84.9 KB · as .obj 1.20 MB</sub></td>
 </tr>
 <tr>
+<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 84.9 KB · as .obj 1.20 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 63.5 KB · as .obj 605.3 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>319 objects · 17,694 tris<br>recipes 166.0 KB · as .obj 683.1 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 108.5 KB · as .obj 2.19 MB</sub></td>
 </tr>
 <tr>
+<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 108.5 KB · as .obj 2.19 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>11 objects · 52,246 tris<br>recipes 7.5 KB · as .obj 1.48 MB</sub></td>
 </tr>
 </table>
@@ -209,7 +214,8 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 | `metalness` 0..1 | metals reflect in their own color and have no diffuse light |
 | `roughness` 0..1 | 0 = mirror, 1 = matte (default 0.7); sharp or blurry reflections |
 | `emissive` 0..10 | self-illumination; `1` shows the color or texture exactly as authored |
-| `texture` | PNG in the project or a `data:image/png;base64` URL, projected along the thinnest axis |
+| `texture` | PNG in the project or a `data:image/png;base64` URL; `mapping` `planar` (default, thinnest axis), `box` (from all sides), `cylinder` (labels), `sphere`, and `repeat` to tile it |
+| `pattern` | Procedural surface with relief, no image: `wood`, `marble`, `leather`, `carbon`, `fabric`, `brushed`, `checker`, `stripes`, `knurl`, with 2-3 `colors`, `scale` and `bump` |
 | `flat`, `doubleSided` | faceted shading, open surfaces |
 
 `set_environment` controls what glossy surfaces reflect (`reflections: "sky" | "studio" | "none"`), the main light (`intensity`, `softness` for soft shadows) and up to four extra `lights` for fill and rim lighting.

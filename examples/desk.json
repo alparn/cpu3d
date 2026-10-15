@@ -1,0 +1,1525 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 28,
+    "pitch": 20,
+    "distance": 4.4,
+    "target": [0.2, 0.45, 0.2]
+  },
+  "environment": {
+    "background": {
+      "top": "#121315",
+      "bottom": "#2b2a29"
+    },
+    "fog": null,
+    "light": {
+      "direction": [-0.45, 0.85, 0.55],
+      "color": "#fff2e2",
+      "intensity": 1.25,
+      "softness": 0.4
+    },
+    "lights": [
+      {
+        "direction": [0.7, 0.35, -0.6],
+        "color": "#cfe0ff",
+        "intensity": 0.55
+      },
+      {
+        "direction": [0.6, 0.3, 0.75],
+        "color": "#ffe2c4",
+        "intensity": 0.25
+      }
+    ],
+    "reflections": "studio",
+    "ground": false
+  },
+  "animation": {
+    "duration": 16,
+    "camera": {
+      "keys": [
+        {
+          "t": 0,
+          "yaw": 28,
+          "pitch": 20,
+          "distance": 4.4,
+          "target": [0.2, 0.45, 0.2]
+        },
+        {
+          "t": 5,
+          "yaw": -8,
+          "pitch": 9,
+          "distance": 2.3,
+          "target": [0.05, 0.42, 0.35]
+        },
+        {
+          "t": 10.5,
+          "yaw": -42,
+          "pitch": 32,
+          "distance": 3.6,
+          "target": [0.2, 0.5, 0]
+        },
+        {
+          "t": 16,
+          "yaw": 28,
+          "pitch": 20,
+          "distance": 4.4,
+          "target": [0.2, 0.45, 0.2]
+        }
+      ],
+      "ease": "spline"
+    }
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Bottom plate",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 1.38,
+          "height": 0.33,
+          "radius": 0.164,
+          "segments": 10
+        },
+        "depth": 0.12
+      },
+      "position": [0.2, 0.06, 0.1],
+      "rotation": [-90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.34,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Leather",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 1.392,
+          "height": 0.342,
+          "radius": 0.17,
+          "segments": 10
+        },
+        "depth": 0.47
+      },
+      "position": [0.2, 0.355, 0.1],
+      "rotation": [-90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#161413",
+        "specular": 0.45,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.6,
+        "pattern": {
+          "type": "leather",
+          "colors": ["#1f1c1a", "#151312", "#0b0a09"],
+          "scale": 0.011,
+          "bump": 0.9
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Top plate",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 1.38,
+          "height": 0.33,
+          "radius": 0.164,
+          "segments": 10
+        },
+        "depth": 0.17
+      },
+      "position": [0.2, 0.675, 0.1],
+      "rotation": [-90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.34,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Top plate rim",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 1.35,
+          "height": 0.3,
+          "radius": 0.15,
+          "segments": 10
+        },
+        "depth": 0.02
+      },
+      "position": [0.2, 0.77, 0.1],
+      "rotation": [-90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.15,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Viewfinder window",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.17,
+        "height": 0.105,
+        "depth": 0.03,
+        "radius": 0.012
+      },
+      "position": [0.6676, 0.665, 0.1344],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0a1418",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.03
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Frosted window",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.21,
+        "height": 0.11,
+        "depth": 0.03,
+        "radius": 0.012
+      },
+      "position": [0.4273, 0.665, 0.2034],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#dfe3e6",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.12,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.7
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Rangefinder window",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.11,
+        "height": 0.1,
+        "depth": 0.03,
+        "radius": 0.012
+      },
+      "position": [-0.1783, 0.665, 0.377],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0a1418",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.03
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Red badge",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.042,
+        "radiusBottom": 0.042,
+        "height": 0.02,
+        "segments": 32
+      },
+      "position": [0.0546, 0.675, 0.3185],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9141d",
+        "specular": 0.9,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Lens mount",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.3,
+        "radiusBottom": 0.3,
+        "height": 0.04,
+        "segments": 64
+      },
+      "position": [0.1933, 0.37, 0.2944],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.34,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_10",
+      "name": "Focus ring",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.305,
+        "radiusBottom": 0.305,
+        "height": 0.12,
+        "segments": 96
+      },
+      "position": [0.2154, 0.37, 0.3713],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d3d6db",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#d3d6db", "#7d8187"],
+          "scale": 0.014,
+          "bump": 1
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_11",
+      "name": "Focus tab",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.08,
+        "height": 0.05,
+        "depth": 0.07,
+        "radius": 0.02
+      },
+      "position": [0.2154, 0.06, 0.3713],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.18,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_12",
+      "name": "Distance scale",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.29,
+        "radiusBottom": 0.29,
+        "height": 0.07,
+        "segments": 96
+      },
+      "position": [0.2416, 0.37, 0.4626],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.15,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_13",
+      "name": "Scale marks",
+      "shape": {
+        "type": "radial",
+        "axis": "z",
+        "count": 18,
+        "radius": 0.291,
+        "angle": 120,
+        "startAngle": 30,
+        "shape": {
+          "type": "box",
+          "width": 0.004,
+          "height": 0.03,
+          "depth": 0.004
+        },
+        "rotation": [0, 0, 90]
+      },
+      "position": [0.2416, 0.37, 0.4626],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#111111",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_14",
+      "name": "Aperture ring",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.285,
+        "radiusBottom": 0.285,
+        "height": 0.08,
+        "segments": 96
+      },
+      "position": [0.2622, 0.37, 0.5347],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2a2b2e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.6,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#2a2b2e", "#0c0c0d"],
+          "scale": 0.014,
+          "bump": 1
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_15",
+      "name": "Lens barrel",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.265,
+        "radiusBottom": 0.272,
+        "height": 0.12,
+        "segments": 96
+      },
+      "position": [0.2898, 0.37, 0.6308],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#151516",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_16",
+      "name": "Front rim",
+      "shape": {
+        "type": "torus",
+        "radius": 0.255,
+        "tube": 0.013,
+        "segments": 96,
+        "sides": 12
+      },
+      "position": [0.3066, 0.37, 0.6895],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.12,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_17",
+      "name": "Inner element",
+      "shape": {
+        "type": "sphere",
+        "radius": 1,
+        "segments": 48,
+        "rings": 24
+      },
+      "position": [0.2884, 0.37, 0.626],
+      "rotation": [0, 16, 0],
+      "scale": [0.2, 0.2, 0.05],
+      "material": {
+        "color": "#4a2f78",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.04,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.06
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_18",
+      "name": "Front glass",
+      "shape": {
+        "type": "sphere",
+        "radius": 1,
+        "segments": 64,
+        "rings": 32
+      },
+      "position": [0.2912, 0.37, 0.6356],
+      "rotation": [0, 16, 0],
+      "scale": [0.24, 0.24, 0.085],
+      "material": {
+        "color": "#1d4650",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.015
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_19",
+      "name": "Lens inner ring",
+      "shape": {
+        "type": "torus",
+        "radius": 0.235,
+        "tube": 0.012,
+        "segments": 64,
+        "sides": 8
+      },
+      "position": [0.3022, 0.37, 0.6741],
+      "rotation": [90, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#131416",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_20",
+      "name": "Shutter dial",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.105,
+        "radiusBottom": 0.11,
+        "height": 0.07,
+        "segments": 64
+      },
+      "position": [0.59, 0.815, 0.009],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d3d6db",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#d3d6db", "#7d8187"],
+          "scale": 0.014,
+          "bump": 1
+        }
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 22.5,
+          "step": 2
+        }
+      }
+    },
+    {
+      "id": "obj_21",
+      "name": "Dial index",
+      "shape": {
+        "type": "box",
+        "width": 0.012,
+        "height": 0.006,
+        "depth": 0.06
+      },
+      "position": [0.601, 0.852, 0.0474],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9141d",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.4
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 22.5,
+          "step": 2,
+          "pivot": [0.4, 0.85, 0.02]
+        }
+      }
+    },
+    {
+      "id": "obj_22",
+      "name": "Shutter release",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.038,
+        "radiusBottom": 0.042,
+        "height": 0.05,
+        "segments": 32
+      },
+      "position": [0.7768, 0.805, 0.0074],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.12,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_23",
+      "name": "Soft release",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.03,
+        "segments": 24,
+        "rings": 12
+      },
+      "position": [0.7768, 0.83, 0.0074],
+      "rotation": [0, 16, 0],
+      "scale": [1, 0.45, 1],
+      "material": {
+        "color": "#b0121a",
+        "specular": 0.8,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_24",
+      "name": "Rewind knob",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.088,
+        "radiusBottom": 0.09,
+        "height": 0.11,
+        "segments": 64
+      },
+      "position": [-0.2806, 0.835, 0.2378],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d3d6db",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#d3d6db", "#7d8187"],
+          "scale": 0.014,
+          "bump": 1
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_25",
+      "name": "Advance lever",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.3,
+        "height": 0.025,
+        "depth": 0.055,
+        "radius": 0.012
+      },
+      "position": [0.8151, 0.79, -0.1492],
+      "rotation": [0, 44, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.14,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_26",
+      "name": "Lever tip",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.08,
+        "height": 0.035,
+        "depth": 0.065,
+        "radius": 0.015
+      },
+      "position": [0.9112, 0.792, -0.2496],
+      "rotation": [0, 44, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#151516",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_27",
+      "name": "Accessory shoe",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.2,
+        "height": 0.03,
+        "depth": 0.19,
+        "radius": 0.008
+      },
+      "position": [0.178, 0.795, 0.0959],
+      "rotation": [0, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.18,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_28",
+      "name": "Strap lug",
+      "shape": {
+        "type": "torus",
+        "radius": 0.03,
+        "tube": 0.009,
+        "segments": 24,
+        "sides": 8
+      },
+      "position": [-0.4777, 0.64, 0.2943],
+      "rotation": [180, 74, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.34,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_29",
+      "name": "Strap lug",
+      "shape": {
+        "type": "torus",
+        "radius": 0.03,
+        "tube": 0.009,
+        "segments": 24,
+        "sides": 8
+      },
+      "position": [0.8777, 0.64, -0.0943],
+      "rotation": [180, 74, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.34,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_30",
+      "name": "Strap",
+      "shape": {
+        "type": "sweep",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.15,
+          "height": 0.014,
+          "radius": 0.006
+        },
+        "path": [
+          [-0.5017, 0.64, 0.3012],
+          [-0.6217, 0.42, 0.3012],
+          [-0.8017, 0.1, 0.3012],
+          [-1.0517, 0.012, 0.3012],
+          [-1.8017, 0.012, 0.5012],
+          [-2.4017, 0.012, 1.0012]
+        ]
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a2f17",
+        "specular": 0.35,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.55,
+        "pattern": {
+          "type": "leather",
+          "colors": ["#6e3b1d", "#4f2914", "#2b150a"],
+          "scale": 0.01,
+          "bump": 0.7
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_31",
+      "name": "Strap",
+      "shape": {
+        "type": "sweep",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.15,
+          "height": 0.014,
+          "radius": 0.006
+        },
+        "path": [
+          [0.9017, 0.64, -0.1012],
+          [1.0217, 0.42, -0.1012],
+          [1.2017, 0.1, -0.1012],
+          [1.4517, 0.012, -0.1512],
+          [2.0017, 0.012, -0.6012],
+          [2.2017, 0.012, -1.4012]
+        ]
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a2f17",
+        "specular": 0.35,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.55,
+        "pattern": {
+          "type": "leather",
+          "colors": ["#6e3b1d", "#4f2914", "#2b150a"],
+          "scale": 0.01,
+          "bump": 0.7
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_32",
+      "name": "Desk",
+      "shape": {
+        "type": "roundedBox",
+        "width": 14,
+        "height": 0.4,
+        "depth": 8,
+        "radius": 0.04
+      },
+      "position": [0, -0.2, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4a2e1a",
+        "specular": 0.5,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.34,
+        "pattern": {
+          "type": "wood",
+          "colors": ["#62402a", "#4c301d", "#2e1b0e"],
+          "scale": 0.09,
+          "bump": 0.22
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_33",
+      "name": "Coaster",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.62,
+        "radiusBottom": 0.62,
+        "height": 0.07,
+        "segments": 64
+      },
+      "position": [2.7, 0.035, 1],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9e6e0",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.08,
+        "pattern": {
+          "type": "marble",
+          "colors": ["#f2efe9", "#c4beb4", "#3e3936"],
+          "scale": 0.3,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_34",
+      "name": "Saucer",
+      "shape": {
+        "type": "lathe",
+        "segments": 64,
+        "profile": [
+          [0, 0.07],
+          [0.32, 0.07],
+          [0.46, 0.09],
+          [0.53, 0.125],
+          [0.51, 0.135],
+          [0.44, 0.105],
+          [0.3, 0.1],
+          [0, 0.1]
+        ]
+      },
+      "position": [2.7, 0, 1],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f4f2ee",
+        "specular": 1,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.08
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_35",
+      "name": "Cup",
+      "shape": {
+        "type": "lathe",
+        "segments": 64,
+        "profile": [
+          [0, 0.11],
+          [0.17, 0.11],
+          [0.21, 0.13],
+          [0.27, 0.22],
+          [0.3, 0.36],
+          [0.305, 0.47],
+          [0.285, 0.47],
+          [0.275, 0.37],
+          [0.25, 0.24],
+          [0.2, 0.16],
+          [0, 0.15]
+        ]
+      },
+      "position": [2.7, 0, 1],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f4f2ee",
+        "specular": 1,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.08
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_36",
+      "name": "Cup handle",
+      "shape": {
+        "type": "torus",
+        "radius": 0.085,
+        "tube": 0.022,
+        "segments": 32,
+        "sides": 12
+      },
+      "position": [3.0300000000000002, 0.32, 1],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f4f2ee",
+        "specular": 1,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.08
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_37",
+      "name": "Crema",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.275,
+        "radiusBottom": 0.275,
+        "height": 0.01,
+        "segments": 64
+      },
+      "position": [2.7, 0.425, 1],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9a6236",
+        "specular": 0.5,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "marble",
+          "colors": ["#c99462", "#b47e4a", "#93602f"],
+          "scale": 0.1,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_38",
+      "name": "Spoon",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.42,
+        "height": 0.012,
+        "depth": 0.045,
+        "radius": 0.005
+      },
+      "position": [2.75, 0.142, 1.33],
+      "rotation": [0, -25, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.1,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_39",
+      "name": "Notebook back",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.1,
+        "height": 0.03,
+        "depth": 2.9,
+        "radius": 0.012
+      },
+      "position": [-2.6, 0.015, 1.1],
+      "rotation": [0, -14, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1f2a3d",
+        "specular": 0.15,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.85,
+        "pattern": {
+          "type": "fabric",
+          "colors": ["#1a2333", "#2a3850", "#425676"],
+          "scale": 0.007,
+          "bump": 0.7
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_40",
+      "name": "Notebook pages",
+      "shape": {
+        "type": "box",
+        "width": 2.02,
+        "height": 0.12,
+        "depth": 2.82
+      },
+      "position": [-2.5806, 0.09, 1.1048],
+      "rotation": [0, -14, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ece3cf",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.85,
+        "pattern": {
+          "type": "stripes",
+          "colors": ["#efe7d4", "#d9cfb8"],
+          "scale": 0.006,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_41",
+      "name": "Notebook cover",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.1,
+        "height": 0.03,
+        "depth": 2.9,
+        "radius": 0.012
+      },
+      "position": [-2.6, 0.165, 1.1],
+      "rotation": [0, -14, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1f2a3d",
+        "specular": 0.15,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.85,
+        "pattern": {
+          "type": "fabric",
+          "colors": ["#1a2333", "#2a3850", "#425676"],
+          "scale": 0.007,
+          "bump": 0.7
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_42",
+      "name": "Elastic band",
+      "shape": {
+        "type": "box",
+        "width": 0.05,
+        "height": 0.2,
+        "depth": 2.92
+      },
+      "position": [-1.8044, 0.09, 1.2984],
+      "rotation": [0, -14, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#111214",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.6
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_43",
+      "name": "Pencil",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.04,
+        "radiusBottom": 0.04,
+        "height": 1.5,
+        "segments": 6
+      },
+      "position": [-2.8301, 0.22, 1.6095],
+      "rotation": [-14, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e5b026",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_44",
+      "name": "Pencil tip",
+      "shape": {
+        "type": "cone",
+        "radius": 0.04,
+        "height": 0.14,
+        "segments": 12
+      },
+      "position": [-3.6257, 0.22, 1.4111],
+      "rotation": [-14, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9b48a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.7,
+        "pattern": {
+          "type": "wood",
+          "colors": ["#e2c096", "#c79a6a", "#8a5a36"],
+          "scale": 0.03,
+          "bump": 0.2
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_45",
+      "name": "Film canister",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.13,
+        "radiusBottom": 0.13,
+        "height": 0.3,
+        "segments": 48
+      },
+      "position": [1.3, 0.15, -1.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1b1b1d",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_46",
+      "name": "Canister label",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.132,
+        "radiusBottom": 0.132,
+        "height": 0.17,
+        "segments": 48,
+        "caps": false
+      },
+      "position": [1.3, 0.15, -1.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f0b400",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "stripes",
+          "colors": ["#f0b400", "#c9141d"],
+          "scale": 0.085,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_47",
+      "name": "Canister lid",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.135,
+        "radiusBottom": 0.135,
+        "height": 0.03,
+        "segments": 48
+      },
+      "position": [1.3, 0.315, -1.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d6d9de",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.72,
+        "roughness": 0.25,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#c4c8ce", "#e2e5e9"],
+          "scale": 2,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_48",
+      "name": "Lens cap",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.27,
+        "radiusBottom": 0.275,
+        "height": 0.06,
+        "segments": 64
+      },
+      "position": [1.5, 0.03, 1.7],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141416",
+        "specular": 0.5,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.45
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_49",
+      "name": "Lens cap grip",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.282,
+        "radiusBottom": 0.282,
+        "height": 0.04,
+        "segments": 96,
+        "caps": false
+      },
+      "position": [1.5, 0.03, 1.7],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2a2b2e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.5,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#2a2b2e", "#0c0c0d"],
+          "scale": 0.014,
+          "bump": 1
+        }
+      },
+      "visible": true
+    }
+  ]
+}

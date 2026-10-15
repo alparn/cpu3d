@@ -34,7 +34,10 @@ const materialS = {
     emissive: { type: 'number', description: 'Self-illumination 0..10 (screens, lamps, windows, neon); 1 shows the color at full strength' },
     metalness: { type: 'number', description: '0 dielectric .. 1 metal (reflections tinted by the color, no diffuse)' },
     roughness: { type: 'number', description: '0 polished/mirror .. 1 matte (default 0.7); controls how sharp reflections are' },
-    texture: { type: 'string', description: 'PNG image: project path (e.g. "examples/textures/screen.png") or "data:image/png;base64,...". Projected along the thinnest local axis of the object (flat in Z: top = +Y; flat in Y like plane: top = -Z)' },
+    texture: { type: 'string', description: 'PNG image: project path (e.g. "examples/textures/screen.png") or "data:image/png;base64,...". By default projected along the thinnest local axis (flat in Z: top = +Y; flat in Y like plane: top = -Z)' },
+    mapping: { type: 'string', enum: ['planar', 'box', 'cylinder', 'sphere'], description: 'How the texture wraps: planar (default), box (from all sides, for patterns on any shape), cylinder (labels around Y), sphere' },
+    repeat: { type: ['number', 'array'], items: { type: 'number' }, description: 'Tile the texture: a number or [u, v]' },
+    pattern: { type: ['object', 'null'], description: 'Procedural surface, no image needed: { type: wood | marble | leather | carbon | fabric | brushed | checker | stripes | knurl, colors: [2 or 3 colours], scale: size of one feature in units, bump: 0..2 relief }' },
   },
 };
 const shapeS = {

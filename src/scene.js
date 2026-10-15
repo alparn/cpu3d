@@ -158,6 +158,8 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
       color: colorToRGB(o.material.color), specular: o.material.specular,
       shininess: o.material.shininess, doubleSided: o.material.doubleSided, emissive: o.material.emissive || 0,
       metalness: o.material.metalness || 0, roughness: o.material.roughness, texture: o.material.texture || null,
+      mapping: o.material.mapping || 'planar', repeat: o.material.repeat ?? 1,
+      pattern: o.material.pattern ? { ...o.material.pattern, colors: o.material.pattern.colors.map(colorToRGB) } : null,
     });
     m.matrix = o.animation ? animatedMatrix(o, time) : objectMatrix(o);
     m.matrixAutoUpdate = false;
