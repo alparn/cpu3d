@@ -63,17 +63,18 @@ scene('showcase', 'Shape showcase', 'Every generator in one place: lathe, sweep 
   const vase = [[0, 0]];
   for (let i = 0; i <= 40; i++) { const y = (i / 40) * 1.9; vase.push(P(0.42 + 0.2 * Math.sin(y * 2.6 - 0.6) + 0.04 * Math.sin(y * 11), y)); }
   const p = (i) => P(Math.cos((i / 7) * 2 * Math.PI) * 3.4, Math.sin((i / 7) * 2 * Math.PI) * 3.4);
-  await tool(doc, 'set_environment', { reflections: 'studio' }); // chrome and glossy parts reflect softboxes
+  await tool(doc, 'set_environment', { reflections: 'studio', light: { direction: [0.5, 0.85, 0.45], intensity: 1, softness: 0.3 },
+    lights: [{ direction: [-0.7, 0.35, -0.6], color: '#cfe0ff', intensity: 0.45 }] }); // chrome and glossy parts reflect softboxes
   await add(doc, [
-    { name: 'Torus knot', shape: { type: 'tube', path: { type: 'torusKnot', p: 2, q: 3, steps: 256, size: 1.6 }, radius: 0.14, sides: 12 }, position: [0, 1.7, 0], material: { color: '#f28c33', roughness: 0.3, specular: 0.6, shininess: 60 } },
+    { name: 'Torus knot', shape: { type: 'tube', path: { type: 'torusKnot', p: 2, q: 3, steps: 256, size: 1.6 }, radius: 0.14, sides: 12 }, position: [0, 1.7, 0], material: { color: '#f2701f', roughness: 0.15, specular: 0.9, shininess: 180 } },
     { name: 'Vase', shape: { type: 'lathe', profile: vase, segments: 48 }, position: [p(0)[0], 0, p(0)[1]], material: { color: '#4d99d9', roughness: 0.18, specular: 0.7, shininess: 120, doubleSided: true } },
-    { name: 'Twisted column', shape: { type: 'sweep', shape: { type: 'star', points: 6, outer: 0.45, inner: 0.28 }, path: { type: 'line', from: [0, 0, 0], to: [0, 1.9, 0], steps: 60 }, twist: 180 }, position: [p(1)[0], 0, p(1)[1]], material: { color: '#d9cc59' } },
-    { name: 'Star', shape: { type: 'extrude', shape: { type: 'star', points: 5, outer: 0.75, inner: 0.32 }, depth: 0.3 }, position: [p(2)[0], 1, p(2)[1]], rotation: [0, 30, 0], material: { color: '#d94d59' } },
-    { name: 'Chrome sphere', shape: { type: 'sphere', radius: 0.65, segments: 40, rings: 20 }, position: [p(3)[0], 0.65, p(3)[1]], material: { color: '#d4d8de', metalness: 1, roughness: 0.3, specular: 0.9, shininess: 120 } },
-    { name: 'Torus', shape: { type: 'torus', radius: 0.55, tube: 0.2 }, position: [p(4)[0], 0.8, p(4)[1]], rotation: [70, 0, 0], material: { color: '#59bf73' } },
+    { name: 'Twisted column', shape: { type: 'sweep', shape: { type: 'star', points: 6, outer: 0.45, inner: 0.28 }, path: { type: 'line', from: [0, 0, 0], to: [0, 1.9, 0], steps: 60 }, twist: 180 }, position: [p(1)[0], 0, p(1)[1]], material: { color: '#e6bd5c', metalness: 1, roughness: 0.3, specular: 1, shininess: 120 } },
+    { name: 'Star', shape: { type: 'extrude', shape: { type: 'star', points: 5, outer: 0.75, inner: 0.32 }, depth: 0.3 }, position: [p(2)[0], 1, p(2)[1]], rotation: [0, 30, 0], material: { color: '#d93a4b', roughness: 0.22, specular: 0.8, shininess: 150 } },
+    { name: 'Chrome sphere', shape: { type: 'sphere', radius: 0.65, segments: 40, rings: 20 }, position: [p(3)[0], 0.65, p(3)[1]], material: { color: '#dde1e6', metalness: 1, roughness: 0.14, specular: 1, shininess: 200 } },
+    { name: 'Torus', shape: { type: 'torus', radius: 0.55, tube: 0.2 }, position: [p(4)[0], 0.8, p(4)[1]], rotation: [70, 0, 0], material: { color: '#46b866', roughness: 0.35, specular: 0.6, shininess: 80 } },
     { name: 'Spring', shape: { type: 'tube', path: { type: 'helix', radius: 0.4, height: 1.6, turns: 5, steps: 300 }, radius: 0.07, sides: 10 }, position: [p(5)[0], 0.1, p(5)[1]], material: { color: '#c9cbd2', metalness: 1, roughness: 0.25, specular: 0.8, shininess: 120 } },
-    { name: 'Base', shape: { type: 'box', width: 0.9, height: 0.4, depth: 0.9 }, position: [p(6)[0], 0.2, p(6)[1]], material: { color: '#a673d9' } },
-    { name: 'Spire', shape: { type: 'cone', radius: 0.3, height: 1.0 }, position: [p(6)[0], 0.9, p(6)[1]], material: { color: '#a673d9', flat: true } },
+    { name: 'Base', shape: { type: 'box', width: 0.9, height: 0.4, depth: 0.9 }, position: [p(6)[0], 0.2, p(6)[1]], material: { color: '#9a62d6', roughness: 0.4, specular: 0.5, shininess: 60 } },
+    { name: 'Spire', shape: { type: 'cone', radius: 0.3, height: 1.0 }, position: [p(6)[0], 0.9, p(6)[1]], material: { color: '#9a62d6', roughness: 0.4, specular: 0.5, shininess: 60, flat: true } },
   ]);
   await tool(doc, 'set_camera', { yaw: 28, pitch: 24, distance: 10.5, target: [0, 0.9, 0] });
 });
@@ -161,8 +162,10 @@ scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, g
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)
   const gateShape = [[-0.75, 0], [0.75, 0], ...Array.from({ length: 13 }, (_, i) => P(Math.cos((i / 12) * Math.PI) * 0.75, 1.5 + Math.sin((i / 12) * Math.PI) * 0.75))];
-  const stone = '#a19b90', dark = '#857f75', roof = '#8c2f24', wood = '#6b4a2f';
-  await tool(doc, 'set_environment', { background: { top: '#6f9fd8', bottom: '#dce7f1' }, fog: { near: 45, far: 140 }, ground: false, light: { direction: [0.5, 0.8, 0.35] } });
+  const stone = '#a19b90', dark = '#857f75', roof = '#8c2f24', wood = '#4f3420';
+  await tool(doc, 'set_environment', { background: { top: '#5f8fd0', bottom: '#e8e2d6' }, fog: { near: 45, far: 140 }, ground: false,
+    light: { direction: [0.6, 0.6, 0.45], color: '#ffe0b5', intensity: 1.15, softness: 0.25 },
+    lights: [{ direction: [-0.5, 0.6, -0.6], color: '#9fc4ff', intensity: 0.3 }] }); // warm sun, cool sky fill
   const o = [
     { name: 'Meadow', shape: { type: 'plane', width: 90, depth: 90 }, material: { color: '#5a8a42', specular: 0 } },
     { name: 'Moat', shape: { type: 'lathe', profile: [[12.5, 0.03], [9, 0.03]], segments: 72 }, material: { color: '#2f6290', roughness: 0.06, specular: 1, shininess: 160 } },
@@ -184,16 +187,16 @@ scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, g
     o.push(
       { name: 'Tower', shape: { type: 'cylinder', radiusTop: 1.25, radiusBottom: 1.4, height: 5.5, segments: 28 }, position: [x, 2.75, z], material: { color: dark } },
       { name: 'Tower gallery', shape: { type: 'cylinder', radiusTop: 1.55, radiusBottom: 1.3, height: 0.6, segments: 28 }, position: [x, 5.8, z], material: { color: stone } },
-      { name: 'Tower roof', shape: { type: 'cone', radius: 1.7, height: 2.6, segments: 28 }, position: [x, 7.4, z], material: { color: roof } },
+      { name: 'Tower roof', shape: { type: 'cone', radius: 1.7, height: 2.6, segments: 28 }, position: [x, 7.4, z], material: { color: roof, roughness: 0.4, specular: 0.5, shininess: 60 } },
       { name: 'Flagpole', shape: { type: 'cylinder', radiusTop: 0.03, radiusBottom: 0.04, height: 1.3, segments: 8 }, position: [x, 9.3, z], material: { color: '#333' } },
-      { name: 'Flag', shape: { type: 'extrude', shape: [[0, 0], [0.8, 0.22], [0, 0.45]], depth: 0.03 }, position: [x + 0.03, 9.45, z], rotation: [0, -30, 0], material: { color: '#e8c547', doubleSided: true } },
+      { name: 'Flag', shape: { type: 'extrude', shape: [[0, 0], [0.8, 0.22], [0, 0.45]], depth: 0.03 }, position: [x + 0.03, 9.45, z], rotation: [0, -30, 0], material: { color: '#e8c547', roughness: 0.6, doubleSided: true } },
     );
   }
   o.push(
     { name: 'Keep', shape: { type: 'box', width: 4, height: 6.5, depth: 4 }, position: [0, 3.25, -1.2], material: { color: dark } },
-    { name: 'Keep roof', shape: { type: 'cone', radius: 3.1, height: 2.6, segments: 4 }, position: [0, 7.8, -1.2], rotation: [0, 45, 0], material: { color: roof, flat: true } },
+    { name: 'Keep roof', shape: { type: 'cone', radius: 3.1, height: 2.6, segments: 4 }, position: [0, 7.8, -1.2], rotation: [0, 45, 0], material: { color: roof, roughness: 0.4, specular: 0.5, shininess: 60, flat: true } },
     { name: 'Keep turret', shape: { type: 'lathe', profile: [[0, 0], [0.75, 0], [0.7, 7.5], [0.9, 7.6], [0.9, 8.1], [0, 8.1]], segments: 24 }, position: [1.9, 0, 0.6], material: { color: stone } },
-    { name: 'Turret roof', shape: { type: 'cone', radius: 1, height: 1.8, segments: 24 }, position: [1.9, 9, 0.6], material: { color: roof } },
+    { name: 'Turret roof', shape: { type: 'cone', radius: 1, height: 1.8, segments: 24 }, position: [1.9, 9, 0.6], material: { color: roof, roughness: 0.4, specular: 0.5, shininess: 60 } },
     { name: 'Gatehouse', shape: { type: 'box', width: 3.4, height: 4.2, depth: 1.8 }, position: [0, 2.1, 5], material: { color: dark } },
     { name: 'Gate', shape: { type: 'extrude', shape: gateShape, depth: 0.1 }, position: [0, 0, 5.92], material: { color: '#3b2716' } },
   );
@@ -210,7 +213,9 @@ scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, g
 });
 
 scene('chess', 'Chess set', 'Italian opening on a wooden board. Every piece is a lathe profile, the knights are extruded silhouettes.', async (doc) => {
-  await tool(doc, 'set_environment', { background: { top: '#1d1814', bottom: '#4a3b2e' }, fog: null, ground: false, light: { direction: [-0.5, 0.9, 0.6], color: '#fff3e0' } });
+  await tool(doc, 'set_environment', { background: { top: '#16120f', bottom: '#43352a' }, fog: null, ground: false, reflections: 'studio',
+    light: { direction: [-0.5, 0.9, 0.6], color: '#fff0dc', intensity: 1.05, softness: 0.4 },
+    lights: [{ direction: [0.35, 0.45, -0.9], color: '#cfe0ff', intensity: 0.55 }] }); // cool rim from behind
   const base = (rb) => [[0, 0], [rb, 0], [rb, 0.06], P(rb * 0.92, 0.1), P(rb * 0.8, 0.13)];
   const profiles = {
     pawn: [...base(0.33), [0.2, 0.18], [0.12, 0.4], [0.2, 0.43], [0.2, 0.46], [0.1, 0.49], ...arc(0, 0.6, 0.14, -55, 90, 12)],
@@ -225,20 +230,20 @@ scene('chess', 'Chess set', 'Italian opening on a wooden board. Every piece is a
   for (let f = 0; f < 8; f++) {
     for (let r = 0; r < 8; r++) {
       o.push({ name: `Square ${'abcdefgh'[f]}${r + 1}`, shape: { type: 'box', width: 1, height: 0.2, depth: 1 }, position: [f - 3.5, 0.1, 3.5 - r],
-        material: { color: (f + r) % 2 ? '#e9dcc0' : '#6b4a2f', specular: 0.35, shininess: 40 } });
+        material: { color: (f + r) % 2 ? '#e9dcc0' : '#6b4a2f', roughness: 0.32, specular: 0.5, shininess: 80 } });
     }
   }
   for (const [x, z, w, d] of [[0, 4.3, 8.9, 0.6], [0, -4.3, 8.9, 0.6], [4.3, 0, 0.6, 8], [-4.3, 0, 0.6, 8]]) {
-    o.push({ name: 'Frame', shape: { type: 'box', width: w, height: 0.3, depth: d }, position: [x, 0.15, z], material: { color: '#3d2716', specular: 0.4 } });
+    o.push({ name: 'Frame', shape: { type: 'box', width: w, height: 0.3, depth: d }, position: [x, 0.15, z], material: { color: '#3d2716', roughness: 0.25, specular: 0.6, shininess: 100 } });
   }
-  o.push({ name: 'Table', shape: { type: 'cylinder', radiusTop: 9, radiusBottom: 9, height: 0.4, segments: 64 }, position: [0, -0.2, 0], material: { color: '#2a201a', specular: 0.2 } });
+  o.push({ name: 'Table', shape: { type: 'cylinder', radiusTop: 9, radiusBottom: 9, height: 0.4, segments: 64 }, position: [0, -0.2, 0], material: { color: '#2a201a', roughness: 0.65, specular: 0.2 } });
   const back = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'];
   const pos = [];
   for (let f = 0; f < 8; f++) { pos.push(['w', back[f], f, 1], ['w', 'pawn', f, 2], ['b', 'pawn', f, 7], ['b', back[f], f, 8]); }
   const moves = [[4, 2, 4, 4], [4, 7, 4, 5], [6, 1, 5, 3], [1, 8, 2, 6], [5, 1, 2, 4]];
   for (const [f0, r0, f1, r1] of moves) { const p = pos.find((q) => q[2] === f0 && q[3] === r0); p[2] = f1; p[3] = r1; }
   for (const [side, kind, f, r] of pos) {
-    const x = f - 3.5, z = 3.5 - (r - 1), mat = side === 'w' ? { color: '#efe6d2', roughness: 0.3, specular: 0.6, shininess: 60 } : { color: '#2b2522', roughness: 0.2, specular: 0.9, shininess: 80 };
+    const x = f - 3.5, z = 3.5 - (r - 1), mat = side === 'w' ? { color: '#efe6d2', roughness: 0.22, specular: 0.7, shininess: 120 } : { color: '#221d1b', roughness: 0.14, specular: 1, shininess: 160 };
     const label = `${side === 'w' ? 'White' : 'Black'} ${kind}`;
     o.push({ name: label, shape: { type: 'lathe', profile: profiles[kind], segments: 32 }, position: [x, 0.2, z], material: mat });
     if (kind === 'knight') o.push({ name: `${label} head`, shape: { type: 'extrude', shape: horse, depth: 0.26 }, position: [x, 0.43, z], rotation: [0, side === 'w' ? 90 : -90, 0], material: { ...mat, flat: true } });
@@ -253,13 +258,15 @@ scene('chess', 'Chess set', 'Italian opening on a wooden board. Every piece is a
 
 scene('station', 'Space station', 'A rotating-wheel station with spokes, solar wings, docking modules, an antenna dish, an approaching shuttle and a ringed planet.', async (doc) => {
   const rand = rng(5);
-  await tool(doc, 'set_environment', { background: { top: '#020308', bottom: '#0e1832' }, fog: null, ground: false, light: { direction: [0.8, 0.35, 0.5], color: '#fff8ee' } });
+  await tool(doc, 'set_environment', { background: { top: '#020308', bottom: '#0e1832' }, fog: null, ground: false,
+    light: { direction: [0.8, 0.35, 0.5], color: '#fff8ee', intensity: 1.2, softness: 0.05 },
+    lights: [{ direction: [-0.6, -0.5, -0.6], color: '#4f86d8', intensity: 0.4 }] }); // blue light bouncing off the planet
   const hull = { color: '#d7d9de', roughness: 0.35, specular: 0.8, shininess: 60 }, metal = { color: '#9aa0aa', metalness: 1, roughness: 0.3, specular: 0.7 };
   const o = [
     { name: 'Hub', shape: { type: 'sphere', radius: 1.7, segments: 40, rings: 20 }, material: hull },
     { name: 'Spine', shape: { type: 'cylinder', radiusTop: 0.45, radiusBottom: 0.45, height: 16, segments: 20 }, material: metal },
     { name: 'Habitat ring', shape: { type: 'torus', radius: 9, tube: 0.9, segments: 128, sides: 20 }, material: hull },
-    { name: 'Light strip', shape: { type: 'torus', radius: 9.95, tube: 0.12, segments: 128, sides: 6 }, material: { color: '#f59e42', specular: 1.5 } },
+    { name: 'Light strip', shape: { type: 'torus', radius: 9.95, tube: 0.12, segments: 128, sides: 6 }, material: { color: '#ffa04a', emissive: 1.6, specular: 1.5 } },
     { name: 'Inner ring', shape: { type: 'torus', radius: 4.2, tube: 0.35, segments: 64, sides: 12 }, position: [0, 0, 0], material: metal },
   ];
   for (let i = 0; i < 6; i++) {
@@ -282,11 +289,11 @@ scene('station', 'Space station', 'A rotating-wheel station with spokes, solar w
   for (let i = 0; i <= 12; i++) { const r = (i / 12) * 1.8; dish.push(P(r, r * r * 0.22)); }
   o.push(
     { name: 'Antenna mast', shape: { type: 'cylinder', radiusTop: 0.06, radiusBottom: 0.08, height: 1.4, segments: 8 }, position: [0, 13.2, 0], material: metal },
-    { name: 'Antenna dish', shape: { type: 'lathe', profile: dish, segments: 32 }, position: [0, 13.9, 0], rotation: [25, 0, 0], material: { color: '#eceef2', doubleSided: true, specular: 0.6 } },
+    { name: 'Antenna dish', shape: { type: 'lathe', profile: dish, segments: 32 }, position: [0, 13.9, 0], rotation: [25, 0, 0], material: { color: '#eceef2', metalness: 1, roughness: 0.3, doubleSided: true, specular: 0.8 } },
     { name: 'Shuttle fuselage', shape: { type: 'lathe', profile: [[0, 0], [0.5, 0], [0.55, 2.4], [0.4, 3.1], [0.18, 3.5], [0, 3.6]], segments: 20 }, position: [16, 4, 9], rotation: [0, 35, -90], material: hull },
     { name: 'Shuttle wings', shape: { type: 'extrude', shape: [[1.4, 0], [-1, 1.6], [-1.3, 1.6], [-1.1, 0], [-1.3, -1.6], [-1, -1.6]], depth: 0.1 }, position: [17.1, 4, 8.2], rotation: [90, 0, 35], material: { color: '#cfd2d8', flat: true } },
-    { name: 'Engine glow', shape: { type: 'cone', radius: 0.45, height: 1.2, segments: 16 }, position: [15.6, 4, 9.25], rotation: [0, 35, 90], material: { color: '#ff9b3d', specular: 2 } },
-    { name: 'Planet', shape: { type: 'sphere', radius: 40, segments: 64, rings: 32 }, position: [-60, -38, -95], material: { color: '#2f6db5', specular: 0.3 } },
+    { name: 'Engine glow', shape: { type: 'cone', radius: 0.45, height: 1.2, segments: 16 }, position: [15.6, 4, 9.25], rotation: [0, 35, 90], material: { color: '#ff9b3d', emissive: 2.2, specular: 2 } },
+    { name: 'Planet', shape: { type: 'sphere', radius: 40, segments: 64, rings: 32 }, position: [-60, -38, -95], material: { color: '#2f6db5', roughness: 0.55, specular: 0.4, shininess: 30 } },
     { name: 'Planet ring', shape: { type: 'torus', radius: 62, tube: 0.9, segments: 160, sides: 8 }, position: [-60, -38, -95], rotation: [14, 0, 9], material: { color: '#c8a46a' } },
   );
   const stars = [], idx = [];
@@ -296,14 +303,16 @@ scene('station', 'Space station', 'A rotating-wheel station with spokes, solar w
     stars.push(...P(c[0], c[1] + k, c[2]), ...P(c[0] - k, c[1] - k, c[2]), ...P(c[0] + k, c[1] - k, c[2] + k));
     idx.push(b, b + 1, b + 2);
   }
-  o.push({ name: 'Stars', shape: { type: 'mesh', positions: stars, indices: idx }, material: { color: '#ffffff', doubleSided: true, specular: 0 } });
+  o.push({ name: 'Stars', shape: { type: 'mesh', positions: stars, indices: idx }, material: { color: '#ffffff', emissive: 1.4, doubleSided: true, specular: 0 } });
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 38, pitch: 24, distance: 40, target: [2, 0, 0] });
 });
 
 scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setbacks, round glass towers, rooftop details and a park with a pond.', async (doc) => {
   const rand = rng(42);
-  await tool(doc, 'set_environment', { background: { top: '#7fa6d6', bottom: '#e6edf3' }, fog: { near: 45, far: 120 }, ground: false, light: { direction: [0.6, 0.75, 0.3], color: '#fff6e8' } });
+  await tool(doc, 'set_environment', { background: { top: '#4a6aa3', bottom: '#f1c99e' }, fog: { near: 55, far: 150 }, ground: false,
+    light: { direction: [0.75, 0.36, 0.3], color: '#ffcf9e', intensity: 1.35, softness: 0.15 },
+    lights: [{ direction: [-0.4, 0.7, -0.5], color: '#8fb0e0', intensity: 0.35 }] }); // golden hour: low warm sun, blue sky fill
   const palette = ['#c9c2b6', '#9fa7b0', '#d8d2c4', '#7f8b96', '#b6a48e', '#e3ddd0', '#8e9aa6', '#5d6a78'];
   const glass = ['#6f93b5', '#4f7898', '#86a9c4'];
   const o = [{ name: 'Asphalt', shape: { type: 'plane', width: 80, depth: 80 }, material: { color: '#3a3d42', specular: 0 } }];
@@ -331,9 +340,10 @@ scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setba
         const col = palette[Math.floor(rand() * palette.length)];
         if (h > 12 && rand() < 0.35) {
           const g = glass[Math.floor(rand() * glass.length)];
-          o.push({ name: 'Glass tower', shape: { type: 'cylinder', radiusTop: 1.4, radiusBottom: 1.6, height: h, segments: 28 }, position: [x, h / 2 + 0.15, z], material: { color: g, roughness: 0.1, specular: 1.4, shininess: 160 } });
+          o.push({ name: 'Glass tower', shape: { type: 'cylinder', radiusTop: 1.4, radiusBottom: 1.6, height: h, segments: 28 }, position: [x, h / 2 + 0.15, z], material: { color: g, roughness: 0.06, specular: 1.4, shininess: 200 } });
           o.push({ name: 'Crown', shape: { type: 'cylinder', radiusTop: 0.9, radiusBottom: 1.4, height: 1.2, segments: 28 }, position: [x, h + 0.75, z], material: { color: '#d9dde2' } });
-          o.push({ name: 'Spire', shape: { type: 'cylinder', radiusTop: 0.02, radiusBottom: 0.08, height: 3, segments: 6 }, position: [x, h + 2.85, z], material: { color: '#d9dde2' } });
+          o.push({ name: 'Spire', shape: { type: 'cylinder', radiusTop: 0.02, radiusBottom: 0.08, height: 3, segments: 6 }, position: [x, h + 2.85, z], material: { color: '#d9dde2', metalness: 1, roughness: 0.3 } });
+          o.push({ name: 'Warning light', shape: { type: 'sphere', radius: 0.14, segments: 12, rings: 8 }, position: [x, r4(h + 4.4), z], material: { color: '#ff2a1a', emissive: 2.5 } });
           continue;
         }
         const w = r4(2.6 + rand() * 0.8), d = r4(2.6 + rand() * 0.8);
@@ -341,7 +351,10 @@ scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setba
         if (h > 8) {
           const h2 = r4(h * (0.25 + rand() * 0.3));
           o.push({ name: 'Setback', shape: { type: 'box', width: r4(w * 0.7), height: h2, depth: r4(d * 0.7) }, position: [x, r4(h + h2 / 2 + 0.15), z], material: { color: col, specular: 0.15 } });
-          if (rand() < 0.5) o.push({ name: 'Antenna', shape: { type: 'cylinder', radiusTop: 0.03, radiusBottom: 0.06, height: 2.5, segments: 6 }, position: [x, r4(h + h2 + 1.4), z], material: { color: '#cfd3d8' } });
+          if (rand() < 0.5) {
+            o.push({ name: 'Antenna', shape: { type: 'cylinder', radiusTop: 0.03, radiusBottom: 0.06, height: 2.5, segments: 6 }, position: [x, r4(h + h2 + 1.4), z], material: { color: '#cfd3d8', metalness: 1, roughness: 0.3 } });
+            o.push({ name: 'Warning light', shape: { type: 'sphere', radius: 0.11, segments: 12, rings: 8 }, position: [x, r4(h + h2 + 2.7), z], material: { color: '#ff2a1a', emissive: 2.5 } });
+          }
         } else if (rand() < 0.6) {
           o.push({ name: 'Rooftop unit', shape: { type: 'box', width: 0.8, height: 0.4, depth: 0.6 }, position: [r4(x + 0.4), r4(h + 0.35), z], material: { color: '#8a8f96' } });
         }
@@ -354,8 +367,10 @@ scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setba
 
 scene('garden', 'Alien garden', 'Tapered sweeps along procedural curves, glowing mushrooms, spiral shells and crystals, all placed on the terrain with probe_height.', async (doc) => {
   const rand = rng(3);
-  await tool(doc, 'set_environment', { background: { top: '#061620', bottom: '#1d4b57' }, fog: { near: 16, far: 55 }, ground: false, light: { direction: [-0.4, 0.8, 0.5], color: '#d4f1ff' } });
-  await add(doc, [{ name: 'Ground', shape: { type: 'terrain', width: 56, resolution: 140, height: 3.2, scale: 0.07, seed: 3, waterLevel: 0.15, colorize: false }, material: { color: '#3a2f55', specular: 0.2 } }]);
+  await tool(doc, 'set_environment', { background: { top: '#040f17', bottom: '#174452' }, fog: { near: 16, far: 55 }, ground: false,
+    light: { direction: [-0.4, 0.8, 0.5], color: '#cfefff', intensity: 0.75, softness: 0.45 },
+    lights: [{ direction: [0.5, 0.3, -0.8], color: '#ff5fc8', intensity: 0.25 }, { direction: [-0.6, 0.2, 0.6], color: '#4fe3d0', intensity: 0.25 }] });
+  await add(doc, [{ name: 'Ground', shape: { type: 'terrain', width: 56, resolution: 140, height: 3.2, scale: 0.07, seed: 3, waterLevel: 0.15, colorize: false }, material: { color: '#2e2546', roughness: 0.45, specular: 0.25, shininess: 30 } }]);
   const neon = ['#ff4fa3', '#58f2c6', '#ffd166', '#8c7bff', '#4fd1ff'];
   const spots = Array.from({ length: 70 }, () => { const a = rand() * Math.PI * 2, d = Math.sqrt(rand()) * 15; return P(Math.cos(a) * d, Math.sin(a) * d); });
   const ys = await probe(doc, spots);
@@ -365,17 +380,17 @@ scene('garden', 'Alien garden', 'Tapered sweeps along procedural curves, glowing
     if (i < 30) {
       const h = 2 + rand() * 4, ph = rand() * 6, path = [];
       for (let k = 0; k <= 24; k++) { const t = k / 24; path.push(P(Math.sin(t * 3 + ph) * 0.7 * t, h * t, Math.cos(t * 2.4 + ph) * 0.7 * t)); }
-      o.push({ name: 'Tentacle', shape: { type: 'sweep', shape: { type: 'circle', radius: r4(0.14 + rand() * 0.12), points: 10 }, path, scaleEnd: 0.08 }, position: [x, y, z], material: { color: col, specular: 1, shininess: 50 } });
+      o.push({ name: 'Tentacle', shape: { type: 'sweep', shape: { type: 'circle', radius: r4(0.14 + rand() * 0.12), points: 10 }, path, scaleEnd: 0.08 }, position: [x, y, z], material: { color: col, emissive: 0.45, roughness: 0.3, specular: 1, shininess: 80 } });
     } else if (i < 42) {
       const s = r4(0.6 + rand() * 0.9);
-      o.push({ name: 'Mushroom stem', shape: { type: 'cylinder', radiusTop: 0.12, radiusBottom: 0.18, height: 1.3, segments: 12 }, position: [x, r4(y + 0.65 * s), z], scale: s, material: { color: '#e8e0f0' } });
-      o.push({ name: 'Mushroom cap', shape: { type: 'lathe', profile: [[0, 0], [0.85, 0.02], [0.8, 0.22], [0.5, 0.45], [0, 0.55]], segments: 28 }, position: [x, r4(y + 1.25 * s), z], scale: s, material: { color: col, specular: 1.2, shininess: 40 } });
+      o.push({ name: 'Mushroom stem', shape: { type: 'cylinder', radiusTop: 0.12, radiusBottom: 0.18, height: 1.3, segments: 12 }, position: [x, r4(y + 0.65 * s), z], scale: s, material: { color: '#e8e0f0', emissive: 0.15, roughness: 0.5 } });
+      o.push({ name: 'Mushroom cap', shape: { type: 'lathe', profile: [[0, 0], [0.85, 0.02], [0.8, 0.22], [0.5, 0.45], [0, 0.55]], segments: 28 }, position: [x, r4(y + 1.25 * s), z], scale: s, material: { color: col, emissive: 0.85, roughness: 0.25, specular: 1.2, shininess: 80 } });
     } else if (i < 50) {
       const path = [];
       for (let k = 0; k <= 80; k++) { const t = k / 80, a = t * Math.PI * 7, r = 0.9 * (1 - t) + 0.05; path.push(P(Math.cos(a) * r, t * 1.6, Math.sin(a) * r)); }
-      o.push({ name: 'Spiral shell', shape: { type: 'sweep', shape: { type: 'circle', radius: 0.32, points: 12 }, path, scaleEnd: 0.1 }, position: [x, r4(y + 0.2), z], material: { color: '#f2d4b6', specular: 0.9 } });
+      o.push({ name: 'Spiral shell', shape: { type: 'sweep', shape: { type: 'circle', radius: 0.32, points: 12 }, path, scaleEnd: 0.1 }, position: [x, r4(y + 0.2), z], material: { color: '#f2d4b6', roughness: 0.15, specular: 1, shininess: 160 } });
     } else {
-      o.push({ name: 'Crystal', shape: { type: 'cone', radius: r4(0.18 + rand() * 0.25), height: r4(1 + rand() * 2), segments: 5 }, position: [x, r4(y + 0.6), z], rotation: P(rand() * 40 - 20, rand() * 360, rand() * 40 - 20), material: { color: '#7fe8ff', specular: 1.6, shininess: 90, flat: true } });
+      o.push({ name: 'Crystal', shape: { type: 'cone', radius: r4(0.18 + rand() * 0.25), height: r4(1 + rand() * 2), segments: 5 }, position: [x, r4(y + 0.6), z], rotation: P(rand() * 40 - 20, rand() * 360, rand() * 40 - 20), material: { color: '#7fe8ff', emissive: 0.3, roughness: 0.04, specular: 1.6, shininess: 220, flat: true } });
     }
   });
   await add(doc, o);
@@ -383,19 +398,24 @@ scene('garden', 'Alien garden', 'Tapered sweeps along procedural curves, glowing
 });
 
 scene('lighthouse', 'Lighthouse island', 'A noise terrain island; the lighthouse and boat were placed on the surface and on the water with probe_height.', async (doc) => {
-  await tool(doc, 'set_environment', { background: { top: '#3a5f95', bottom: '#c9d6e3' }, fog: { near: 30, far: 80 }, ground: false, light: { direction: [-0.6, 0.7, 0.4], color: '#fff1dc' } });
-  await add(doc, [{ name: 'Island', shape: { type: 'terrain', width: 60, resolution: 160, height: 7, scale: 0.05, seed: 7, waterLevel: 0.42 }, position: [0, -0.2, 0] }]);
+  await tool(doc, 'set_environment', { background: { top: '#35599a', bottom: '#f2d2ae' }, fog: { near: 30, far: 85 }, ground: false,
+    light: { direction: [-0.7, 0.4, 0.45], color: '#ffd8a8', intensity: 1.2, softness: 0.25 },
+    lights: [{ direction: [0.5, 0.6, -0.4], color: '#9cc0ff', intensity: 0.3 }] }); // evening sun, sky fill
+  await add(doc, [
+    { name: 'Island', shape: { type: 'terrain', width: 60, resolution: 160, height: 7, scale: 0.05, seed: 7, waterLevel: 0.42 }, position: [0, -0.2, 0] },
+    { name: 'Sea', shape: { type: 'plane', width: 70, depth: 70 }, position: [0, -0.12, 0], material: { color: '#1d4c74', roughness: 0.07, specular: 1.2, shininess: 220 } },
+  ]);
   const [hill] = await probe(doc, [[0, 0]]);
   const y = r4(hill);
   const rail = Array.from({ length: 17 }, (_, i) => { const a = (i / 16) * Math.PI * 2; return P(Math.cos(a) * 1.15, 0, Math.sin(a) * 1.15); });
   await add(doc, [
     { name: 'Rock base', shape: { type: 'cylinder', radiusTop: 2.2, radiusBottom: 2.8, height: 1.2, segments: 9 }, position: [0, y, 0], material: { color: '#6e6a66', flat: true } },
-    { name: 'Tower', shape: { type: 'lathe', profile: [[0, 0], [1.1, 0], [1.0, 1.5], [0.8, 5.2], [0, 5.2]], segments: 40 }, position: [0, r4(y + 0.6), 0], material: { color: '#f2f0ea' } },
+    { name: 'Tower', shape: { type: 'lathe', profile: [[0, 0], [1.1, 0], [1.0, 1.5], [0.8, 5.2], [0, 5.2]], segments: 40 }, position: [0, r4(y + 0.6), 0], material: { color: '#f2f0ea', roughness: 0.5 } },
     { name: 'Red band', shape: { type: 'cylinder', radiusTop: 0.93, radiusBottom: 0.97, height: 1.0, segments: 40, caps: false }, position: [0, r4(y + 3.2), 0], material: { color: '#c7362f' } },
     { name: 'Gallery', shape: { type: 'cylinder', radiusTop: 1.25, radiusBottom: 1.25, height: 0.15, segments: 40 }, position: [0, r4(y + 5.85), 0], material: { color: '#2c2f36' } },
     { name: 'Railing', shape: { type: 'tube', path: rail, radius: 0.035, sides: 6, closed: true }, position: [0, r4(y + 6.35), 0], material: { color: '#2c2f36' } },
-    { name: 'Lantern', shape: { type: 'cylinder', radiusTop: 0.6, radiusBottom: 0.6, height: 0.9, segments: 8 }, position: [0, r4(y + 6.4), 0], material: { color: '#ffd166', specular: 1.4, shininess: 80, flat: true, emissive: 1.2 } },
-    { name: 'Roof', shape: { type: 'cone', radius: 0.8, height: 0.8, segments: 24 }, position: [0, r4(y + 7.25), 0], material: { color: '#c7362f' } },
+    { name: 'Lantern', shape: { type: 'cylinder', radiusTop: 0.6, radiusBottom: 0.6, height: 0.9, segments: 8 }, position: [0, r4(y + 6.4), 0], material: { color: '#ffd166', specular: 1.4, shininess: 80, flat: true, emissive: 1.8 } },
+    { name: 'Roof', shape: { type: 'cone', radius: 0.8, height: 0.8, segments: 24 }, position: [0, r4(y + 7.25), 0], material: { color: '#c7362f', roughness: 0.35, specular: 0.6, shininess: 80 } },
     { name: 'Boat hull', shape: { type: 'extrude', shape: [[-1.1, 0.3], [-0.8, -0.2], [0.8, -0.2], [1.3, 0.35]], depth: 0.7 }, position: [-4, -0.05, 16], rotation: [0, 35, 0], material: { color: '#8a4b2a', flat: true } },
     { name: 'Mast', shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.05, height: 1.8 }, position: [-4, 1.05, 16], material: { color: '#d8cbb0' } },
   ]);

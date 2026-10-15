@@ -9,20 +9,26 @@
   },
   "environment": {
     "background": {
-      "top": "#7fa6d6",
-      "bottom": "#e6edf3"
+      "top": "#4a6aa3",
+      "bottom": "#f1c99e"
     },
     "fog": {
-      "near": 45,
-      "far": 120
+      "near": 55,
+      "far": 150
     },
     "light": {
-      "direction": [0.6, 0.75, 0.3],
-      "color": "#fff6e8",
-      "intensity": 1,
-      "softness": 0.1
+      "direction": [0.75, 0.36, 0.3],
+      "color": "#ffcf9e",
+      "intensity": 1.35,
+      "softness": 0.15
     },
-    "lights": [],
+    "lights": [
+      {
+        "direction": [-0.4, 0.7, -0.5],
+        "color": "#8fb0e0",
+        "intensity": 0.35
+      }
+    ],
     "reflections": "sky",
     "ground": false
   },
@@ -419,12 +425,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
       },
       "visible": true
     },
     {
       "id": "obj_19",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-29.4, 16.9611, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_20",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -446,7 +476,7 @@
       "visible": true
     },
     {
-      "id": "obj_20",
+      "id": "obj_21",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -468,7 +498,7 @@
       "visible": true
     },
     {
-      "id": "obj_21",
+      "id": "obj_22",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -490,7 +520,7 @@
       "visible": true
     },
     {
-      "id": "obj_22",
+      "id": "obj_23",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -512,7 +542,7 @@
       "visible": true
     },
     {
-      "id": "obj_23",
+      "id": "obj_24",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -534,7 +564,7 @@
       "visible": true
     },
     {
-      "id": "obj_24",
+      "id": "obj_25",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -556,7 +586,7 @@
       "visible": true
     },
     {
-      "id": "obj_25",
+      "id": "obj_26",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -578,7 +608,7 @@
       "visible": true
     },
     {
-      "id": "obj_26",
+      "id": "obj_27",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -600,7 +630,7 @@
       "visible": true
     },
     {
-      "id": "obj_27",
+      "id": "obj_28",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -622,7 +652,7 @@
       "visible": true
     },
     {
-      "id": "obj_28",
+      "id": "obj_29",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -644,7 +674,7 @@
       "visible": true
     },
     {
-      "id": "obj_29",
+      "id": "obj_30",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -666,7 +696,7 @@
       "visible": true
     },
     {
-      "id": "obj_30",
+      "id": "obj_31",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -688,7 +718,7 @@
       "visible": true
     },
     {
-      "id": "obj_31",
+      "id": "obj_32",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -710,7 +740,7 @@
       "visible": true
     },
     {
-      "id": "obj_32",
+      "id": "obj_33",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -732,7 +762,7 @@
       "visible": true
     },
     {
-      "id": "obj_33",
+      "id": "obj_34",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -754,7 +784,7 @@
       "visible": true
     },
     {
-      "id": "obj_34",
+      "id": "obj_35",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -776,7 +806,7 @@
       "visible": true
     },
     {
-      "id": "obj_35",
+      "id": "obj_36",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -798,7 +828,7 @@
       "visible": true
     },
     {
-      "id": "obj_36",
+      "id": "obj_37",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -820,7 +850,7 @@
       "visible": true
     },
     {
-      "id": "obj_37",
+      "id": "obj_38",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -842,7 +872,7 @@
       "visible": true
     },
     {
-      "id": "obj_38",
+      "id": "obj_39",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -864,7 +894,7 @@
       "visible": true
     },
     {
-      "id": "obj_39",
+      "id": "obj_40",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -886,7 +916,7 @@
       "visible": true
     },
     {
-      "id": "obj_40",
+      "id": "obj_41",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -908,7 +938,7 @@
       "visible": true
     },
     {
-      "id": "obj_41",
+      "id": "obj_42",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -930,7 +960,7 @@
       "visible": true
     },
     {
-      "id": "obj_42",
+      "id": "obj_43",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -952,7 +982,7 @@
       "visible": true
     },
     {
-      "id": "obj_43",
+      "id": "obj_44",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -974,7 +1004,7 @@
       "visible": true
     },
     {
-      "id": "obj_44",
+      "id": "obj_45",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -996,7 +1026,7 @@
       "visible": true
     },
     {
-      "id": "obj_45",
+      "id": "obj_46",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1018,7 +1048,7 @@
       "visible": true
     },
     {
-      "id": "obj_46",
+      "id": "obj_47",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -1040,7 +1070,7 @@
       "visible": true
     },
     {
-      "id": "obj_47",
+      "id": "obj_48",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -1062,7 +1092,7 @@
       "visible": true
     },
     {
-      "id": "obj_48",
+      "id": "obj_49",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1084,7 +1114,7 @@
       "visible": true
     },
     {
-      "id": "obj_49",
+      "id": "obj_50",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1106,7 +1136,7 @@
       "visible": true
     },
     {
-      "id": "obj_50",
+      "id": "obj_51",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -1128,7 +1158,7 @@
       "visible": true
     },
     {
-      "id": "obj_51",
+      "id": "obj_52",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -1146,12 +1176,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_53",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.4, 15.0541, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_52",
+      "id": "obj_54",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1173,7 +1227,7 @@
       "visible": true
     },
     {
-      "id": "obj_53",
+      "id": "obj_55",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -1195,7 +1249,7 @@
       "visible": true
     },
     {
-      "id": "obj_54",
+      "id": "obj_56",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -1217,7 +1271,7 @@
       "visible": true
     },
     {
-      "id": "obj_55",
+      "id": "obj_57",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -1232,16 +1286,16 @@
       "material": {
         "color": "#6f93b5",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_56",
+      "id": "obj_58",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -1264,7 +1318,7 @@
       "visible": true
     },
     {
-      "id": "obj_57",
+      "id": "obj_59",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -1282,12 +1336,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_60",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.4, 17.9072, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_58",
+      "id": "obj_61",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1309,7 +1387,7 @@
       "visible": true
     },
     {
-      "id": "obj_59",
+      "id": "obj_62",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -1331,7 +1409,7 @@
       "visible": true
     },
     {
-      "id": "obj_60",
+      "id": "obj_63",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -1346,16 +1424,16 @@
       "material": {
         "color": "#86a9c4",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_61",
+      "id": "obj_64",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -1378,7 +1456,7 @@
       "visible": true
     },
     {
-      "id": "obj_62",
+      "id": "obj_65",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -1396,12 +1474,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_66",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.4, 17.7962, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_63",
+      "id": "obj_67",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1423,7 +1525,7 @@
       "visible": true
     },
     {
-      "id": "obj_64",
+      "id": "obj_68",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -1445,7 +1547,7 @@
       "visible": true
     },
     {
-      "id": "obj_65",
+      "id": "obj_69",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -1467,7 +1569,7 @@
       "visible": true
     },
     {
-      "id": "obj_66",
+      "id": "obj_70",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1489,7 +1591,7 @@
       "visible": true
     },
     {
-      "id": "obj_67",
+      "id": "obj_71",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -1511,7 +1613,7 @@
       "visible": true
     },
     {
-      "id": "obj_68",
+      "id": "obj_72",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -1529,12 +1631,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_73",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.4, 16.4158, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_69",
+      "id": "obj_74",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1556,7 +1682,7 @@
       "visible": true
     },
     {
-      "id": "obj_70",
+      "id": "obj_75",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -1578,7 +1704,7 @@
       "visible": true
     },
     {
-      "id": "obj_71",
+      "id": "obj_76",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1600,7 +1726,7 @@
       "visible": true
     },
     {
-      "id": "obj_72",
+      "id": "obj_77",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -1622,7 +1748,7 @@
       "visible": true
     },
     {
-      "id": "obj_73",
+      "id": "obj_78",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -1640,12 +1766,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_79",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.4, 14.6527, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_74",
+      "id": "obj_80",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -1667,7 +1817,7 @@
       "visible": true
     },
     {
-      "id": "obj_75",
+      "id": "obj_81",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -1689,7 +1839,7 @@
       "visible": true
     },
     {
-      "id": "obj_76",
+      "id": "obj_82",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -1707,12 +1857,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_83",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-14.6, 14.1505, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_77",
+      "id": "obj_84",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -1734,7 +1908,7 @@
       "visible": true
     },
     {
-      "id": "obj_78",
+      "id": "obj_85",
       "name": "Park lawn",
       "shape": {
         "type": "box",
@@ -1756,7 +1930,7 @@
       "visible": true
     },
     {
-      "id": "obj_79",
+      "id": "obj_86",
       "name": "Pond",
       "shape": {
         "type": "lathe",
@@ -1781,7 +1955,7 @@
       "visible": true
     },
     {
-      "id": "obj_80",
+      "id": "obj_87",
       "name": "Trunk",
       "shape": {
         "type": "cylinder",
@@ -1804,7 +1978,7 @@
       "visible": true
     },
     {
-      "id": "obj_81",
+      "id": "obj_88",
       "name": "Tree",
       "shape": {
         "type": "sphere",
@@ -1826,7 +2000,7 @@
       "visible": true
     },
     {
-      "id": "obj_82",
+      "id": "obj_89",
       "name": "Trunk",
       "shape": {
         "type": "cylinder",
@@ -1849,7 +2023,7 @@
       "visible": true
     },
     {
-      "id": "obj_83",
+      "id": "obj_90",
       "name": "Tree",
       "shape": {
         "type": "sphere",
@@ -1871,7 +2045,7 @@
       "visible": true
     },
     {
-      "id": "obj_84",
+      "id": "obj_91",
       "name": "Trunk",
       "shape": {
         "type": "cylinder",
@@ -1894,7 +2068,7 @@
       "visible": true
     },
     {
-      "id": "obj_85",
+      "id": "obj_92",
       "name": "Tree",
       "shape": {
         "type": "sphere",
@@ -1916,7 +2090,7 @@
       "visible": true
     },
     {
-      "id": "obj_86",
+      "id": "obj_93",
       "name": "Trunk",
       "shape": {
         "type": "cylinder",
@@ -1939,7 +2113,7 @@
       "visible": true
     },
     {
-      "id": "obj_87",
+      "id": "obj_94",
       "name": "Tree",
       "shape": {
         "type": "sphere",
@@ -1961,7 +2135,7 @@
       "visible": true
     },
     {
-      "id": "obj_88",
+      "id": "obj_95",
       "name": "Trunk",
       "shape": {
         "type": "cylinder",
@@ -1984,7 +2158,7 @@
       "visible": true
     },
     {
-      "id": "obj_89",
+      "id": "obj_96",
       "name": "Tree",
       "shape": {
         "type": "sphere",
@@ -2006,7 +2180,7 @@
       "visible": true
     },
     {
-      "id": "obj_90",
+      "id": "obj_97",
       "name": "Trunk",
       "shape": {
         "type": "cylinder",
@@ -2029,7 +2203,7 @@
       "visible": true
     },
     {
-      "id": "obj_91",
+      "id": "obj_98",
       "name": "Tree",
       "shape": {
         "type": "sphere",
@@ -2051,7 +2225,7 @@
       "visible": true
     },
     {
-      "id": "obj_92",
+      "id": "obj_99",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -2073,7 +2247,7 @@
       "visible": true
     },
     {
-      "id": "obj_93",
+      "id": "obj_100",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2095,7 +2269,7 @@
       "visible": true
     },
     {
-      "id": "obj_94",
+      "id": "obj_101",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -2117,7 +2291,7 @@
       "visible": true
     },
     {
-      "id": "obj_95",
+      "id": "obj_102",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2139,7 +2313,7 @@
       "visible": true
     },
     {
-      "id": "obj_96",
+      "id": "obj_103",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -2161,7 +2335,7 @@
       "visible": true
     },
     {
-      "id": "obj_97",
+      "id": "obj_104",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2183,7 +2357,7 @@
       "visible": true
     },
     {
-      "id": "obj_98",
+      "id": "obj_105",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2205,7 +2379,7 @@
       "visible": true
     },
     {
-      "id": "obj_99",
+      "id": "obj_106",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -2227,7 +2401,7 @@
       "visible": true
     },
     {
-      "id": "obj_100",
+      "id": "obj_107",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2249,7 +2423,7 @@
       "visible": true
     },
     {
-      "id": "obj_101",
+      "id": "obj_108",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -2271,7 +2445,7 @@
       "visible": true
     },
     {
-      "id": "obj_102",
+      "id": "obj_109",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2293,7 +2467,7 @@
       "visible": true
     },
     {
-      "id": "obj_103",
+      "id": "obj_110",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -2315,7 +2489,7 @@
       "visible": true
     },
     {
-      "id": "obj_104",
+      "id": "obj_111",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -2333,12 +2507,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_112",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-3.6, 17.3136, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_105",
+      "id": "obj_113",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2360,7 +2558,7 @@
       "visible": true
     },
     {
-      "id": "obj_106",
+      "id": "obj_114",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2382,7 +2580,7 @@
       "visible": true
     },
     {
-      "id": "obj_107",
+      "id": "obj_115",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -2404,7 +2602,7 @@
       "visible": true
     },
     {
-      "id": "obj_108",
+      "id": "obj_116",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -2422,12 +2620,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_117",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-3.6, 15.0529, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_109",
+      "id": "obj_118",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -2449,7 +2671,7 @@
       "visible": true
     },
     {
-      "id": "obj_110",
+      "id": "obj_119",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -2464,16 +2686,16 @@
       "material": {
         "color": "#86a9c4",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_111",
+      "id": "obj_120",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -2496,7 +2718,7 @@
       "visible": true
     },
     {
-      "id": "obj_112",
+      "id": "obj_121",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -2514,12 +2736,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_122",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-7.4, 17.5611, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_113",
+      "id": "obj_123",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2541,7 +2787,7 @@
       "visible": true
     },
     {
-      "id": "obj_114",
+      "id": "obj_124",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -2563,7 +2809,7 @@
       "visible": true
     },
     {
-      "id": "obj_115",
+      "id": "obj_125",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -2581,12 +2827,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_126",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-3.6, 16.2594, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_116",
+      "id": "obj_127",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -2601,16 +2871,16 @@
       "material": {
         "color": "#6f93b5",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_117",
+      "id": "obj_128",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -2633,7 +2903,7 @@
       "visible": true
     },
     {
-      "id": "obj_118",
+      "id": "obj_129",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -2651,12 +2921,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_130",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-7.4, 16.7097, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_119",
+      "id": "obj_131",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -2678,7 +2972,7 @@
       "visible": true
     },
     {
-      "id": "obj_120",
+      "id": "obj_132",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2700,7 +2994,7 @@
       "visible": true
     },
     {
-      "id": "obj_121",
+      "id": "obj_133",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -2722,7 +3016,7 @@
       "visible": true
     },
     {
-      "id": "obj_122",
+      "id": "obj_134",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2744,7 +3038,7 @@
       "visible": true
     },
     {
-      "id": "obj_123",
+      "id": "obj_135",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -2766,7 +3060,7 @@
       "visible": true
     },
     {
-      "id": "obj_124",
+      "id": "obj_136",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -2784,12 +3078,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_137",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-3.6, 27.1327, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_125",
+      "id": "obj_138",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2811,7 +3129,7 @@
       "visible": true
     },
     {
-      "id": "obj_126",
+      "id": "obj_139",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -2833,7 +3151,7 @@
       "visible": true
     },
     {
-      "id": "obj_127",
+      "id": "obj_140",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -2855,7 +3173,7 @@
       "visible": true
     },
     {
-      "id": "obj_128",
+      "id": "obj_141",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -2870,16 +3188,16 @@
       "material": {
         "color": "#6f93b5",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_129",
+      "id": "obj_142",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -2902,7 +3220,7 @@
       "visible": true
     },
     {
-      "id": "obj_130",
+      "id": "obj_143",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -2920,12 +3238,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_144",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-7.4, 26.1241, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_131",
+      "id": "obj_145",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2947,7 +3289,7 @@
       "visible": true
     },
     {
-      "id": "obj_132",
+      "id": "obj_146",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -2969,7 +3311,7 @@
       "visible": true
     },
     {
-      "id": "obj_133",
+      "id": "obj_147",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -2991,7 +3333,7 @@
       "visible": true
     },
     {
-      "id": "obj_134",
+      "id": "obj_148",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3013,7 +3355,7 @@
       "visible": true
     },
     {
-      "id": "obj_135",
+      "id": "obj_149",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -3031,12 +3373,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_150",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-7.4, 24.7026, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_136",
+      "id": "obj_151",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -3058,7 +3424,7 @@
       "visible": true
     },
     {
-      "id": "obj_137",
+      "id": "obj_152",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3080,7 +3446,7 @@
       "visible": true
     },
     {
-      "id": "obj_138",
+      "id": "obj_153",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3102,7 +3468,7 @@
       "visible": true
     },
     {
-      "id": "obj_139",
+      "id": "obj_154",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3124,7 +3490,7 @@
       "visible": true
     },
     {
-      "id": "obj_140",
+      "id": "obj_155",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3146,7 +3512,7 @@
       "visible": true
     },
     {
-      "id": "obj_141",
+      "id": "obj_156",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3168,7 +3534,7 @@
       "visible": true
     },
     {
-      "id": "obj_142",
+      "id": "obj_157",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3190,7 +3556,7 @@
       "visible": true
     },
     {
-      "id": "obj_143",
+      "id": "obj_158",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -3208,12 +3574,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_159",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-7.4, 18.9286, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_144",
+      "id": "obj_160",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -3235,7 +3625,7 @@
       "visible": true
     },
     {
-      "id": "obj_145",
+      "id": "obj_161",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3257,7 +3647,7 @@
       "visible": true
     },
     {
-      "id": "obj_146",
+      "id": "obj_162",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3279,7 +3669,7 @@
       "visible": true
     },
     {
-      "id": "obj_147",
+      "id": "obj_163",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3301,7 +3691,7 @@
       "visible": true
     },
     {
-      "id": "obj_148",
+      "id": "obj_164",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -3323,7 +3713,7 @@
       "visible": true
     },
     {
-      "id": "obj_149",
+      "id": "obj_165",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3345,7 +3735,7 @@
       "visible": true
     },
     {
-      "id": "obj_150",
+      "id": "obj_166",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3367,7 +3757,7 @@
       "visible": true
     },
     {
-      "id": "obj_151",
+      "id": "obj_167",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -3389,7 +3779,7 @@
       "visible": true
     },
     {
-      "id": "obj_152",
+      "id": "obj_168",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -3411,7 +3801,7 @@
       "visible": true
     },
     {
-      "id": "obj_153",
+      "id": "obj_169",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3433,7 +3823,7 @@
       "visible": true
     },
     {
-      "id": "obj_154",
+      "id": "obj_170",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -3455,7 +3845,7 @@
       "visible": true
     },
     {
-      "id": "obj_155",
+      "id": "obj_171",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3477,7 +3867,7 @@
       "visible": true
     },
     {
-      "id": "obj_156",
+      "id": "obj_172",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3499,7 +3889,7 @@
       "visible": true
     },
     {
-      "id": "obj_157",
+      "id": "obj_173",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -3521,7 +3911,7 @@
       "visible": true
     },
     {
-      "id": "obj_158",
+      "id": "obj_174",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3543,7 +3933,7 @@
       "visible": true
     },
     {
-      "id": "obj_159",
+      "id": "obj_175",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -3565,7 +3955,7 @@
       "visible": true
     },
     {
-      "id": "obj_160",
+      "id": "obj_176",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -3587,7 +3977,7 @@
       "visible": true
     },
     {
-      "id": "obj_161",
+      "id": "obj_177",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3609,7 +3999,7 @@
       "visible": true
     },
     {
-      "id": "obj_162",
+      "id": "obj_178",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3631,7 +4021,7 @@
       "visible": true
     },
     {
-      "id": "obj_163",
+      "id": "obj_179",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3653,7 +4043,7 @@
       "visible": true
     },
     {
-      "id": "obj_164",
+      "id": "obj_180",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3675,7 +4065,7 @@
       "visible": true
     },
     {
-      "id": "obj_165",
+      "id": "obj_181",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3697,7 +4087,7 @@
       "visible": true
     },
     {
-      "id": "obj_166",
+      "id": "obj_182",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -3719,7 +4109,7 @@
       "visible": true
     },
     {
-      "id": "obj_167",
+      "id": "obj_183",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -3741,7 +4131,7 @@
       "visible": true
     },
     {
-      "id": "obj_168",
+      "id": "obj_184",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -3763,7 +4153,7 @@
       "visible": true
     },
     {
-      "id": "obj_169",
+      "id": "obj_185",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -3785,7 +4175,7 @@
       "visible": true
     },
     {
-      "id": "obj_170",
+      "id": "obj_186",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -3800,16 +4190,16 @@
       "material": {
         "color": "#86a9c4",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_171",
+      "id": "obj_187",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -3832,7 +4222,7 @@
       "visible": true
     },
     {
-      "id": "obj_172",
+      "id": "obj_188",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -3850,12 +4240,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_189",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [3.6, 25.2144, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_173",
+      "id": "obj_190",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -3870,16 +4284,16 @@
       "material": {
         "color": "#86a9c4",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_174",
+      "id": "obj_191",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -3902,7 +4316,7 @@
       "visible": true
     },
     {
-      "id": "obj_175",
+      "id": "obj_192",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -3920,12 +4334,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_193",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [3.6, 22.4424, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_176",
+      "id": "obj_194",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -3940,16 +4378,16 @@
       "material": {
         "color": "#4f7898",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_177",
+      "id": "obj_195",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -3972,7 +4410,7 @@
       "visible": true
     },
     {
-      "id": "obj_178",
+      "id": "obj_196",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -3990,12 +4428,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_197",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [7.4, 22.2043, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_179",
+      "id": "obj_198",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -4017,7 +4479,7 @@
       "visible": true
     },
     {
-      "id": "obj_180",
+      "id": "obj_199",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4039,7 +4501,7 @@
       "visible": true
     },
     {
-      "id": "obj_181",
+      "id": "obj_200",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -4054,16 +4516,16 @@
       "material": {
         "color": "#86a9c4",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_182",
+      "id": "obj_201",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -4086,7 +4548,7 @@
       "visible": true
     },
     {
-      "id": "obj_183",
+      "id": "obj_202",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -4104,12 +4566,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_203",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [7.4, 22.6774, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_184",
+      "id": "obj_204",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4131,7 +4617,7 @@
       "visible": true
     },
     {
-      "id": "obj_185",
+      "id": "obj_205",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4153,7 +4639,7 @@
       "visible": true
     },
     {
-      "id": "obj_186",
+      "id": "obj_206",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -4171,12 +4657,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_207",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [3.6, 22.7936, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_187",
+      "id": "obj_208",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4198,7 +4708,7 @@
       "visible": true
     },
     {
-      "id": "obj_188",
+      "id": "obj_209",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4220,7 +4730,7 @@
       "visible": true
     },
     {
-      "id": "obj_189",
+      "id": "obj_210",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -4238,12 +4748,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_211",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [7.4, 36.2118, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_190",
+      "id": "obj_212",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -4265,7 +4799,7 @@
       "visible": true
     },
     {
-      "id": "obj_191",
+      "id": "obj_213",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4287,7 +4821,7 @@
       "visible": true
     },
     {
-      "id": "obj_192",
+      "id": "obj_214",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4309,7 +4843,7 @@
       "visible": true
     },
     {
-      "id": "obj_193",
+      "id": "obj_215",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4331,7 +4865,7 @@
       "visible": true
     },
     {
-      "id": "obj_194",
+      "id": "obj_216",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4353,7 +4887,7 @@
       "visible": true
     },
     {
-      "id": "obj_195",
+      "id": "obj_217",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -4371,12 +4905,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_218",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [7.4, 15.5082, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_196",
+      "id": "obj_219",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4398,7 +4956,7 @@
       "visible": true
     },
     {
-      "id": "obj_197",
+      "id": "obj_220",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -4420,7 +4978,7 @@
       "visible": true
     },
     {
-      "id": "obj_198",
+      "id": "obj_221",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4442,7 +5000,7 @@
       "visible": true
     },
     {
-      "id": "obj_199",
+      "id": "obj_222",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -4464,7 +5022,7 @@
       "visible": true
     },
     {
-      "id": "obj_200",
+      "id": "obj_223",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4486,7 +5044,7 @@
       "visible": true
     },
     {
-      "id": "obj_201",
+      "id": "obj_224",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4508,7 +5066,7 @@
       "visible": true
     },
     {
-      "id": "obj_202",
+      "id": "obj_225",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4530,7 +5088,7 @@
       "visible": true
     },
     {
-      "id": "obj_203",
+      "id": "obj_226",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -4552,7 +5110,7 @@
       "visible": true
     },
     {
-      "id": "obj_204",
+      "id": "obj_227",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4574,7 +5132,7 @@
       "visible": true
     },
     {
-      "id": "obj_205",
+      "id": "obj_228",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4596,7 +5154,7 @@
       "visible": true
     },
     {
-      "id": "obj_206",
+      "id": "obj_229",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -4618,7 +5176,7 @@
       "visible": true
     },
     {
-      "id": "obj_207",
+      "id": "obj_230",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4640,7 +5198,7 @@
       "visible": true
     },
     {
-      "id": "obj_208",
+      "id": "obj_231",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4662,7 +5220,7 @@
       "visible": true
     },
     {
-      "id": "obj_209",
+      "id": "obj_232",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -4684,7 +5242,7 @@
       "visible": true
     },
     {
-      "id": "obj_210",
+      "id": "obj_233",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -4706,7 +5264,7 @@
       "visible": true
     },
     {
-      "id": "obj_211",
+      "id": "obj_234",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4728,7 +5286,7 @@
       "visible": true
     },
     {
-      "id": "obj_212",
+      "id": "obj_235",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4750,7 +5308,7 @@
       "visible": true
     },
     {
-      "id": "obj_213",
+      "id": "obj_236",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -4768,12 +5326,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_237",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [14.6, 16.3085, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_214",
+      "id": "obj_238",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4795,7 +5377,7 @@
       "visible": true
     },
     {
-      "id": "obj_215",
+      "id": "obj_239",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4817,7 +5399,7 @@
       "visible": true
     },
     {
-      "id": "obj_216",
+      "id": "obj_240",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4839,7 +5421,7 @@
       "visible": true
     },
     {
-      "id": "obj_217",
+      "id": "obj_241",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -4861,7 +5443,7 @@
       "visible": true
     },
     {
-      "id": "obj_218",
+      "id": "obj_242",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4883,7 +5465,7 @@
       "visible": true
     },
     {
-      "id": "obj_219",
+      "id": "obj_243",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -4905,7 +5487,7 @@
       "visible": true
     },
     {
-      "id": "obj_220",
+      "id": "obj_244",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -4927,7 +5509,7 @@
       "visible": true
     },
     {
-      "id": "obj_221",
+      "id": "obj_245",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4949,7 +5531,7 @@
       "visible": true
     },
     {
-      "id": "obj_222",
+      "id": "obj_246",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -4971,7 +5553,7 @@
       "visible": true
     },
     {
-      "id": "obj_223",
+      "id": "obj_247",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -4993,7 +5575,7 @@
       "visible": true
     },
     {
-      "id": "obj_224",
+      "id": "obj_248",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5015,7 +5597,7 @@
       "visible": true
     },
     {
-      "id": "obj_225",
+      "id": "obj_249",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -5037,7 +5619,7 @@
       "visible": true
     },
     {
-      "id": "obj_226",
+      "id": "obj_250",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -5059,7 +5641,7 @@
       "visible": true
     },
     {
-      "id": "obj_227",
+      "id": "obj_251",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5081,7 +5663,7 @@
       "visible": true
     },
     {
-      "id": "obj_228",
+      "id": "obj_252",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -5103,7 +5685,7 @@
       "visible": true
     },
     {
-      "id": "obj_229",
+      "id": "obj_253",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -5121,12 +5703,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_254",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [14.6, 17.1965, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_230",
+      "id": "obj_255",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5148,7 +5754,7 @@
       "visible": true
     },
     {
-      "id": "obj_231",
+      "id": "obj_256",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -5170,7 +5776,7 @@
       "visible": true
     },
     {
-      "id": "obj_232",
+      "id": "obj_257",
       "name": "Glass tower",
       "shape": {
         "type": "cylinder",
@@ -5185,16 +5791,16 @@
       "material": {
         "color": "#86a9c4",
         "specular": 1.4,
-        "shininess": 160,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.1
+        "roughness": 0.06
       },
       "visible": true
     },
     {
-      "id": "obj_233",
+      "id": "obj_258",
       "name": "Crown",
       "shape": {
         "type": "cylinder",
@@ -5217,7 +5823,7 @@
       "visible": true
     },
     {
-      "id": "obj_234",
+      "id": "obj_259",
       "name": "Spire",
       "shape": {
         "type": "cylinder",
@@ -5235,12 +5841,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_260",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.14,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [18.4, 19.6763, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_235",
+      "id": "obj_261",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -5262,7 +5892,7 @@
       "visible": true
     },
     {
-      "id": "obj_236",
+      "id": "obj_262",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5284,7 +5914,7 @@
       "visible": true
     },
     {
-      "id": "obj_237",
+      "id": "obj_263",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -5306,7 +5936,7 @@
       "visible": true
     },
     {
-      "id": "obj_238",
+      "id": "obj_264",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5328,7 +5958,7 @@
       "visible": true
     },
     {
-      "id": "obj_239",
+      "id": "obj_265",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5350,7 +5980,7 @@
       "visible": true
     },
     {
-      "id": "obj_240",
+      "id": "obj_266",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -5372,7 +6002,7 @@
       "visible": true
     },
     {
-      "id": "obj_241",
+      "id": "obj_267",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -5390,12 +6020,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_268",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [14.6, 16.8023, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_242",
+      "id": "obj_269",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5417,7 +6071,7 @@
       "visible": true
     },
     {
-      "id": "obj_243",
+      "id": "obj_270",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -5439,7 +6093,7 @@
       "visible": true
     },
     {
-      "id": "obj_244",
+      "id": "obj_271",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -5461,7 +6115,7 @@
       "visible": true
     },
     {
-      "id": "obj_245",
+      "id": "obj_272",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5483,7 +6137,7 @@
       "visible": true
     },
     {
-      "id": "obj_246",
+      "id": "obj_273",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -5505,7 +6159,7 @@
       "visible": true
     },
     {
-      "id": "obj_247",
+      "id": "obj_274",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5527,7 +6181,7 @@
       "visible": true
     },
     {
-      "id": "obj_248",
+      "id": "obj_275",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -5549,7 +6203,7 @@
       "visible": true
     },
     {
-      "id": "obj_249",
+      "id": "obj_276",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5571,7 +6225,7 @@
       "visible": true
     },
     {
-      "id": "obj_250",
+      "id": "obj_277",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -5593,7 +6247,7 @@
       "visible": true
     },
     {
-      "id": "obj_251",
+      "id": "obj_278",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -5615,7 +6269,7 @@
       "visible": true
     },
     {
-      "id": "obj_252",
+      "id": "obj_279",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5637,7 +6291,7 @@
       "visible": true
     },
     {
-      "id": "obj_253",
+      "id": "obj_280",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -5659,7 +6313,7 @@
       "visible": true
     },
     {
-      "id": "obj_254",
+      "id": "obj_281",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5681,7 +6335,7 @@
       "visible": true
     },
     {
-      "id": "obj_255",
+      "id": "obj_282",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5703,7 +6357,7 @@
       "visible": true
     },
     {
-      "id": "obj_256",
+      "id": "obj_283",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -5725,7 +6379,7 @@
       "visible": true
     },
     {
-      "id": "obj_257",
+      "id": "obj_284",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5747,7 +6401,7 @@
       "visible": true
     },
     {
-      "id": "obj_258",
+      "id": "obj_285",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -5769,7 +6423,7 @@
       "visible": true
     },
     {
-      "id": "obj_259",
+      "id": "obj_286",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5791,7 +6445,7 @@
       "visible": true
     },
     {
-      "id": "obj_260",
+      "id": "obj_287",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -5813,7 +6467,7 @@
       "visible": true
     },
     {
-      "id": "obj_261",
+      "id": "obj_288",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5835,7 +6489,7 @@
       "visible": true
     },
     {
-      "id": "obj_262",
+      "id": "obj_289",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5857,7 +6511,7 @@
       "visible": true
     },
     {
-      "id": "obj_263",
+      "id": "obj_290",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5879,7 +6533,7 @@
       "visible": true
     },
     {
-      "id": "obj_264",
+      "id": "obj_291",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -5901,7 +6555,7 @@
       "visible": true
     },
     {
-      "id": "obj_265",
+      "id": "obj_292",
       "name": "Antenna",
       "shape": {
         "type": "cylinder",
@@ -5919,12 +6573,36 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_293",
+      "name": "Warning light",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.11,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [25.6, 16.6448, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.5,
+        "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_266",
+      "id": "obj_294",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5946,7 +6624,7 @@
       "visible": true
     },
     {
-      "id": "obj_267",
+      "id": "obj_295",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -5968,7 +6646,7 @@
       "visible": true
     },
     {
-      "id": "obj_268",
+      "id": "obj_296",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -5990,7 +6668,7 @@
       "visible": true
     },
     {
-      "id": "obj_269",
+      "id": "obj_297",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -6012,7 +6690,7 @@
       "visible": true
     },
     {
-      "id": "obj_270",
+      "id": "obj_298",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6034,7 +6712,7 @@
       "visible": true
     },
     {
-      "id": "obj_271",
+      "id": "obj_299",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -6056,7 +6734,7 @@
       "visible": true
     },
     {
-      "id": "obj_272",
+      "id": "obj_300",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6078,7 +6756,7 @@
       "visible": true
     },
     {
-      "id": "obj_273",
+      "id": "obj_301",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6100,7 +6778,7 @@
       "visible": true
     },
     {
-      "id": "obj_274",
+      "id": "obj_302",
       "name": "Setback",
       "shape": {
         "type": "box",
@@ -6122,7 +6800,7 @@
       "visible": true
     },
     {
-      "id": "obj_275",
+      "id": "obj_303",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -6144,7 +6822,7 @@
       "visible": true
     },
     {
-      "id": "obj_276",
+      "id": "obj_304",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6166,7 +6844,7 @@
       "visible": true
     },
     {
-      "id": "obj_277",
+      "id": "obj_305",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6188,7 +6866,7 @@
       "visible": true
     },
     {
-      "id": "obj_278",
+      "id": "obj_306",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6210,7 +6888,7 @@
       "visible": true
     },
     {
-      "id": "obj_279",
+      "id": "obj_307",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -6232,7 +6910,7 @@
       "visible": true
     },
     {
-      "id": "obj_280",
+      "id": "obj_308",
       "name": "Sidewalk",
       "shape": {
         "type": "box",
@@ -6254,7 +6932,7 @@
       "visible": true
     },
     {
-      "id": "obj_281",
+      "id": "obj_309",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6276,7 +6954,7 @@
       "visible": true
     },
     {
-      "id": "obj_282",
+      "id": "obj_310",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -6298,7 +6976,7 @@
       "visible": true
     },
     {
-      "id": "obj_283",
+      "id": "obj_311",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6320,7 +6998,7 @@
       "visible": true
     },
     {
-      "id": "obj_284",
+      "id": "obj_312",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",
@@ -6342,7 +7020,7 @@
       "visible": true
     },
     {
-      "id": "obj_285",
+      "id": "obj_313",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6364,7 +7042,7 @@
       "visible": true
     },
     {
-      "id": "obj_286",
+      "id": "obj_314",
       "name": "Building",
       "shape": {
         "type": "box",
@@ -6386,7 +7064,7 @@
       "visible": true
     },
     {
-      "id": "obj_287",
+      "id": "obj_315",
       "name": "Rooftop unit",
       "shape": {
         "type": "box",

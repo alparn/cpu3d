@@ -9,20 +9,26 @@
   },
   "environment": {
     "background": {
-      "top": "#3a5f95",
-      "bottom": "#c9d6e3"
+      "top": "#35599a",
+      "bottom": "#f2d2ae"
     },
     "fog": {
       "near": 30,
-      "far": 80
+      "far": 85
     },
     "light": {
-      "direction": [-0.6, 0.7, 0.4],
-      "color": "#fff1dc",
-      "intensity": 1,
-      "softness": 0.1
+      "direction": [-0.7, 0.4, 0.45],
+      "color": "#ffd8a8",
+      "intensity": 1.2,
+      "softness": 0.25
     },
-    "lights": [],
+    "lights": [
+      {
+        "direction": [0.5, 0.6, -0.4],
+        "color": "#9cc0ff",
+        "intensity": 0.3
+      }
+    ],
     "reflections": "sky",
     "ground": false
   },
@@ -54,6 +60,28 @@
     },
     {
       "id": "obj_2",
+      "name": "Sea",
+      "shape": {
+        "type": "plane",
+        "width": 70,
+        "depth": 70
+      },
+      "position": [0, -0.12, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1d4c74",
+        "specular": 1.2,
+        "shininess": 220,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.07
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
       "name": "Rock base",
       "shape": {
         "type": "cylinder",
@@ -76,7 +104,7 @@
       "visible": true
     },
     {
-      "id": "obj_3",
+      "id": "obj_4",
       "name": "Tower",
       "shape": {
         "type": "lathe",
@@ -98,12 +126,13 @@
         "shininess": 24,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.5
       },
       "visible": true
     },
     {
-      "id": "obj_4",
+      "id": "obj_5",
       "name": "Red band",
       "shape": {
         "type": "cylinder",
@@ -127,7 +156,7 @@
       "visible": true
     },
     {
-      "id": "obj_5",
+      "id": "obj_6",
       "name": "Gallery",
       "shape": {
         "type": "cylinder",
@@ -150,7 +179,7 @@
       "visible": true
     },
     {
-      "id": "obj_6",
+      "id": "obj_7",
       "name": "Railing",
       "shape": {
         "type": "tube",
@@ -191,7 +220,7 @@
       "visible": true
     },
     {
-      "id": "obj_7",
+      "id": "obj_8",
       "name": "Lantern",
       "shape": {
         "type": "cylinder",
@@ -207,14 +236,14 @@
         "color": "#ffd166",
         "specular": 1.4,
         "shininess": 80,
-        "emissive": 1.2,
+        "emissive": 1.8,
         "flat": true,
         "doubleSided": false
       },
       "visible": true
     },
     {
-      "id": "obj_8",
+      "id": "obj_9",
       "name": "Roof",
       "shape": {
         "type": "cone",
@@ -227,16 +256,17 @@
       "scale": [1, 1, 1],
       "material": {
         "color": "#c7362f",
-        "specular": 0.25,
-        "shininess": 24,
+        "specular": 0.6,
+        "shininess": 80,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.35
       },
       "visible": true
     },
     {
-      "id": "obj_9",
+      "id": "obj_10",
       "name": "Boat hull",
       "shape": {
         "type": "extrude",
@@ -262,7 +292,7 @@
       "visible": true
     },
     {
-      "id": "obj_10",
+      "id": "obj_11",
       "name": "Mast",
       "shape": {
         "type": "cylinder",

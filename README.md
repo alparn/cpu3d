@@ -37,22 +37,22 @@ All of them are built in [`examples/build.mjs`](examples/build.mjs) through the 
 
 <table>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 6.4 KB · as .obj 615.2 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 6.7 KB · as .obj 615.2 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/phone.png" alt="Smartphone"><br><b>Smartphone</b><br><sub>65 objects · 25,180 tris<br>recipes 37.4 KB · as .obj 840.0 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 76.4 KB · as .obj 191.3 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 76.7 KB · as .obj 191.3 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 68.2 KB · as .obj 1.20 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 60.7 KB · as .obj 605.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>287 objects · 7,038 tris<br>recipes 138.1 KB · as .obj 335.8 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 70.1 KB · as .obj 1.20 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 60.9 KB · as .obj 605.3 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>315 objects · 12,414 tris<br>recipes 153.0 KB · as .obj 504.9 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 93.7 KB · as .obj 2.19 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>10 objects · 52,244 tris<br>recipes 6.0 KB · as .obj 1.48 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 96.3 KB · as .obj 2.19 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>11 objects · 52,246 tris<br>recipes 6.7 KB · as .obj 1.48 MB</sub></td>
 </tr>
 </table>
 
-Recipes are compact: the lighthouse island is **6.0 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
+Recipes are compact: the lighthouse island is **6.7 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
 
 ## Quick start
 

@@ -17,12 +17,18 @@
       "far": 45
     },
     "light": {
-      "direction": [0.55, 0.85, 0.4],
+      "direction": [0.5, 0.85, 0.45],
       "color": "#fff5e6",
       "intensity": 1,
-      "softness": 0.1
+      "softness": 0.3
     },
-    "lights": [],
+    "lights": [
+      {
+        "direction": [-0.7, 0.35, -0.6],
+        "color": "#cfe0ff",
+        "intensity": 0.45
+      }
+    ],
     "reflections": "studio",
     "ground": true
   },
@@ -46,13 +52,13 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#f28c33",
-        "specular": 0.6,
-        "shininess": 60,
+        "color": "#f2701f",
+        "specular": 0.9,
+        "shininess": 180,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.3
+        "roughness": 0.15
       },
       "visible": true
     },
@@ -144,12 +150,14 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#d9cc59",
-        "specular": 0.25,
-        "shininess": 24,
+        "color": "#e6bd5c",
+        "specular": 1,
+        "shininess": 120,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
       },
       "visible": true
     },
@@ -170,12 +178,13 @@
       "rotation": [0, 30, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#d94d59",
-        "specular": 0.25,
-        "shininess": 24,
+        "color": "#d93a4b",
+        "specular": 0.8,
+        "shininess": 150,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.22
       },
       "visible": true
     },
@@ -192,14 +201,14 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#d4d8de",
-        "specular": 0.9,
-        "shininess": 120,
+        "color": "#dde1e6",
+        "specular": 1,
+        "shininess": 200,
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
         "metalness": 1,
-        "roughness": 0.3
+        "roughness": 0.14
       },
       "visible": true
     },
@@ -215,12 +224,13 @@
       "rotation": [70, 0, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#59bf73",
-        "specular": 0.25,
-        "shininess": 24,
+        "color": "#46b866",
+        "specular": 0.6,
+        "shininess": 80,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.35
       },
       "visible": true
     },
@@ -267,12 +277,13 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#a673d9",
-        "specular": 0.25,
-        "shininess": 24,
+        "color": "#9a62d6",
+        "specular": 0.5,
+        "shininess": 60,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.4
       },
       "visible": true
     },
@@ -288,12 +299,13 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#a673d9",
-        "specular": 0.25,
-        "shininess": 24,
+        "color": "#9a62d6",
+        "specular": 0.5,
+        "shininess": 60,
         "emissive": 0,
         "flat": true,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.4
       },
       "visible": true
     }

@@ -139,7 +139,10 @@ let er = 0, eg = 0, eb = 0; // env() result, linear radiance
 
 function env(type, sky, dx, dy, dz, rough) {
   if (type === 'studio') {
-    const g = 0.012 + 0.03 * Math.max(0, dy);
+    // dark walls above, a light grey studio floor below the horizon (metals need something to reflect)
+    let g;
+    if (dy >= 0) g = 0.012 + 0.03 * dy;
+    else { const k = Math.min(1, -dy / (0.08 + rough * 0.5)); g = 0.012 + (0.11 - 0.012) * k; }
     er = eg = eb = g;
     const soft = 0.025 + rough * 0.9, peak = 1 / (1 + rough * 2.5);
     for (let i = 0; i < STUDIO.length; i++) {
@@ -343,7 +346,9 @@ export function shadePass(ctx) {
           const v = (sm.U[0] * qx + sm.U[1] * qy + sm.U[2] * qz - sm.oy) * sm.scale - 0.5 + smJv;
           const u0 = Math.floor(u), v0 = Math.floor(v);
           if (u0 >= 0 && v0 >= 0 && u0 < smS - 1 && v0 < smS - 1) {
-            const d = sm.L[0] * qx + sm.L[1] * qy + sm.L[2] * qz + texel;
+            // depth bias grows with the PCF disc and the surface slope towards the light (no acne on soft shadows)
+            const slope = Math.sqrt(Math.max(0, 1 - ndl * ndl)) / Math.max(ndl, 0.08);
+            const d = sm.L[0] * qx + sm.L[1] * qy + sm.L[2] * qz + texel * (1 + 0.6 * pen * Math.min(slope, 8));
             const fu = u - u0, fv = v - v0, k = v0 * smS + u0;
             const t00 = d >= smD[k] ? 1 : 0, t10 = d >= smD[k + 1] ? 1 : 0;
             const t01 = d >= smD[k + smS] ? 1 : 0, t11 = d >= smD[k + smS + 1] ? 1 : 0;

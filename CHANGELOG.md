@@ -9,7 +9,10 @@
 - Sharper highlights: the specular approximation no longer has a long tail (fixes a haze on glossy surfaces) and is cheaper
 - `roundedRect` / `roundedBox` get `smooth: true` for squircle corners
 - Smartphone scene rebuilt: real proportions, polished metal frames, glass, a painted home-screen texture, antenna bands, USB-C, speaker holes, stepped camera lenses
-- Gallery: chrome, glossy water and glass towers; editor sliders for metalness and roughness
+- Gallery reworked with the new materials and light: studio-lit showcase (gold, chrome, lacquer), castle in late afternoon sun, chess in a studio with rim light, glowing station lights, a golden-hour city with glass towers and warning lights, a bioluminescent alien garden, and the lighthouse at sunset over a reflective sea
+- Studio environment gets a light grey floor reflection, so metals stay readable
+- Shadow bias scales with softness and surface slope (no acne on soft shadows)
+- Editor sliders for metalness and roughness
 - New gallery scene **Smartphone**: a product shot with two phones, a glowing home screen and a triple camera module
 - New recipe `roundedBox` (box with rounded edges and corners) and 2D shape `roundedRect`
 - New material property `emissive` for self-illuminated surfaces (screens, lamps, windows); the lighthouse lantern now glows

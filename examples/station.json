@@ -16,10 +16,16 @@
     "light": {
       "direction": [0.8, 0.35, 0.5],
       "color": "#fff8ee",
-      "intensity": 1,
-      "softness": 0.1
+      "intensity": 1.2,
+      "softness": 0.05
     },
-    "lights": [],
+    "lights": [
+      {
+        "direction": [-0.6, -0.5, -0.6],
+        "color": "#4f86d8",
+        "intensity": 0.4
+      }
+    ],
     "reflections": "sky",
     "ground": false
   },
@@ -110,10 +116,10 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#f59e42",
+        "color": "#ffa04a",
         "specular": 1.5,
         "shininess": 24,
-        "emissive": 0,
+        "emissive": 1.6,
         "flat": false,
         "doubleSided": false
       },
@@ -770,11 +776,13 @@
       "scale": [1, 1, 1],
       "material": {
         "color": "#eceef2",
-        "specular": 0.6,
+        "specular": 0.8,
         "shininess": 24,
         "emissive": 0,
         "flat": false,
-        "doubleSided": true
+        "doubleSided": true,
+        "metalness": 1,
+        "roughness": 0.3
       },
       "visible": true
     },
@@ -851,7 +859,7 @@
         "color": "#ff9b3d",
         "specular": 2,
         "shininess": 24,
-        "emissive": 0,
+        "emissive": 2.2,
         "flat": false,
         "doubleSided": false
       },
@@ -871,11 +879,12 @@
       "scale": [1, 1, 1],
       "material": {
         "color": "#2f6db5",
-        "specular": 0.3,
-        "shininess": 24,
+        "specular": 0.4,
+        "shininess": 30,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.55
       },
       "visible": true
     },
@@ -917,7 +926,7 @@
         "color": "#ffffff",
         "specular": 0,
         "shininess": 24,
-        "emissive": 0,
+        "emissive": 1.4,
         "flat": false,
         "doubleSided": true
       },
