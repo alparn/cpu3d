@@ -60,6 +60,16 @@
     "ramBytes": 1359000
   },
   {
+    "id": "neon",
+    "title": "Neon district",
+    "description": "A rainy cyberpunk street at night: towers with thousands of lit windows, flickering neon signs mirrored on the wet asphalt, rain, flying cars in traffic lanes, an elevated train crossing, swinging lanterns and a giant rotating hologram in the haze.",
+    "objects": 462,
+    "triangles": 29082,
+    "jsonBytes": 547710,
+    "objBytes": 1326198,
+    "ramBytes": 619512
+  },
+  {
     "id": "castle",
     "title": "Castle",
     "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",

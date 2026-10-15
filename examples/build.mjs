@@ -839,6 +839,173 @@ scene('plush', 'Plush dancer', 'A fluffy plush character with headphones dancing
   await cameraPath(doc, LOOP, [{ t: 4, yaw: -14, pitch: 12, distance: 2.7, target: [0, 0.9, 0] }]);
 });
 
+scene('neon', 'Neon district', 'A rainy cyberpunk street at night: towers with thousands of lit windows, flickering neon signs mirrored on the wet asphalt, rain, flying cars in traffic lanes, an elevated train crossing, swinging lanterns and a giant rotating hologram in the haze.', async (doc) => {
+  const rand = rng(2077), LOOP = 24, D = Math.PI / 180;
+  await tool(doc, 'set_environment', {
+    background: { top: '#03040a', bottom: '#2d0f3d' }, fog: { near: 28, far: 165 }, ground: false, reflections: 'sky',
+    light: { direction: [-0.35, 0.8, 0.45], color: '#8ea2ff', intensity: 0.35, softness: 0.3 },
+    lights: [{ direction: [0.8, 0.3, 0.2], color: '#ff3fb0', intensity: 0.4 }, { direction: [-0.8, 0.25, -0.2], color: '#38e1ff', intensity: 0.35 }, { direction: [0, 0.2, 1], color: '#ffffff', intensity: 0.08 }],
+  });
+  const glow = (color, emissive = 2) => ({ color, emissive });
+  const steel = { color: '#3a3d46', metalness: 0.9, roughness: 0.45 };
+  const signColors = { pink: '#ff2fa8', cyan: '#2fe8ff', amber: '#ffb02f', green: '#5dff8a', violet: '#a46bff' };
+  const o = [];
+  // catenary cable between two points (sags in the middle)
+  const cable = (name, a, b, sag, radius, material, extra = {}) => ({ name, shape: { type: 'tube', radius, sides: 5, path: Array.from({ length: 13 }, (_, i) => {
+    const t = i / 12; return P(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t - sag * 4 * t * (1 - t), a[2] + (b[2] - a[2]) * t); }) }, material, ...extra });
+
+  // ---- wet street, sidewalks, markings
+  o.push({ name: 'Road', shape: { type: 'plane', width: 12, depth: 260 }, position: [0, 0, -60], material: { color: '#0b0c11', roughness: 0.1, specular: 0.9, shininess: 180 } });
+  for (const sx of [-1, 1]) {
+    o.push({ name: 'Sidewalk', shape: { type: 'box', width: 3, height: 0.18, depth: 260 }, position: [sx * 7.5, 0.09, -60], material: { color: '#16171d', roughness: 0.25, specular: 0.6 } });
+    o.push({ name: 'Curb light', shape: { type: 'box', width: 0.05, height: 0.03, depth: 260 }, position: [sx * 6.02, 0.17, -60], material: glow(sx > 0 ? signColors.cyan : signColors.pink, 1.2) });
+  }
+  for (let z = 30; z > -170; z -= 9) o.push({ name: 'Lane mark', shape: { type: 'box', width: 0.14, height: 0.01, depth: 3.2 }, position: [0, 0.006, z], material: { color: '#d9d6c8', roughness: 0.3, emissive: 0.15 } });
+
+  // ---- towers on both sides: dark blocks, window facades (textures), shop fronts, rooftop clutter
+  const signs = [];
+  for (const sx of [-1, 1]) {
+    let z = 34;
+    while (z > -170) {
+      const len = r4(10 + rand() * 9), h = r4(18 + rand() * 46 + (z < -40 ? 20 : 0)), cz = r4(z - len / 2), w = 14;
+      const x = sx * (9 + w / 2);
+      o.push({ name: 'Tower', shape: { type: 'box', width: w, height: h, depth: len - 0.4 }, position: [x, h / 2, cz], material: { color: '#101119', roughness: 0.6, specular: 0.2 } });
+      o.push({ name: 'Facade', shape: { type: 'box', width: 0.1, height: r4(h - 5), depth: r4(len - 1.6) }, position: [sx * 8.95, r4(5 + (h - 5) / 2), cz],
+        material: { color: '#ffffff', texture: `examples/textures/neon-windows-${1 + Math.floor(rand() * 3)}.png`, emissive: 0.95, roughness: 0.4 } });
+      const shop = ['#c98a55', '#4f9fb5', '#b5568f', '#c9b9a0'][Math.floor(rand() * 4)];
+      o.push({ name: 'Shop front', shape: { type: 'box', width: 0.1, height: 3, depth: r4(len - 2.4) }, position: [sx * 8.97, 1.7, cz], material: { color: shop, emissive: 0.32, metalness: 1, roughness: 0.35 } }); // glass: glows, no coloured fill light on it
+      o.push({ name: 'Awning', shape: { type: 'box', width: 1.6, height: 0.08, depth: r4(len - 2) }, position: [sx * 8.2, 3.7, cz], rotation: [0, 0, sx * 8], material: { color: '#1c1d25', roughness: 0.4 } });
+      if (rand() < 0.6) {
+        o.push({ name: 'Antenna', shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.12, height: 7, segments: 6 }, position: [r4(x + (rand() - 0.5) * 6), r4(h + 3.5), r4(cz + (rand() - 0.5) * 4)], material: steel });
+        o.push({ name: 'Beacon', shape: { type: 'sphere', radius: 0.25, segments: 10, rings: 6 }, position: [o.at(-1).position[0], r4(h + 7.1), o.at(-1).position[2]], material: glow('#ff2a2a', 3),
+          animation: { pulse: { min: 0, max: 1, period: 1.5, phase: r4(rand()), blink: true } } });
+      }
+      if (rand() < 0.5) o.push({ name: 'Water tank', shape: { type: 'cylinder', radiusTop: 1.4, radiusBottom: 1.4, height: 2.6, segments: 16 }, position: [r4(x - sx * 3), r4(h + 1.3), r4(cz)], material: { color: '#262730', roughness: 0.7 } });
+      // vertical neon sign sticking out of the facade
+      if (rand() < 0.75 && z < 20) {
+        const names = Object.keys(signColors), cname = names[Math.floor(rand() * names.length)], sh = r4(5 + rand() * 4), sy = r4(5.5 + rand() * 8 + sh / 2), szz = r4(cz + (rand() - 0.5) * (len - 4));
+        signs.push({ x: sx * 7.9, y: sy, z: szz, h: sh, color: signColors[cname], tex: `examples/textures/neon-sign-${cname}.png`, flicker: rand() < 0.25 });
+      }
+      // air conditioners with spinning fans
+      for (let k = 0; k < 2; k++) {
+        if (rand() < 0.5) continue;
+        const ay = r4(6 + rand() * (h - 10)), az = r4(cz + (rand() - 0.5) * (len - 3));
+        o.push({ name: 'AC unit', shape: { type: 'box', width: 0.9, height: 0.8, depth: 1.1 }, position: [sx * 8.45, ay, az], material: { color: '#2b2d35', roughness: 0.6 } });
+        o.push({ name: 'AC fan', shape: { type: 'radial', count: 5, shape: { type: 'box', width: 0.32, height: 0.02, depth: 0.1 }, radius: 0.17 }, position: [sx * 7.98, ay, az], rotation: [0, 0, 90],
+          material: steel, animation: { spin: { axis: [0, 1, 0], speed: 720 + Math.round(rand() * 360) } } });
+      }
+      z -= len;
+    }
+  }
+  // neon signs: glowing board (texture), tube frame, bracket, and their smeared reflection on the wet road
+  for (const [k, s] of signs.entries()) {
+    const pulse = s.flicker ? { min: 0.05, max: 1.1, period: 0.18, phase: r4(k * 0.13 % 1), blink: true } : { min: 0.85, max: 1.1, period: 3, phase: r4(k * 0.17 % 1) };
+    o.push({ name: 'Neon sign', shape: { type: 'box', width: 1.3, height: s.h, depth: 0.12 }, position: [s.x, s.y, s.z], material: { color: '#ffffff', texture: s.tex, emissive: 1.5 }, animation: { pulse } });
+    const hw = 0.72, hh = s.h / 2 + 0.06;
+    o.push({ name: 'Neon frame', shape: { type: 'tube', radius: 0.035, sides: 6, closed: true, path: [[-hw, -hh, 0], [hw, -hh, 0], [hw, hh, 0], [-hw, hh, 0]] }, position: [s.x, s.y, r4(s.z + 0.08)], material: glow(s.color, 2.4), animation: { pulse } });
+    o.push({ name: 'Sign bracket', shape: { type: 'box', width: 1.2, height: 0.12, depth: 0.12 }, position: [r4(s.x + Math.sign(s.x) * 0.6), r4(s.y + s.h / 2 - 0.3), s.z], material: steel });
+    o.push({ name: 'Wet reflection', shape: { type: 'box', width: 1.3, height: 0.01, depth: 13 }, position: [r4(s.x * 0.86), 0.012, r4(s.z + 7)], material: { color: s.color, texture: 'examples/textures/neon-wet.png', emissive: 0.75, metalness: 1, roughness: 0.2 }, animation: { pulse } });
+  }
+
+  // ---- billboard high up on the right
+  o.push({ name: 'Billboard', shape: { type: 'box', width: 0.2, height: 9, depth: 18 }, position: [8.6, 30, -48], material: { color: '#ffffff', texture: 'examples/textures/neon-billboard.png', emissive: 1.3 },
+    animation: { pulse: { min: 0.9, max: 1.05, period: 0.2, phase: 0.3 } } });
+  o.push({ name: 'Billboard reflection', shape: { type: 'box', width: 3, height: 0.01, depth: 22 }, position: [5.8, 0.013, -34], material: { color: '#ff5aa8', texture: 'examples/textures/neon-wet.png', emissive: 0.7, metalness: 1, roughness: 0.2 } });
+
+  // ---- cables and a string of red lanterns across the street (they swing in the wind)
+  for (let k = 0; k < 9; k++) {
+    const z1 = r4(20 - rand() * 120), y1 = r4(7 + rand() * 18);
+    o.push(cable('Cable', [-8.9, y1, z1], [8.9, r4(y1 + (rand() - 0.5) * 4), r4(z1 + (rand() - 0.5) * 8)], r4(0.6 + rand()), 0.025, { color: '#08080b' }));
+  }
+  const LZ = -14, LY = 8.2;
+  o.push(cable('Lantern line', [-8.9, LY, LZ], [8.9, LY, LZ], 0.9, 0.02, { color: '#08080b' }));
+  for (let i = 1; i < 8; i++) {
+    const t = i / 8, x = r4(-8.9 + 17.8 * t), y = r4(LY - 0.9 * 4 * t * (1 - t));
+    const swing = { swing: { axis: [1, 0, 0], amplitude: 6 + (i % 3) * 2, period: 3, phase: r4(i * 0.21 % 1), pivot: [x, y, LZ] } };
+    o.push({ name: 'Lantern', shape: { type: 'lathe', segments: 16, profile: [[0, -0.42], [0.2, -0.4], [0.32, -0.25], [0.34, -0.05], [0.3, 0.1], [0.2, 0.18], [0, 0.2]] }, position: [x, r4(y - 0.55), LZ], material: glow('#ff3a22', 1.6), animation: swing });
+    o.push({ name: 'Lantern cord', shape: { type: 'cylinder', radiusTop: 0.01, radiusBottom: 0.01, height: 0.35, segments: 4 }, position: [x, r4(y - 0.17), LZ], material: { color: '#08080b' }, animation: swing });
+  }
+
+  // ---- street lamps
+  for (let z = 26; z > -120; z -= 16) {
+    for (const sx of [-1, 1]) {
+      if ((z / 16 + (sx > 0 ? 0.5 : 0)) % 1 !== 0 && sx > 0) continue;
+      o.push({ name: 'Lamp post', shape: { type: 'cylinder', radiusTop: 0.07, radiusBottom: 0.12, height: 7, segments: 8 }, position: [sx * 6.6, 3.5, z], material: steel });
+      o.push({ name: 'Lamp arm', shape: { type: 'box', width: 1.6, height: 0.08, depth: 0.12 }, position: [sx * 5.9, 7, z], material: steel });
+      o.push({ name: 'Lamp', shape: { type: 'box', width: 0.7, height: 0.08, depth: 0.25 }, position: [sx * 5.4, 6.94, z], material: glow('#d8f1ff', 2.6) });
+      o.push({ name: 'Lamp reflection', shape: { type: 'box', width: 0.9, height: 0.01, depth: 9 }, position: [sx * 5, 0.011, z + 4.5], material: { color: '#bfe4ff', texture: 'examples/textures/neon-wet.png', emissive: 0.5, metalness: 1, roughness: 0.2 } });
+    }
+  }
+
+  // ---- street vents with a faint glow from below
+  for (const [vx, vz] of [[-2.5, 8], [3, -18], [-1.5, -44]]) {
+    o.push({ name: 'Vent', shape: { type: 'cylinder', radiusTop: 0.6, radiusBottom: 0.6, height: 0.04, segments: 20 }, position: [vx, 0.02, vz], material: { color: '#1d1e24', metalness: 0.8, roughness: 0.5 } });
+    o.push({ name: 'Vent glow', shape: { type: 'radial', count: 6, shape: { type: 'box', width: 0.9, height: 0.01, depth: 0.06 }, radius: 0, rotation: [0, 0, 0] }, position: [vx, 0.045, vz], material: glow('#ff7a3a', 1.4),
+      animation: { pulse: { min: 0.5, max: 1.2, period: 2, phase: r4((vz * 0.01 + 1) % 1) } } });
+  }
+
+  // ---- rain: a raw mesh of thin streaks, two identical layers stacked so falling by one layer loops seamlessly
+  const RH = 24, streaks = 900, pos = [], idx = [];
+  const rr = rng(99), layer = [];
+  // kept a few meters in front of the camera path, so no streak comes close enough to look like a stick
+  for (let i = 0; i < streaks; i++) layer.push([(rr() - 0.5) * 22, rr() * RH, -6 - rr() * 70]);
+  for (const dy of [0, RH]) {
+    for (const [x, y, z] of layer) {
+      const b = pos.length / 3, L = 0.75, w = 0.012, tx = 0.06 * L;
+      pos.push(r4(x - w), r4(y + dy), r4(z), r4(x + w), r4(y + dy), r4(z), r4(x + w + tx), r4(y + dy + L), r4(z), r4(x - w + tx), r4(y + dy + L), r4(z));
+      idx.push(b, b + 1, b + 2, b, b + 2, b + 3);
+    }
+  }
+  o.push({ name: 'Rain', shape: { type: 'mesh', positions: pos, indices: idx }, position: [0, 0, 0], material: { color: '#a9c2ee', emissive: 0.75, doubleSided: true, roughness: 1, specular: 0 },
+    animation: { flow: { axis: [-0.06, -1, 0], distance: RH, speed: RH / 1.5, fade: 0 } } });
+
+  // ---- elevated train crossing the street on a viaduct
+  const TZ = -62, TY = 15;
+  o.push({ name: 'Viaduct', shape: { type: 'box', width: 160, height: 1.4, depth: 5 }, position: [0, TY - 1.2, TZ], material: { color: '#1a1b22', roughness: 0.6 } });
+  for (const x of [-11, 11]) o.push({ name: 'Viaduct pillar', shape: { type: 'box', width: 1.6, height: TY - 1.9, depth: 2.4 }, position: [x, (TY - 1.9) / 2, TZ], material: { color: '#16171d', roughness: 0.7 } });
+  o.push({ name: 'Viaduct lights', shape: { type: 'box', width: 160, height: 0.08, depth: 0.08 }, position: [0, TY - 1.95, TZ + 2.5], material: glow(signColors.cyan, 1.6) });
+  for (let c = 0; c < 3; c++) {
+    const flow = { flow: { axis: [1, 0, 0], distance: 200, speed: 200 / 12, phase: 0, fade: 0 } }, x0 = -130 - c * 19.5;
+    o.push({ name: 'Train car', shape: { type: 'roundedBox', width: 19, height: 3.2, depth: 3.1, radius: 0.35, segments: 3 }, position: [x0, TY + 1.2, TZ], material: { color: '#c9ccd4', metalness: 0.8, roughness: 0.3 }, animation: flow });
+    for (const sz of [-1, 1]) o.push({ name: 'Train windows', shape: { type: 'box', width: 16, height: 1, depth: 0.05 }, position: [x0, TY + 1.6, r4(TZ + sz * 1.57)], material: glow('#fff0c8', 1.4), animation: flow });
+  }
+
+  // ---- flying cars in traffic lanes (two lanes each way), with head, tail and under lights
+  const lanes = [[-3.2, 27, -1, 0], [3.4, 31, 1, 0.35], [-1.5, 36, -1, 0.6], [2.2, 23, 1, 0.8], [0.5, 42, -1, 0.15]];
+  for (const [i, [x, y, dir, phase]] of lanes.entries()) {
+    const z0 = dir < 0 ? 40 : -170, flow = { flow: { axis: [0, 0, dir], distance: 210, speed: 210 / (i % 2 ? 6 : 12), phase, fade: 0 }, bob: { amplitude: 0.25, period: 3, phase: r4(i * 0.3 % 1) } };
+    const front = -dir * 0, rot = [0, dir < 0 ? 0 : 180, 0];
+    const carParts = [
+      { name: 'Flying car', shape: { type: 'roundedBox', width: 2.3, height: 0.75, depth: 5, radius: 0.3, segments: 3 }, off: [0, 0, 0], material: { color: ['#1b1d26', '#2a1530', '#121c26'][i % 3], metalness: 0.9, roughness: 0.25 } },
+      { name: 'Car cabin', shape: { type: 'roundedBox', width: 1.8, height: 0.6, depth: 2.2, radius: 0.25, segments: 3 }, off: [0, 0.55, 0.2], material: { color: '#0b1a2a', metalness: 1, roughness: 0.05 } },
+      { name: 'Tail lights', shape: { type: 'box', width: 2.1, height: 0.12, depth: 0.05 }, off: [0, 0.1, 2.52], material: glow('#ff2440', 3) },
+      { name: 'Headlights', shape: { type: 'box', width: 1.9, height: 0.1, depth: 0.05 }, off: [0, 0.05, -2.52], material: glow('#e8f6ff', 3) },
+    ];
+    for (const p of carParts) {
+      const s = dir < 0 ? 1 : -1;
+      o.push({ name: p.name, shape: p.shape, position: P(x + p.off[0], y + p.off[1], z0 + s * p.off[2] + front), rotation: rot, material: p.material, animation: flow });
+    }
+  }
+
+  // ---- hologram in the haze: a slowly turning knot and rings, with drones circling it
+  const HC = [0, 46, -95];
+  o.push({ name: 'Hologram knot', shape: { type: 'tube', path: { type: 'torusKnot', p: 3, q: 7, steps: 384, size: 7 }, radius: 0.12, sides: 6, closed: true }, position: HC, material: glow('#38e1ff', 2.2),
+    animation: { spin: { axis: [0, 1, 0], speed: 15 }, pulse: { min: 0.75, max: 1.15, period: 2 } } });
+  for (const [k, color] of [[0, '#ff3fb0'], [1, '#a46bff']]) {
+    o.push({ name: 'Hologram ring', shape: { type: 'torus', radius: 11 + k * 2.5, tube: 0.07, segments: 128, sides: 6 }, position: HC, rotation: [70 + k * 20, k * 40, 0], material: glow(color, 2),
+      animation: { spin: { axis: [0, 0, 1], speed: k ? -30 : 30 } } });
+  }
+  for (let k = 0; k < 4; k++) {
+    o.push({ name: 'Drone', shape: { type: 'sphere', radius: 0.35, segments: 10, rings: 6 }, position: P(HC[0] + 15 + k, HC[1] - 4 + k * 3, HC[2]), material: glow(k % 2 ? '#ffffff' : '#ff2a2a', 3),
+      animation: { orbit: { center: HC, axis: [0, 1, 0.1 * k], speed: k % 2 ? 30 : -30 }, pulse: { min: 0, max: 1, period: 0.75, phase: k / 4, blink: true } } });
+  }
+
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 0, pitch: 3, distance: 52, target: [0, 9, -30] });
+  // a slow walk down the street: look up at the towers and the hologram, back to eye level
+  await cameraPath(doc, LOOP, [{ t: 8, yaw: 7, pitch: 9, distance: 44, target: [1, 13, -42] }, { t: 16, yaw: -6, pitch: 2, distance: 48, target: [-1, 8, -36] }]);
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)
@@ -1154,6 +1321,13 @@ const { encodePNG } = await import('../server/png.js');
 mkdirSync(join(DIR, 'textures'), { recursive: true });
 const screenImg = paintHomeScreen(590);
 writeFileSync(join(DIR, 'textures', 'screen.png'), encodePNG(screenImg.data, screenImg.width, screenImg.height));
+// neon district: facade windows, signs and a billboard
+const neon = await import('./neon-textures.mjs');
+const savePNG = (name, img) => writeFileSync(join(DIR, 'textures', name), encodePNG(img.data, img.width, img.height));
+for (const k of [1, 2, 3]) savePNG(`neon-windows-${k}.png`, neon.paintWindows(k * 31, { width: 384, height: 1536, cols: 10 + k * 3, rows: 48 + k * 10, lit: 0.26 + k * 0.06 }));
+savePNG('neon-wet.png', neon.paintWetStreak(5));
+for (const [k, [name, color]] of Object.entries({ pink: '#ff2fa8', cyan: '#2fe8ff', amber: '#ffb02f', green: '#5dff8a', violet: '#a46bff' }).entries()) savePNG(`neon-sign-${name}.png`, neon.paintSign(k * 13 + 3, color));
+savePNG('neon-billboard.png', neon.paintBillboard(7));
 mkdirSync(join(DIR, 'thumbs'), { recursive: true });
 const manifest = [];
 for (const s of SCENES) {

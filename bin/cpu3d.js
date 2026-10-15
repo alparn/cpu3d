@@ -17,7 +17,7 @@ const HELP = `cpu3d ${VERSION} - agentic 3D modeling with a CPU renderer
 
 Usage
   cpu3d serve  [--port 8173] [--file scene.json] [--example name] [--empty]   start the editor + MCP endpoint
-               examples: showcase, phone, watch, engine, fair, plush, castle, chess, station, city, garden, lighthouse
+               examples: showcase, phone, watch, engine, fair, plush, neon, castle, chess, station, city, garden, lighthouse
   cpu3d mcp    [--port 8173] [--file scene.json]                    MCP over stdio (Claude Desktop, Cursor, ...)
   cpu3d render <scene.json> <out.png> [--width 1280] [--height 720] [--yaw deg] [--pitch deg] [--distance d]
                                       [--focus all] [--shading gouraud|flat|normals] [--wireframe]
