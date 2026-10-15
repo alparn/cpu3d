@@ -53,11 +53,11 @@
     "id": "plush",
     "title": "Plush dancer",
     "description": "A fluffy plush character with headphones dancing on a light-up floor: fur from surface noise, a baked skeleton (root bounce, sway and twist, arm and leg swings) turned into keyframes for every part, a disco ball and pumping speakers.",
-    "objects": 59,
-    "triangles": 69566,
-    "jsonBytes": 239609,
-    "objBytes": 2295552,
-    "ramBytes": 1177752
+    "objects": 62,
+    "triangles": 76990,
+    "jsonBytes": 277297,
+    "objBytes": 2545546,
+    "ramBytes": 1359000
   },
   {
     "id": "castle",

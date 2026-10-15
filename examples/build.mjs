@@ -741,6 +741,11 @@ scene('plush', 'Plush dancer', 'A fluffy plush character with headphones dancing
     { name: 'Smile', joint: 'root', shape: { type: 'tube', radius: 0.0055, sides: 6, path: Array.from({ length: 9 }, (_, i) => { const x = -0.03 + (i / 8) * 0.06; return onFace(x, 0.982 + 0.013 * (x / 0.03) ** 2, 0.001); }) }, material: { color: '#3a2420', roughness: 0.6 } },
     { name: 'Headphone band', joint: 'root', shape: { type: 'tube', radius: 0.026, sides: 10, path: Array.from({ length: 25 }, (_, i) => { const a = (12 + (i / 24) * 156) * D; return P(0.405 * Math.cos(a), 1.03 + 0.37 * Math.sin(a), -0.02); }) }, material: { color: '#1d1d22', roughness: 0.35, specular: 0.6 } },
   ];
+  // a round, fluffy bottom: two cheeks bulging out of the back, and a little tail
+  for (const sx of [-1, 1]) {
+    parts.push({ name: 'Bottom', joint: 'root', shape: { type: 'sphere', radius: 0.19, segments: 48, rings: 32, noise: { ...furNoise, seed: sx > 0 ? 11 : 12 } }, position: [sx * 0.11, 0.3, -0.2], scale: [1, 0.95, 0.85], material: fur });
+  }
+  parts.push({ name: 'Tail', joint: 'root', shape: { type: 'sphere', radius: 0.065, segments: 32, rings: 20, noise: { ...furNoise, amplitude: 0.016, seed: 13 } }, position: [0, 0.5, -0.36], material: fur });
   for (const sx of [-1, 1]) {
     parts.push({ name: 'Ear cup', joint: 'root', shape: { type: 'cylinder', radiusTop: 0.105, radiusBottom: 0.105, height: 0.09, segments: 32 }, position: [sx * 0.405, 1.04, -0.02], rotation: [0, 0, 90], material: { color: '#26262c', roughness: 0.3, specular: 0.7 } });
     parts.push({ name: 'Ear cup light', joint: 'root', shape: { type: 'torus', radius: 0.075, tube: 0.012, segments: 32, sides: 6 }, position: [sx * 0.452, 1.04, -0.02], rotation: [0, 0, 90], material: { color: '#59e6ff', emissive: 2.2 },
