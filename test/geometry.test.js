@@ -26,6 +26,16 @@ test('rounded box and rounded rectangle', () => {
   assert.ok(close(G.polygonArea(r), 1 - (4 - Math.PI) * 0.04, 2e-3));
 });
 
+test('extrude with holes: rings and spoked gears have the expected volume', () => {
+  const ring = G.extrude(G.shapes.circle(1, 64), 0.5, [G.shapes.circle(0.6, 64)]);
+  const ringArea = G.polygonArea(G.shapes.circle(1, 64)) - G.polygonArea(G.shapes.circle(0.6, 64));
+  assert.ok(close(ring.signedVolume(), ringArea * 0.5, 1e-5)); // positions are float32
+  const holes = [0, 1, 2, 3, 4].map((k) => G.shapes.circle(0.18, 24).map(([x, y]) => [x + 0.5 * Math.cos(k * 1.2566), y + 0.5 * Math.sin(k * 1.2566)]));
+  const gear = G.extrude(G.shapes.star(40, 1, 0.92), 0.1, holes);
+  const area = G.polygonArea(G.shapes.star(40, 1, 0.92)) - 5 * G.polygonArea(G.shapes.circle(0.18, 24));
+  assert.ok(close(gear.signedVolume(), area * 0.1, 1e-5));
+});
+
 test('ear clipping triangulates concave polygons completely', () => {
   const shape = [[0, 0], [4, 0], [4, 3], [2, 1], [0, 3]];
   const tri = G.triangulate(shape);

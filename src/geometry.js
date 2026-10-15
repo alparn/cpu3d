@@ -372,22 +372,65 @@ export function torus(R = 1, r = 0.3, segments = 48, sides = 16) {
 export const tube = (path, r = 0.1, sides = 12, opts = {}) => sweep(shapes.circle(r, sides), path, opts);
 
 // Extrude any simple 2D polygon (concave allowed) along Z, centered on z = 0.
-export function extrude(shape, depth = 0.2) {
-  const pts = polygonArea(shape) < 0 ? shape.slice().reverse() : shape;
-  const n = pts.length, z0 = -depth / 2, z1 = depth / 2, pos = [], idx = [];
-  for (let i = 0; i < n; i++) {
-    const [ax, ay] = pts[i], [bx, by] = pts[(i + 1) % n], base = pos.length / 3;
-    pos.push(ax, ay, z0, bx, by, z0, bx, by, z1, ax, ay, z1);
-    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+// holes: simple polygons inside the shape (gears with spokes, rings, frames, letters like "O").
+export function extrude(shape, depth = 0.2, holes = []) {
+  const pts = polygonArea(shape) < 0 ? shape.slice().reverse() : shape; // outline counter-clockwise
+  const hs = holes.map((h) => (polygonArea(h) > 0 ? h.slice().reverse() : h)); // holes clockwise
+  const z0 = -depth / 2, z1 = depth / 2, pos = [], idx = [];
+  // side walls: the same quad winding faces outwards on the outline and into the holes
+  for (const loop of [pts, ...hs]) {
+    const n = loop.length;
+    for (let i = 0; i < n; i++) {
+      const [ax, ay] = loop[i], [bx, by] = loop[(i + 1) % n], base = pos.length / 3;
+      pos.push(ax, ay, z0, bx, by, z0, bx, by, z1, ax, ay, z1);
+      idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+    }
   }
-  const tri = triangulate(pts);
+  const cap = hs.length ? bridgeHoles(pts, hs) : pts;
+  const tri = triangulate(cap);
   let base = pos.length / 3;
-  for (const [x, y] of pts) pos.push(x, y, z1);
+  for (const [x, y] of cap) pos.push(x, y, z1);
   for (let t = 0; t < tri.length; t += 3) idx.push(base + tri[t], base + tri[t + 1], base + tri[t + 2]);
   base = pos.length / 3;
-  for (const [x, y] of pts) pos.push(x, y, z0);
+  for (const [x, y] of cap) pos.push(x, y, z0);
   for (let t = 0; t < tri.length; t += 3) idx.push(base + tri[t], base + tri[t + 2], base + tri[t + 1]);
   return new Geometry(pos, idx);
+}
+
+// Merge holes into the outline with zero-width bridges so ear clipping can triangulate the cap
+// (the approach of earcut: connect each hole's rightmost vertex to a visible outline vertex).
+function bridgeHoles(outer, holes) {
+  let poly = outer.map((p) => [p[0], p[1]]);
+  const order = holes.map((h) => ({ h, mx: Math.max(...h.map((p) => p[0])) })).sort((a, b) => b.mx - a.mx);
+  for (const { h } of order) {
+    let mi = 0;
+    for (let i = 1; i < h.length; i++) if (h[i][0] > h[mi][0]) mi = i;
+    const [mx, my] = h[mi];
+    // closest edge hit by a ray from M towards +x; take its endpoint with the larger x
+    let best = Infinity, P = -1;
+    for (let i = 0; i < poly.length; i++) {
+      const a = poly[i], b = poly[(i + 1) % poly.length];
+      if ((a[1] > my) === (b[1] > my)) continue;
+      const x = a[0] + ((my - a[1]) * (b[0] - a[0])) / (b[1] - a[1]);
+      if (x >= mx && x - mx < best) { best = x - mx; P = a[0] > b[0] ? i : (i + 1) % poly.length; }
+    }
+    if (P < 0) continue; // hole outside the outline: ignore
+    // if other outline vertices lie inside the triangle (M, hit, P), connect to the one closest to the ray
+    const ix = mx + best, [px, py] = poly[P];
+    let bestTan = Infinity;
+    for (let i = 0; i < poly.length; i++) {
+      const [qx, qy] = poly[i];
+      if (i === P || qx < mx) continue;
+      const s1 = (ix - mx) * (qy - my), s2 = (px - ix) * (qy - my) - (py - my) * (qx - ix), s3 = (mx - px) * (qy - py) - (my - py) * (qx - px);
+      const inside = (s1 >= 0 && s2 >= 0 && s3 >= 0) || (s1 <= 0 && s2 <= 0 && s3 <= 0);
+      if (!inside) continue;
+      const tan = Math.abs(qy - my) / (qx - mx || 1e-12);
+      if (tan < bestTan) { bestTan = tan; P = i; }
+    }
+    const loop = [...h.slice(mi), ...h.slice(0, mi + 1)].map((p) => [p[0], p[1]]); // M ... M
+    poly = [...poly.slice(0, P + 1), ...loop, [poly[P][0], poly[P][1]], ...poly.slice(P + 1)];
+  }
+  return poly;
 }
 
 // Heightfield in the XZ plane. height(x, z) -> y
@@ -476,6 +519,8 @@ function isEar(pts, V, u, v, w, n) {
   for (let p = 0; p < n; p++) {
     if (p === u || p === v || p === w) continue;
     const [px, py] = pts[V[p]];
+    // bridged holes duplicate vertices: a copy of a corner does not block the ear
+    if ((px === ax && py === ay) || (px === bx && py === by) || (px === cx && py === cy)) continue;
     if ((bx - ax) * (py - ay) - (by - ay) * (px - ax) >= 0 &&
         (cx - bx) * (py - by) - (cy - by) * (px - bx) >= 0 &&
         (ax - cx) * (py - cy) - (ay - cy) * (px - cx) >= 0) return false;

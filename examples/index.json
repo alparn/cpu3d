@@ -14,10 +14,20 @@
     "title": "Smartphone",
     "description": "Studio product shot: squircle bodies with polished metal frames, a textured home screen under glass, softbox reflections and a stepped triple camera.",
     "objects": 65,
-    "triangles": 25180,
+    "triangles": 25188,
     "jsonBytes": 38348,
-    "objBytes": 860114,
-    "ramBytes": 323040
+    "objBytes": 860250,
+    "ramBytes": 323136
+  },
+  {
+    "id": "watch",
+    "title": "Skeleton watch",
+    "description": "A mechanical skeleton watch at 10:10: spoked brass gears (extrude with holes), a hairspring (tube along a spiral), blued screws, ruby jewels, polished steel and a leather strap.",
+    "objects": 170,
+    "triangles": 32758,
+    "jsonBytes": 172525,
+    "objBytes": 1312811,
+    "ramBytes": 794520
   },
   {
     "id": "castle",

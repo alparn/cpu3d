@@ -158,6 +158,159 @@ scene('phone', 'Smartphone', 'Studio product shot: squircle bodies with polished
   await tool(doc, 'set_camera', { yaw: 12, pitch: 7, distance: 2.7, target: [0.02, 0.9, 0] });
 });
 
+scene('watch', 'Skeleton watch', 'A mechanical skeleton watch at 10:10: spoked brass gears (extrude with holes), a hairspring (tube along a spiral), blued screws, ruby jewels, polished steel and a leather strap.', async (doc) => {
+  await tool(doc, 'set_environment', {
+    background: { top: '#08090b', bottom: '#1e2128' }, fog: null, ground: false, reflections: 'studio',
+    light: { direction: [-0.4, 0.9, 0.35], color: '#fff3e6', intensity: 1.05, softness: 0.3 },
+    lights: [{ direction: [0.8, 0.35, -0.6], color: '#d8e4ff', intensity: 0.7 }, { direction: [0.3, 0.4, 0.9], color: '#ffffff', intensity: 0.2 }],
+  });
+  const o = [];
+  const TAU = Math.PI * 2;
+  // parts lying flat: shape coordinates (x, y) on the dial, y = towards 12 o'clock (world -z)
+  const flat = (x, y, h, deg = 0) => ({ position: P(x, h, -y), rotation: [-90, deg, 0] });
+  const pts = (list) => list.map(([x, y]) => P(x, y));
+  const circle = (r, n = 48, cx = 0, cy = 0) => pts(Array.from({ length: n }, (_, i) => [cx + Math.cos((i / n) * TAU) * r, cy + Math.sin((i / n) * TAU) * r]));
+  // trapezoid teeth; skew > 0 gives the club teeth of an escape wheel
+  const gearOutline = (teeth, rOut, rRoot, skew = 0) => {
+    const out = [];
+    for (let i = 0; i < teeth; i++) {
+      const a = (i / teeth) * TAU, st = TAU / teeth;
+      for (const [r, f] of [[rRoot, 0], [rOut, 0.28 + skew], [rOut, 0.52 + skew], [rRoot, 0.8]]) out.push([Math.cos(a + f * st) * r, Math.sin(a + f * st) * r]);
+    }
+    return pts(out);
+  };
+  // windows between spokes: annular sectors from the hub to the rim
+  const spokeHoles = (spokes, rHub, rRim, spokeW) => Array.from({ length: spokes }, (_, k) => {
+    const a0 = (k / spokes) * TAU + spokeW / rHub / 2, a1 = ((k + 1) / spokes) * TAU - spokeW / rHub / 2;
+    const b0 = (k / spokes) * TAU + spokeW / rRim / 2, b1 = ((k + 1) / spokes) * TAU - spokeW / rRim / 2;
+    const arc = [];
+    for (let i = 0; i <= 10; i++) { const t = b0 + ((b1 - b0) * i) / 10; arc.push([Math.cos(t) * rRim, Math.sin(t) * rRim]); }
+    for (let i = 5; i >= 0; i--) { const t = a0 + ((a1 - a0) * i) / 5; arc.push([Math.cos(t) * rHub, Math.sin(t) * rHub]); }
+    return pts(arc);
+  });
+  const steel = { color: '#cfd3d9', metalness: 1, roughness: 0.12, specular: 1, shininess: 200 };
+  const brass = { color: '#d9ad55', metalness: 1, roughness: 0.2, specular: 1, shininess: 150 };
+  const blued = { color: '#2f55d4', metalness: 1, roughness: 0.15, specular: 1, shininess: 160 };
+  const ruby = { color: '#c3102f', roughness: 0.03, specular: 1.6, shininess: 256, emissive: 0.25 };
+
+  // ---- table and case
+  o.push({ name: 'Slate', shape: { type: 'roundedBox', width: 16, height: 0.4, depth: 16, radius: 0.08, cornerRadius: 0.3, segments: 4 }, position: [0, -0.2, 0], material: { color: '#1b1e24', roughness: 0.45, specular: 0.3 } });
+  o.push({ name: 'Case', shape: { type: 'lathe', profile: [[0, 0.02], [1.95, 0.02], [2.12, 0.14], [2.2, 0.45], [2.2, 0.85], [2.12, 1.02], [2.0, 1.08], [1.84, 1.08], [1.8, 1.0], [1.8, 0.4], [0, 0.4]], segments: 128 }, material: steel });
+  o.push({ name: 'Bezel', shape: { type: 'lathe', profile: [[1.8, 1.08], [2.04, 1.08], [2.0, 1.2], [1.84, 1.2], [1.8, 1.08]], segments: 128 }, material: { color: '#dba48a', metalness: 1, roughness: 0.14, specular: 1, shininess: 200 } });
+  for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
+    o.push({ name: 'Lug', shape: { type: 'roundedBox', width: 0.42, height: 0.42, depth: 0.95, radius: 0.1, cornerRadius: 0.1, segments: 5 }, position: [sx * 1.3, 0.5, -sy * 2.05], material: steel });
+  }
+  o.push(
+    { name: 'Crown stem', shape: { type: 'cylinder', radiusTop: 0.08, radiusBottom: 0.08, height: 0.25, segments: 24 }, position: [2.3, 0.62, 0], rotation: [0, 0, 90], material: steel },
+    { name: 'Crown', shape: { type: 'extrude', shape: { type: 'star', points: 36, outer: 0.27, inner: 0.245 }, depth: 0.3 }, position: [2.55, 0.62, 0], rotation: [0, 90, 0], material: steel },
+    { name: 'Crown cap', shape: { type: 'cylinder', radiusTop: 0.2, radiusBottom: 0.2, height: 0.03, segments: 40 }, position: [2.715, 0.62, 0], rotation: [0, 0, 90], material: { color: '#dba48a', metalness: 1, roughness: 0.14 } },
+  );
+
+  // ---- movement: plate, wheel train, bridges, jewels, screws
+  o.push({ name: 'Main plate', shape: { type: 'extrude', shape: circle(1.78, 128), depth: 0.06, holes: [circle(0.28, 32, -0.5, -0.8), circle(0.16, 24, 0.69, -0.69), circle(0.2, 24, 1.0, 0.35)] }, ...flat(0, 0, 0.43), material: { color: '#a9aeb6', metalness: 1, roughness: 0.42, specular: 0.6 } });
+  const wheels = [
+    { name: 'Barrel', at: [-0.75, 0.62], teeth: 72, r: 0.62, spokes: 0, h: 0.58, mat: brass },
+    { name: 'Center wheel', at: [0, 0], teeth: 64, r: 0.62, spokes: 5, h: 0.5, mat: brass },
+    { name: 'Third wheel', at: [0.86, 0.5], teeth: 50, r: 0.42, spokes: 4, h: 0.5, mat: brass },
+    { name: 'Fourth wheel', at: [1.045, -0.218], teeth: 48, r: 0.36, spokes: 4, h: 0.5, mat: brass },
+    { name: 'Escape wheel', at: [0.69, -0.69], teeth: 15, r: 0.26, spokes: 3, h: 0.5, mat: steel, skew: 0.18 },
+  ];
+  for (const w of wheels) {
+    const tooth = w.teeth > 20 ? 0.035 : 0.06;
+    o.push({ name: w.name, shape: { type: 'extrude', shape: gearOutline(w.teeth, w.r, w.r - tooth, w.skew || 0), depth: 0.045,
+      holes: w.spokes ? spokeHoles(w.spokes, w.r * 0.22, w.r * 0.78, w.r * 0.12) : [] }, ...flat(w.at[0], w.at[1], w.h), material: w.mat });
+    o.push({ name: `${w.name} pinion`, shape: { type: 'extrude', shape: { type: 'star', points: 8, outer: 0.075, inner: 0.05 }, depth: 0.16 }, ...flat(w.at[0], w.at[1], w.h + 0.05), material: steel });
+  }
+  o.push({ name: 'Barrel drum', shape: { type: 'extrude', shape: circle(0.55, 64), depth: 0.1, holes: [circle(0.12, 24)] }, ...flat(-0.75, 0.62, 0.65), material: { color: '#c79a48', metalness: 1, roughness: 0.32 } });
+  o.push({ name: 'Barrel arbor', shape: { type: 'extrude', shape: { type: 'star', points: 3, outer: 0.12, inner: 0.08 }, depth: 0.12 }, ...flat(-0.75, 0.62, 0.68), material: steel });
+
+  // balance wheel with hairspring
+  o.push({ name: 'Balance rim', shape: { type: 'extrude', shape: circle(0.5, 96), depth: 0.05, holes: [circle(0.44, 96)] }, ...flat(-0.5, -0.8, 0.58), material: brass });
+  for (let k = 0; k < 3; k++) {
+    const a = k * 120;
+    const c = [-0.5 + Math.cos((a * Math.PI) / 180) * 0.235, -0.8 + Math.sin((a * Math.PI) / 180) * 0.235];
+    o.push({ name: 'Balance arm', shape: { type: 'extrude', shape: { type: 'rect', width: 0.44, height: 0.045 }, depth: 0.045 }, ...flat(c[0], c[1], 0.58, a), material: brass });
+    o.push({ name: 'Balance screw', shape: { type: 'cylinder', radiusTop: 0.03, radiusBottom: 0.03, height: 0.05, segments: 12 }, ...flat(-0.5 + Math.cos(((a + 60) * Math.PI) / 180) * 0.5, -0.8 + Math.sin(((a + 60) * Math.PI) / 180) * 0.5, 0.58), rotation: [0, 0, 0], material: { color: '#e8c070', metalness: 1, roughness: 0.15 } });
+  }
+  const spiral = [];
+  for (let i = 0; i <= 260; i++) { const t = i / 260, a = t * TAU * 7.5, r = 0.06 + t * 0.27; spiral.push(P(-0.5 + Math.cos(a) * r, 0.64, 0.8 - Math.sin(a) * r)); }
+  o.push({ name: 'Hairspring', shape: { type: 'tube', path: spiral, radius: 0.006, sides: 6 }, material: { color: '#9fb4ff', metalness: 1, roughness: 0.2 } });
+  o.push({ name: 'Pallet fork', shape: { type: 'extrude', shape: [[-0.32, -0.025], [0.12, -0.03], [0.2, -0.12], [0.26, -0.1], [0.19, 0.0], [0.26, 0.1], [0.2, 0.12], [0.12, 0.03], [-0.32, 0.025]], depth: 0.035 }, ...flat(0.22, -0.74, 0.53, 4), material: steel });
+  o.push({ name: 'Pallet jewel', shape: { type: 'box', width: 0.05, height: 0.03, depth: 0.03 }, position: P(0.45, 0.56, 0.86), material: ruby });
+
+  // bridges (polished steel bars) with ruby jewels in polished chatons and blued screws
+  const bridge = (name, a, b, w = 0.26) => {
+    const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) + w, ang = (Math.atan2(dy, dx) * 180) / Math.PI;
+    o.push({ name, shape: { type: 'extrude', shape: { type: 'roundedRect', width: len, height: w, radius: w / 2, segments: 8 }, depth: 0.05 }, ...flat((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, 0.72, P(ang)[0]), material: steel });
+  };
+  const jewel = (x, y) => {
+    o.push({ name: 'Chaton', shape: { type: 'torus', radius: 0.05, tube: 0.014, segments: 24, sides: 8 }, position: P(x, 0.75, -y), material: steel });
+    o.push({ name: 'Jewel', shape: { type: 'sphere', radius: 0.04, segments: 20, rings: 10 }, position: P(x, 0.75, -y), scale: [1, 0.45, 1], material: ruby });
+  };
+  const screw = (x, y, slot) => {
+    o.push({ name: 'Screw', shape: { type: 'cylinder', radiusTop: 0.06, radiusBottom: 0.065, height: 0.05, segments: 24 }, position: P(x, 0.77, -y), material: blued });
+    o.push({ name: 'Screw slot', shape: { type: 'box', width: 0.1, height: 0.012, depth: 0.016 }, position: P(x, 0.795, -y), rotation: [0, slot, 0], material: { color: '#0b1022', roughness: 0.6 } });
+  };
+  bridge('Barrel bridge', [-1.25, 0.9], [-0.25, 0.35], 0.34);
+  bridge('Train bridge', [0.05, 0.05], [0.86, 0.5]);
+  bridge('Train bridge 2', [0.86, 0.5], [1.045, -0.218]);
+  bridge('Escape bridge', [1.045, -0.218], [0.69, -0.69], 0.22);
+  bridge('Balance cock', [-0.5, -0.8], [-1.3, -0.5], 0.3);
+  for (const w of wheels.slice(1)) jewel(w.at[0], w.at[1]);
+  jewel(-0.5, -0.8);
+  for (const [x, y, s] of [[-1.25, 0.9, 20], [-0.25, 0.35, 75], [0.42, 0.25, 140], [1.2, 0.18, 35], [0.82, -0.52, 110], [-1.3, -0.5, 160]]) screw(x, y, s);
+  // barrel ratchet wheel on top of the barrel bridge
+  o.push({ name: 'Ratchet wheel', shape: { type: 'extrude', shape: gearOutline(40, 0.3, 0.27, 0.15), depth: 0.04, holes: spokeHoles(3, 0.08, 0.22, 0.05) }, ...flat(-0.75, 0.62, 0.78), material: { color: '#d4d8de', metalness: 1, roughness: 0.25 } });
+  screw(-0.75, 0.62, 45);
+
+  // ---- dial ring, markers, hands at 10:10:35
+  o.push({ name: 'Chapter ring', shape: { type: 'extrude', shape: circle(1.79, 128), depth: 0.04, holes: [circle(1.46, 128)] }, ...flat(0, 0, 0.98), material: { color: '#121419', roughness: 0.35, specular: 0.4 } });
+  for (let k = 0; k < 12; k++) {
+    const a = 90 - k * 30, ar = (a * Math.PI) / 180;
+    for (const off of k === 0 ? [-0.035, 0.035] : [0]) {
+      const x = Math.cos(ar) * 1.6 - Math.sin(ar) * off, y = Math.sin(ar) * 1.6 + Math.cos(ar) * off;
+      o.push({ name: 'Hour marker', shape: { type: 'roundedBox', width: 0.2, height: 0.045, depth: 0.04, radius: 0.012, cornerRadius: 0.02, segments: 3 }, ...flat(x, y, 1.02, a), material: steel });
+    }
+  }
+  for (let k = 0; k < 60; k++) {
+    if (k % 5 === 0) continue;
+    const ar = ((90 - k * 6) * Math.PI) / 180;
+    o.push({ name: 'Minute dot', shape: { type: 'cylinder', radiusTop: 0.014, radiusBottom: 0.014, height: 0.02, segments: 8 }, position: P(Math.cos(ar) * 1.73, 1.01, -Math.sin(ar) * 1.73), material: { color: '#e9ebef', roughness: 0.4 } });
+  }
+  const hand = (name, angle, h, parts) => {
+    const G = group([0, h, 0], [-90, -angle, 0]);
+    for (const p of parts) o.push(G({ name, ...p }));
+  };
+  const lume = { color: '#dfffe9', emissive: 0.9, roughness: 0.5 };
+  hand('Hour hand', 305, 1.05, [
+    { shape: { type: 'extrude', shape: [[-0.06, -0.16], [0.06, -0.16], [0.075, 0.55], [0, 0.92], [-0.075, 0.55]], depth: 0.025 }, material: steel },
+    { shape: { type: 'extrude', shape: [[-0.032, 0.18], [0.032, 0.18], [0.04, 0.55], [0, 0.78], [-0.04, 0.55]], depth: 0.01 }, position: [0, 0, 0.016], material: lume },
+  ]);
+  hand('Minute hand', 63.5, 1.09, [
+    { shape: { type: 'extrude', shape: [[-0.05, -0.2], [0.05, -0.2], [0.058, 1.0], [0, 1.42], [-0.058, 1.0]], depth: 0.025 }, material: steel },
+    { shape: { type: 'extrude', shape: [[-0.026, 0.25], [0.026, 0.25], [0.03, 1.0], [0, 1.25], [-0.03, 1.0]], depth: 0.01 }, position: [0, 0, 0.016], material: lume },
+  ]);
+  hand('Seconds hand', 210, 1.13, [
+    { shape: { type: 'extrude', shape: [[-0.013, -0.42], [0.013, -0.42], [0.007, 1.5], [-0.007, 1.5]], depth: 0.015 }, material: { color: '#e0352c', roughness: 0.3, specular: 0.8 } },
+    { shape: { type: 'extrude', shape: circle(0.055, 24, 0, -0.3), depth: 0.015 }, material: { color: '#e0352c', roughness: 0.3, specular: 0.8 } },
+  ]);
+  o.push({ name: 'Hand cap', shape: { type: 'cylinder', radiusTop: 0.07, radiusBottom: 0.08, height: 0.1, segments: 32 }, position: [0, 1.12, 0], material: steel });
+
+  // ---- leather strap with stitching
+  for (const side of [-1, 1]) {
+    const path = [];
+    for (let i = 0; i <= 30; i++) { const t = i / 30, z = side * (1.95 + t * 5), drop = Math.min(1, t * 2.2); path.push(P(0, 0.5 - 0.36 * (drop * drop * (3 - 2 * drop)), z)); }
+    o.push({ name: 'Strap', shape: { type: 'sweep', shape: { type: 'roundedRect', width: 0.26, height: 2.0, radius: 0.1, segments: 4 }, path, caps: true }, material: { color: '#3b2418', roughness: 0.75, specular: 0.05, shininess: 16 } });
+    for (let k = 0; k < 9; k++) {
+      const z = side * (2.55 + k * 0.48);
+      const t = (Math.abs(z) - 1.95) / 5, drop = Math.min(1, t * 2.2), y = 0.5 - 0.36 * (drop * drop * (3 - 2 * drop)) + 0.14;
+      for (const x of [-0.88, 0.88]) o.push({ name: 'Stitch', shape: { type: 'box', width: 0.035, height: 0.02, depth: 0.22 }, position: P(x, y, z), material: { color: '#e9dcc0', roughness: 0.7 } });
+    }
+  }
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 28, pitch: 50, distance: 6.1, target: [0.2, 0.62, 0.25] });
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `extrude` takes `holes` (rings, frames, gears with spokes, letters); holes are bridged into the outline so ear clipping handles them, and side walls face into the holes
+- New gallery scene **Skeleton watch**: 170 parts with spoked brass gears, a hairspring, ruby jewels in polished chatons, blued screws, luminous hands at 10:10 and a stitched leather strap
+- Studio environment: an extra high back softbox, so flat metal parts seen from above have something bright to reflect
 - Editor: **New scene** in the File menu, as `Shift+N` and at the top of the gallery: an empty stage or a photo studio (podium, softboxes, key/rim/fill light); undoable
 - **Physically based materials**: `metalness`, `roughness`, Fresnel (split-sum environment BRDF fit), reflections of a `sky` or `studio` environment with softboxes; rough reflections are softened analytically and refined progressively
 - **Textures**: `material.texture` takes a PNG from the project or a `data:` URL, projected along the thinnest axis; built-in PNG decoder for Node, browser decoding in the editor

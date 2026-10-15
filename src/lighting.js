@@ -134,6 +134,7 @@ const STUDIO = [
   softbox([-0.95, 0.15, -0.35], 0.09, 0.85, 4), // tall strip left
   softbox([0.05, 1, 0.1], 0.55, 0.55, 2.5),     // overhead
   softbox([0.35, 0.25, 1], 0.38, 0.12, 1.6),    // low front strip (glints on screens)
+  softbox([-0.25, 0.75, -0.6], 0.5, 0.28, 3.2),  // high back: what flat parts reflect when seen from above
 ];
 let er = 0, eg = 0, eb = 0; // env() result, linear radiance
 

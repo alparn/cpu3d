@@ -9,4 +9,5 @@ Connect your agent (see the README), then try one of these. Good results come fr
 - *Turn the current scene into a night scene: dark blue background, warm light color, and add glowing lanterns.*
 - *Build a roller coaster: a closed track along a looping path (two tubes as rails plus box sleepers) and a train of three cars.*
 - *Model a smartphone with roundedBox: a glowing home screen (emissive) with app icons and a dock, and a camera module on the back. Show it on a podium.*
+- *Build a skeleton watch: spoked brass gears (extrude with holes), a hairspring (tube along a spiral), ruby jewels, blued screws, hands at 10:10, in a studio.*
 - *Import this OBJ, put it on a pedestal and set up a nice camera.*

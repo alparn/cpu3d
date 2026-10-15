@@ -146,7 +146,8 @@ export function buildShape(r) {
       g = G.lathe(points(r.profile, 2, 'profile', 2), int(r.segments, 48, 'segments', 3, SEG));
       break;
     case 'extrude':
-      g = G.extrude(shape2d(r.shape), num(r.depth, 0.2, 'depth', 1e-4));
+      if (r.holes !== undefined && (!Array.isArray(r.holes) || r.holes.length > 256)) fail('"holes" must be an array of up to 256 2D shapes');
+      g = G.extrude(shape2d(r.shape), num(r.depth, 0.2, 'depth', 1e-4), (r.holes || []).map((h, i) => shape2d(h, `holes[${i}]`)));
       break;
     case 'sweep':
     case 'tube': {
@@ -216,8 +217,9 @@ Shapes are built around their own origin (see "origin" below); use position to p
             Revolves a 2D profile around the Y axis. List points from BOTTOM to TOP, r >= 0.
             Start/end with r = 0 to close the bottom/top. Open profiles (vases) need material.doubleSided.
             Example vase: [[0,0],[0.4,0],[0.5,0.3],[0.3,1.0],[0.35,1.4]]
-- extrude   { type: "extrude", shape: Shape2D, depth=0.2 }
+- extrude   { type: "extrude", shape: Shape2D, depth=0.2, holes: [Shape2D, ...] }
             Extrudes a 2D polygon (concave allowed) along Z, centered on z = 0. Rotate [-90,0,0] to lay it flat.
+            holes cut through it: rings, frames, gears with spokes, letters like O and A.
 - sweep     { type: "sweep", shape: Shape2D, path: Path3D, closed?, caps?, twist=0 (degrees over the length), scaleEnd=1 }
             Moves a cross-section along a 3D path (columns, rails, frames, horns, twisted shapes).
 - tube      { type: "tube", path: Path3D, radius=0.1, sides=12, closed?, caps? }
