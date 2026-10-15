@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix: temporal AA wrote its result into the buffer it reads the 3x3 neighbourhood from, so neighbours were already blended (ghost trails behind moving objects, row stripes with several threads); the result now goes to a separate buffer
+- Temporal AA: disocclusion detection with stable mesh ids (uncovered background starts over instead of keeping a ghost), variance clipping in YCoCg towards the mean (no coloured fringes on textures such as the phone's app icons), bicubic overshoot clamped, fast path for still pixels, neighbourhood statistics as sliding sums
 - Fix: animation playback advanced unevenly (time was lost while a frame was still rendering), which looked like jitter; time now follows the wall clock between rendered frames
 - Temporal AA: per-object motion vectors (moving parts keep their history), a per-pixel running average for pixels that stay put (static parts of an animated scene flicker 30-75% less), wider clipping for still pixels
 - Editor: timeline above the stats line on medium-width windows

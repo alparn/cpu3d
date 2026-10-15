@@ -295,6 +295,7 @@ export function blurRows(ctx, b0, b1) {
 export function shadeRows(ctx, y0, y1) {
   const { W, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, matMetal, matRough, lights, environment, softness, invTone, eye, R, U, F,
     light, tone, shadow, frame, ao, fog, debug, aoBlur } = ctx;
+  const ycc = ctx.post === 'temporal' ? ctx.taa.ycc : null;
   const { colK, rowK, aoW } = prepare(ctx);
   const { lx, ly, lz, lr, lg, lb, sr, sg, sb, gr, gg, gb } = light;
   const S2L = SRGB_TO_LINEAR;
@@ -427,6 +428,15 @@ export function shadeRows(ctx, y0, y1) {
       }
       color[i] = 0xff000000 | ((B8 | 0) << 16) | ((G8 | 0) << 8) | (R8 | 0);
     }
+    if (ycc) toYCoCg(color, ycc, row, row + W);
+  }
+}
+
+// luma / chroma (YCoCg) of display colors, for the neighbourhood statistics of temporal AA
+export function toYCoCg(color, ycc, i0, i1) {
+  for (let i = i0, k = i0 * 3; i < i1; i++, k += 3) {
+    const v = color[i], r = v & 255, g = (v >>> 8) & 255, b = (v >>> 16) & 255;
+    ycc[k] = 0.25 * r + 0.5 * g + 0.25 * b; ycc[k + 1] = 0.5 * (r - b); ycc[k + 2] = 0.5 * g - 0.25 * (r + b);
   }
 }
 
@@ -453,28 +463,53 @@ export function accumulateRows(ctx, y0, y1) {
 // the history is clamped to the 3x3 neighbourhood of the current frame (no ghosting on moving or
 // uncovered parts) and blended in. Jitter, AO and soft shadow noise average out over ~10 frames.
 // histPrev / histNext: Float32 rgb in display space; prevVP / currVP: unjittered view-projections;
-// taa.valid = false starts over.
+// taa.valid = false starts over. The result goes to taa.out (the renderer copies it into the color buffer).
 export function temporalRows(ctx, y0, y1) {
   const { colK, rowK } = prepare(ctx);
   // one call per row: V8 optimizes the row function as a whole instead of on-stack replacing inner loops
-  for (let y = y0; y < y1; y++) taaRow(ctx, colK, rowK[y], y);
+  for (let y = y0; y < y1; y++) { neighbourhoodRow(ctx, y); taaRow(ctx, colK, rowK[y], y); }
+}
+
+// 3x3 sums of Y, Co, Cg and their squares around every pixel of row y (column sums, then a sliding window)
+let NB = new Float64Array(0), COL = new Float64Array(0);
+function neighbourhoodRow(ctx, y) {
+  const { W, H } = ctx, ycc = ctx.taa.ycc;
+  if (NB.length < W * 6) { NB = new Float64Array(W * 6); COL = new Float64Array(W * 6); }
+  const ra = (y > 0 ? y - 1 : y) * W * 3, rb = y * W * 3, rc = (y < H - 1 ? y + 1 : y) * W * 3;
+  for (let x = 0, k = 0; x < W; x++, k += 3) {
+    const a0 = ycc[ra + k], a1 = ycc[ra + k + 1], a2 = ycc[ra + k + 2];
+    const b0 = ycc[rb + k], b1 = ycc[rb + k + 1], b2 = ycc[rb + k + 2];
+    const c0 = ycc[rc + k], c1 = ycc[rc + k + 1], c2 = ycc[rc + k + 2];
+    const o = x * 6;
+    COL[o] = a0 + b0 + c0; COL[o + 1] = a1 + b1 + c1; COL[o + 2] = a2 + b2 + c2;
+    COL[o + 3] = a0 * a0 + b0 * b0 + c0 * c0; COL[o + 4] = a1 * a1 + b1 * b1 + c1 * c1; COL[o + 5] = a2 * a2 + b2 * b2 + c2 * c2;
+  }
+  for (let x = 0; x < W; x++) {
+    const l = (x > 0 ? x - 1 : x) * 6, m = x * 6, r = (x < W - 1 ? x + 1 : x) * 6;
+    for (let q = 0; q < 6; q++) NB[m + q] = COL[l + q] + COL[m + q] + COL[r + q];
+  }
 }
 
 function taaRow(ctx, colK, ry, y) {
   const { W, H, depth, color: c, eye, R, U, F, taa, MAT } = ctx;
-  const { prevVP: M, currVP: Q, histPrev: hp, histNext: hn, valid, alpha, motion: MV, moving, agePrev, ageNext } = taa;
+  const { prevVP: M, currVP: Q, histPrev: hp, histNext: hn, valid, alpha, motion: MV, moving, agePrev, ageNext, matPrev, matNext, meshOf, out, cameraStill } = taa;
   {
     for (let x = 0; x < W; x++) {
       const i = y * W + x, v = c[i], k = i * 3;
       const cr = v & 255, cg = (v >>> 8) & 255, cb = (v >>> 16) & 255;
       let a = 1, hr = 0, hg = 0, hb = 0, age = 0;
-      const iw = depth[i];
+      const iw = depth[i], cm = iw === 0 ? 0 : meshOf[MAT[i]]; // what the pixel shows: 0 background, else the mesh number
+      matNext[i] = cm;
       if (valid) {
         // where was this surface (or, for the background, this view direction) in the previous frame?
-        let wx, wy, wz, ww;
+        // With a still camera and a still object it is the same pixel (fast path: no reprojection)
+        const mat0 = iw === 0 ? 0 : MAT[i], still = cameraStill && !(mat0 && moving[mat0]);
+        let wx = 0, wy = 0, wz = 0, ww = 0;
         const w = iw === 0 ? 1e4 : 1 / iw, vx = colK[x] * w, vy = ry * w;
         const dx = R[0] * vx + U[0] * vy + F[0] * w, dy = R[1] * vx + U[1] * vy + F[1] * w, dz = R[2] * vx + U[2] * vy + F[2] * w;
-        if (iw === 0) { wx = dx; wy = dy; wz = dz; ww = 0; } else { wx = eye[0] + dx; wy = eye[1] + dy; wz = eye[2] + dz; ww = 1; }
+        if (!still) {
+          if (iw === 0) { wx = dx; wy = dy; wz = dz; ww = 0; } else { wx = eye[0] + dx; wy = eye[1] + dy; wz = eye[2] + dz; ww = 1; }
+        }
         // where this point of a moving object was in the previous frame (per-object motion)
         let ox = wx, oy = wy, oz = wz;
         const mat = iw === 0 ? 0 : MAT[i];
@@ -485,17 +520,18 @@ function taaRow(ctx, colK, ry, y) {
           oz = MV[j + 8] * wx + MV[j + 9] * wy + MV[j + 10] * wz + MV[j + 11];
         }
         const cx = M[0] * ox + M[4] * oy + M[8] * oz + M[12] * ww, cy = M[1] * ox + M[5] * oy + M[9] * oz + M[13] * ww;
-        const cw = M[3] * ox + M[7] * oy + M[11] * oz + M[15] * ww;
+        const cw = still ? 1 : M[3] * ox + M[7] * oy + M[11] * oz + M[15] * ww;
         const qx = Q[0] * wx + Q[4] * wy + Q[8] * wz + Q[12] * ww, qy = Q[1] * wx + Q[5] * wy + Q[9] * wz + Q[13] * ww;
-        const qw = Q[3] * wx + Q[7] * wy + Q[11] * wz + Q[15] * ww;
+        const qw = still ? 1 : Q[3] * wx + Q[7] * wy + Q[11] * wz + Q[15] * ww;
         if (cw > 1e-6 && qw > 1e-6) {
           // motion = unjittered position then minus unjittered position now; applied to the pixel center,
           // so a still image samples the history exactly (no blur from the jitter)
-          const px = x + ((cx / cw - qx / qw) * 0.5) * W, py = y - ((cy / cw - qy / qw) * 0.5) * H;
+          const px = still ? x : x + ((cx / cw - qx / qw) * 0.5) * W, py = still ? y : y - ((cy / cw - qy / qw) * 0.5) * H;
           const x0 = Math.floor(px), y0h = Math.floor(py);
           if (x0 >= 1 && y0h >= 1 && x0 < W - 2 && y0h < H - 2) {
             // Catmull-Rom (bicubic) history sample: bilinear would blur the image a bit more every frame
             const fx = px - x0, fy = py - y0h;
+            if (fx < 1e-4 && fy < 1e-4) { const j = (y0h * W + x0) * 3; hr = hp[j]; hg = hp[j + 1]; hb = hp[j + 2]; } else {
             const ax = crw(fx), ay = crw(fy);
             hr = 0; hg = 0; hb = 0;
             for (let m = 0; m < 4; m++) {
@@ -505,30 +541,33 @@ function taaRow(ctx, colK, ry, y) {
               hg += hp[j + 1] * w0 + hp[j + 4] * w1 + hp[j + 7] * w2 + hp[j + 10] * w3;
               hb += hp[j + 2] * w0 + hp[j + 5] * w1 + hp[j + 8] * w2 + hp[j + 11] * w3;
             }
-            // neighbourhood clamp: min / max of the 3x3 pixels around (unrolled, borders repeat)
-            const rm = (y > 0 ? y - 1 : y) * W, r0 = y * W, rp = (y < H - 1 ? y + 1 : y) * W, xm = x > 0 ? x - 1 : x, xp = x < W - 1 ? x + 1 : x;
-            // variance clipping: mean +- gamma standard deviations of the 3x3 neighbourhood (tighter than min / max)
-            let sr = cr, sg = cg, sb = cb, qr = cr * cr, qg = cg * cg, qb = cb * cb, u = 0, t = 0;
-            u = c[rm + xm]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            u = c[rm + x]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            u = c[rm + xp]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            u = c[r0 + xm]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            u = c[r0 + xp]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            u = c[rp + xm]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            u = c[rp + x]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            u = c[rp + xp]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
-            const mr = sr / 9, mg = sg / 9, mb = sb / 9;
+            }
+            // variance clipping in YCoCg (luma / chroma): the history is pulled towards the mean of the 3x3
+            // neighbourhood until it lies within mean +- gamma standard deviations. Clipping towards the mean
+            // in YCoCg keeps the hue; clamping r, g, b separately creates coloured fringes
+            const nb = x * 6, sy = NB[nb], so = NB[nb + 1], sc = NB[nb + 2], qy = NB[nb + 3], qo = NB[nb + 4], qc = NB[nb + 5];
+            const my = sy / 9, mo = so / 9, mc = sc / 9;
             // pixels that do not move keep a wider box: their converged history is better than this noisy frame
-            const gamma = Math.abs(px - x) + Math.abs(py - y) < 0.05 ? 2 : 1.25;
-            const dr = gamma * Math.sqrt(Math.max(0, qr / 9 - mr * mr)) + 2, dg = gamma * Math.sqrt(Math.max(0, qg / 9 - mg * mg)) + 2, db = gamma * Math.sqrt(Math.max(0, qb / 9 - mb * mb)) + 2;
-            hr = hr < mr - dr ? mr - dr : hr > mr + dr ? mr + dr : hr;
-            hg = hg < mg - dg ? mg - dg : hg > mg + dg ? mg + dg : hg;
-            hb = hb < mb - db ? mb - db : hb > mb + db ? mb + db : hb;
+            const gamma = Math.abs(px - x) + Math.abs(py - y) < 0.05 ? 1.5 : 1.25;
+            const ey = gamma * Math.sqrt(Math.max(0, qy / 9 - my * my)) + 1.5, eo = gamma * Math.sqrt(Math.max(0, qo / 9 - mo * mo)) + 1.5, ec = gamma * Math.sqrt(Math.max(0, qc / 9 - mc * mc)) + 1.5;
+            hr = hr < 0 ? 0 : hr > 255 ? 255 : hr; hg = hg < 0 ? 0 : hg > 255 ? 255 : hg; hb = hb < 0 ? 0 : hb > 255 ? 255 : hb; // bicubic overshoot
+            const dy = 0.25 * hr + 0.5 * hg + 0.25 * hb - my, dO = 0.5 * (hr - hb) - mo, dC = 0.5 * hg - 0.25 * (hr + hb) - mc;
+            const out = Math.max(Math.abs(dy) / ey, Math.abs(dO) / eo, Math.abs(dC) / ec);
+            if (out > 1) {
+              const yy = my + dy / out, oo = mo + dO / out, cc = mc + dC / out;
+              hr = yy + oo - cc; hg = yy + cc; hb = yy - oo - cc;
+            }
             // blend weight: a running average while the pixel stays put (1 / frames, down to `alpha`, so still
             // parts converge like the progressive refinement and stop flickering); fast motion trusts the
             // new frame more, because resampling the history blurs a little every frame
             const speed = Math.abs(px - x) + Math.abs(py - y);
-            age = agePrev[(Math.round(py) * W + Math.round(px))] + 1;
+            // disocclusion: if no history pixel around the reprojected spot showed the same object, the history
+            // belongs to something that moved away (a ghost): start over
+            const pr = Math.round(py), pc = Math.round(px), q0 = (pr > 0 ? pr - 1 : pr) * W, q1 = pr * W, q2 = (pr < H - 1 ? pr + 1 : pr) * W;
+            const c0 = pc > 0 ? pc - 1 : pc, c2 = pc < W - 1 ? pc + 1 : pc;
+            const seen = matPrev[q1 + pc] === cm || matPrev[q1 + c0] === cm || matPrev[q1 + c2] === cm || matPrev[q0 + pc] === cm
+              || matPrev[q2 + pc] === cm || matPrev[q0 + c0] === cm || matPrev[q0 + c2] === cm || matPrev[q2 + c0] === cm || matPrev[q2 + c2] === cm;
+            age = seen ? agePrev[q1 + pc] + 1 : 0;
             if (age > 60) age = 60;
             const run = 1 / (age + 1), fast = speed < 0.05 ? 0 : 0.2 + (speed > 4 ? 0.4 : speed * 0.1);
             a = run > alpha ? run : alpha;
@@ -540,7 +579,8 @@ function taaRow(ctx, colK, ry, y) {
       const r = hr + (cr - hr) * a, g = hg + (cg - hg) * a, b = hb + (cb - hb) * a;
       hn[k] = r; hn[k + 1] = g; hn[k + 2] = b;
       ageNext[i] = age;
-      c[i] = 0xff000000 | (((b + 0.5) | 0) << 16) | (((g + 0.5) | 0) << 8) | ((r + 0.5) | 0);
+      // into a separate buffer: the neighbourhood above must see this frame, not results of the pass
+      out[i] = 0xff000000 | (((b + 0.5) | 0) << 16) | (((g + 0.5) | 0) << 8) | ((r + 0.5) | 0);
     }
   }
 }

@@ -77,6 +77,7 @@ test('temporal AA: moving objects use their own motion, still parts stop flicker
     return { error: diff(r.pixels, ref.pixels), flicker: flicker / (9 * H * W * 0.4) };
   };
   const without = run(false), withMv = run(true);
-  assert.ok(withMv.error < without.error * 0.85, `motion vectors: ${withMv.error.toFixed(2)} vs ${without.error.toFixed(2)}`);
+  assert.ok(withMv.error < without.error, `motion vectors: ${withMv.error.toFixed(2)} vs ${without.error.toFixed(2)}`);
+  assert.ok(withMv.error < 0.8, `close to the 16-sample image while moving (${withMv.error.toFixed(2)})`);
   assert.ok(withMv.flicker < 0.6, `still parts barely change between frames (${withMv.flicker.toFixed(2)})`);
 });

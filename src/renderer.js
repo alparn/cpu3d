@@ -164,6 +164,7 @@ export class Renderer {
     // per-mesh motion for temporal AA: world(now) -> world(previous frame) as a 3x4 matrix, flagged when moving
     this._matMotion = this._alloc(Float32Array, 65536 * 12);
     this._matMoving = this._alloc(Uint8Array, 65536);
+    this._matMesh = this._alloc(Uint16Array, 65536); // draw id -> stable mesh number (index in the scene + 1)
     this._prevModel = new WeakMap(); // mesh -> model matrix of the previous frame of this renderer
   }
 
@@ -216,6 +217,9 @@ export class Renderer {
     this._aoRaw = A(Float32Array, ao); this._aoDepth = A(Float32Array, ao); this._aoBlur = A(Float32Array, ao);
     this._hist = [A(Float32Array, n * 3), A(Float32Array, n * 3)]; // temporal history (ping-pong)
     this._age = [A(Uint8Array, n), A(Uint8Array, n)]; // frames each history pixel has been tracked
+    this._histMat = [A(Uint16Array, n), A(Uint16Array, n)]; // which mesh each history pixel showed
+    this._taaOut = A(Uint32Array, n); // temporal AA result (the pass reads this frame's colors around each pixel)
+    this._ycc = A(Float32Array, n * 3); // this frame in YCoCg, written by the shading stage for the TAA statistics
     this._histWeight = 0; // how many frames the history roughly represents (0 = none)
     this._prevVP = new Float64Array(16);
     this._accN = 0;
@@ -331,7 +335,11 @@ export class Renderer {
 
     this._hq = hq;
     this._matCount = 0;
-    for (const mesh of scene.meshes) if (mesh.visible) this._drawMesh(mesh);
+    for (let k = 0; k < scene.meshes.length; k++) {
+      const mesh = scene.meshes[k];
+      this._meshNo = Math.min(65535, k + 1);
+      if (mesh.visible) this._drawMesh(mesh);
+    }
     // remember where every mesh was (also the culled ones), for the motion vectors of the next frame
     if (hq) for (const mesh of scene.meshes) {
       const prev = this._prevModel.get(mesh);
@@ -373,7 +381,9 @@ export class Renderer {
       const valid = temporal && this._histWeight > 0;
       ctx.post = 'temporal';
       ctx.taa = { prevVP: this._prevVP, currVP: unjittered, histPrev: this._hist[0], histNext: this._hist[1], valid, alpha: this.temporalAlpha,
-        motion: this._matMotion, moving: this._matMoving, agePrev: this._age[0], ageNext: this._age[1] };
+        motion: this._matMotion, moving: this._matMoving, meshOf: this._matMesh, agePrev: this._age[0], ageNext: this._age[1],
+        matPrev: this._histMat[0], matNext: this._histMat[1], out: this._taaOut, ycc: this._ycc,
+        cameraStill: this._prevVP.every((v, k) => v === unjittered[k]) };
       this._histWeight = valid ? Math.min(8, this._histWeight + 1) : 1;
       this._nextVP = unjittered;
     }
@@ -387,8 +397,10 @@ export class Renderer {
       st.shadeMs = performance.now() - this._shadeT0;
       if (ctx.post === 'accumulate') this._accN = ctx.accN;
       else {
+        this.color.set(this._taaOut);
         this._hist.reverse(); // the history just written becomes the previous one
         this._age.reverse();
+        this._histMat.reverse();
         this._prevVP.set(this._nextVP);
         this._accN = 0;
       }
@@ -544,6 +556,7 @@ export class Renderer {
       this._matRough[id] = mesh.roughness ?? DEFAULT_ROUGHNESS;
       this._flatHQ = flatMesh;
       this._matMoving[id] = this._motionOf(mesh, id) ? 1 : 0;
+      this._matMesh[id] = this._meshNo;
     }
 
     // ---- vertex stage
