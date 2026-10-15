@@ -33,7 +33,14 @@ export function exportOBJ(objects, geometryFor) {
 const D2R = Math.PI / 180, TMP_A = mat4.create(), TMP_B = mat4.create(), TMP_C = mat4.create();
 const wave = (t, period, phase) => Math.sin(2 * Math.PI * (t / period + phase));
 const TRANSFORM_KEYS = (keys) => keys?.some((k) => k.position || k.rotation || k.scale);
-export const hasMotion = (o) => !!(o.animation && (o.animation.spin || o.animation.swing || o.animation.bob || o.animation.orbit || TRANSFORM_KEYS(o.animation.keys)));
+export const hasMotion = (o) => !!(o.animation && (o.animation.spin || o.animation.swing || o.animation.bob || o.animation.orbit || o.animation.flow || TRANSFORM_KEYS(o.animation.keys)));
+
+// flow: position along the way (0..1) and the grow / shrink factor at both ends
+const flowAt = (f, t) => {
+  const k = (((t * f.speed) / f.distance + f.phase) % 1 + 1) % 1;
+  const e = f.fade > 0 ? Math.min(1, k / f.fade, (1 - k) / f.fade) : 1;
+  return { k, fade: e * e * (3 - 2 * e) };
+};
 
 // ---- keyframes
 const smooth = (u) => u * u * (3 - 2 * u);
@@ -105,16 +112,22 @@ export function animatedMatrix(o, t) {
     const ax = a.bob.axis, l = Math.hypot(...ax) || 1, d = (a.bob.amplitude * wave(t, a.bob.period, a.bob.phase)) / l;
     mat4.multiply(m, mat4.translation(TMP_A, [ax[0] * d, ax[1] * d, ax[2] * d]), m);
   }
+  if (a.flow) {
+    const f = a.flow, { k, fade } = flowAt(f, t), ax = f.axis, d = (k * f.distance) / (Math.hypot(...ax) || 1);
+    if (fade < 1) { const sc = Math.max(1e-3, fade); TMP_A.fill(0); TMP_A[0] = TMP_A[5] = TMP_A[10] = sc; TMP_A[15] = 1; mat4.multiply(m, m, TMP_A); }
+    mat4.multiply(m, mat4.translation(TMP_A, [ax[0] * d, ax[1] * d, ax[2] * d]), m);
+  }
   return m;
 }
 
 // emissive at time t: pulse scales the material's emissive (or 1 if the material has none)
 export function animatedEmissive(o, t) {
-  const keys = o.animation?.keys, p = o.animation?.pulse;
+  const keys = o.animation?.keys, p = o.animation?.pulse, f = o.animation?.flow;
   const base = (keys && sampleKeys(keys, 'emissive', t, o.animation.ease)) ?? (o.material.emissive || 0);
-  if (!p) return base;
+  const fade = f ? flowAt(f, t).fade : 1; // flowing glow fades in and out with its size
+  if (!p) return base * fade;
   const w = wave(t, p.period, p.phase), k = p.blink ? (w > 0 ? 1 : 0) : 0.5 + 0.5 * w;
-  return (base || 1) * (p.min + (p.max - p.min) * k);
+  return (base || 1) * (p.min + (p.max - p.min) * k) * fade;
 }
 
 // Update the meshes of a render scene to time t in place (cheap: matrices and emissive only).
@@ -125,7 +138,7 @@ export function updateAnimation(scene, t) {
     const o = m.object;
     if (!o || !o.animation) continue;
     if (hasMotion(o)) { m.matrix = animatedMatrix(o, t); moved = true; }
-    if (o.animation.pulse || o.animation.keys) m.emissive = animatedEmissive(o, t);
+    if (o.animation.pulse || o.animation.keys || o.animation.flow) m.emissive = animatedEmissive(o, t);
   }
   if (moved) scene.version = (scene.version || 0) + 1;
   return moved;
@@ -147,7 +160,8 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
     m.matrix = o.animation ? animatedMatrix(o, time) : objectMatrix(o);
     m.matrixAutoUpdate = false;
     m.object = o;
-    if (o.animation?.pulse || o.animation?.keys) m.emissive = animatedEmissive(o, time);
+    m.dynamic = hasMotion(o); // moving meshes stay out of the cached static shadow map
+    if (o.animation?.pulse || o.animation?.keys || o.animation?.flow) m.emissive = animatedEmissive(o, time);
     m.flat = o.material.flat;
     m.wireframe = selected.includes(o.id) ? SELECTION_COLOR : false;
     m.objectId = o.id;

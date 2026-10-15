@@ -7,4 +7,5 @@ export { SceneDocument, createEmptyScene } from './document.js';
 export { buildRenderScene, cameraFromState, animatedMatrix, animatedEmissive, updateAnimation, sceneHasAnimation, cameraAt, sampleKeys } from './scene.js';
 export { renderFrames, renderGIF, renderContactSheet } from './frames.js';
 export { GifEncoder } from './gif.js';
+export { ShadePool } from './pool.js';
 export { TOOLS, callTool, toolList, toolListOpenAI, AGENT_GUIDE } from './tools.js';

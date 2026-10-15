@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Multi-threaded shading**: a worker pool (`ShadePool`, Web Workers in the browser, worker_threads in Node) shades the frame in row chunks over shared memory; pixel-identical to one thread. `Renderer#setPool` and `renderAsync`; the editor, `render_view`, `render_animation`, `export_gif` and `cpu3d gif` use it. Turbofan in the editor: ~110 ms → 24 ms per moving frame
+- **Temporal anti-aliasing** for camera moves and animation (`render(..., { temporal: true })`): jittered frames, reprojection with motion vectors, Catmull-Rom history sampling, variance clipping, speed-dependent blending; still images continue the progressive refinement from the temporal history
+- **Adaptive resolution** in the editor: motion renders at a reduced resolution when a full frame would miss ~30 fps
+- **Shadow cache** split into static and moving casters, shared between renderers; playback no longer redraws the whole shadow map every frame
+- Cross-origin isolation headers from the cpu3d server, and `coi-sw.js` for static hosts like GitHub Pages
+- New behaviour **`flow`**: moves along an axis and starts over, growing in and shrinking out at the ends (wind, particles, exhaust, conveyor belts)
+- Turbofan gallery scene: airflow streaks pulled into the intake, a swirling bypass stream and a hot exhaust jet
 - **Keyframes**: `animation.keys` with `position`, `rotation`, `scale` and `emissive` channels and `ease` smooth / linear / spline (Catmull-Rom through all keys) / step; behaviours apply on top
 - **Camera paths**: `animation.camera` with yaw / pitch / distance / target keys; the editor follows the path while playing, `render_view(time)` and exports use it
 - **GIF export**: dependency-free encoder (median-cut palette shared by the clip, ordered dithering, delta frames cropped to the changed area, LZW); frames are rendered with motion blur. In the editor (File → Export animated GIF), as `cpu3d gif` and as the `export_gif` tool

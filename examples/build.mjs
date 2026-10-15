@@ -456,6 +456,22 @@ scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twi
   await animate(doc, hp, { spin: { axis: [0, 1, 0], speed: 480 } });
   await animate(doc, 'Combustion glow', { pulse: { min: 0.75, max: 1.3, period: 0.375 } });
   await animate(doc, 'Flames', { pulse: { min: 0.6, max: 1.4, period: 0.25 } });
+
+  // ---- airflow: glowing streaks (flow behaviour) sucked into the intake, swirling through the bypass
+  // duct behind the fan and leaving the core as a hot exhaust jet. Every ring of streaks is one object;
+  // each pass takes 0.75 s, so the 3 s and 12 s loops are seamless.
+  const streaks = (name, radii, y0, length, color, emissive, count, distance, extra = {}) => radii.map((radius, i) => E({
+    name, position: [0, y0, 0],
+    shape: { type: 'radial', count, radius, startAngle: (i * 137.5) % 360, shape: { type: 'cylinder', radiusTop: 0.006, radiusBottom: 0.006, height: length, segments: 5, caps: false } },
+    material: { color, emissive },
+    animation: { flow: { axis: [-1, 0, 0], distance, speed: distance / 0.75, phase: r4((i * 0.37) % 1), fade: 0.25 }, ...extra },
+  }));
+  await add(doc, [
+    ...streaks('Intake air', [0.36, 0.5, 0.62, 0.74, 0.86, 0.97, 0.44, 0.68, 0.92], 3.6, 0.34, '#8fd3ff', 1.3, 9, 2.1),
+    ...streaks('Bypass air', [0.68, 0.76, 0.84, 0.92, 1.0, 0.72, 0.88], 0.85, 0.28, '#b8e6ff', 1.2, 10, 2.0, { spin: { axis: [0, 1, 0], speed: 60 } }),
+    ...streaks('Exhaust jet', [0.08, 0.16, 0.24, 0.32, 0.12, 0.28], -1.5, 0.24, '#ff8a3d', 1.6, 8, 1.8, { pulse: { min: 0.7, max: 1.3, period: 0.25 } }),
+  ]);
+
   await cameraPath(doc, 12, [{ t: 6, yaw: 72, pitch: 22, distance: 4, target: [0.1, 1.45, 0] }]);
 });
 

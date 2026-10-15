@@ -12,7 +12,7 @@
     "./renderer": "./src/renderer.js",
     "./geometry": "./src/geometry.js"
   },
-  "files": ["bin", "server", "src", "editor", "index.html", "examples", "demo"],
+  "files": ["bin", "server", "src", "editor", "index.html", "coi-sw.js", "examples", "demo"],
   "scripts": {
     "start": "node bin/cpu3d.js serve",
     "dev": "node bin/cpu3d.js serve --file scene.json",

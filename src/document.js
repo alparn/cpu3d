@@ -86,6 +86,8 @@ function normalizeMaterial(m = {}, base = {}) {
 //   bob   { axis [0,1,0] (world), amplitude 0.1, period 2 s, phase 0..1 }
 //   orbit { center [0,0,0], axis [0,1,0], speed 30 deg/s }   rigid rotation around a world axis
 //   pulse { min 0.5, max 1.5, period 1.5 s, phase 0..1, blink false }   scales emissive
+//   flow  { axis [1,0,0] (world), distance 4, speed 2 units/s, phase 0..1, fade 0.2 }   moves along the axis and
+//         starts over (wind, particles, conveyor belts); grows in / shrinks out over `fade` of the way
 //   keys  [{ t, position?, rotation?, scale?, emissive? }] with ease 'smooth' | 'linear' | 'spline' | 'step'
 //         keyframes replace the base transform; behaviours are applied on top
 // Without pivot, spin and swing turn around the object's own origin and local axis;
@@ -93,7 +95,7 @@ function normalizeMaterial(m = {}, base = {}) {
 export function normalizeAnimation(a) {
   if (a === null || a === undefined) return null;
   if (typeof a !== 'object' || Array.isArray(a)) fail('"animation" must be an object like { "spin": { "speed": 90 } } or null');
-  const known = ['spin', 'swing', 'bob', 'orbit', 'pulse', 'keys', 'ease'];
+  const known = ['spin', 'swing', 'bob', 'orbit', 'pulse', 'flow', 'keys', 'ease'];
   for (const k of Object.keys(a)) if (!known.includes(k)) fail(`unknown animation "${k}" (use ${known.join(', ')})`);
   const obj = (v, n) => { if (!v || typeof v !== 'object' || Array.isArray(v)) fail(`"animation.${n}" must be an object`); return v; };
   const opt = (v, def, n, min, max) => (v === undefined ? def : range(v, `animation.${n}`, min, max));
@@ -125,6 +127,12 @@ export function normalizeAnimation(a) {
     const s = obj(a.pulse, 'pulse');
     out.pulse = { min: opt(s.min, 0.5, 'pulse.min', 0, 20), max: opt(s.max, 1.5, 'pulse.max', 0, 20),
       period: opt(s.period, 1.5, 'pulse.period', 0.01, 1e4), phase: opt(s.phase, 0, 'pulse.phase', -1e4, 1e4), blink: !!s.blink };
+  }
+  if (a.flow) {
+    const s = obj(a.flow, 'flow');
+    out.flow = { axis: s.axis === undefined ? [1, 0, 0] : vec3(s.axis, 'animation.flow.axis'), distance: opt(s.distance, 4, 'flow.distance', 0.001, 1e4),
+      speed: opt(s.speed, 2, 'flow.speed', -1e4, 1e4), phase: opt(s.phase, 0, 'flow.phase', -1e4, 1e4), fade: opt(s.fade, 0.2, 'flow.fade', 0, 0.5) };
+    if (!Math.hypot(...out.flow.axis)) fail('"animation.flow.axis" must not be zero');
   }
   if (a.keys !== undefined && a.keys !== null) {
     const keys = normalizeKeys(a.keys, 'animation.keys', (k, n) => {

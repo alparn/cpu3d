@@ -113,6 +113,14 @@ The default `quality: 'high'` turns the renderer into a small deferred renderer:
 7. **Color.** Albedo is decoded from sRGB to linear, light is added in linear space, and an **ACES filmic** curve plus sRGB encoding (one 65,536-entry lookup table) bring it back to the display range. Fog is mixed afterwards in display space so it matches the background exactly.
 8. **Progressive refinement.** When the view does not change, every new frame shifts the projection by a sub-pixel Halton offset, rotates the AO kernel, moves the PCF sample point and jitters rough reflection directions. The frames are averaged in an accumulation buffer: anti-aliased edges, soft shadow borders and smooth AO appear within a few frames.
 
+## 6b. Threads, temporal anti-aliasing and caches
+
+The high quality pass is split into stages that work on row ranges (`lighting.js`): SSAO, AO blur + lighting, and a post stage (progressive accumulation or TAA). All large buffers (depth, G-buffer, materials, shadow map, history) live in `SharedArrayBuffer`s, so a pool of workers (`pool.js`, `shade-worker.js`) can run the stages in parallel. The frame is cut into chunks of 16 pixel rows dealt out round-robin, which balances cheap sky against expensive reflective parts. There are three barriers per frame: after AO (the blur needs its neighbours), after lighting (TAA needs the 3x3 neighbourhood) and at the end.
+
+Temporal anti-aliasing reconstructs each pixel's world position from the depth buffer, projects it with the previous and the current unjittered view-projection and samples the history at the pixel center plus that motion. Using the motion instead of the jittered position keeps a still image from blurring. The history is sampled with a Catmull-Rom filter, clipped to mean ± 1.25 standard deviations of the current 3x3 neighbourhood (no ghosting on disocclusions and moving parts), and blended with 25% of the new frame, more when the pixel moves fast. When the camera stops, the progressive average is seeded with the history, weighted by the number of frames it represents.
+
+The shadow map is cached on the scene: static casters are drawn once into a base map; meshes marked `dynamic` (animated or being dragged) are drawn per frame onto a copy of it.
+
 ## 7. Why it is fast
 
 | Technique | Effect |

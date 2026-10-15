@@ -133,3 +133,17 @@ test('render_animation returns a contact sheet, export_gif writes a GIF', async 
     assert.equal(readFileSync(info.file).subarray(0, 6).toString(), 'GIF89a');
   } finally { process.chdir(cwd); rmSync(dir, { recursive: true }); }
 });
+
+test('flow moves along the axis, starts over and fades at the ends', async () => {
+  const doc = new SceneDocument();
+  await call(doc, 'add_objects', { objects: [{ shape: { type: 'box' }, material: { emissive: 2 },
+    animation: { flow: { axis: [0, 0, -2], distance: 4, speed: 2, fade: 0.25 } } }] });
+  const o = doc.data.objects[0];
+  near(apply(animatedMatrix(o, 1), [0, 0, 0]), [0, 0, -2], 'halfway after 1 s');
+  near(apply(animatedMatrix(o, 2.5), [0, 0, 0]), [0, 0, -1], 'starts over after distance / speed');
+  assert.equal(animatedEmissive(o, 1), 2, 'full glow in the middle');
+  assert.ok(animatedEmissive(o, 0.1) < 0.6, 'fades in at the start');
+  const m = animatedMatrix(o, 0.1);
+  assert.ok(Math.hypot(m[0], m[1], m[2]) < 0.5, 'grows in at the start');
+  assert.equal((await call(doc, 'set_animation', { id: o.id, animation: { flow: { axis: [0, 0, 0] } } })).isError, true);
+});

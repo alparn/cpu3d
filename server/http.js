@@ -12,7 +12,7 @@ const TYPES = {
   '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.gif': 'image/gif', '.svg': 'image/svg+xml',
   '.obj': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8',
 };
-const STATIC = ['/index.html', '/editor/', '/src/', '/demo/', '/examples/', '/docs/'];
+const STATIC = ['/index.html', '/coi-sw.js', '/editor/', '/src/', '/demo/', '/examples/', '/docs/'];
 const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/;
 const MAX_BODY = 64 * 1024 * 1024;
 
@@ -114,7 +114,9 @@ export function createServer({ doc, root, version, ...renderers }) {
       }
       const data = await readFile(file).catch(() => null);
       if (!data) return json(res, 404, { error: 'not found' });
-      res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+      // cross-origin isolation: lets the editor use SharedArrayBuffer for multi-threaded rendering
+      res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache',
+        'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Embedder-Policy': 'require-corp', 'Cross-Origin-Resource-Policy': 'same-origin' });
       res.end(req.method === 'HEAD' ? undefined : data);
     } catch (e) {
       json(res, 500, { error: e.message });

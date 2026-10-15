@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { Renderer } from '../src/renderer.js';
 import { buildRenderScene, cameraFromState } from '../src/scene.js';
 import { renderContactSheet, renderGIF } from '../src/frames.js';
+import { ShadePool } from '../src/pool.js';
 import { setTextureLoader, loadTextures, isValidTextureSrc } from '../src/textures.js';
 import { encodePNG, decodePNG } from './png.js';
 
@@ -37,21 +38,39 @@ export function renderPNG(doc, { width = 768, height = 512, camera = doc.data.ca
   return encodePNG(r.pixels, width, height);
 }
 
+// one pool of shading threads for the server (render_view, render_animation, export_gif); idle threads
+// do not keep the process alive
+let poolPromise = null;
+export const getPool = () => (poolPromise ??= ShadePool.create());
+
+export async function renderPNGAsync(doc, { width = 768, height = 512, camera = doc.data.camera, shading = 'gouraud', wireframe = false,
+  highlight = [], quality = 'high', samples = 8, time = 0 } = {}) {
+  const r = new Renderer({ width, height }).setPool(await getPool());
+  r.shading = shading;
+  r.wireframe = wireframe;
+  r.quality = quality;
+  const scene = buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: highlight, time });
+  const cam = cameraFromState(camera);
+  const n = quality === 'high' ? Math.max(1, samples) : 1;
+  for (let i = 0; i < n; i++) await r.renderAsync(scene, cam, { accumulate: i > 0 });
+  return encodePNG(r.pixels, width, height);
+}
+
 export async function renderBase64(doc, opts) {
   await preloadTextures(doc);
-  return renderPNG(doc, opts).toString('base64');
+  return (await renderPNGAsync(doc, opts)).toString('base64');
 }
 
 // render_animation: several frames in one PNG
 export async function renderSheet(doc, opts) {
   await preloadTextures(doc);
-  const sheet = renderContactSheet(doc.data, (s) => doc.geometry(s), { samples: 4, ...opts });
+  const sheet = await renderContactSheet(doc.data, (s) => doc.geometry(s), { samples: 4, pool: await getPool(), ...opts });
   return { png: encodePNG(sheet.pixels, sheet.width, sheet.height).toString('base64'), times: sheet.times, columns: sheet.columns };
 }
 
 export async function gifBytes(doc, opts) {
   await preloadTextures(doc);
-  return renderGIF(doc.data, (s) => doc.geometry(s), opts);
+  return renderGIF(doc.data, (s) => doc.geometry(s), { pool: await getPool(), ...opts });
 }
 
 // export_gif: written to <cwd>/exports/<name>.gif (the name is sanitized by the tool)

@@ -207,6 +207,7 @@ Objects move with declarative behaviours, keyframes, or both, so an agent can an
 | `bob` | world `axis`, `amplitude`, `period`, `phase` | floating boats, hovering drones |
 | `orbit` | `center`, `axis`, `speed` | turntables, planets, satellites |
 | `pulse` | `min`, `max`, `period`, `phase`, `blink` | breathing lights, warning beacons |
+| `flow` | world `axis`, `distance`, `speed`, `phase`, `fade` | wind streaks, particles, exhaust, conveyor belts |
 
 ```json
 { "id": "obj_7", "animation": { "spin": { "axis": [0, 0, 1], "speed": -6, "step": 1, "pivot": [0, 0.4, 0] } } }
@@ -275,7 +276,8 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 | Shadows | directional shadow map, adjustable soft edges, cached per scene | none |
 | Ambient occlusion | screen-space AO, half resolution, depth-aware blur | none |
 | Tone mapping | ACES filmic + sRGB | ACES filmic + sRGB |
-| Anti-aliasing | progressive: jittered frames are averaged while the view is still | none |
+| Anti-aliasing | temporal (TAA) while things move, progressive averaging of jittered frames when the view is still | none |
+| Threads | lighting, AO and anti-aliasing on all cores (Web Workers / worker_threads, shared memory) | one |
 
 <img src="docs/before-after.png" alt="Before (left) and after (right): per-vertex lighting versus shadows, ambient occlusion, tone mapping and anti-aliasing" width="100%">
 
@@ -284,6 +286,19 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 <img src="docs/phone-before-after.png" alt="Smartphone scene before and after materials, studio reflections and a textured display" width="100%">
 
 <sub>The Smartphone scene before and after metal and glass materials, studio softbox reflections, a textured display, squircle bodies and camera details. Close-up of the camera module: [docs/phone-camera.png](docs/phone-camera.png).</sub>
+
+### Multi-threaded, temporal, adaptive
+
+- **All cores**: the main thread rasterizes the G-buffer, a pool of workers does the per-pixel work (AO, blur, lighting, anti-aliasing) in row chunks over `SharedArrayBuffer`s. The result is pixel-identical to one thread. The cpu3d server sends the cross-origin isolation headers this needs; on GitHub Pages a tiny service worker (`coi-sw.js`) adds them. Without isolation the editor falls back to one thread.
+- **Temporal anti-aliasing** while orbiting, zooming or playing an animation: every frame is jittered, the previous result is reprojected with motion vectors (Catmull-Rom sampling), clipped to the variance of the current neighbourhood and blended in, faster when things move fast. Edges, AO and soft shadows stay smooth in motion instead of shimmering.
+- **Seamless refinement**: when the view stops, the progressive 16-sample average starts from the temporal history, so there is no drop in quality.
+- **Adaptive resolution**: if a full frame would take longer than about 34 ms, motion is rendered at a reduced resolution (down to 40%) and scaled up; the still image is always full resolution.
+- **Shadow cache**: static objects go into a cached shadow map shared by all renderers; during an animation only the moving objects are drawn again.
+
+| Turbofan, 900×852 in the editor (Apple Silicon, 8 worker threads) | Before | Now |
+|---|---:|---:|
+| Frame while orbiting or playing (with TAA) | ~110 ms | 24 ms |
+| GIF export, 45 frames × 6 samples, 560×350 | 12.7 s | 5.7 s |
 
 The editor refines the image up to 16 samples when the camera stops; `render_view` returns 8-sample renders to agents.
 
@@ -336,7 +351,7 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 
 ## Roadmap
 
-- Multi-threaded tile renderer (Web Workers / worker_threads)
+- Multi-threaded rasterization (the shading is already parallel), per-object motion vectors for TAA
 - Bloom for emissive surfaces, depth of field, glossy floor reflections
 - Path tracing mode for final renders (global illumination)
 - Bevels for box and extrude, crease angle for smoothing groups

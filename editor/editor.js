@@ -2,6 +2,7 @@
 //   live mode  -> POST /api/tools/<name> on the cpu3d server, changes stream back over SSE
 //   local mode -> no server (e.g. GitHub Pages): an in-browser SceneDocument runs the tools
 import { Renderer, Camera } from '../src/renderer.js';
+import { ShadePool } from '../src/pool.js';
 import { SceneDocument, worldBounds, objectMatrix } from '../src/document.js';
 import { buildShape } from '../src/recipes.js';
 import { callTool, pretty } from '../src/tools.js';
@@ -23,8 +24,14 @@ import { renderGIF, renderContactSheet } from '../src/frames.js';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('viewport');
-const renderer = new Renderer({ canvas });
+const view2d = canvas.getContext('2d');
+// two headless renderers: `renderer` at full resolution (still images refine to 16 samples), `quick` at a
+// reduced resolution for motion when a full frame would be too slow; both are blitted to the canvas
+const renderer = new Renderer({ width: 2, height: 2 });
+const quick = new Renderer({ width: 2, height: 2 });
+const blitCanvas = document.createElement('canvas');
 const camera = new Camera();
+let pool = null;
 
 const state = {
   time: 0,                // animation time in seconds
@@ -75,11 +82,11 @@ async function browserRender(doc, o) {
   return pngBase64(r.pixels, o.width, o.height);
 }
 async function browserSheet(doc, o) {
-  const s = renderContactSheet(doc.data, (sh) => doc.geometry(sh), { samples: 2, ...o });
+  const s = await renderContactSheet(doc.data, (sh) => doc.geometry(sh), { samples: 2, pool, ...o });
   return { png: pngBase64(s.pixels, s.width, s.height), times: s.times, columns: s.columns };
 }
 async function browserGif(doc, { name, ...o }) {
-  const gif = await renderGIF(doc.data, (s) => doc.geometry(s), { ...o, onProgress: () => new Promise((r) => setTimeout(r)) });
+  const gif = await renderGIF(doc.data, (s) => doc.geometry(s), { ...o, pool, onProgress: () => new Promise((r) => setTimeout(r)) });
   download(`${name}.gif`, gif.bytes, 'image/gif');
   return { file: `${name}.gif (downloaded by the browser)`, bytes: gif.bytes.length, frames: gif.frames, seconds: gif.seconds };
 }
@@ -770,6 +777,7 @@ function moveSelected(e) {
   if (e.shiftKey) for (const a of d.vertical ? [1] : [0, 2]) pos[a] = Math.round(pos[a] / SNAP) * SNAP;
   d.pos = pos.map((v) => Math.round(v * 1000) / 1000);
   mesh.matrix = objectMatrix({ ...keyed(o, state.time), position: d.pos }); // live preview, committed on release
+  if (!mesh.dynamic) { mesh.dynamic = true; state.renderScene.staticVersion = (state.renderScene.staticVersion || 0) + 1; }
   state.renderScene.version = (state.renderScene.version || 0) + 1; // shadows follow the object
   state.dirty = true;
   canvas.style.cursor = d.vertical ? 'ns-resize' : 'move';
@@ -848,10 +856,10 @@ document.querySelectorAll('[data-open-connect]').forEach((b) => { b.onclick = op
 $('connectBtn').onclick = openConnect;
 $('undoBtn').onclick = () => tool('undo');
 $('redoBtn').onclick = () => tool('redo');
-$('shading').onchange = (e) => { renderer.shading = e.target.value; state.dirty = true; };
-$('wire').onchange = () => { renderer.wireframe = $('wire').checked; state.dirty = true; };
+$('shading').onchange = (e) => { renderer.shading = quick.shading = e.target.value; state.dirty = true; };
+$('wire').onchange = () => { renderer.wireframe = quick.wireframe = $('wire').checked; state.dirty = true; };
 $('res').onchange = () => { state.dirty = true; };
-$('quality').onchange = (e) => { renderer.quality = e.target.value; state.dirty = true; };
+$('quality').onchange = (e) => { renderer.quality = quick.quality = e.target.value; state.dirty = true; };
 
 let toastTimer;
 function toast(msg, kind = 'error') {
@@ -998,7 +1006,7 @@ $('gifGo').onclick = async () => {
   $('gifProgress').hidden = false;
   $('gifResult').hidden = true;
   try {
-    const gif = await renderGIF(scene, geometryFor, { width, height, fps, start, seconds, samples: +$('gifSamples').value, camera,
+    const gif = await renderGIF(scene, geometryFor, { width, height, fps, start, seconds, samples: +$('gifSamples').value, camera, pool,
       onProgress: (done, total) => {
         $('gifProgress').value = done / total;
         $('gifInfo').textContent = `frame ${done} / ${total}`;
@@ -1020,33 +1028,96 @@ $('gifGo').onclick = async () => {
   }
 };
 
+// ---------------------------------------------------------------- render loop
+// Motion (orbit, zoom, playback, dragging) renders with temporal anti-aliasing, at full resolution when
+// that fits the frame budget, otherwise on `quick` at a lower resolution. When everything is still, the
+// full-resolution image refines itself progressively, starting from the temporal history.
+const BUDGET_MS = 34;
+const perf = { fullMs: 0, scale: 1, lastMotion: 0, mainFresh: false, busy: false, frames: 0 };
+
+let blitImage = null;
+function blit(r) {
+  if (!blitImage || blitImage.width !== r.width || blitImage.height !== r.height) {
+    blitCanvas.width = r.width; blitCanvas.height = r.height;
+    blitImage = new ImageData(r.width, r.height);
+  }
+  blitImage.data.set(r.pixels); // the renderer's pixels may live in shared memory, which ImageData does not take
+  blitCanvas.getContext('2d').putImageData(blitImage, 0, 0);
+  view2d.imageSmoothingEnabled = true;
+  view2d.imageSmoothingQuality = 'high';
+  view2d.drawImage(blitCanvas, 0, 0, canvas.width, canvas.height);
+}
+
+// resolution scale for motion: sqrt(budget / cost of a full frame), in steps of 0.1, 0.4 .. 1
+function motionScale(now) {
+  if (!perf.fullMs || renderer.quality !== 'high') return 1;
+  if (now - perf.lastMotion < 400) return perf.scale; // keep it during a motion (stable temporal history)
+  const s = Math.sqrt(BUDGET_MS / perf.fullMs);
+  return s >= 0.9 ? 1 : Math.max(0.4, Math.round(s * 10) / 10);
+}
+
 let lastTick = performance.now();
 function frame() {
   requestAnimationFrame(frame);
   const now = performance.now(), dt = Math.min(0.25, (now - lastTick) / 1000);
   lastTick = now;
-  if (state.exporting) return; // the GIF export has the CPU
+  if (state.exporting || perf.busy) return; // the GIF export has the CPU, or a frame is still being shaded
   if (state.playing && state.renderScene && !drag?.move) setTime((state.time + dt) % duration());
   const res = $('res').value, s = res === 'dpr' ? devicePixelRatio : +res;
   const w = Math.max(1, Math.round(canvas.clientWidth * s)), h = Math.max(1, Math.round(canvas.clientHeight * s));
-  if (w !== renderer.width || h !== renderer.height) { renderer.setSize(w, h); state.dirty = true; }
+  if (w !== canvas.width || h !== canvas.height) { canvas.width = w; canvas.height = h; }
+  if (w !== renderer.width || h !== renderer.height) { renderer.setSize(w, h); perf.mainFresh = false; state.dirty = true; }
   if (!state.renderScene) return;
-  // something changed: render a fresh frame; otherwise refine the high-quality image with one more
-  // jittered sample (anti-aliasing, soft shadows, smoother AO) until MAX_SAMPLES is reached
-  const refine = !state.dirty && renderer.quality === 'high' && renderer.samples < MAX_SAMPLES && !pointers.size;
+  const hq = renderer.quality === 'high';
+  const refine = !state.dirty && hq && !pointers.size && (!perf.mainFresh || renderer.samples < MAX_SAMPLES);
   if (!state.dirty && !refine) return;
+  const motion = state.dirty;
   state.dirty = false;
-  renderer.render(state.renderScene, cameraFromState(state.view, camera), { accumulate: refine });
-  lastMs = renderer.stats.ms;
-  const st = renderer.stats;
-  if (drag?.move) return; // the move readout owns the stats line while dragging
-  const q = renderer.quality === 'high' ? ` · ${renderer.samples}/${MAX_SAMPLES} samples` : '';
-  state.frameStats = `CPU ${lastMs.toFixed(1)} ms · ${st.triangles.toLocaleString('en')} tris · ${st.drawn.toLocaleString('en')} rasterized · ${w}×${h}${q}`;
-  renderStats();
+
+  let r = renderer, opts;
+  if (motion) {
+    perf.scale = motionScale(now);
+    perf.lastMotion = now;
+    if (perf.scale < 1) {
+      r = quick;
+      const qw = Math.max(1, Math.round(w * perf.scale)), qh = Math.max(1, Math.round(h * perf.scale));
+      if (qw !== quick.width || qh !== quick.height) quick.setSize(qw, qh);
+      perf.mainFresh = false;
+    } else perf.mainFresh = true;
+    opts = { temporal: true };
+  } else if (!perf.mainFresh) {
+    opts = {}; // the full-resolution renderer has not seen this view yet: start over
+    perf.mainFresh = true;
+  } else opts = { accumulate: true };
+
+  perf.busy = true;
+  r.renderAsync(state.renderScene, cameraFromState(state.view, camera), opts).then(() => {
+    perf.busy = false;
+    blit(r);
+    const st = r.stats;
+    lastMs = st.ms;
+    // cost estimate of a full-resolution motion frame (the first frames are slow: JIT warm-up, shadow map)
+    if (++perf.frames > 3 && r === renderer && motion) perf.fullMs = perf.fullMs ? perf.fullMs * 0.7 + st.ms * 0.3 : st.ms;
+    if (r === quick && perf.frames > 3) perf.fullMs = perf.fullMs * 0.8 + (st.ms / (perf.scale * perf.scale)) * 0.2;
+    if (drag?.move) return; // the move readout owns the stats line while dragging
+    const q = hq ? (r === quick ? ` · ${Math.round(perf.scale * 100)}% while moving` : motion ? ' · temporal AA' : ` · ${r.samples}/${MAX_SAMPLES} samples`) : '';
+    const threads = pool ? ` · ${pool.size} threads` : '';
+    state.frameStats = `CPU ${lastMs.toFixed(1)} ms${threads} · ${st.triangles.toLocaleString('en')} tris · ${st.drawn.toLocaleString('en')} rasterized · ${r.width}×${r.height}${q}`;
+    renderStats();
+  }, (e) => { perf.busy = false; toast(e.message); });
 }
 
-renderer.onTextureLoad = () => { state.dirty = true; };
-window.cpu3d = { state, tool, renderer }; // handy in devtools
+ShadePool.create().then((p) => {
+  if (!p) return;
+  pool = p;
+  renderer.setPool(p);
+  quick.setPool(p);
+  perf.mainFresh = false;
+  state.dirty = true;
+});
+
+renderer.onTextureLoad = quick.onTextureLoad = () => { state.dirty = true; };
+window.cpu3d = { state, tool, renderer, quick, perf, get pool() { return pool; } }; // handy in devtools
 
 buildAddMenu();
 loadGallery();

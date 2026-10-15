@@ -48,7 +48,7 @@ export function halton(i, b) {
 // ---------------------------------------------------------------- shadow map
 // Orthographic depth render from the light. Stores "closeness" = dot(p, L) (L points to the light),
 // so the standard "greater wins" depth test keeps the surface nearest to the light.
-export function buildShadowMap(meshes, L, center, radius, size) {
+export function buildShadowMap(meshes, L, center, radius, size, alloc = (n) => new Float32Array(n)) {
   const up = Math.abs(L[1]) < 0.95 ? [0, 1, 0] : [1, 0, 0];
   // basis: R, U span the shadow map plane, L is the depth axis
   let R = [up[1] * L[2] - up[2] * L[1], up[2] * L[0] - up[0] * L[2], up[0] * L[1] - up[1] * L[0]];
@@ -58,9 +58,14 @@ export function buildShadowMap(meshes, L, center, radius, size) {
   const scale = size / (2 * radius);
   const ox = R[0] * center[0] + R[1] * center[1] + R[2] * center[2] - radius;
   const oy = U[0] * center[0] + U[1] * center[1] + U[2] * center[2] - radius;
-  const depth = new Float32Array(size * size).fill(-Infinity);
-  const s16 = scale * 16;
+  const sm = { depth: alloc(size * size).fill(-Infinity), size, R, U, L, ox, oy, scale };
+  drawShadowCasters(sm, meshes);
+  return sm;
+}
 
+// Adds meshes to an existing shadow map (moving objects on top of the cached static ones).
+export function drawShadowCasters(sm, meshes) {
+  const { depth, size, R, U, L, ox, oy, scale } = sm, s16 = scale * 16;
   for (const mesh of meshes) {
     if (mesh.castShadow === false) continue;
     const g = mesh.geometry, m = mesh.matrix, P = g.positions, I = g.indices, n = P.length / 3;
@@ -79,7 +84,6 @@ export function buildShadowMap(meshes, L, center, radius, size) {
       rasterDepth(depth, size, X[a], Y[a], Z[a], X[b], Y[b], Z[b], X[c], Y[c], Z[c]);
     }
   }
-  return { depth, size, R, U, L, ox, oy, scale };
 }
 
 // Depth-only triangle rasterizer (same sub-pixel edge functions as the main rasterizer, no culling).
@@ -201,11 +205,76 @@ function aoKernels(frame) {
   return out;
 }
 
-// 4x4 box blur over the half-resolution AO (matches the 4x4 kernel rotation pattern), skipping
+// ---------------------------------------------------------------- staged shading
+// The pass is split into stages that work on row ranges, so they can run on several threads
+// (see pool.js / shade-worker.js) or one after the other (shadePass):
+//   1. aoRows      SSAO at half resolution, block rows [b0, b1)
+//   2. blurRows    depth-aware blur of the AO, block rows [b0, b1)   (needs all of stage 1)
+//      shadeRows   lighting of pixel rows [2*b0, 2*b1)               (needs its own blurred rows)
+//   3. postRows    progressive accumulation or temporal anti-aliasing (needs all of stage 2)
+// Buffers in ctx are typed arrays (shared memory when threads are used); prepare() derives the
+// per-frame tables each thread needs.
+
+export function prepare(ctx) {
+  if (ctx._prep) return ctx._prep;
+  const { W, H, tanX, tanY, jx, jy, ao, frame } = ctx;
+  const colK = new Float32Array(W), rowK = new Float32Array(H);
+  for (let x = 0; x < W; x++) colK[x] = (((x + 0.5) / W) * 2 - 1 - jx) * tanX;
+  for (let y = 0; y < H; y++) rowK[y] = (1 - ((y + 0.5) / H) * 2 - jy) * tanY;
+  return (ctx._prep = { colK, rowK, kernels: ao ? aoKernels(frame) : null, aoW: (W + 1) >> 1, aoH: (H + 1) >> 1 });
+}
+
+// ---- 1. SSAO at half resolution: one value per 2x2 block, taken from a pixel that changes every frame,
+// so progressive accumulation still converges to full resolution
+export function aoRows(ctx, b0, b1) {
+  const { W, H, depth, NX, NY, NZ, MAT, matTwo, R, U, F, tanY, ao, frame, aoRaw, aoDepth } = ctx;
+  const { colK, rowK, kernels, aoW } = prepare(ctx);
+  const aoR = ao.radius, aoR2 = aoR * aoR, aoStr = ao.strength;
+  const focal = H / (2 * tanY), aoMaxPx = Math.max(8, H * 0.08);
+  const fx = frame & 1, fy = (frame >> 1) & 1;
+  for (let by = b0; by < b1; by++) {
+    const y = Math.min(H - 1, by * 2 + fy), ry = rowK[y];
+    for (let bx = 0; bx < aoW; bx++) {
+      const bi = by * aoW + bx, x = Math.min(W - 1, bx * 2 + fx), i = y * W + x, iw = depth[i];
+      aoRaw[bi] = 1;
+      if (iw === 0) { aoDepth[bi] = 0; continue; }
+      const w = 1 / iw, radPx = Math.min(aoMaxPx, (aoR * focal) / w);
+      aoDepth[bi] = w;
+      if (radPx <= 1.5) continue;
+      const vx = colK[x] * w, vy = ry * w, vz = w;
+      let nx = NX[i], ny = NY[i], nz = NZ[i];
+      const nl = 1 / (Math.sqrt(nx * nx + ny * ny + nz * nz) || 1);
+      nx *= nl; ny *= nl; nz *= nl;
+      if (matTwo[MAT[i]] && nx * (R[0] * vx + U[0] * vy + F[0] * vz) + ny * (R[1] * vx + U[1] * vy + F[1] * vz) + nz * (R[2] * vx + U[2] * vy + F[2] * vz) > 0) {
+        nx = -nx; ny = -ny; nz = -nz;
+      }
+      const nvx = nx * R[0] + ny * R[1] + nz * R[2], nvy = nx * U[0] + ny * U[1] + nz * U[2], nvz = nx * F[0] + ny * F[1] + nz * F[2];
+      const ker = kernels[((by & 3) << 2) | (bx & 3)];
+      let occ = 0;
+      for (let s = 0; s < AO_SAMPLES * 2; s += 2) {
+        const sx = (x + ker[s] * radPx) | 0, sy = (y - ker[s + 1] * radPx) | 0;
+        if (sx < 0 || sy < 0 || sx >= W || sy >= H) continue;
+        const siw = depth[sy * W + sx];
+        if (siw === 0) continue;
+        const sw = 1 / siw;
+        const ox = colK[sx] * sw - vx, oy = rowK[sy] * sw - vy, oz = sw - vz;
+        const vv = ox * ox + oy * oy + oz * oz;
+        if (vv > aoR2 || vv < 1e-10) continue;
+        const vn = (ox * nvx + oy * nvy + oz * nvz) / Math.sqrt(vv);
+        if (vn > 0.15) occ += (vn - 0.15) * (1 - vv / aoR2);
+      }
+      let o = 1 - (aoStr * occ) / AO_SAMPLES;
+      if (o < 0) o = 0;
+      aoRaw[bi] = o * o; // stronger contrast in creases, almost no effect on open surfaces
+    }
+  }
+}
+
+// ---- 2a. 4x4 box blur over the half-resolution AO (matches the 4x4 kernel rotation pattern), skipping
 // neighbours at a clearly different depth so occlusion does not bleed across silhouettes.
-function blurAO(src, depth, W, H) {
-  const out = new Float32Array(src.length);
-  for (let y = 0; y < H; y++) {
+export function blurRows(ctx, b0, b1) {
+  const { aoRaw: src, aoDepth: depth, aoBlur: out } = ctx, { aoW: W, aoH: H } = prepare(ctx);
+  for (let y = b0; y < b1; y++) {
     for (let x = 0; x < W; x++) {
       const i = y * W + x, d = depth[i];
       if (d === 0) { out[i] = 1; continue; }
@@ -220,17 +289,13 @@ function blurAO(src, depth, W, H) {
       out[i] = n ? sum / n : src[i];
     }
   }
-  return out;
 }
 
-// ctx: everything the pass needs, prepared by the renderer for this frame
-export function shadePass(ctx) {
-  const { W, H, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, matMetal, matRough, lights, environment, softness, invTone, eye, R, U, F, tanX, tanY, jx, jy,
-    light, tone, shadow, frame, ao, fog, debug } = ctx;
-  const colK = new Float32Array(W), rowK = new Float32Array(H);
-  for (let x = 0; x < W; x++) colK[x] = (((x + 0.5) / W) * 2 - 1 - jx) * tanX;
-  for (let y = 0; y < H; y++) rowK[y] = (1 - ((y + 0.5) / H) * 2 - jy) * tanY;
-
+// ---- 2b. lighting of pixel rows [y0, y1)
+export function shadeRows(ctx, y0, y1) {
+  const { W, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, matMetal, matRough, lights, environment, softness, invTone, eye, R, U, F,
+    light, tone, shadow, frame, ao, fog, debug, aoBlur } = ctx;
+  const { colK, rowK, aoW } = prepare(ctx);
   const { lx, ly, lz, lr, lg, lb, sr, sg, sb, gr, gg, gb } = light;
   const S2L = SRGB_TO_LINEAR;
 
@@ -241,61 +306,12 @@ export function shadePass(ctx) {
   const texel = sm ? 1 / sm.scale : 0, smJu = (halton(frame, 2) - 0.5) * pen, smJv = (halton(frame, 3) - 0.5) * pen;
   const envType = environment ? environment.type : 'none', sky = environment ? environment.sky : null;
   const extra = lights || [], nExtra = extra.length;
-
-  // ssao setup
-  const kernels = ao ? aoKernels(frame) : null;
-  const aoR = ao ? ao.radius : 0, aoR2 = aoR * aoR, aoStr = ao ? ao.strength : 0;
-  const focal = H / (2 * tanY), aoMaxPx = Math.max(8, H * 0.08);
+  const aoBuf = ao ? aoBlur : null;
 
   const fogOn = !!fog, fn = fog ? fog.near : 0, fspan = fog ? Math.max(1e-6, fog.far - fog.near) : 1;
   const fr = fog ? fog.r : 0, fg = fog ? fog.g : 0, fb = fog ? fog.b : 0;
 
-  // ---- SSAO at half resolution: one value per 2x2 block, taken from a pixel that changes every frame,
-  // so progressive accumulation still converges to full resolution
-  const aoW = (W + 1) >> 1, aoH = (H + 1) >> 1;
-  let aoBuf = ao ? new Float32Array(aoW * aoH).fill(1) : null;
-  const aoDepth = ao ? new Float32Array(aoW * aoH) : null; // view depth of each block, for the blur
-  if (ao) {
-    const fx = frame & 1, fy = (frame >> 1) & 1;
-    for (let by = 0; by < aoH; by++) {
-      const y = Math.min(H - 1, by * 2 + fy), ry = rowK[y];
-      for (let bx = 0; bx < aoW; bx++) {
-        const x = Math.min(W - 1, bx * 2 + fx), i = y * W + x, iw = depth[i];
-        if (iw === 0) continue;
-        const w = 1 / iw, radPx = Math.min(aoMaxPx, (aoR * focal) / w);
-        aoDepth[by * aoW + bx] = w;
-        if (radPx <= 1.5) continue;
-        const vx = colK[x] * w, vy = ry * w, vz = w;
-        let nx = NX[i], ny = NY[i], nz = NZ[i];
-        const nl = 1 / (Math.sqrt(nx * nx + ny * ny + nz * nz) || 1);
-        nx *= nl; ny *= nl; nz *= nl;
-        if (matTwo[MAT[i]] && nx * (R[0] * vx + U[0] * vy + F[0] * vz) + ny * (R[1] * vx + U[1] * vy + F[1] * vz) + nz * (R[2] * vx + U[2] * vy + F[2] * vz) > 0) {
-          nx = -nx; ny = -ny; nz = -nz;
-        }
-        const nvx = nx * R[0] + ny * R[1] + nz * R[2], nvy = nx * U[0] + ny * U[1] + nz * U[2], nvz = nx * F[0] + ny * F[1] + nz * F[2];
-        const ker = kernels[((by & 3) << 2) | (bx & 3)];
-        let occ = 0;
-        for (let s = 0; s < AO_SAMPLES * 2; s += 2) {
-          const sx = (x + ker[s] * radPx) | 0, sy = (y - ker[s + 1] * radPx) | 0;
-          if (sx < 0 || sy < 0 || sx >= W || sy >= H) continue;
-          const siw = depth[sy * W + sx];
-          if (siw === 0) continue;
-          const sw = 1 / siw;
-          const ox = colK[sx] * sw - vx, oy = rowK[sy] * sw - vy, oz = sw - vz;
-          const vv = ox * ox + oy * oy + oz * oz;
-          if (vv > aoR2 || vv < 1e-10) continue;
-          const vn = (ox * nvx + oy * nvy + oz * nvz) / Math.sqrt(vv);
-          if (vn > 0.15) occ += (vn - 0.15) * (1 - vv / aoR2);
-        }
-        let o = 1 - (aoStr * occ) / AO_SAMPLES;
-        if (o < 0) o = 0;
-        aoBuf[by * aoW + bx] = o * o; // stronger contrast in creases, almost no effect on open surfaces
-      }
-    }
-    aoBuf = blurAO(aoBuf, aoDepth, aoW, aoH);
-  }
-
-  for (let y = 0; y < H; y++) {
+  for (let y = y0; y < y1; y++) {
     const ry = rowK[y], row = y * W;
     for (let x = 0; x < W; x++) {
       const i = row + x, iw = depth[i];
@@ -414,3 +430,118 @@ export function shadePass(ctx) {
   }
 }
 
+// ---- 3. post: running average of jittered frames (progressive refinement of a still image).
+// acc holds display-space sums; accN is the sample count after adding this frame (1 = start over).
+// seedHist / seedW: start the sum from the temporal history, counted as seedW samples.
+export function accumulateRows(ctx, y0, y1) {
+  const { W, color: c, acc, accN: n, seedHist: sh, seedW } = ctx, inv = 1 / n;
+  const i0 = y0 * W, i1 = y1 * W;
+  if (n === 1) {
+    for (let i = i0, k = i0 * 3; i < i1; i++, k += 3) { const v = c[i]; acc[k] = v & 255; acc[k + 1] = (v >>> 8) & 255; acc[k + 2] = (v >>> 16) & 255; }
+    return;
+  }
+  if (sh) for (let k = i0 * 3, e = i1 * 3; k < e; k++) acc[k] = sh[k] * seedW;
+  for (let i = i0, k = i0 * 3; i < i1; i++, k += 3) {
+    const v = c[i];
+    const r = (acc[k] += v & 255), g = (acc[k + 1] += (v >>> 8) & 255), b = (acc[k + 2] += (v >>> 16) & 255);
+    c[i] = 0xff000000 | (((b * inv + 0.5) | 0) << 16) | (((g * inv + 0.5) | 0) << 8) | ((r * inv + 0.5) | 0);
+  }
+}
+
+// ---- 3. post: temporal anti-aliasing for moving images (camera moves, animation).
+// Each pixel is reprojected into the previous frame with the previous (unjittered) view-projection,
+// the history is clamped to the 3x3 neighbourhood of the current frame (no ghosting on moving or
+// uncovered parts) and blended in. Jitter, AO and soft shadow noise average out over ~10 frames.
+// histPrev / histNext: Float32 rgb in display space; prevVP / currVP: unjittered view-projections;
+// taa.valid = false starts over.
+export function temporalRows(ctx, y0, y1) {
+  const { colK, rowK } = prepare(ctx);
+  // one call per row: V8 optimizes the row function as a whole instead of on-stack replacing inner loops
+  for (let y = y0; y < y1; y++) taaRow(ctx, colK, rowK[y], y);
+}
+
+function taaRow(ctx, colK, ry, y) {
+  const { W, H, depth, color: c, eye, R, U, F, taa } = ctx;
+  const { prevVP: M, currVP: Q, histPrev: hp, histNext: hn, valid, alpha } = taa;
+  {
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x, v = c[i], k = i * 3;
+      const cr = v & 255, cg = (v >>> 8) & 255, cb = (v >>> 16) & 255;
+      let a = 1, hr = 0, hg = 0, hb = 0;
+      const iw = depth[i];
+      if (valid) {
+        // where was this surface (or, for the background, this view direction) in the previous frame?
+        let wx, wy, wz, ww;
+        const w = iw === 0 ? 1e4 : 1 / iw, vx = colK[x] * w, vy = ry * w;
+        const dx = R[0] * vx + U[0] * vy + F[0] * w, dy = R[1] * vx + U[1] * vy + F[1] * w, dz = R[2] * vx + U[2] * vy + F[2] * w;
+        if (iw === 0) { wx = dx; wy = dy; wz = dz; ww = 0; } else { wx = eye[0] + dx; wy = eye[1] + dy; wz = eye[2] + dz; ww = 1; }
+        const cx = M[0] * wx + M[4] * wy + M[8] * wz + M[12] * ww, cy = M[1] * wx + M[5] * wy + M[9] * wz + M[13] * ww;
+        const cw = M[3] * wx + M[7] * wy + M[11] * wz + M[15] * ww;
+        const qx = Q[0] * wx + Q[4] * wy + Q[8] * wz + Q[12] * ww, qy = Q[1] * wx + Q[5] * wy + Q[9] * wz + Q[13] * ww;
+        const qw = Q[3] * wx + Q[7] * wy + Q[11] * wz + Q[15] * ww;
+        if (cw > 1e-6 && qw > 1e-6) {
+          // motion = unjittered position then minus unjittered position now; applied to the pixel center,
+          // so a still image samples the history exactly (no blur from the jitter)
+          const px = x + ((cx / cw - qx / qw) * 0.5) * W, py = y - ((cy / cw - qy / qw) * 0.5) * H;
+          const x0 = Math.floor(px), y0h = Math.floor(py);
+          if (x0 >= 1 && y0h >= 1 && x0 < W - 2 && y0h < H - 2) {
+            // Catmull-Rom (bicubic) history sample: bilinear would blur the image a bit more every frame
+            const fx = px - x0, fy = py - y0h;
+            const ax = crw(fx), ay = crw(fy);
+            hr = 0; hg = 0; hb = 0;
+            for (let m = 0; m < 4; m++) {
+              const wy = ay[m], j = ((y0h - 1 + m) * W + x0 - 1) * 3;
+              const w0 = ax[0] * wy, w1 = ax[1] * wy, w2 = ax[2] * wy, w3 = ax[3] * wy;
+              hr += hp[j] * w0 + hp[j + 3] * w1 + hp[j + 6] * w2 + hp[j + 9] * w3;
+              hg += hp[j + 1] * w0 + hp[j + 4] * w1 + hp[j + 7] * w2 + hp[j + 10] * w3;
+              hb += hp[j + 2] * w0 + hp[j + 5] * w1 + hp[j + 8] * w2 + hp[j + 11] * w3;
+            }
+            // neighbourhood clamp: min / max of the 3x3 pixels around (unrolled, borders repeat)
+            const rm = (y > 0 ? y - 1 : y) * W, r0 = y * W, rp = (y < H - 1 ? y + 1 : y) * W, xm = x > 0 ? x - 1 : x, xp = x < W - 1 ? x + 1 : x;
+            // variance clipping: mean +- 1.25 standard deviations of the 3x3 neighbourhood (tighter than min / max)
+            let sr = cr, sg = cg, sb = cb, qr = cr * cr, qg = cg * cg, qb = cb * cb, u = 0, t = 0;
+            u = c[rm + xm]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            u = c[rm + x]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            u = c[rm + xp]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            u = c[r0 + xm]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            u = c[r0 + xp]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            u = c[rp + xm]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            u = c[rp + x]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            u = c[rp + xp]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
+            const mr = sr / 9, mg = sg / 9, mb = sb / 9;
+            const dr = 1.25 * Math.sqrt(Math.max(0, qr / 9 - mr * mr)) + 2, dg = 1.25 * Math.sqrt(Math.max(0, qg / 9 - mg * mg)) + 2, db = 1.25 * Math.sqrt(Math.max(0, qb / 9 - mb * mb)) + 2;
+            hr = hr < mr - dr ? mr - dr : hr > mr + dr ? mr + dr : hr;
+            hg = hg < mg - dg ? mg - dg : hg > mg + dg ? mg + dg : hg;
+            hb = hb < mb - db ? mb - db : hb > mb + db ? mb + db : hb;
+            // fast motion: trust the new frame more (resampling the history blurs a little every frame)
+            const speed = Math.abs(px - x) + Math.abs(py - y);
+            a = alpha + (speed > 8 ? 0.4 : speed * 0.05);
+            if (a > 1) a = 1;
+          }
+        }
+      }
+      const r = hr + (cr - hr) * a, g = hg + (cg - hg) * a, b = hb + (cb - hb) * a;
+      hn[k] = r; hn[k + 1] = g; hn[k + 2] = b;
+      c[i] = 0xff000000 | (((b + 0.5) | 0) << 16) | (((g + 0.5) | 0) << 8) | ((r + 0.5) | 0);
+    }
+  }
+}
+
+// Catmull-Rom weights for the 4 taps around a sample at fraction t (two reused arrays: x and y)
+const CRW = [new Float64Array(4), new Float64Array(4)];
+let crwSlot = 0;
+function crw(t) {
+  const w = CRW[(crwSlot ^= 1)], t2 = t * t, t3 = t2 * t;
+  w[0] = -0.5 * t3 + t2 - 0.5 * t;
+  w[1] = 1.5 * t3 - 2.5 * t2 + 1;
+  w[2] = -1.5 * t3 + 2 * t2 + 0.5 * t;
+  w[3] = 0.5 * t3 - 0.5 * t2;
+  return w;
+}
+
+// All stages on the calling thread.
+export function shadePass(ctx) {
+  const { aoH } = prepare(ctx);
+  if (ctx.ao) { aoRows(ctx, 0, aoH); blurRows(ctx, 0, aoH); }
+  shadeRows(ctx, 0, ctx.H);
+}

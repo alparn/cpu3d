@@ -6,9 +6,10 @@
 //                   exact per-row span solving (no wasted pixel tests), 1/w depth buffer
 //
 // The canvas is only used at the very end to blit the finished frame (putImageData).
+// With a worker pool (setPool) the per-pixel shading runs on several threads over shared memory.
 
 import { mat4 } from './math.js';
-import { buildToneLUT, buildInverseToneLUT, buildShadowMap, shadePass, halton, SRGB_TO_LINEAR, TONE_SCALE, TONE_MAX_V, TONE_LAST, WIRE_MATERIAL } from './lighting.js';
+import { buildToneLUT, buildInverseToneLUT, buildShadowMap, drawShadowCasters, shadePass, accumulateRows, temporalRows, halton, SRGB_TO_LINEAR, TONE_SCALE, TONE_MAX_V, TONE_LAST, WIRE_MATERIAL } from './lighting.js';
 import { getTexture } from './textures.js';
 
 const GUARD = 8; // guard band (in NDC units): only triangles crossing it are clipped in x/y
@@ -130,12 +131,10 @@ export class Renderer {
     this._toneExposure = this.exposure;
     this._tv = new Float64Array(33); // 3 vertices x [x, y, 1/w, nx/w, ny/w, nz/w, r, g, b, u/w, v/w]
     this._fn = new Float64Array(3);
-    this._matSpec = new Float32Array(65536);
-    this._matShin = new Float32Array(65536);
-    this._matTwo = new Uint8Array(65536);
-    this._matEmis = new Float32Array(65536);
-    this._matMetal = new Float32Array(65536);
-    this._matRough = new Float32Array(65536);
+    this.pool = null;
+    this._shared = false;
+    this._allocMaterials();
+    this.temporalAlpha = 0.25; // weight of the new frame in temporal anti-aliasing (more when things move fast)
     this.onTextureLoad = null; // called when a texture finished loading (the editor redraws)
     this._proj = mat4.create();
     this._view = mat4.create();
@@ -150,18 +149,50 @@ export class Renderer {
     this.setSize(width, height);
   }
 
+  // typed array, in shared memory when a worker pool shades the frames
+  _alloc(Type, n) {
+    return this._shared ? new Type(new SharedArrayBuffer(n * Type.BYTES_PER_ELEMENT)) : new Type(n);
+  }
+
+  _allocMaterials() {
+    this._matSpec = this._alloc(Float32Array, 65536);
+    this._matShin = this._alloc(Float32Array, 65536);
+    this._matTwo = this._alloc(Uint8Array, 65536);
+    this._matEmis = this._alloc(Float32Array, 65536);
+    this._matMetal = this._alloc(Float32Array, 65536);
+    this._matRough = this._alloc(Float32Array, 65536);
+  }
+
+  // Use a ShadePool (pool.js) for renderAsync; null goes back to single-threaded rendering.
+  setPool(pool) {
+    const shared = !!pool;
+    this.pool = pool;
+    if (shared !== this._shared) {
+      this._shared = shared;
+      this._allocMaterials();
+      this._tone = this._alloc(Float32Array, 65536);
+      this._tone.set(buildToneLUT(this.exposure));
+      this.setSize(this.width, this.height);
+    }
+    return this;
+  }
+
   setSize(width, height) {
     const w = Math.max(1, width | 0), h = Math.max(1, height | 0);
     if (this.canvas) {
       this.canvas.width = w;
       this.canvas.height = h;
       this.image = this.ctx.createImageData(w, h);
-      this.pixels = this.image.data;
-    } else {
-      this.pixels = new Uint8ClampedArray(w * h * 4);
     }
-    this.color = new Uint32Array(this.pixels.buffer); // little-endian ABGR
-    this.depth = new Float32Array(w * h); // stores 1/w, 0 = infinitely far
+    if (this.canvas && this._shared) {
+      // canvas pixels cannot live in shared memory: shade into shared buffers, copy at the end
+      this.pixels = this.image.data;
+      this.color = this._alloc(Uint32Array, w * h);
+    } else {
+      this.pixels = this.canvas ? this.image.data : this._shared ? new Uint8ClampedArray(new SharedArrayBuffer(w * h * 4)) : new Uint8ClampedArray(w * h * 4);
+      this.color = new Uint32Array(this.pixels.buffer); // little-endian ABGR
+    }
+    this.depth = this._alloc(Float32Array, w * h); // stores 1/w, 0 = infinitely far
     this.width = w;
     this.height = h;
     this._bgKey = '';
@@ -173,9 +204,15 @@ export class Renderer {
   _ensureGBuffer() {
     const n = this.width * this.height;
     if (this._gNX && this._gNX.length === n) return;
-    this._gNX = new Float32Array(n); this._gNY = new Float32Array(n); this._gNZ = new Float32Array(n);
-    this._gMat = new Uint16Array(n);
-    this._acc = new Float32Array(n * 3);
+    const A = (T, k) => this._alloc(T, k);
+    this._gNX = A(Float32Array, n); this._gNY = A(Float32Array, n); this._gNZ = A(Float32Array, n);
+    this._gMat = A(Uint16Array, n);
+    this._acc = A(Float32Array, n * 3);
+    const ao = ((this.width + 1) >> 1) * ((this.height + 1) >> 1);
+    this._aoRaw = A(Float32Array, ao); this._aoDepth = A(Float32Array, ao); this._aoBlur = A(Float32Array, ao);
+    this._hist = [A(Float32Array, n * 3), A(Float32Array, n * 3)]; // temporal history (ping-pong)
+    this._histWeight = 0; // how many frames the history roughly represents (0 = none)
+    this._prevVP = new Float64Array(16);
     this._accN = 0;
   }
 
@@ -211,20 +248,51 @@ export class Renderer {
   }
 
   // opts.accumulate: same view as the previous call -> add one more jittered sample to the
-  // high-quality image (progressive anti-aliasing, soft shadows, smoother AO). Otherwise start over.
+  // high-quality image (progressive anti-aliasing, soft shadows, smoother AO).
+  // opts.temporal: the view or the scene moved -> blend with the reprojected previous frames (TAA).
+  // Otherwise start over.
   render(scene, camera, opts = {}) {
-    const t0 = performance.now();
+    const ctx = this._begin(scene, camera, opts);
+    if (ctx) {
+      shadePass(ctx);
+      this._post(ctx, 0, this.height);
+    }
+    return this._end(ctx);
+  }
+
+  // Same as render, with the shading spread over the worker pool (falls back to render without one).
+  async renderAsync(scene, camera, opts = {}) {
+    if (!this.pool) return this.render(scene, camera, opts);
+    const ctx = this._begin(scene, camera, opts);
+    if (ctx) await this.pool.shade(ctx);
+    return this._end(ctx);
+  }
+
+  // stage 3 on one thread (the pool runs the same functions per row range)
+  _post(ctx, y0, y1) {
+    if (ctx.post === 'accumulate') accumulateRows(ctx, y0, y1);
+    else temporalRows(ctx, y0, y1);
+  }
+
+  _begin(scene, camera, opts) {
+    this._t0 = performance.now();
     const st = this.stats;
     st.meshes = st.triangles = st.drawn = st.clipped = st.pixels = 0;
+    st.shadeMs = 0;
     const W = this.width, H = this.height;
     const hq = this.quality === 'high' && this.shading !== 'normals';
     if (hq) this._ensureGBuffer();
-    const accumulate = hq && opts.accumulate && this._accN > 0;
-    const frame = accumulate ? this._accN : 0;
-    const jx = accumulate ? ((halton(frame, 2) - 0.5) * 2) / W : 0, jy = accumulate ? ((halton(frame, 3) - 0.5) * 2) / H : 0;
+    // jitter index: progressive samples count up, temporal frames cycle through 16 positions
+    const accumulate = hq && opts.accumulate && (this._accN > 0 || this._histWeight > 0);
+    const temporal = hq && !accumulate && opts.temporal;
+    let frame = 0;
+    if (accumulate) frame = this._accN > 0 ? this._accN : this._histWeight;
+    else if (temporal) frame = (this._taaFrame = ((this._taaFrame || 0) % 16) + 1);
+    const jx = frame ? ((halton(frame, 2) - 0.5) * 2) / W : 0, jy = frame ? ((halton(frame, 3) - 0.5) * 2) / H : 0;
     this._clear(scene.background);
 
     mat4.perspective(this._proj, (camera.fov * Math.PI) / 180, W / H, camera.near, camera.far);
+    const unjittered = hq ? mat4.multiply(new Float64Array(16), this._proj, mat4.lookAt(this._view, camera.position, camera.target, camera.up)) : null;
     this._proj[8] -= jx; // sub-pixel jitter: shifts geometry by (jx, jy) in NDC
     this._proj[9] -= jy;
     mat4.lookAt(this._view, camera.position, camera.target, camera.up);
@@ -232,7 +300,8 @@ export class Renderer {
     this._extractPlanes();
 
     if (this.exposure !== this._toneExposure) {
-      this._tone = buildToneLUT(this.exposure);
+      const lut = buildToneLUT(this.exposure);
+      if (this._shared) this._tone.set(lut); else this._tone = lut;
       this._invTone = buildInverseToneLUT(this._tone);
       this._toneExposure = this.exposure;
     }
@@ -258,36 +327,66 @@ export class Renderer {
     this._hq = hq;
     this._matCount = 0;
     for (const mesh of scene.meshes) if (mesh.visible) this._drawMesh(mesh);
+    this._rasterMs = performance.now() - this._t0;
+    if (!hq) return null;
 
-    if (hq) {
-      const eye = camera.position;
-      const F = norm3(sub3(camera.target, eye)), R = norm3(cross3(F, camera.up)), U = cross3(R, F);
-      const tanY = Math.tan((camera.fov * Math.PI) / 360), viewDist = Math.hypot(...sub3(camera.target, eye));
-      const ts = performance.now();
-      shadePass({
-        W, H, depth: this.depth, color: this.color, NX: this._gNX, NY: this._gNY, NZ: this._gNZ, MAT: this._gMat,
-        matSpec: this._matSpec, matShin: this._matShin, matTwo: this._matTwo, matEmis: this._matEmis,
-        matMetal: this._matMetal, matRough: this._matRough,
-        lights: (scene.lights || []).map((x) => {
-          const dd = x.direction, ll = Math.hypot(dd[0], dd[1], dd[2]) || 1, k = this.sunIntensity * (x.intensity ?? 0.5);
-          return { x: dd[0] / ll, y: dd[1] / ll, z: dd[2] / ll, r: lin(x.color[0]) * k, g: lin(x.color[1]) * k, b: lin(x.color[2]) * k };
-        }),
-        environment: this._environment(scene),
-        softness: light.softness ?? 0.1,
-        invTone: this._invTone,
-        eye, R, U, F, tanX: tanY * (W / H), tanY, jx, jy, frame, light: L, tone: this._tone,
-        shadow: this.shadows ? this._shadowFor(scene, camera, [L.lx, L.ly, L.lz]) : null,
-        ao: this.ao ? { radius: Math.min(4, Math.max(0.08, viewDist * 0.045)), strength: this.aoStrength } : null,
-        fog: L.fog ? { near: L.fn, far: L.ff, r: L.fr, g: L.fg, b: L.fb } : null,
-        debug: this.debug,
-      });
-      st.shadeMs = performance.now() - ts;
-      this._accumulate(accumulate);
+    const eye = camera.position;
+    const F = norm3(sub3(camera.target, eye)), R = norm3(cross3(F, camera.up)), U = cross3(R, F);
+    const tanY = Math.tan((camera.fov * Math.PI) / 360), viewDist = Math.hypot(...sub3(camera.target, eye));
+    const ctx = {
+      W, H, depth: this.depth, color: this.color, NX: this._gNX, NY: this._gNY, NZ: this._gNZ, MAT: this._gMat,
+      matSpec: this._matSpec, matShin: this._matShin, matTwo: this._matTwo, matEmis: this._matEmis,
+      matMetal: this._matMetal, matRough: this._matRough,
+      lights: (scene.lights || []).map((x) => {
+        const dd = x.direction, ll = Math.hypot(dd[0], dd[1], dd[2]) || 1, k = this.sunIntensity * (x.intensity ?? 0.5);
+        return { x: dd[0] / ll, y: dd[1] / ll, z: dd[2] / ll, r: lin(x.color[0]) * k, g: lin(x.color[1]) * k, b: lin(x.color[2]) * k };
+      }),
+      environment: this._environment(scene),
+      softness: light.softness ?? 0.1,
+      invTone: this._invTone,
+      eye: [...eye], R, U, F, tanX: tanY * (W / H), tanY, jx, jy, frame, light: { ...L, tone: undefined, invTone: undefined }, tone: this._tone,
+      shadow: this.shadows ? this._shadowFor(scene, camera, [L.lx, L.ly, L.lz]) : null,
+      ao: this.ao ? { radius: Math.min(4, Math.max(0.08, viewDist * 0.045)), strength: this.aoStrength } : null,
+      aoRaw: this._aoRaw, aoDepth: this._aoDepth, aoBlur: this._aoBlur,
+      fog: L.fog ? { near: L.fn, far: L.ff, r: L.fr, g: L.fg, b: L.fb } : null,
+      debug: this.debug,
+    };
+    if (accumulate) {
+      // the first refinement sample starts from the temporal history (no quality drop when motion stops)
+      const seed = this._accN === 0;
+      ctx.post = 'accumulate';
+      ctx.acc = this._acc;
+      ctx.seedHist = seed ? this._hist[0] : null;
+      ctx.seedW = seed ? this._histWeight : 0;
+      ctx.accN = seed ? this._histWeight + 1 : this._accN + 1;
+    } else {
+      const valid = temporal && this._histWeight > 0;
+      ctx.post = 'temporal';
+      ctx.taa = { prevVP: this._prevVP, currVP: unjittered, histPrev: this._hist[0], histNext: this._hist[1], valid, alpha: this.temporalAlpha };
+      this._histWeight = valid ? Math.min(8, this._histWeight + 1) : 1;
+      this._nextVP = unjittered;
     }
-    this.samples = hq ? this._accN : 1;
+    this._shadeT0 = performance.now();
+    return ctx;
+  }
 
-    st.ms = performance.now() - t0;
-    if (this.ctx) this.ctx.putImageData(this.image, 0, 0);
+  _end(ctx) {
+    const st = this.stats;
+    if (ctx) {
+      st.shadeMs = performance.now() - this._shadeT0;
+      if (ctx.post === 'accumulate') this._accN = ctx.accN;
+      else {
+        this._hist.reverse(); // the history just written becomes the previous one
+        this._prevVP.set(this._nextVP);
+        this._accN = 0;
+      }
+    }
+    this.samples = ctx ? (ctx.post === 'accumulate' ? this._accN : this._histWeight) : 1;
+    st.ms = performance.now() - this._t0;
+    if (this.canvas) {
+      if (this.color.buffer !== this.pixels.buffer) new Uint32Array(this.pixels.buffer).set(this.color);
+      this.ctx.putImageData(this.image, 0, 0);
+    }
     return this;
   }
 
@@ -298,24 +397,10 @@ export class Renderer {
     return { type, sky: { tr: lin(top[0]), tg: lin(top[1]), tb: lin(top[2]), br: lin(bottom[0]), bg: lin(bottom[1]), bb: lin(bottom[2]) } };
   }
 
-  // Running average of jittered frames.
-  _accumulate(add) {
-    const c = this.color, acc = this._acc, n = c.length;
-    if (!add) {
-      for (let i = 0, k = 0; i < n; i++, k += 3) { const v = c[i]; acc[k] = v & 255; acc[k + 1] = (v >>> 8) & 255; acc[k + 2] = (v >>> 16) & 255; }
-      this._accN = 1;
-      return;
-    }
-    const cnt = ++this._accN, inv = 1 / cnt;
-    for (let i = 0, k = 0; i < n; i++, k += 3) {
-      const v = c[i];
-      const r = (acc[k] += v & 255), g = (acc[k + 1] += (v >>> 8) & 255), b = (acc[k + 2] += (v >>> 16) & 255);
-      c[i] = 0xff000000 | (((b * inv + 0.5) | 0) << 16) | (((g * inv + 0.5) | 0) << 8) | ((r * inv + 0.5) | 0);
-    }
-  }
-
-  // Shadow map around the area of interest; cached until the scene, light or framing changes.
-  // A scene can set `version` (incremented when meshes move) to invalidate the cache.
+  // Shadow map around the area of interest. Meshes marked `dynamic` (animated, dragged) are kept out of
+  // a cached base map; when the scene's `version` changes only they are drawn again, on a copy of it.
+  // The cache lives on the scene, so renderers drawing the same scene (editor: full + reduced resolution)
+  // share it. `staticVersion` invalidates the base (e.g. an object starts being dragged).
   _shadowFor(scene, camera, L) {
     let min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
     const casters = scene.meshes.filter((m) => m.visible);
@@ -333,13 +418,22 @@ export class Renderer {
     radius = 1.25 ** Math.ceil(Math.log(radius) / Math.log(1.25)); // quantize so small camera moves keep the cache
     const step = radius / 16;
     center = center.map((v) => Math.round(v / step) * step);
-    const key = `${scene.version || 0}|${L}|${center}|${radius}|${this.shadowSize}`;
-    if (this._smScene !== scene || this._smKey !== key) {
-      this._sm = buildShadowMap(casters, L, center, radius, this.shadowSize);
-      this._smScene = scene;
-      this._smKey = key;
+    const layout = `${L}|${center}|${radius}|${this.shadowSize}|${scene.staticVersion || 0}`;
+    const alloc = (n) => this._alloc(Float32Array, n);
+    const caches = (scene._shadow ??= {}), slot = this._shared ? 'shared' : 'local';
+    let e = caches[slot];
+    if (!e || e.layout !== layout) {
+      e = caches[slot] = { layout, base: buildShadowMap(casters.filter((m) => !m.dynamic), L, center, radius, this.shadowSize, alloc), sm: null, version: null };
     }
-    return this._sm;
+    const dynamic = casters.filter((m) => m.dynamic);
+    if (!dynamic.length) return e.base;
+    if (e.version !== (scene.version || 0) || !e.sm) {
+      e.sm ??= { ...e.base, depth: alloc(e.base.depth.length) };
+      e.sm.depth.set(e.base.depth);
+      drawShadowCasters(e.sm, dynamic);
+      e.version = scene.version || 0;
+    }
+    return e.sm;
   }
 
   // Frustum planes (Gribb/Hartmann) for bounding-sphere culling of whole meshes.

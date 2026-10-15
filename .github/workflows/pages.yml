@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Collect static files
-        run: mkdir _site && cp -r index.html editor src demo examples docs _site/
+        run: mkdir _site && cp -r index.html coi-sw.js editor src demo examples docs _site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

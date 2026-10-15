@@ -7,6 +7,14 @@
   <meta name="description" content="Agentic-first 3D modeling. Connect Claude or any agent over MCP and watch it build geometry, rendered on the CPU.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 28 10v12L16 29 4 22V10z' fill='%23f59e42'/%3E%3Cpath d='M16 3v26M4 10l12 7 12-7' stroke='%23161a20' stroke-width='2' fill='none'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="editor/editor.css">
+  <script>
+    // multi-threaded rendering needs cross-origin isolation; on static hosts a service worker adds the headers
+    if (!self.crossOriginIsolated && 'serviceWorker' in navigator && location.protocol === 'https:') {
+      navigator.serviceWorker.register('coi-sw.js').then(() => navigator.serviceWorker.ready).then(() => {
+        if (!navigator.serviceWorker.controller && !sessionStorage.getItem('cpu3d-coi')) { sessionStorage.setItem('cpu3d-coi', '1'); location.reload(); }
+      }).catch(() => {});
+    }
+  </script>
 </head>
 <body>
   <header class="topbar">

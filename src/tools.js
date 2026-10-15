@@ -213,6 +213,9 @@ Behaviours (combine freely):
   bob   { axis: world [0,1,0], amplitude, period: s, phase }      up/down (floating boat)
   orbit { center: [x,y,z], axis, speed: deg/s }                   rigid rotation around a world axis (turntable, planets)
   pulse { min, max, period: s, phase, blink: bool }               scales emissive (glowing, blinking lights)
+  flow  { axis: world [1,0,0], distance, speed: units/s, phase, fade: 0..0.5 }   moves along the axis and starts over,
+        growing in and shrinking out at the ends: wind streaks, particles, exhaust, rain, conveyor belts.
+        Tip: a radial array of thin glowing cylinders with flow (and spin for swirl) reads as airflow.
 Without pivot, spin/swing turn around the object's own origin and LOCAL axis; with pivot, around a WORLD axis through that point
 (use the same pivot for parts that must move together).
 Keyframes: keys: [{ t: seconds, position?, rotation? (deg), scale?, emissive? }], ease: "smooth" (default, eases in and out
