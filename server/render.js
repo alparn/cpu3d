@@ -1,9 +1,10 @@
 // Headless rendering for render_view and the CLI: CPU renderer -> PNG, no browser or GPU needed.
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Renderer } from '../src/renderer.js';
 import { buildRenderScene, cameraFromState } from '../src/scene.js';
+import { renderContactSheet, renderGIF } from '../src/frames.js';
 import { setTextureLoader, loadTextures, isValidTextureSrc } from '../src/textures.js';
 import { encodePNG, decodePNG } from './png.js';
 
@@ -40,3 +41,28 @@ export async function renderBase64(doc, opts) {
   await preloadTextures(doc);
   return renderPNG(doc, opts).toString('base64');
 }
+
+// render_animation: several frames in one PNG
+export async function renderSheet(doc, opts) {
+  await preloadTextures(doc);
+  const sheet = renderContactSheet(doc.data, (s) => doc.geometry(s), { samples: 4, ...opts });
+  return { png: encodePNG(sheet.pixels, sheet.width, sheet.height).toString('base64'), times: sheet.times, columns: sheet.columns };
+}
+
+export async function gifBytes(doc, opts) {
+  await preloadTextures(doc);
+  return renderGIF(doc.data, (s) => doc.geometry(s), opts);
+}
+
+// export_gif: written to <cwd>/exports/<name>.gif (the name is sanitized by the tool)
+export async function saveGif(doc, { name = 'animation', ...opts }) {
+  const t0 = performance.now(), gif = await gifBytes(doc, opts);
+  const dir = resolve(process.cwd(), 'exports'), file = resolve(dir, `${name}.gif`);
+  if (!file.startsWith(dir + sep)) throw new Error('invalid file name');
+  await mkdir(dir, { recursive: true });
+  await writeFile(file, gif.bytes);
+  return { file, bytes: gif.bytes.length, frames: gif.frames, seconds: gif.seconds, ms: Math.round(performance.now() - t0) };
+}
+
+// everything the tools need for images, as one context object
+export const renderers = { render: renderBase64, renderSheet, saveGif };

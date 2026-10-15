@@ -30,7 +30,32 @@
     "ground": false
   },
   "animation": {
-    "duration": 45
+    "duration": 45,
+    "camera": {
+      "keys": [
+        {
+          "t": 0,
+          "yaw": 38,
+          "pitch": 24,
+          "distance": 40,
+          "target": [2, 0, 0]
+        },
+        {
+          "t": 22.5,
+          "yaw": 100,
+          "pitch": 12,
+          "distance": 33
+        },
+        {
+          "t": 45,
+          "yaw": 38,
+          "pitch": 24,
+          "distance": 40,
+          "target": [2, 0, 0]
+        }
+      ],
+      "ease": "spline"
+    }
   },
   "objects": [
     {

@@ -18,7 +18,8 @@ setTextureLoader(async (src) => {
   return { width: bmp.width, height: bmp.height, data: ctx.getImageData(0, 0, bmp.width, bmp.height).data };
 });
 import { buildRenderScene, cameraFromState, pick, frameBounds, unionBounds, exportOBJ, screenRay, raycast, rayPlane,
-  updateAnimation, sceneHasAnimation } from '../src/scene.js';
+  updateAnimation, sceneHasAnimation, cameraAt, hasCameraPath, keyed } from '../src/scene.js';
+import { renderGIF, renderContactSheet } from '../src/frames.js';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('viewport');
@@ -29,6 +30,8 @@ const state = {
   time: 0,                // animation time in seconds
   playing: false,
   userPaused: false,      // the user paused: do not auto-play again
+  followPath: true,       // the view follows the scene's camera path (orbiting leaves it)
+  exporting: false,       // a GIF is being rendered: the viewport pauses
   mode: 'connecting',     // 'live' | 'local'
   scene: null,
   revision: -1,
@@ -56,16 +59,31 @@ function geometryFor(shape) {
 }
 
 // ---------------------------------------------------------------- tools
+function pngBase64(pixels, width, height) {
+  const c = document.createElement('canvas');
+  c.width = width; c.height = height;
+  c.getContext('2d').putImageData(new ImageData(pixels, width, height), 0, 0);
+  return c.toDataURL('image/png').split(',')[1];
+}
+
+// local mode: the image tools render in the browser
 async function browserRender(doc, o) {
   const r = new Renderer({ width: o.width, height: o.height });
   r.shading = o.shading || 'gouraud';
   r.wireframe = !!o.wireframe;
   r.render(buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: o.highlight, time: o.time || 0 }), cameraFromState(o.camera));
-  const c = document.createElement('canvas');
-  c.width = o.width; c.height = o.height;
-  c.getContext('2d').putImageData(new ImageData(r.pixels, o.width, o.height), 0, 0);
-  return c.toDataURL('image/png').split(',')[1];
+  return pngBase64(r.pixels, o.width, o.height);
 }
+async function browserSheet(doc, o) {
+  const s = renderContactSheet(doc.data, (sh) => doc.geometry(sh), { samples: 2, ...o });
+  return { png: pngBase64(s.pixels, s.width, s.height), times: s.times, columns: s.columns };
+}
+async function browserGif(doc, { name, ...o }) {
+  const gif = await renderGIF(doc.data, (s) => doc.geometry(s), { ...o, onProgress: () => new Promise((r) => setTimeout(r)) });
+  download(`${name}.gif`, gif.bytes, 'image/gif');
+  return { file: `${name}.gif (downloaded by the browser)`, bytes: gif.bytes.length, frames: gif.frames, seconds: gif.seconds };
+}
+const localRenderers = { render: browserRender, renderSheet: browserSheet, saveGif: browserGif };
 
 async function tool(name, args = {}) {
   let result;
@@ -76,7 +94,7 @@ async function tool(name, args = {}) {
       });
       result = await res.json();
     } else {
-      result = await callTool(localDoc, name, args, { source: 'you', render: browserRender });
+      result = await callTool(localDoc, name, args, { source: 'you', ...localRenderers });
     }
   } catch (e) {
     result = { isError: true, content: [{ type: 'text', text: e.message }] };
@@ -241,9 +259,11 @@ function renderInspector() {
   const name = Object.assign(document.createElement('input'), { type: 'text', value: o.name });
   name.onchange = () => upd({ name: name.value });
   box.append(field('Name', name));
-  box.append(field('Position', vecInputs(o.position, 0.1, (v) => upd({ position: v }))));
-  box.append(field('Rotation°', vecInputs(o.rotation, 5, (v) => upd({ rotation: v }))));
-  box.append(field('Scale', vecInputs(o.scale, 0.1, (v) => upd({ scale: v }))));
+  // keyframed objects show (and key) their pose at the current time
+  const pose = keyed(o, state.time);
+  box.append(field('Position', vecInputs(pose.position, 0.1, (v) => setTransform(o.id, { position: v }))));
+  box.append(field('Rotation°', vecInputs(pose.rotation, 5, (v) => setTransform(o.id, { rotation: v }))));
+  box.append(field('Scale', vecInputs(pose.scale, 0.1, (v) => setTransform(o.id, { scale: v }))));
 
   const color = Object.assign(document.createElement('input'), { type: 'color', value: o.material.color });
   color.onchange = () => upd({ material: { color: color.value } });
@@ -308,8 +328,17 @@ function renderInspector() {
   // animation: presets plus the editable JSON (same format the set_animation tool takes)
   const ah = document.createElement('div');
   ah.className = 'subhead';
-  ah.innerHTML = `<span>Animation</span><span>${o.animation ? Object.keys(o.animation).join(' + ') : 'none'}</span>`;
+  ah.innerHTML = `<span>Animation</span><span>${o.animation ? Object.keys(o.animation).filter((k) => k !== 'ease').join(' + ') : 'none'}</span>`;
   box.append(ah);
+  const keys = o.animation?.keys || [], here = keys.find((k) => Math.abs(k.t - state.time) < 0.005);
+  const krow = document.createElement('div');
+  krow.className = 'actions';
+  const kinfo = Object.assign(document.createElement('span'), { className: 'muted small',
+    textContent: keys.length ? `${keys.length} key${keys.length > 1 ? 's' : ''} · ${o.animation.ease}` : 'no keyframes' });
+  krow.append(Object.assign(document.createElement('button'), { className: 'btn', textContent: `◆ Key at ${state.time.toFixed(2)} s`, title: 'Record the current pose (K)', onclick: setKeyHere }));
+  if (here) krow.append(Object.assign(document.createElement('button'), { className: 'btn', textContent: 'Delete key', onclick: () => tool('set_keyframe', { id: o.id, time: here.t, remove: true }) }));
+  krow.append(kinfo);
+  box.append(krow);
   const setAnim = (animation) => {
     state.userPaused = false;
     tool('set_animation', { id: o.id, animation });
@@ -393,7 +422,7 @@ function pushActivity(a) {
   if (a.source !== 'you') {
     state.lastAgentAt = Date.now();
     $('working').hidden = false;
-    if (a.camera && $('follow').checked) { state.view = structuredClone(a.camera); state.dirty = true; }
+    if (a.camera && $('follow').checked) { leavePath(); state.view = structuredClone(a.camera); state.dirty = true; }
   }
   renderActivity(true);
 }
@@ -423,6 +452,7 @@ function focusObjects(ids) {
   const objs = state.scene.objects.filter((o) => ids.includes(o.id) && o.visible);
   if (!objs.length) return;
   const b = unionBounds(objs.map((o) => worldBounds(o, geometryFor(o.shape))));
+  leavePath();
   state.view = { ...state.view, ...frameBounds(b, state.view) };
   state.dirty = true;
 }
@@ -481,6 +511,7 @@ function download(name, content, type) {
 async function fileAction(kind) {
   $('fileMenu').hidden = true;
   if (kind === 'import') return $('fileInput').click();
+  if (kind === 'gif') return openGifDialog();
   if (kind === 'obj') {
     const r = await tool('export_obj', {});
     if (r.isError) return;
@@ -690,7 +721,8 @@ canvas.addEventListener('pointerdown', (e) => {
   if (e.button === 0 && mesh && pointers.size === 1) {
     const ray = rayAt(e), hit = raycast([mesh], ray.origin, ray.dir);
     if (hit) {
-      drag = { ...drag, pan: false, move: true, id: o.id, start: [...o.position], pos: [...o.position],
+      const pose = keyed(o, state.time);
+      drag = { ...drag, pan: false, move: true, id: o.id, start: [...pose.position], pos: [...pose.position],
         grabPoint: [0, 1, 2].map((a) => ray.origin[a] + ray.dir[a] * hit.distance) };
       moveBase(e, drag);
     }
@@ -705,7 +737,7 @@ canvas.addEventListener('pointermove', (e) => {
   if (pointers.size === 2) {
     if (drag?.move) cancelMove();
     const [a, b] = [...pointers.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
-    if (pinch) state.view.distance = Math.max(0.2, Math.min(500, state.view.distance * (pinch / d)));
+    if (pinch) { leavePath(); state.view.distance = Math.max(0.2, Math.min(500, state.view.distance * (pinch / d))); }
     pinch = d;
     state.dirty = true;
     return;
@@ -713,6 +745,7 @@ canvas.addEventListener('pointermove', (e) => {
   if (!drag) return;
   drag.moved += Math.abs(dx) + Math.abs(dy);
   if (drag.move) return moveSelected(e);
+  leavePath();
   const v = state.view;
   if (drag.pan) {
     const y = (v.yaw * Math.PI) / 180, s = v.distance * 0.0016;
@@ -736,7 +769,7 @@ function moveSelected(e) {
   else { pos[0] += hit[0] - d.grab[0]; pos[2] += hit[2] - d.grab[2]; }
   if (e.shiftKey) for (const a of d.vertical ? [1] : [0, 2]) pos[a] = Math.round(pos[a] / SNAP) * SNAP;
   d.pos = pos.map((v) => Math.round(v * 1000) / 1000);
-  mesh.matrix = objectMatrix({ ...o, position: d.pos }); // live preview, committed on release
+  mesh.matrix = objectMatrix({ ...keyed(o, state.time), position: d.pos }); // live preview, committed on release
   state.renderScene.version = (state.renderScene.version || 0) + 1; // shadows follow the object
   state.dirty = true;
   canvas.style.cursor = d.vertical ? 'ns-resize' : 'move';
@@ -764,7 +797,7 @@ const endPointer = (e) => {
     const { id, pos, start } = drag;
     drag = null;
     canvas.style.cursor = '';
-    if (e.type === 'pointerup' && pos.some((v, i) => v !== start[i])) tool('update_object', { id, position: pos });
+    if (e.type === 'pointerup' && pos.some((v, i) => v !== start[i])) setTransform(id, { position: pos });
     else rebuild();
     return;
   }
@@ -779,18 +812,20 @@ canvas.addEventListener('pointerup', endPointer);
 canvas.addEventListener('pointercancel', endPointer);
 canvas.addEventListener('wheel', (e) => {
   e.preventDefault();
+  leavePath();
   state.view.distance = Math.max(0.2, Math.min(500, state.view.distance * Math.exp(e.deltaY * 0.001)));
   state.dirty = true;
 }, { passive: false });
 
 addEventListener('keydown', (e) => {
-  if (e.target.matches?.('input, textarea, select') || $('connectDialog').open || $('galleryDialog').open) return;
+  if (e.target.matches?.('input, textarea, select') || $('connectDialog').open || $('galleryDialog').open || $('gifDialog').open) return;
   const mod = e.metaKey || e.ctrlKey;
   if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); tool(e.shiftKey ? 'redo' : 'undo'); }
   else if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicateSelected(); }
   else if (e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
   else if (e.key === 'Escape') { if (drag?.move) cancelMove(); else select(null); }
   else if (e.code === 'Space' && !$('timeline').hidden) { e.preventDefault(); togglePlay(); }
+  else if ((e.key === 'k' || e.key === 'K') && !mod) setKeyHere();
   else if (e.key === 'f' || e.key === 'F') focusObjects(state.selected ? [state.selected] : state.scene.objects.map((o) => o.id));
   else if (e.shiftKey && !mod && e.code === 'KeyN') { e.preventDefault(); newScene('empty'); }
   else if (e.key === 'w' || e.key === 'W') { $('wire').checked = !$('wire').checked; $('wire').onchange(); }
@@ -843,43 +878,154 @@ let lastMs = 0;
 const MAX_SAMPLES = 16;
 // ---------------------------------------------------------------- animation timeline
 const duration = () => state.scene?.animation?.duration || 12;
+const round2 = (t) => Math.round(t * 100) / 100;
 
 function syncTimeline() {
   const animated = !!state.scene && sceneHasAnimation(state.scene);
-  $('timeline').hidden = !animated;
+  // always there once the scene has objects, so the first keyframe can be set
+  $('timeline').hidden = !state.scene?.objects.length;
   $('timeSlider').max = duration();
-  if (!animated) { state.playing = false; state.time = 0; }
+  if (!animated) state.playing = false;
   else if (!state.playing && !state.userPaused) state.playing = true; // animated scenes start playing
+  if (state.time > duration()) state.time = 0;
+  $('camBtn').hidden = !hasCameraPath(state.scene);
+  $('camBtn').classList.toggle('on', state.followPath);
+  renderKeyMarks();
+  followPath();
   showTime();
+}
+
+// diamonds above the slider: keys of the selected object (orange) and of the camera path (blue)
+function renderKeyMarks() {
+  const o = selectedObject(), d = duration(), marks = [];
+  const add = (t, cls) => {
+    const m = document.createElement('i');
+    m.className = cls;
+    m.dataset.t = t;
+    m.style.left = `${Math.min(100, (t / d) * 100)}%`;
+    m.title = `${cls === 'cam' ? 'Camera' : o.name} key at ${t} s`;
+    m.onclick = () => { state.playing = false; state.userPaused = true; setTime(t); };
+    marks.push(m);
+  };
+  for (const k of o?.animation?.keys || []) add(k.t, '');
+  if (!o) for (const k of state.scene?.animation?.camera?.keys || []) add(k.t, 'cam');
+  $('keyMarks').replaceChildren(...marks);
 }
 
 function showTime() {
   $('playBtn').textContent = state.playing ? '❚❚' : '▶';
   $('timeSlider').value = state.time;
   $('timeLabel').textContent = `${state.time.toFixed(2)} s`;
+  for (const m of $('keyMarks').children) m.classList.toggle('on', Math.abs(+m.dataset.t - state.time) < 0.005);
+}
+
+function followPath() {
+  if (!state.followPath || !state.scene || !hasCameraPath(state.scene)) return;
+  state.view = structuredClone(cameraAt(state.scene, state.time));
+  state.dirty = true;
+}
+
+// the user moved the view: stop following the camera path until 🎥 is pressed again
+function leavePath() {
+  if (!state.followPath || !hasCameraPath(state.scene)) return;
+  state.followPath = false;
+  $('camBtn').classList.remove('on');
 }
 
 function setTime(t) {
   state.time = t;
   if (state.renderScene) updateAnimation(state.renderScene, t);
+  followPath();
   state.dirty = true;
   showTime();
+  // a paused, keyframed selection shows its pose at this time in the inspector
+  if (!state.playing && selectedObject()?.animation?.keys) renderInspector();
 }
 
 function togglePlay() {
   state.playing = !state.playing;
   state.userPaused = !state.playing;
   showTime();
+  if (!state.playing) renderInspector();
+}
+
+// transform edits: objects with keyframes get a key at the current time, others change their base transform
+function setTransform(id, patch) {
+  const o = state.scene.objects.find((x) => x.id === id);
+  if (o?.animation?.keys) return tool('set_keyframe', { id, time: round2(state.time), ...patch });
+  return tool('update_object', { id, ...patch });
+}
+
+// ◆ / K: key the selected object's pose, or the view as a camera path key when nothing is selected
+function setKeyHere() {
+  const o = selectedObject(), time = round2(state.time);
+  state.playing = false;
+  state.userPaused = true;
+  if (o) {
+    const p = keyed(o, state.time);
+    return tool('set_keyframe', { id: o.id, time, position: p.position, rotation: p.rotation, scale: p.scale });
+  }
+  const v = state.view;
+  state.followPath = true;
+  const r = (x) => Math.round(x * 1000) / 1000;
+  return tool('set_keyframe', { id: 'camera', time, yaw: r(v.yaw), pitch: r(v.pitch), distance: r(v.distance), target: v.target.map(r) });
 }
 
 $('playBtn').onclick = togglePlay;
 $('timeSlider').oninput = (e) => { state.playing = false; state.userPaused = true; setTime(+e.target.value); };
+$('keyBtn').onclick = setKeyHere;
+$('camBtn').onclick = () => { state.followPath = !state.followPath; $('camBtn').classList.toggle('on', state.followPath); followPath(); };
+
+// ---------------------------------------------------------------- GIF export (rendered in the browser)
+let gifUrl = null;
+function openGifDialog() {
+  const d = duration();
+  $('gifStart').value = 0;
+  $('gifSeconds').value = Math.min(d, 6);
+  $('gifCamera').value = hasCameraPath(state.scene) ? 'path' : 'view';
+  $('gifInfo').textContent = sceneHasAnimation(state.scene) ? `timeline ${d} s` : 'this scene has no animation yet (the GIF will be a still)';
+  $('gifDialog').showModal();
+}
+
+$('gifGo').onclick = async () => {
+  if (state.exporting || !state.scene) return;
+  const width = +$('gifWidth').value, height = Math.round((width * canvas.clientHeight) / canvas.clientWidth / 2) * 2;
+  const fps = +$('gifFps').value, seconds = Math.max(0.5, Math.min(20, +$('gifSeconds').value || 6)), start = Math.max(0, +$('gifStart').value || 0);
+  const camera = $('gifCamera').value === 'view' ? structuredClone(state.view) : null;
+  const scene = structuredClone(state.scene), t0 = performance.now();
+  state.exporting = true;
+  $('gifGo').disabled = true;
+  $('gifProgress').hidden = false;
+  $('gifResult').hidden = true;
+  try {
+    const gif = await renderGIF(scene, geometryFor, { width, height, fps, start, seconds, samples: +$('gifSamples').value, camera,
+      onProgress: (done, total) => {
+        $('gifProgress').value = done / total;
+        $('gifInfo').textContent = `frame ${done} / ${total}`;
+        return new Promise((r) => setTimeout(r));
+      } });
+    if (gifUrl) URL.revokeObjectURL(gifUrl);
+    gifUrl = URL.createObjectURL(new Blob([gif.bytes], { type: 'image/gif' }));
+    $('gifImg').src = gifUrl;
+    $('gifLink').href = gifUrl;
+    $('gifLink').textContent = `Download · ${fmtBytes(gif.bytes.length)}`;
+    $('gifResult').hidden = false;
+    $('gifInfo').textContent = `${gif.frames} frames · ${width}×${height} · ${fmtBytes(gif.bytes.length)} · ${((performance.now() - t0) / 1000).toFixed(1)} s on the CPU`;
+  } catch (e) {
+    toast(e.message);
+  } finally {
+    state.exporting = false;
+    $('gifGo').disabled = false;
+    $('gifProgress').hidden = true;
+  }
+};
 
 let lastTick = performance.now();
 function frame() {
   requestAnimationFrame(frame);
   const now = performance.now(), dt = Math.min(0.25, (now - lastTick) / 1000);
   lastTick = now;
+  if (state.exporting) return; // the GIF export has the CPU
   if (state.playing && state.renderScene && !drag?.move) setTime((state.time + dt) % duration());
   const res = $('res').value, s = res === 'dpr' ? devicePixelRatio : +res;
   const w = Math.max(1, Math.round(canvas.clientWidth * s)), h = Math.max(1, Math.round(canvas.clientHeight * s));

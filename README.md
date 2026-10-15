@@ -136,7 +136,10 @@ curl -X POST http://localhost:8173/api/tools/add_objects \
 | `load_scene` | Replace the whole scene with a scene document |
 | `set_camera` | Set the scene camera, or `focus` on objects to frame them |
 | `set_environment` | Background gradient, fog, light, ground grid |
-| `set_animation` | Make objects move: `spin`, `swing`, `bob`, `orbit`, `pulse` (combinable), and the timeline length |
+| `set_animation` | Make objects move: behaviours (`spin`, `swing`, `bob`, `orbit`, `pulse`), keyframes, a camera path, the timeline length |
+| `set_keyframe` | Add, merge or delete one keyframe of an object or of the camera path |
+| `render_animation` | **One image with several frames of the animation**, so the agent sees the motion at a glance |
+| `export_gif` | Render an animated GIF with motion blur (saved to `exports/`, downloaded in the browser editor) |
 | `probe_height` | Raycast down at `[x, z]` points: where is the surface? Place things on terrain or on other objects |
 | `render_view` | **Render a PNG and return it to the agent**, with optional camera, focus, shading, wireframe, highlight and animation `time` |
 | `export_obj` / `import_obj` | Wavefront OBJ out and in |
@@ -193,7 +196,9 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 
 ### Animation
 
-Objects move with declarative behaviours instead of keyframes, so an agent can animate a whole machine in a few calls. Behaviours combine freely and are evaluated per frame. Geometry is never rebuilt, only the object matrix and the glow change.
+<p align="center"><img src="docs/engine.gif" alt="Turbofan animation rendered by cpu3d gif" width="560"></p>
+
+Objects move with declarative behaviours, keyframes, or both, so an agent can animate a whole machine in a few calls. Everything is evaluated per frame. Geometry is never rebuilt, only the object matrix and the glow change.
 
 | Behaviour | Parameters | Good for |
 |---|---|---|
@@ -207,7 +212,25 @@ Objects move with declarative behaviours instead of keyframes, so an agent can a
 { "id": "obj_7", "animation": { "spin": { "axis": [0, 0, 1], "speed": -6, "step": 1, "pivot": [0, 0.4, 0] } } }
 ```
 
-Without `pivot`, spin and swing turn around the object's own origin and local axis; with `pivot`, around a world axis through that point, so several parts can turn as one. The timeline loops after `duration` seconds (default 12). Agents check the motion with `render_view({ time: 2.5 })`, and the CLI does the same with `cpu3d render --time 2.5`. Every gallery scene is animated: the watch ticks, the turbofan spins, the station rotates, the city beacons blink, the lighthouse lantern pulses while a boat rocks on the sea.
+Without `pivot`, spin and swing turn around the object's own origin and local axis; with `pivot`, around a world axis through that point, so several parts can turn as one. The timeline loops after `duration` seconds (default 12).
+
+**Keyframes** replace the base transform over time; behaviours are applied on top. Each channel (`position`, `rotation`, `scale`, `emissive`) is interpolated between the keys that define it, with `ease` set to `smooth` (eases in and out at each key), `linear`, `spline` (a smooth curve through all keys, good for flight paths) or `step`:
+
+```json
+{ "id": "obj_3", "animation": { "ease": "spline", "keys": [
+  { "t": 0, "position": [0, 2, 0] }, { "t": 3, "position": [4, 3, 1], "rotation": [0, 90, 0] }, { "t": 6, "position": [0, 2, 0] } ] } }
+```
+
+A **camera path** works the same way for `yaw`, `pitch`, `distance` and `target`: `set_animation({ camera: { keys: [{ "t": 0, "yaw": 0 }, { "t": 12, "yaw": 360 }], ease: "linear" } })` is a turntable. `set_keyframe` adds one key at a time, for objects or for `"camera"`.
+
+Agents check the motion with `render_animation` (one contact sheet with several frames) or `render_view({ time: 2.5 })`. The CLI renders stills and GIFs:
+
+```bash
+cpu3d render examples/watch.json still.png --time 2.5
+cpu3d gif examples/city.json city.gif --width 480 --height 300 --fps 15 --seconds 6
+```
+
+GIFs are rendered in high quality with **motion blur** (each frame averages several samples spread over the shutter time), one stable palette for the whole clip and delta frames, so a mostly static shot stays small. Every gallery scene is animated: the watch ticks under a slow camera move, the turbofan spins, the station rotates, a blimp flies a keyframed spline loop around the city while the beacons blink, and the lighthouse lantern pulses while a boat rocks on the sea.
 
 ## The editor
 
@@ -216,7 +239,10 @@ Without `pivot`, spin and swing turn around the object's own origin and local ax
 - Click to select (CPU ray picking), then **drag the selected object with the mouse** to move it on the ground; hold **Alt** to move it up/down, **Shift** to snap to a 0.25 m grid. Each drag is one `update_object` call, so it is undoable and visible to agents
 - Outliner, inspector (transform, material, editable JSON recipe), undo/redo
 - **New scene** (File menu, `Shift+N`, or the top of the gallery): an empty stage with ground grid, or a ready photo studio with podium and softboxes
-- **Timeline**: animated scenes play automatically; play/pause and scrub at the bottom of the viewport. The inspector has animation presets (spin, swing, bob, pulse) and a JSON field for the full set
+- **Timeline**: animated scenes play automatically; play/pause and scrub at the bottom of the viewport, with diamonds for the keys of the selected object (or of the camera path)
+- **Keyframing**: `◆` or `K` records the selected object's pose at the current time (with nothing selected: the view as a camera path key). Once an object has keys, moving it or editing its transform sets a key at the current time. `🎥` toggles following the camera path; orbiting the view leaves it
+- The inspector has animation presets (spin, swing, bob, pulse) and a JSON field for behaviours and keys
+- **Export animated GIF** (File menu): rendered in the browser with motion blur, with size, frame rate, clip and camera options
 - Gallery of example scenes; add menu with presets; OBJ and scene JSON import/export
 - Size readouts: what the scene weighs as `scene.json` and as `.obj`, geometry RAM, and the same for the selected object; load and download times and sizes are reported too
 - **High quality** rendering with shadows and ambient occlusion that refines itself when the view is still, or **Fast** mode
@@ -225,7 +251,7 @@ Without `pivot`, spin and swing turn around the object's own origin and local ax
 
 Mouse: drag rotate · shift/right-drag pan · wheel zoom · click select · drag selected object to move (Alt up/down, Shift snap)
 
-Keyboard: `Space` play/pause · `Shift+N` new scene · `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` cancel move / deselect
+Keyboard: `Space` play/pause · `K` keyframe · `Shift+N` new scene · `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` cancel move / deselect
 
 ## Rendering on the CPU
 
@@ -317,7 +343,7 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 - Groups and hierarchy, boolean operations (CSG)
 - Textures with perspective-correct UVs
 - glTF export
-- Keyframes and camera paths, GIF/video export of animations
+- Groups / parenting for keyframed assemblies, video (MP4/WebM) export
 - MCP resources for scenes and live notifications
 
 Ideas and pull requests are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md).

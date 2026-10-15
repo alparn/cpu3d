@@ -9,7 +9,7 @@ import { createMcpHandler } from './mcp.js';
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml',
+  '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.gif': 'image/gif', '.svg': 'image/svg+xml',
   '.obj': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8',
 };
 const STATIC = ['/index.html', '/editor/', '/src/', '/demo/', '/examples/', '/docs/'];
@@ -37,8 +37,9 @@ function readBody(req) {
   });
 }
 
-export function createServer({ doc, root, version, render }) {
-  const mcp = createMcpHandler({ doc, render, version });
+// renderers: { render, renderSheet, saveGif } (see server/render.js), passed to the tools as context
+export function createServer({ doc, root, version, ...renderers }) {
+  const mcp = createMcpHandler({ doc, version, ...renderers });
   const sessions = new Map();
   const clients = new Set();
 
@@ -93,7 +94,7 @@ export function createServer({ doc, root, version, render }) {
       if (path.startsWith('/api/tools/') && req.method === 'POST') {
         const name = decodeURIComponent(path.slice('/api/tools/'.length));
         const args = await readBody(req);
-        const result = await callTool(doc, name, args, { source: req.headers['x-cpu3d-client'] || 'http-agent', render });
+        const result = await callTool(doc, name, args, { source: req.headers['x-cpu3d-client'] || 'http-agent', ...renderers });
         return json(res, result.isError ? 400 : 200, result);
       }
       if (path === '/events') {

@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Keyframes**: `animation.keys` with `position`, `rotation`, `scale` and `emissive` channels and `ease` smooth / linear / spline (Catmull-Rom through all keys) / step; behaviours apply on top
+- **Camera paths**: `animation.camera` with yaw / pitch / distance / target keys; the editor follows the path while playing, `render_view(time)` and exports use it
+- **GIF export**: dependency-free encoder (median-cut palette shared by the clip, ordered dithering, delta frames cropped to the changed area, LZW); frames are rendered with motion blur. In the editor (File → Export animated GIF), as `cpu3d gif` and as the `export_gif` tool
+- New tools `set_keyframe` (add, merge or delete single keys of objects or the camera) and `render_animation` (contact sheet of several frames for agents); `set_animation` takes `camera`
+- Editor: `◆` / `K` records keys, transform edits and mouse moves of keyed objects set keys at the current time, key diamonds on the timeline, camera path toggle, timeline usable on phones
+- Gallery: camera moves for the watch, turbofan, station and city; a blimp flies a keyframed spline loop around the city
+- Behaviours with a phase are now also applied at t = 0 (no jump when the timeline loops)
 - **Animation**: declarative behaviours per object (`spin` with optional ticking `step`, `swing`, `bob`, `orbit`, `pulse` for glow, each with an optional `pivot`), evaluated per frame without rebuilding geometry; scene `animation.duration` sets the looping timeline
 - New tool `set_animation`; `render_view` and `cpu3d render` take `time`
 - Editor: timeline with play/pause and scrubbing (`Space`), animated scenes play automatically, animation presets and JSON in the inspector

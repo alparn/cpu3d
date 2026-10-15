@@ -3,7 +3,8 @@
 
 import { SHAPE_REFERENCE, SHAPE_TYPES } from './recipes.js';
 import { parseOBJ } from './geometry.js';
-import { frameBounds, unionBounds, buildRenderScene, raycast, exportOBJ } from './scene.js';
+import { frameBounds, unionBounds, buildRenderScene, raycast, exportOBJ, cameraAt } from './scene.js';
+import { normalizeCameraPath } from './document.js';
 
 export const AGENT_GUIDE = `cpu3d is a 3D modeling workspace. You build scenes from JSON shape recipes
 (primitives, lathe, extrude, sweep, tube, terrain, raw meshes); a CPU renderer draws them and a human
@@ -15,6 +16,8 @@ Workflow:
 3. Create with add_objects (several objects per call), adjust with update_object.
 4. ALWAYS call render_view after changes and look at the image. Fix what looks wrong.
    Use focus to frame specific objects and different yaw/pitch to check from several sides.
+
+5. To animate, use set_animation (behaviours, keyframes, camera path) and check the motion with render_animation.
 
 World: Y up, ground at y = 0, meters, rotations in degrees, colors as "#rrggbb".`;
 
@@ -70,8 +73,10 @@ function compactShape(shape) {
   return { type: 'mesh', vertices: shape.positions.length / 3, triangles: shape.indices.length / 3 };
 }
 
+// camera for a render: the scene camera (or the camera path at args.time), then focus and explicit overrides
 function resolveCamera(doc, args) {
-  let cam = { ...doc.data.camera };
+  const t = typeof args.time === 'number' && Number.isFinite(args.time) ? Math.max(0, args.time) : 0;
+  let cam = { ...(args.camera_path === false ? doc.data.camera : cameraAt(doc.data, t)) };
   if (args.focus) {
     const ids = args.focus === 'all' ? doc.data.objects.filter((o) => o.visible).map((o) => o.id) : args.focus;
     cam = { ...cam, ...frameBounds(unionBounds(ids.map((id) => doc.bounds(doc.getObject(id)))), cam) };
@@ -201,35 +206,82 @@ export const TOOLS = [
   },
   {
     name: 'set_animation',
-    description: `Animates an object with declarative behaviours (combine freely), or sets the timeline length.
+    description: `Animates an object with behaviours and/or keyframes, sets a camera path, or the timeline length.
+Behaviours (combine freely):
   spin  { axis: [0,1,0], speed: deg/s, step?: seconds (ticking clock hands), pivot?: [x,y,z] }
   swing { axis, amplitude: deg, period: s, phase: 0..1, pivot? }   oscillating rotation (pendulum, balance wheel)
   bob   { axis: world [0,1,0], amplitude, period: s, phase }      up/down (floating boat)
   orbit { center: [x,y,z], axis, speed: deg/s }                   rigid rotation around a world axis (turntable, planets)
   pulse { min, max, period: s, phase, blink: bool }               scales emissive (glowing, blinking lights)
 Without pivot, spin/swing turn around the object's own origin and LOCAL axis; with pivot, around a WORLD axis through that point
-(use the same pivot for parts that must move together). animation: null removes it. Check the motion with render_view(time).`,
+(use the same pivot for parts that must move together).
+Keyframes: keys: [{ t: seconds, position?, rotation? (deg), scale?, emissive? }], ease: "smooth" (default, eases in and out
+at every key) | "linear" | "spline" (smooth curve through all keys, for flight paths) | "step". Keys replace the base transform
+(channels without keys keep it); behaviours are applied on top. Values hold before the first and after the last key.
+Camera path: camera: { keys: [{ t, yaw?, pitch?, distance?, target? }], ease: "spline" } (null removes it); a turntable is
+{ keys: [{ t: 0, yaw: 0 }, { t: 12, yaw: 360 }], ease: "linear" }. The timeline loops after duration seconds.
+animation: null removes an object's animation. Check motion with render_animation (one image with several frames) or render_view(time).`,
     inputSchema: {
       type: 'object',
       properties: {
-        id: { type: 'string', description: 'Object to animate (omit to only change the timeline duration)' },
-        animation: { type: ['object', 'null'] },
+        id: { type: 'string', description: 'Object to animate' },
+        animation: { type: ['object', 'null'], description: 'Behaviours and/or keys + ease (replaces the previous animation of the object)' },
+        camera: { type: ['object', 'null'], description: 'Camera path { keys, ease }, or null to remove it' },
         duration: { type: 'number', description: 'Timeline length in seconds (playback loops), default 12' },
       },
     },
     run: (doc, a, act) => {
-      if (a.duration !== undefined) {
-        if (typeof a.duration !== 'number' || a.duration < 1 || a.duration > 3600) throw new Error('"duration" must be 1..3600 seconds');
-        if (a.id === undefined) {
-          doc.commit(act(`set the timeline to ${a.duration} s`), (d) => { d.animation = { ...(d.animation || {}), duration: a.duration }; });
-          return text({ duration: a.duration });
-        }
+      if (a.id === undefined && a.duration === undefined && a.camera === undefined) throw new Error('give "id" + "animation", "camera" and/or "duration"');
+      if (a.duration !== undefined && (typeof a.duration !== 'number' || a.duration < 1 || a.duration > 3600)) throw new Error('"duration" must be 1..3600 seconds');
+      const out = {};
+      if (a.id !== undefined) {
+        if (a.animation === undefined) throw new Error('"animation" is required with "id" (null removes it)');
+        const kinds = a.animation ? Object.keys(a.animation).join(', ') : 'removed';
+        const o = doc.updateObject(a.id, { animation: a.animation ?? null }, act(`animated ${doc.getObject(a.id).name} (${kinds})`));
+        Object.assign(out, { id: o.id, animation: o.animation ?? null });
       }
-      if (a.id === undefined) throw new Error('"id" is required (or give only "duration")');
-      const kinds = a.animation ? Object.keys(a.animation).join(', ') : 'removed';
-      const o = doc.updateObject(a.id, { animation: a.animation ?? null }, act(`animated ${doc.getObject(a.id).name} (${kinds})`));
-      if (a.duration !== undefined) doc.commit(act(`set the timeline to ${a.duration} s`), (d) => { d.animation = { ...(d.animation || {}), duration: a.duration }; });
-      return text({ id: o.id, animation: o.animation ?? null, hint: 'Check it with render_view at a few different time values.' });
+      if (a.camera !== undefined || a.duration !== undefined) {
+        const path = a.camera === undefined ? undefined : normalizeCameraPath(a.camera);
+        const what = [a.camera !== undefined && (path ? `a camera path with ${path.keys.length} keys` : 'no camera path'), a.duration !== undefined && `${a.duration} s`].filter(Boolean).join(', ');
+        doc.commit(act(`set the timeline: ${what}`), (d) => {
+          d.animation = { ...(d.animation || { duration: 12 }) };
+          if (a.duration !== undefined) d.animation.duration = a.duration;
+          if (path) d.animation.camera = path; else if (a.camera !== undefined) delete d.animation.camera;
+        });
+        Object.assign(out, { duration: doc.data.animation.duration, camera: doc.data.animation.camera ?? null });
+      }
+      return text({ ...out, hint: 'Check the motion with render_animation, or render_view at a few time values.' });
+    },
+  },
+  {
+    name: 'set_keyframe',
+    description: `Adds or updates ONE keyframe at a time, merging into an existing key at that time. Handy to build motion step by step:
+  { id: "obj_3", time: 2, position: [0, 1, 0], rotation: [0, 90, 0] }       object key (position, rotation, scale, emissive)
+  { id: "camera", time: 6, yaw: 120, distance: 8, target: [0, 1, 0] }     camera path key (yaw, pitch, distance, target)
+  { id: "obj_3", time: 2, remove: true }                                  delete the key at that time
+ease (optional) sets the interpolation of that object or the camera path: smooth | linear | spline | step.`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', description: 'Object id, or "camera" for the camera path' },
+        time: { type: 'number', description: 'Seconds on the timeline' },
+        position: vec3S('Object position at this time'),
+        rotation: vec3S('Object rotation in degrees at this time'),
+        scale: { type: ['number', 'array'], items: { type: 'number' }, description: 'Object scale at this time' },
+        emissive: { type: 'number', description: 'Object glow 0..10 at this time' },
+        yaw: { type: 'number' }, pitch: { type: 'number' }, distance: { type: 'number' }, target: vec3S('Camera target at this time'),
+        ease: { type: 'string', enum: ['smooth', 'linear', 'spline', 'step'] },
+        remove: { type: 'boolean', description: 'Delete the key at this time' },
+      },
+      required: ['id', 'time'],
+    },
+    run: (doc, a, act) => {
+      const cam = a.id === 'camera', fields = cam ? ['yaw', 'pitch', 'distance', 'target'] : ['position', 'rotation', 'scale', 'emissive'];
+      const values = Object.fromEntries(fields.filter((k) => a[k] !== undefined).map((k) => [k, a[k]]));
+      const name = cam ? 'the camera' : doc.getObject(a.id).name;
+      const keys = doc.setKey(a.id, a.time, values, { remove: !!a.remove, ease: a.ease },
+        act(a.remove ? `removed the key of ${name} at ${a.time} s` : `keyed ${name} at ${a.time} s (${Object.keys(values).join(', ')})`));
+      return text({ id: a.id, keys });
     },
   },
   {
@@ -244,7 +296,8 @@ Without pivot, spin/swing turn around the object's own origin and LOCAL axis; wi
         shading: { type: 'string', enum: ['gouraud', 'flat', 'normals'] },
         wireframe: { type: 'boolean', description: 'Show triangle edges' },
         highlight: idsS,
-        time: { type: 'number', description: 'Animation time in seconds (default 0)' },
+        time: { type: 'number', description: 'Animation time in seconds (default 0); a camera path is followed unless camera_path is false' },
+        camera_path: { type: 'boolean', description: 'false: use the scene camera even if there is a camera path' },
       },
     },
     readOnly: true,
@@ -260,6 +313,65 @@ Without pivot, spin/swing turn around the object's own origin and LOCAL axis; wi
     },
     summary: () => 'rendered a view',
     details: (doc, a) => ({ camera: resolveCamera(doc, a) }),
+  },
+  {
+    name: 'render_animation',
+    description: `Renders several frames of the animation into ONE image (a contact sheet, left to right, top to bottom), so you
+can check motion in a single look. Frames are evenly spaced over the clip; the text lists the time of each frame.`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        ...cameraProps,
+        frames: { type: 'number', description: 'Number of frames 2..16 (default 6)' },
+        start: { type: 'number', description: 'Clip start in seconds (default 0)' },
+        seconds: { type: 'number', description: 'Clip length (default: the whole timeline)' },
+        width: { type: 'number', description: 'Sheet width in pixels, default 1024, max 1600' },
+        camera_path: { type: 'boolean', description: 'false: fixed scene camera even if there is a camera path' },
+      },
+    },
+    readOnly: true,
+    run: async (doc, a, act, ctx) => {
+      if (!ctx.renderSheet) throw new Error('rendering images is not available in this context');
+      const fixed = a.camera_path === false || a.focus || ['yaw', 'pitch', 'distance', 'target'].some((k) => a[k] !== undefined);
+      const camera = fixed ? resolveCamera(doc, { ...a, camera_path: false }) : null;
+      const width = Math.round(Math.min(1600, Math.max(256, a.width ?? 1024)));
+      const seconds = typeof a.seconds === 'number' ? Math.max(0.1, Math.min(3600, a.seconds)) : undefined;
+      const { png, times, columns } = await ctx.renderSheet(doc, { width, frames: Math.round(a.frames ?? 6), start: Math.max(0, a.start ?? 0), seconds, camera });
+      return [{ type: 'image', data: png, mimeType: 'image/png' },
+        { type: 'text', text: `${times.length} frames in ${columns} columns at t = ${times.join(', ')} s · camera: ${camera ? 'fixed' : 'scene camera path'}` }];
+    },
+    summary: (doc, a) => `rendered ${a.frames ?? 6} animation frames`,
+  },
+  {
+    name: 'export_gif',
+    description: `Renders the animation to an animated GIF (high quality, motion blur). With the cpu3d server the file is saved to
+the exports/ folder of the server's working directory and the path is returned; in the browser editor it is downloaded.`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', description: 'File name without extension (default "animation")' },
+        width: { type: 'number', description: 'Pixels, default 480, max 960' },
+        height: { type: 'number', description: 'Pixels, default 320, max 720' },
+        fps: { type: 'number', description: 'Frames per second 5..30 (default 15)' },
+        start: { type: 'number', description: 'Clip start in seconds (default 0)' },
+        seconds: { type: 'number', description: 'Clip length, default the whole timeline, max 20' },
+        samples: { type: 'number', description: 'Samples per frame 1..16 (anti-aliasing, motion blur), default 4' },
+      },
+    },
+    readOnly: true,
+    run: async (doc, a, act, ctx) => {
+      if (!ctx.saveGif) throw new Error('GIF export is not available in this context');
+      const clamp = (v, lo, hi, d) => (typeof v === 'number' && Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d);
+      const opts = {
+        name: String(a.name || 'animation').replace(/[^\w.-]+/g, '-').replace(/^[.-]+/, '').slice(0, 60) || 'animation',
+        width: Math.round(clamp(a.width, 64, 960, 480)), height: Math.round(clamp(a.height, 64, 720, 320)), fps: clamp(a.fps, 5, 30, 15),
+        start: clamp(a.start, 0, 3600, 0), seconds: clamp(a.seconds, 0.2, 20, Math.min(20, doc.data.animation?.duration ?? 12)),
+        samples: Math.round(clamp(a.samples, 1, 16, 4)),
+      };
+      const r = await ctx.saveGif(doc, opts);
+      return text({ ...r, width: opts.width, height: opts.height, fps: opts.fps });
+    },
+    summary: (doc, a) => `exported a GIF (${a.name || 'animation'})`,
   },
   {
     name: 'export_obj',
@@ -312,7 +424,8 @@ Without pivot, spin/swing turn around the object's own origin and LOCAL axis; wi
   },
 ];
 
-// ctx: { source: who is calling (e.g. "claude-code", "you"), render?: async (doc, opts) => base64 PNG }
+// ctx: { source: who is calling (e.g. "claude-code", "you"), render?: async (doc, opts) => base64 PNG,
+//        renderSheet?: async (doc, opts) => { png, times, columns }, saveGif?: async (doc, opts) => { file, bytes, frames } }
 export async function callTool(doc, name, args, ctx = {}) {
   const tool = TOOLS.find((t) => t.name === name);
   if (!tool) return { isError: true, content: text(`Unknown tool "${name}". Available: ${TOOLS.map((t) => t.name).join(', ')}`) };

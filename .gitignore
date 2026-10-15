@@ -4,3 +4,4 @@ scene.json
 *.log
 .DS_Store
 .claude/
+exports/

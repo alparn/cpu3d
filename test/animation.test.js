@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { SceneDocument, callTool, buildRenderScene, animatedMatrix, animatedEmissive, updateAnimation, sceneHasAnimation } from '../src/index.js';
+import { SceneDocument, callTool, buildRenderScene, animatedMatrix, animatedEmissive, updateAnimation, sceneHasAnimation, cameraAt } from '../src/index.js';
 import { renderBase64 } from '../server/render.js';
 
 const ctx = { source: 'test', render: async (doc, o) => renderBase64(doc, o) };
@@ -74,4 +74,62 @@ test('updateAnimation moves meshes and invalidates the shadow cache', async () =
   const r1 = await call(doc, 'render_view', { width: 64, height: 48, time: 1 });
   const img = (r) => r.content.find((c) => c.type === 'image').data;
   assert.notEqual(img(r0), img(r1), 'render_view(time) shows the animated pose');
+});
+
+test('keyframes: interpolation, set_keyframe merge and remove, camera path', async () => {
+  const doc = new SceneDocument();
+  await call(doc, 'add_objects', { objects: [{ name: 'Drone', shape: { type: 'box' } }] });
+  await call(doc, 'set_animation', { id: 'obj_1', animation: { keys: [{ t: 0, position: [0, 0, 0] }, { t: 2, position: [4, 0, 0], emissive: 2 }], ease: 'linear' } });
+  const o = () => doc.data.objects[0];
+  near(apply(animatedMatrix(o(), 1), [0, 0, 0]), [2, 0, 0], 'linear halfway');
+  near(apply(animatedMatrix(o(), 5), [0, 0, 0]), [4, 0, 0], 'holds after the last key');
+  assert.equal(animatedEmissive(o(), 0), 2, 'a channel with one key is constant');
+
+  await call(doc, 'set_keyframe', { id: 'obj_1', time: 1, position: [2, 3, 0], ease: 'smooth' });
+  await call(doc, 'set_keyframe', { id: 'obj_1', time: 1, rotation: [0, 90, 0] });
+  assert.deepEqual(o().animation.keys[1], { t: 1, position: [2, 3, 0], rotation: [0, 90, 0] }, 'keys at the same time merge');
+  assert.equal(o().animation.ease, 'smooth');
+  near(apply(animatedMatrix(o(), 1), [0, 0, 0]), [2, 3, 0], 'passes through the key');
+  await call(doc, 'set_keyframe', { id: 'obj_1', time: 1, remove: true });
+  assert.equal(o().animation.keys.length, 2);
+  assert.equal((await call(doc, 'set_keyframe', { id: 'obj_1', time: 1 })).isError, true, 'a key needs a value');
+
+  // spline passes through every key
+  await call(doc, 'set_animation', { id: 'obj_1', animation: { keys: [0, 1, 2, 3].map((t) => ({ t, position: [t, t * t, 0] })), ease: 'spline' } });
+  for (const t of [0, 1, 2, 3]) near(apply(animatedMatrix(o(), t), [0, 0, 0]), [t, t * t, 0], `spline at key ${t}`);
+
+  await call(doc, 'set_animation', { camera: { keys: [{ t: 0, yaw: 0 }, { t: 10, yaw: 360 }], ease: 'linear' }, duration: 10 });
+  assert.equal(cameraAt(doc.data, 5).yaw, 180);
+  assert.equal(cameraAt(doc.data, 5).distance, doc.data.camera.distance, 'missing channels use the scene camera');
+  await call(doc, 'set_keyframe', { id: 'camera', time: 5, pitch: 60 });
+  assert.equal(doc.data.animation.camera.keys.length, 3);
+  assert.equal((await call(doc, 'set_animation', { camera: { keys: [{ t: 0, pitch: 120 }] } })).isError, true);
+  const saved = new SceneDocument(JSON.parse(JSON.stringify(doc.data)));
+  assert.equal(saved.data.animation.camera.keys.length, 3, 'camera path survives save and load');
+  await call(doc, 'set_animation', { camera: null });
+  assert.equal(doc.data.animation.camera, undefined);
+});
+
+test('render_animation returns a contact sheet, export_gif writes a GIF', async () => {
+  const { renderers } = await import('../server/render.js');
+  const { mkdtempSync, readFileSync, rmSync, realpathSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const doc = new SceneDocument();
+  await callTool(doc, 'add_objects', { objects: [{ shape: { type: 'box' }, animation: { spin: { speed: 90 } } }] }, {});
+  const sheet = await callTool(doc, 'render_animation', { frames: 4, width: 400 }, { ...renderers });
+  assert.ok(!sheet.isError, sheet.content[0].text);
+  const png = Buffer.from(sheet.content.find((c) => c.type === 'image').data, 'base64');
+  assert.ok(png.readUInt32BE(16) <= 400 && png.readUInt32BE(16) > 380, 'sheet width');
+  assert.match(sheet.content[1].text, /4 frames/);
+
+  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'cpu3d-'))), cwd = process.cwd();
+  process.chdir(dir);
+  try {
+    const r = await callTool(doc, 'export_gif', { name: '../evil name', width: 96, height: 64, seconds: 0.4, fps: 10, samples: 1 }, { ...renderers });
+    const info = JSON.parse(r.content[0].text);
+    assert.equal(info.file, join(dir, 'exports', 'evil-name.gif'), 'file names stay inside exports/');
+    assert.equal(info.frames, 4);
+    assert.equal(readFileSync(info.file).subarray(0, 6).toString(), 'GIF89a');
+  } finally { process.chdir(cwd); rmSync(dir, { recursive: true }); }
 });

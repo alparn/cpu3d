@@ -36,6 +36,12 @@ async function animate(doc, match, anim) {
   for (const [i, o] of list.entries()) await tool(doc, 'set_animation', { id: o.id, animation: typeof anim === 'function' ? anim(o, i) : anim });
 }
 const timeline = (doc, seconds) => tool(doc, 'set_animation', { duration: seconds });
+// camera path that starts and ends on the scene camera, so the clip loops
+async function cameraPath(doc, seconds, via, ease = 'spline') {
+  const c = doc.data.camera, home = { yaw: c.yaw, pitch: c.pitch, distance: c.distance, target: c.target };
+  const keys = [{ t: 0, ...home }, ...via, { t: seconds, ...home }];
+  await tool(doc, 'set_animation', { camera: { keys, ease }, duration: seconds });
+}
 async function probe(doc, points) { return JSON.parse(await tool(doc, 'probe_height', { points })).map((p) => p.y ?? 0); }
 
 // profile helper: arc of a circle centered on (cx, cy), angles in degrees, for lathe profiles
@@ -335,7 +341,7 @@ scene('watch', 'Skeleton watch', 'A mechanical skeleton watch at 10:10: spoked b
   await animate(doc, ['Escape wheel', 'Escape wheel pinion'], { spin: { ...dialAxis, speed: -24, step: 0.5 } });
   await animate(doc, 'Pallet fork', { swing: { ...dialAxis, amplitude: 7, period: 1 } });
   await animate(doc, ['Balance rim', 'Balance arm', 'Balance screw', 'Hairspring'], { swing: { axis: [0, 1, 0], amplitude: 150, period: 1, pivot: [-0.5, 0.6, 0.8] } });
-  await timeline(doc, 60);
+  await cameraPath(doc, 60, [{ t: 20, yaw: 8, pitch: 60, distance: 4.3, target: [0.1, 0.66, 0.1] }, { t: 40, yaw: 52, pitch: 40, distance: 5.2 }]);
 });
 
 scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twisted fan blades, booster and high-pressure compressor stages, a glowing combustor, heat-tinted turbines, all as radial arrays of NACA-profiled blades.', async (doc) => {
@@ -450,7 +456,7 @@ scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twi
   await animate(doc, hp, { spin: { axis: [0, 1, 0], speed: 480 } });
   await animate(doc, 'Combustion glow', { pulse: { min: 0.75, max: 1.3, period: 0.375 } });
   await animate(doc, 'Flames', { pulse: { min: 0.6, max: 1.4, period: 0.25 } });
-  await timeline(doc, 12);
+  await cameraPath(doc, 12, [{ t: 6, yaw: 72, pitch: 22, distance: 4, target: [0.1, 1.45, 0] }]);
 });
 
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
@@ -610,7 +616,7 @@ scene('station', 'Space station', 'A rotating-wheel station with spokes, solar w
   await animate(doc, 'Light strip', { orbit: { center: [0, 0, 0], axis: [0, 1, 0], speed: 8 }, pulse: { min: 0.7, max: 1.2, period: 3 } });
   await animate(doc, ['Shuttle fuselage', 'Shuttle wings'], { bob: { axis: [0, 1, 0], amplitude: 0.35, period: 5 } });
   await animate(doc, 'Engine glow', { bob: { axis: [0, 1, 0], amplitude: 0.35, period: 5 }, pulse: { min: 0.7, max: 1.4, period: 0.5 } });
-  await timeline(doc, 45);
+  await cameraPath(doc, 45, [{ t: 22.5, yaw: 100, pitch: 12, distance: 33 }]);
 });
 
 scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setbacks, round glass towers, rooftop details and a park with a pond.', async (doc) => {
@@ -669,7 +675,30 @@ scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setba
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 35, pitch: 27, distance: 82, target: [0, 8, 0] });
   await animate(doc, 'Warning light', (o, i) => ({ pulse: { min: 0.1, max: 1, period: 1.5, phase: (i % 3) / 3, blink: true } }));
-  await timeline(doc, 12);
+
+  // a blimp on a keyframed spline loop: all parts share one origin (hull axis = local Y), so the same keys move them as one
+  const hullProfile = [];
+  for (let i = 0; i <= 16; i++) {
+    const a = (i / 16) * Math.PI, y = -Math.cos(a), len = y < 0 ? 3.6 : 3.1;
+    hullProfile.push(P(1.25 * Math.sin(a) ** 0.9, y * len));
+  }
+  await add(doc, [
+    { name: 'Blimp hull', scale: 1.6, shape: { type: 'lathe', profile: hullProfile, segments: 40 }, material: { color: '#e9ecef', roughness: 0.35, specular: 0.6 } },
+    { name: 'Blimp band', scale: 1.6, shape: { type: 'lathe', profile: [[1.26, 0.2], [1.2, 1.0]], segments: 40 }, material: { color: '#40c4ff', emissive: 1.6, doubleSided: true } },
+    { name: 'Blimp fins', scale: 1.6, shape: { type: 'radial', count: 4, radius: 0.95, offset: [0, -2.9, 0], startAngle: 45, shape: { type: 'roundedBox', width: 1.1, height: 1.2, depth: 0.08, radius: 0.03 } }, material: { color: '#3a4a5c', roughness: 0.4 } },
+    { name: 'Blimp gondola', scale: 1.6, shape: { type: 'radial', count: 1, offset: [0, 0.4, 1.3], shape: { type: 'roundedBox', width: 0.5, height: 1.3, depth: 0.4, radius: 0.15, smooth: true } }, material: { color: '#2b3440', roughness: 0.3, specular: 0.6 } },
+  ]);
+  const loop = 24, keys = [];
+  let heading = null;
+  for (let i = 0; i <= 8; i++) {
+    const a = (i / 8) * 2 * Math.PI, pos = P(27 * Math.cos(a), 29 + 3 * Math.sin(2 * a), 21 * Math.sin(a));
+    let h = (Math.atan2(-27 * Math.sin(a), 21 * Math.cos(a)) * 180) / Math.PI;
+    if (heading !== null) while (h < heading - 180) h += 360;
+    heading = h;
+    keys.push({ t: (i / 8) * loop, position: pos, rotation: P(90, h, 0) });
+  }
+  await animate(doc, (o) => o.name.startsWith('Blimp'), { keys, ease: 'spline' });
+  await cameraPath(doc, loop, [{ t: 12, yaw: 78, pitch: 21, distance: 72, target: [0, 11, 0] }]);
 });
 
 scene('garden', 'Alien garden', 'Tapered sweeps along procedural curves, glowing mushrooms, spiral shells and crystals, all placed on the terrain with probe_height.', async (doc) => {

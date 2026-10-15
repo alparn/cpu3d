@@ -32,7 +32,54 @@ export function exportOBJ(objects, geometryFor) {
 // ---- animation ------------------------------------------------------------------------------
 const D2R = Math.PI / 180, TMP_A = mat4.create(), TMP_B = mat4.create(), TMP_C = mat4.create();
 const wave = (t, period, phase) => Math.sin(2 * Math.PI * (t / period + phase));
-export const hasMotion = (o) => !!(o.animation && (o.animation.spin || o.animation.swing || o.animation.bob || o.animation.orbit));
+const TRANSFORM_KEYS = (keys) => keys?.some((k) => k.position || k.rotation || k.scale);
+export const hasMotion = (o) => !!(o.animation && (o.animation.spin || o.animation.swing || o.animation.bob || o.animation.orbit || TRANSFORM_KEYS(o.animation.keys)));
+
+// ---- keyframes
+const smooth = (u) => u * u * (3 - 2 * u);
+const lerp = (a, b, u) => (Array.isArray(a) ? a.map((v, i) => v + (b[i] - v) * u) : a + (b - a) * u);
+// cubic Hermite with Catmull-Rom tangents (for uneven key spacing): passes through every key with continuous velocity
+function hermite(k, i, ch, t) {
+  const a = k[i], b = k[i + 1], prev = k[i - 1] || a, next = k[i + 2] || b, dt = b.t - a.t, u = (t - a.t) / dt;
+  const u2 = u * u, u3 = u2 * u, h00 = 2 * u3 - 3 * u2 + 1, h10 = u3 - 2 * u2 + u, h01 = -2 * u3 + 3 * u2, h11 = u3 - u2;
+  const one = (va, vb, vp, vn) => h00 * va + h01 * vb + (h10 * (vb - vp) / (b.t - prev.t) + h11 * (vn - va) / (next.t - a.t)) * dt;
+  const A = a[ch], B = b[ch], P = prev[ch], N = next[ch];
+  return Array.isArray(A) ? A.map((v, j) => one(v, B[j], P[j], N[j])) : one(A, B, P, N);
+}
+
+// value of one channel at time t from the keys that define it (held before the first and after the last key)
+export function sampleKeys(keys, ch, t, ease = 'smooth') {
+  const k = keys.filter((x) => x[ch] !== undefined);
+  if (!k.length) return undefined;
+  if (t <= k[0].t) return k[0][ch];
+  const last = k[k.length - 1];
+  if (t >= last.t) return last[ch];
+  let i = 0;
+  while (k[i + 1].t < t) i++;
+  const a = k[i], b = k[i + 1], u = (t - a.t) / (b.t - a.t);
+  if (ease === 'step') return a[ch];
+  if (ease === 'linear') return lerp(a[ch], b[ch], u);
+  if (ease === 'spline') return hermite(k, i, ch, t);
+  return lerp(a[ch], b[ch], smooth(u));
+}
+
+// the object with its keyframed transform at time t (unchanged if it has no keys)
+export function keyed(o, t) {
+  const keys = o.animation?.keys;
+  if (!keys) return o;
+  const e = o.animation.ease;
+  return { ...o, position: sampleKeys(keys, 'position', t, e) ?? o.position, rotation: sampleKeys(keys, 'rotation', t, e) ?? o.rotation,
+    scale: sampleKeys(keys, 'scale', t, e) ?? o.scale };
+}
+
+// camera state at time t: the scene camera, overridden by the camera path if there is one
+export function cameraAt(data, t) {
+  const path = data.animation?.camera, c = data.camera;
+  if (!path) return c;
+  const s = (ch) => sampleKeys(path.keys, ch, t, path.ease) ?? c[ch];
+  return { yaw: s('yaw'), pitch: Math.max(-89, Math.min(89, s('pitch'))), distance: Math.max(0.1, s('distance')), target: s('target') };
+}
+export const hasCameraPath = (data) => !!data.animation?.camera;
 
 // world rotation around an axis through point p, applied on the left: m = T(p) R T(-p) m
 function rotateAround(m, p, axis, deg) {
@@ -47,8 +94,9 @@ const rotateLocal = (m, axis, deg) => mat4.multiply(m, m, mat4.axisAngle(TMP_A, 
 
 // object matrix at time t (seconds)
 export function animatedMatrix(o, t) {
-  const m = objectMatrix(o), a = o.animation;
-  if (!a || !t) return m;
+  const a = o.animation;
+  if (!a) return objectMatrix(o);
+  const m = objectMatrix(keyed(o, t));
   const turn = (spec, deg) => (spec.pivot ? rotateAround(m, spec.pivot, spec.axis, deg) : rotateLocal(m, spec.axis, deg));
   if (a.spin) turn(a.spin, a.spin.speed * (a.spin.step ? a.spin.step * Math.floor(t / a.spin.step + 1e-9) : t));
   if (a.swing) turn(a.swing, a.swing.amplitude * wave(t, a.swing.period, a.swing.phase));
@@ -62,7 +110,8 @@ export function animatedMatrix(o, t) {
 
 // emissive at time t: pulse scales the material's emissive (or 1 if the material has none)
 export function animatedEmissive(o, t) {
-  const base = o.material.emissive || 0, p = o.animation?.pulse;
+  const keys = o.animation?.keys, p = o.animation?.pulse;
+  const base = (keys && sampleKeys(keys, 'emissive', t, o.animation.ease)) ?? (o.material.emissive || 0);
   if (!p) return base;
   const w = wave(t, p.period, p.phase), k = p.blink ? (w > 0 ? 1 : 0) : 0.5 + 0.5 * w;
   return (base || 1) * (p.min + (p.max - p.min) * k);
@@ -76,13 +125,13 @@ export function updateAnimation(scene, t) {
     const o = m.object;
     if (!o || !o.animation) continue;
     if (hasMotion(o)) { m.matrix = animatedMatrix(o, t); moved = true; }
-    if (o.animation.pulse) m.emissive = animatedEmissive(o, t);
+    if (o.animation.pulse || o.animation.keys) m.emissive = animatedEmissive(o, t);
   }
   if (moved) scene.version = (scene.version || 0) + 1;
   return moved;
 }
 
-export const sceneHasAnimation = (data) => data.objects.some((o) => o.animation);
+export const sceneHasAnimation = (data) => !!data.animation?.camera || data.objects.some((o) => o.animation);
 
 // geometryFor(shape) -> Geometry, normally SceneDocument#geometry (cached)
 export function buildRenderScene(data, geometryFor, { selected = [], showGround = true, time = 0 } = {}) {
@@ -98,7 +147,7 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
     m.matrix = o.animation ? animatedMatrix(o, time) : objectMatrix(o);
     m.matrixAutoUpdate = false;
     m.object = o;
-    if (o.animation?.pulse) m.emissive = animatedEmissive(o, time);
+    if (o.animation?.pulse || o.animation?.keys) m.emissive = animatedEmissive(o, time);
     m.flat = o.material.flat;
     m.wireframe = selected.includes(o.id) ? SELECTION_COLOR : false;
     m.objectId = o.id;

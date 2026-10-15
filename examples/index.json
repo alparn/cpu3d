@@ -25,7 +25,7 @@
     "description": "A mechanical skeleton watch at 10:10: spoked brass gears (extrude with holes), a hairspring (tube along a spiral), blued screws, ruby jewels, polished steel and a leather strap.",
     "objects": 170,
     "triangles": 32758,
-    "jsonBytes": 175524,
+    "jsonBytes": 176148,
     "objBytes": 1312811,
     "ramBytes": 794520
   },
@@ -35,7 +35,7 @@
     "description": "A turbofan with the casing cut open: 22 twisted fan blades, booster and high-pressure compressor stages, a glowing combustor, heat-tinted turbines, all as radial arrays of NACA-profiled blades.",
     "objects": 48,
     "triangles": 111978,
-    "jsonBytes": 50533,
+    "jsonBytes": 51035,
     "objBytes": 4352959,
     "ramBytes": 3363312
   },
@@ -65,7 +65,7 @@
     "description": "A rotating-wheel station with spokes, solar wings, docking modules, an antenna dish, an approaching shuttle and a ringed planet.",
     "objects": 37,
     "triangles": 18876,
-    "jsonBytes": 64550,
+    "jsonBytes": 65011,
     "objBytes": 619787,
     "ramBytes": 476520
   },
@@ -73,11 +73,11 @@
     "id": "city",
     "title": "City block",
     "description": "A procedural downtown: 36 blocks, towers with setbacks, round glass towers, rooftop details and a park with a pond.",
-    "objects": 315,
-    "triangles": 12414,
-    "jsonBytes": 161830,
-    "objBytes": 517028,
-    "ramBytes": 173592
+    "objects": 319,
+    "triangles": 17694,
+    "jsonBytes": 170034,
+    "objBytes": 699480,
+    "ramBytes": 309192
   },
   {
     "id": "garden",

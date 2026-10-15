@@ -217,8 +217,10 @@ material = { color: "#rrggbb", specular 0..2, shininess 1..256, emissive 0..10 (
             texture: PNG path in the project or "data:image/png;base64,..." (projected along the object's thinnest local
             axis: flat in Z -> image top = +Y, flat in Y like plane -> image top = -Z; multiplied by color),
             flat: bool (faceted look), doubleSided: bool (for open surfaces) }.
-Animation: set_animation({ id, animation: { spin | swing | bob | orbit | pulse } }), e.g. { "spin": { "axis": [0,1,0], "speed": 90 } };
-            details in the set_animation tool description. Check motion with render_view({ time }).
+Animation: set_animation({ id, animation: { spin | swing | bob | orbit | pulse | keys } }), e.g. { "spin": { "axis": [0,1,0], "speed": 90 } }
+            or keyframes { "keys": [{ "t": 0, "position": [0,1,0] }, { "t": 2, "position": [3,1,0] }], "ease": "spline" };
+            a camera path with set_animation({ camera: { keys: [{ t, yaw, pitch, distance, target }] } }). Details in the
+            set_animation tool description. Check motion with render_animation (several frames in one image).
 Environment: set_environment({ reflections: "sky" | "studio" | "none", light: { direction, color, intensity, softness 0..1 },
             lights: [{ direction, color, intensity }] (up to 4 extra lights without shadows, e.g. fill and rim) }).
 Shapes are built around their own origin (see "origin" below); use position to place them.

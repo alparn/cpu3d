@@ -8,7 +8,7 @@ const ok = (id, result) => ({ jsonrpc: '2.0', id, result });
 const err = (id, code, message) => ({ jsonrpc: '2.0', id: id ?? null, error: { code, message } });
 
 // session: mutable object per connection, remembers the client name for the activity feed
-export function createMcpHandler({ doc, render, version }) {
+export function createMcpHandler({ doc, version, ...renderers }) {
   return async function handle(msg, session = {}) {
     if (!msg || typeof msg !== 'object' || msg.jsonrpc !== '2.0') return err(msg?.id, -32600, 'Invalid Request');
     if (typeof msg.method !== 'string') return null; // a response from the client, nothing to do
@@ -29,7 +29,7 @@ export function createMcpHandler({ doc, render, version }) {
         case 'tools/list':
           return ok(id, { tools: toolList() });
         case 'tools/call':
-          return ok(id, await callTool(doc, params.name, params.arguments, { source: session.client || 'agent', render }));
+          return ok(id, await callTool(doc, params.name, params.arguments, { source: session.client || 'agent', ...renderers }));
         default:
           return notification ? null : err(id, -32601, `Method not found: ${method}`);
       }

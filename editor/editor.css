@@ -129,7 +129,28 @@ input[type=checkbox], input[type=range] { accent-color: var(--accent); }
   position: absolute; right: 10px; bottom: 10px; display: flex; align-items: center; gap: 8px; padding: 5px 10px;
   background: rgba(10, 12, 16, 0.7); border: 1px solid var(--line); border-radius: 8px; backdrop-filter: blur(6px);
 }
+.timeline .track { position: relative; display: flex; }
 .timeline input { width: 220px; accent-color: var(--accent); }
+.keymarks { position: absolute; left: 8px; right: 8px; top: -7px; height: 8px; pointer-events: none; }
+.keymarks i { position: absolute; width: 7px; height: 7px; margin-left: -3.5px; transform: rotate(45deg); background: #ffc98a; pointer-events: auto; cursor: pointer; border: 1px solid rgba(0,0,0,.5); }
+.keymarks i.cam { background: #8ecbff; top: 9px; }
+.keymarks i.on { background: #fff; }
+.timeline .btn.on { background: var(--accent); color: #111; }
+.gif-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 14px; margin: 12px 0; }
+.gif-form label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--dim); }
+.gif-form input { width: 70px; }
+.gif-form select { min-width: 80px; }
+.gif-run { display: flex; align-items: center; gap: 10px; }
+.gif-run progress { flex: 1; accent-color: var(--accent); }
+.gif-result { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 12px; }
+.gif-result img { max-width: 100%; border-radius: 8px; border: 1px solid var(--line); }
+@media (max-width: 600px) {
+  .gif-form { grid-template-columns: 1fr 1fr; }
+  .timeline { left: 10px; bottom: 8px; gap: 6px; padding: 4px 8px; }
+  .timeline .track { flex: 1; }
+  .timeline input { width: 100%; }
+  .vstats { bottom: 50px; right: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+}
 .timeline span { font: 11px var(--mono); color: rgba(255, 255, 255, 0.8); min-width: 52px; text-align: right; }
 .timeline .btn { width: 30px; }
 .vstats .size { color: #ffc98a; }

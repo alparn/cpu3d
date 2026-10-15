@@ -7,7 +7,7 @@ import { createInterface } from 'node:readline';
 import { SceneDocument } from '../src/document.js';
 import { createServer } from '../server/http.js';
 import { createMcpHandler } from '../server/mcp.js';
-import { renderPNG, renderBase64, preloadTextures } from '../server/render.js';
+import { renderPNG, preloadTextures, renderers, gifBytes } from '../server/render.js';
 import { frameBounds, unionBounds } from '../src/scene.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -17,11 +17,13 @@ const HELP = `cpu3d ${VERSION} - agentic 3D modeling with a CPU renderer
 
 Usage
   cpu3d serve  [--port 8173] [--file scene.json] [--example name] [--empty]   start the editor + MCP endpoint
-               examples: showcase, castle, chess, station, city, garden, lighthouse
+               examples: showcase, phone, watch, engine, castle, chess, station, city, garden, lighthouse
   cpu3d mcp    [--port 8173] [--file scene.json]                    MCP over stdio (Claude Desktop, Cursor, ...)
   cpu3d render <scene.json> <out.png> [--width 1280] [--height 720] [--yaw deg] [--pitch deg] [--distance d]
                                       [--focus all] [--shading gouraud|flat|normals] [--wireframe]
                                       [--quality high|fast] [--samples 16] [--time seconds]
+  cpu3d gif    <scene.json> <out.gif>   [--width 480] [--height 320] [--fps 15] [--start 0] [--seconds 6]
+                                      [--samples 4] [--shutter 0.5] [--dither 0..1] [--yaw/--pitch/--distance: fixed camera]
 
 Connect an agent while "serve" runs
   Claude Code   claude mcp add --transport http cpu3d http://localhost:8173/mcp
@@ -79,14 +81,12 @@ async function probe(port) {
   } catch { return false; }
 }
 
-const render = async (doc, o) => renderBase64(doc, o);
-
 async function serve(opts) {
   const port = Number(opts.port ?? process.env.PORT ?? 8173), host = opts.host || '127.0.0.1';
   // the editor starts with a gallery scene unless a scene file is given or --empty is set
   if (!opts.file && !opts.example && !opts.empty) opts.example = 'showcase';
   const doc = openDocument(opts);
-  const server = createServer({ doc, root: ROOT, version: VERSION, render });
+  const server = createServer({ doc, root: ROOT, version: VERSION, ...renderers });
   const actual = await listen(server, port, host).catch((e) => {
     log(e.code === 'EADDRINUSE' ? `port ${port} is already in use, try --port ${port + 1}` : e.message);
     process.exit(1);
@@ -117,10 +117,10 @@ async function mcpStdio(opts) {
     };
   } else {
     const doc = openDocument(opts);
-    const mcp = createMcpHandler({ doc, render, version: VERSION });
+    const mcp = createMcpHandler({ doc, version: VERSION, ...renderers });
     const session = {};
     handle = (msg) => mcp(msg, session);
-    const server = createServer({ doc, root: ROOT, version: VERSION, render });
+    const server = createServer({ doc, root: ROOT, version: VERSION, ...renderers });
     await listen(server, port, '127.0.0.1')
       .then((p) => log(`editor running at http://localhost:${p} - open it to watch live`))
       .catch((e) => log(`editor not started (${e.code || e.message}), running headless`));
@@ -163,10 +163,27 @@ async function renderCli(opts) {
   log(`${output} written (${(performance.now() - t0).toFixed(1)} ms incl. PNG encoding)`);
 }
 
+async function gifCli(opts) {
+  const [input, output = 'animation.gif'] = opts._.slice(1);
+  if (!input) { console.error(HELP); process.exit(1); }
+  const doc = new SceneDocument(JSON.parse(readFileSync(input, 'utf8')));
+  // a fixed camera only when asked for; otherwise the scene camera (or its camera path) is used
+  const fixed = ['yaw', 'pitch', 'distance'].some((k) => opts[k] !== undefined);
+  const camera = fixed ? { ...doc.data.camera, ...Object.fromEntries(['yaw', 'pitch', 'distance'].filter((k) => opts[k] !== undefined).map((k) => [k, +opts[k]])) } : null;
+  const fps = +(opts.fps ?? 15), t0 = performance.now();
+  let last = 0;
+  const gif = await gifBytes(doc, { width: +(opts.width ?? 480), height: +(opts.height ?? 320), fps, start: +(opts.start ?? 0),
+    seconds: opts.seconds !== undefined ? +opts.seconds : undefined, samples: +(opts.samples ?? 4), shutter: +(opts.shutter ?? 0.5), dither: +(opts.dither ?? 1), camera,
+    onProgress: (done, total) => { if (done === total || performance.now() - last > 1000) { last = performance.now(); log(`frame ${done}/${total}`); } } });
+  writeFileSync(output, gif.bytes);
+  log(`${output} written: ${gif.frames} frames, ${(gif.bytes.length / 1024).toFixed(0)} KB (${((performance.now() - t0) / 1000).toFixed(1)} s)`);
+}
+
 const opts = parseArgs(process.argv.slice(2));
 const cmd = opts._[0];
 if (opts.version) console.log(VERSION);
 else if (cmd === 'serve') serve(opts);
 else if (cmd === 'mcp') mcpStdio(opts);
 else if (cmd === 'render') renderCli(opts);
+else if (cmd === 'gif') gifCli(opts);
 else { console.log(HELP); if (cmd && cmd !== 'help') process.exit(1); }

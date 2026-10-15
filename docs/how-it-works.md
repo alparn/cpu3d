@@ -44,7 +44,9 @@ Most shapes are just different rim generators:
 
 Agents never send code. They send recipes, plain JSON such as `{ "type": "lathe", "profile": [...] }`, which `recipes.js` validates field by field and turns into geometry. Geometry is cached by the recipe's JSON, so 36 identical torus knots share one geometry.
 
-Animation is data too: an object can carry behaviours such as `{ "spin": { "speed": 90 } }`. Each frame, `updateAnimation` recomputes only the affected object matrices and emissive values from the time `t`. Geometry, caches and the G-buffer layout stay untouched, and the scene version is bumped so the shadow map is rebuilt for the new pose.
+Animation is data too: an object can carry behaviours such as `{ "spin": { "speed": 90 } }`. Each frame, `updateAnimation` recomputes only the affected object matrices and emissive values from the time `t`. Geometry, caches and the G-buffer layout stay untouched, and the scene version is bumped so the shadow map is rebuilt for the new pose. Keyframes are sampled per channel (smoothstep, linear, step, or a cubic Hermite spline with Catmull-Rom tangents for uneven key spacing), and the camera path is sampled the same way.
+
+GIF export renders each frame several times at times spread over the shutter interval and averages them, which gives anti-aliasing, soft shadows and motion blur from the same accumulation buffer. The encoder builds one median-cut palette from a few frames of the clip (stable colors, no flicker), applies a 4x4 ordered dither, writes unchanged pixels as transparent and crops each frame to the changed rectangle before LZW compression.
 
 The `SceneDocument` is the single source of truth. Every mutation runs on a copy, is validated, then committed with an undo snapshot and broadcast to listeners (SSE clients, autosave, the activity feed).
 

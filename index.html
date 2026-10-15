@@ -52,6 +52,7 @@
           <button data-file="import">Import .obj / .json…</button>
           <button data-file="obj">Export .obj</button>
           <button data-file="json">Export scene .json</button>
+          <button data-file="gif">Export animated GIF…</button>
         </div>
       </div>
     </nav>
@@ -82,8 +83,13 @@
       <div id="vstats" class="vstats"></div>
       <div id="timeline" class="timeline" hidden>
         <button id="playBtn" class="btn icon" title="Play / pause (Space)">▶</button>
-        <input id="timeSlider" type="range" min="0" max="12" step="0.01" value="0" aria-label="Animation time">
+        <div class="track">
+          <input id="timeSlider" type="range" min="0" max="12" step="0.01" value="0" aria-label="Animation time">
+          <div id="keyMarks" class="keymarks"></div>
+        </div>
         <span id="timeLabel">0.00 s</span>
+        <button id="keyBtn" class="btn icon" title="Set a keyframe here for the selected object (nothing selected: for the camera)">◆</button>
+        <button id="camBtn" class="btn icon" title="Follow the camera path (orbiting the view leaves it)" hidden>🎥</button>
       </div>
       <div class="vhint">drag rotate · shift/right-drag pan · wheel zoom · click select · drag selected to move (Alt up/down, Shift snap) · F focus</div>
     </section>
@@ -123,6 +129,31 @@
     </form>
     <p class="muted">Every scene was built with the same tools an agent uses (<code>examples/build.mjs</code>). Sizes are the scene file (JSON recipes) and the same scene exported as triangles (.obj).</p>
     <div id="galleryGrid" class="gallery-grid"></div>
+  </dialog>
+
+  <dialog id="gifDialog" class="dialog">
+    <form method="dialog" class="dialog-head">
+      <h2>Export animated GIF</h2>
+      <button class="btn icon" aria-label="Close">✕</button>
+    </form>
+    <p class="muted small">Rendered on the CPU in high quality with motion blur. Agents can do the same with the <code>export_gif</code> tool or <code>cpu3d gif</code>.</p>
+    <div class="gif-form">
+      <label>Width <select id="gifWidth"><option>320</option><option selected>480</option><option>640</option><option>800</option></select></label>
+      <label>FPS <select id="gifFps"><option>10</option><option selected>15</option><option>24</option><option>30</option></select></label>
+      <label>Start <input id="gifStart" type="number" min="0" step="0.5" value="0"> s</label>
+      <label>Length <input id="gifSeconds" type="number" min="0.5" max="20" step="0.5" value="6"> s</label>
+      <label>Quality <select id="gifSamples"><option value="1">draft</option><option value="4" selected>good</option><option value="8">best</option></select></label>
+      <label>Camera <select id="gifCamera"><option value="path">scene / path</option><option value="view">current view</option></select></label>
+    </div>
+    <div class="gif-run">
+      <button id="gifGo" class="btn primary">Render GIF</button>
+      <progress id="gifProgress" max="1" value="0" hidden></progress>
+      <span id="gifInfo" class="muted small"></span>
+    </div>
+    <div id="gifResult" class="gif-result" hidden>
+      <img id="gifImg" alt="Rendered animation">
+      <a id="gifLink" class="btn" download="animation.gif">Download</a>
+    </div>
   </dialog>
 
   <input type="file" id="fileInput" accept=".obj,.json" hidden>

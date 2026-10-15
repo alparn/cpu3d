@@ -86,12 +86,14 @@ function normalizeMaterial(m = {}, base = {}) {
 //   bob   { axis [0,1,0] (world), amplitude 0.1, period 2 s, phase 0..1 }
 //   orbit { center [0,0,0], axis [0,1,0], speed 30 deg/s }   rigid rotation around a world axis
 //   pulse { min 0.5, max 1.5, period 1.5 s, phase 0..1, blink false }   scales emissive
+//   keys  [{ t, position?, rotation?, scale?, emissive? }] with ease 'smooth' | 'linear' | 'spline' | 'step'
+//         keyframes replace the base transform; behaviours are applied on top
 // Without pivot, spin and swing turn around the object's own origin and local axis;
 // with pivot, around a world axis through that point (parts that move together).
 export function normalizeAnimation(a) {
   if (a === null || a === undefined) return null;
   if (typeof a !== 'object' || Array.isArray(a)) fail('"animation" must be an object like { "spin": { "speed": 90 } } or null');
-  const known = ['spin', 'swing', 'bob', 'orbit', 'pulse'];
+  const known = ['spin', 'swing', 'bob', 'orbit', 'pulse', 'keys', 'ease'];
   for (const k of Object.keys(a)) if (!known.includes(k)) fail(`unknown animation "${k}" (use ${known.join(', ')})`);
   const obj = (v, n) => { if (!v || typeof v !== 'object' || Array.isArray(v)) fail(`"animation.${n}" must be an object`); return v; };
   const opt = (v, def, n, min, max) => (v === undefined ? def : range(v, `animation.${n}`, min, max));
@@ -124,7 +126,59 @@ export function normalizeAnimation(a) {
     out.pulse = { min: opt(s.min, 0.5, 'pulse.min', 0, 20), max: opt(s.max, 1.5, 'pulse.max', 0, 20),
       period: opt(s.period, 1.5, 'pulse.period', 0.01, 1e4), phase: opt(s.phase, 0, 'pulse.phase', -1e4, 1e4), blink: !!s.blink };
   }
+  if (a.keys !== undefined && a.keys !== null) {
+    const keys = normalizeKeys(a.keys, 'animation.keys', (k, n) => {
+      const out = {};
+      if (k.position !== undefined) out.position = vec3(k.position, `${n}.position`);
+      if (k.rotation !== undefined) out.rotation = vec3(k.rotation, `${n}.rotation`);
+      if (k.scale !== undefined) out.scale = scale3(k.scale);
+      if (k.emissive !== undefined) out.emissive = range(k.emissive, `${n}.emissive`, 0, 10);
+      return out;
+    }, 'position, rotation, scale or emissive');
+    if (keys.length) out.keys = keys;
+  }
+  if (a.ease !== undefined && out.keys) out.ease = normalizeEase(a.ease, 'animation.ease');
   return Object.keys(out).length ? out : null;
+}
+
+// ---- keyframes: [{ t: seconds, ...channels }], sorted by t; a later key at the same t replaces the earlier one.
+// Each channel is interpolated between the keys that define it (see scene.js sampleKeys).
+export const EASES = ['smooth', 'linear', 'spline', 'step'];
+function normalizeEase(e, name) {
+  if (!EASES.includes(e)) fail(`"${name}" must be one of ${EASES.join(', ')}`);
+  return e;
+}
+const MAX_KEYS = 256;
+function normalizeKeys(list, name, channels, what) {
+  if (!Array.isArray(list)) fail(`"${name}" must be an array like [{ "t": 0, ... }, { "t": 2, ... }]`);
+  if (list.length > MAX_KEYS) fail(`"${name}" allows at most ${MAX_KEYS} keys`);
+  const byTime = new Map();
+  list.forEach((k, i) => {
+    const n = `${name}[${i}]`;
+    if (!k || typeof k !== 'object' || Array.isArray(k)) fail(`"${n}" must be an object`);
+    const t = Math.round(range(k.t, `${n}.t`, 0, 3600) * 1000) / 1000;
+    const out = channels(k, n);
+    if (!Object.keys(out).length) fail(`"${n}" needs at least one of ${what}`);
+    byTime.set(t, { ...(byTime.get(t) || {}), ...out });
+  });
+  return [...byTime.entries()].sort((a, b) => a[0] - b[0]).map(([t, v]) => ({ t, ...v }));
+}
+
+// camera path: { keys: [{ t, yaw?, pitch?, distance?, target? }], ease: 'spline' }; missing channels use the scene camera
+export function normalizeCameraPath(c) {
+  if (c === null || c === undefined) return null;
+  if (typeof c !== 'object' || Array.isArray(c)) fail('"camera" must be an object like { "keys": [{ "t": 0, "yaw": 0 }, { "t": 12, "yaw": 360 }] } or null');
+  for (const k of Object.keys(c)) if (!['keys', 'ease'].includes(k)) fail(`unknown camera path field "${k}" (use keys, ease)`);
+  const keys = normalizeKeys(c.keys, 'camera.keys', (k, n) => {
+    const out = {};
+    if (k.yaw !== undefined) out.yaw = range(k.yaw, `${n}.yaw`, -1e5, 1e5);
+    if (k.pitch !== undefined) out.pitch = range(k.pitch, `${n}.pitch`, -89, 89);
+    if (k.distance !== undefined) out.distance = range(k.distance, `${n}.distance`, 0.1, 1e4);
+    if (k.target !== undefined) out.target = vec3(k.target, `${n}.target`);
+    return out;
+  }, 'yaw, pitch, distance or target');
+  if (!keys.length) return null;
+  return { keys, ease: c.ease === undefined ? 'spline' : normalizeEase(c.ease, 'camera.ease') };
 }
 
 // main light: direction, color, intensity, softness (shadow penumbra); extra lights cast no shadows
@@ -247,6 +301,32 @@ export class SceneDocument {
     });
   }
 
+  // Insert or merge one keyframe at time t (object channels, or camera channels when id is "camera").
+  // remove: true deletes the key at t. Returns the resulting key list.
+  setKey(id, t, values = {}, { remove = false, ease } = {}, activity) {
+    const time = Math.round(range(t, 'time', 0, 3600) * 1000) / 1000;
+    return this.commit(activity, (d) => {
+      const merge = (keys = []) => {
+        const rest = keys.filter((k) => k.t !== time), old = keys.find((k) => k.t === time);
+        return remove ? rest : [...rest, { ...(old || {}), ...values, t: time }];
+      };
+      if (id === 'camera') {
+        d.animation ??= { duration: 12 };
+        const prev = d.animation.camera;
+        const path = normalizeCameraPath({ keys: merge(prev?.keys), ease: ease ?? prev?.ease ?? 'spline' });
+        if (path) d.animation.camera = path; else delete d.animation.camera;
+        return path?.keys || [];
+      }
+      const o = d.objects.find((x) => x.id === id);
+      if (!o) fail(`no object with id "${id}". Call get_scene to see the existing ids.`);
+      const { keys, ease: e, ...rest } = o.animation || {};
+      const next = merge(keys);
+      const a = normalizeAnimation({ ...rest, ...(next.length ? { keys: next, ease: ease ?? e ?? 'smooth' } : {}) });
+      if (a) o.animation = a; else delete o.animation;
+      return a?.keys || [];
+    });
+  }
+
   removeObjects(ids, activity) {
     if (!Array.isArray(ids) || !ids.length) fail('"ids" must be a non-empty array');
     for (const id of ids) this.getObject(id);
@@ -329,6 +409,8 @@ export class SceneDocument {
     // timeline length in seconds (playback loops)
     const dur = data.animation?.duration;
     next.animation = { duration: typeof dur === 'number' && dur >= 1 && dur <= 3600 ? dur : 12 };
+    const path = safe(() => normalizeCameraPath(data.animation?.camera), null);
+    if (path) next.animation.camera = path;
 
     let maxId = 0;
     data.objects.forEach((o, i) => {

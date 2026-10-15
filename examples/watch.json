@@ -35,7 +35,39 @@
     "ground": false
   },
   "animation": {
-    "duration": 60
+    "duration": 60,
+    "camera": {
+      "keys": [
+        {
+          "t": 0,
+          "yaw": 28,
+          "pitch": 50,
+          "distance": 6.1,
+          "target": [0.2, 0.62, 0.25]
+        },
+        {
+          "t": 20,
+          "yaw": 8,
+          "pitch": 60,
+          "distance": 4.3,
+          "target": [0.1, 0.66, 0.1]
+        },
+        {
+          "t": 40,
+          "yaw": 52,
+          "pitch": 40,
+          "distance": 5.2
+        },
+        {
+          "t": 60,
+          "yaw": 28,
+          "pitch": 50,
+          "distance": 6.1,
+          "target": [0.2, 0.62, 0.25]
+        }
+      ],
+      "ease": "spline"
+    }
   },
   "objects": [
     {
