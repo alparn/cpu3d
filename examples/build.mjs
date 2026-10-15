@@ -468,12 +468,12 @@ scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twi
     const out = [], len = from - to, glowLen = len * 0.65;
     rings.forEach(([radius, count], ri) => {
       const start = (ri * 360) / count / rings.length; // rings are staggered so the field looks even
-      out.push(E({ name: `${name} lines`, position: [0, (from + to) / 2, 0],
+      out.push(E({ name: `${name} lines`, effect: true, position: [0, (from + to) / 2, 0],
         shape: { type: 'radial', count, radius, startAngle: start, shape: { type: 'cylinder', radiusTop: 0.0045, radiusBottom: 0.0045, height: len, segments: 4, caps: false } },
         material: { color: line, emissive: 0.45 }, animation: extra.spin ? { spin: extra.spin } : undefined }));
       // two long glows per line, half a pass apart: their soft ends overlap, so the brightness flows without gaps
       for (let k = 0; k < 2; k++) {
-        out.push(E({ name, position: [0, from - glowLen / 2, 0],
+        out.push(E({ name, effect: true, position: [0, from - glowLen / 2, 0],
           shape: { type: 'radial', count, radius, startAngle: start, shape: spindle(glowLen, 0.0075) },
           material: { color: pulse, emissive: 0.9 },
           animation: { flow: { axis: [-1, 0, 0], distance: len - glowLen, speed: (len - glowLen) / PASS, phase: r4(k / 2 + ri * 0.17), fade: 0.5 }, ...extra } }));
@@ -663,10 +663,10 @@ scene('fair', 'Fairground at dusk', 'A whole fairground in motion: a Ferris whee
       rocket.push({ t: r4(Math.max(0, tb - 1.45)), scale: 0.001, position: [x, 1, z] }, { t: r4(Math.max(0.01, tb - 1.4)), scale: 1, position: [x, 1, z] },
         { t: r4(tb), scale: 1, position: [x, y, z] }, { t: r4(tb + 0.03), scale: 0.001, position: [x, y, z] });
     }
-    o.push({ name: 'Firework', shape: { type: 'radial', count: 14, shape: { type: 'radial', axis: 'z', count: 7, angle: 150, startAngle: -75, radius: 3.2, rotation: [0, 0, 90],
+    o.push({ name: 'Firework', effect: true, shape: { type: 'radial', count: 14, shape: { type: 'radial', axis: 'z', count: 7, angle: 150, startAngle: -75, radius: 3.2, rotation: [0, 0, 90],
       shape: { type: 'cylinder', radiusTop: 0.07, radiusBottom: 0.02, height: 2, segments: 4, caps: false } } }, position: [x, y, z], scale: 0.001,
       material: { color, emissive: 0 }, animation: { keys: burst, ease: 'linear' } });
-    o.push({ name: 'Rocket', shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.12, height: 1.4, segments: 6 }, position: [x, 1, z], scale: 0.001,
+    o.push({ name: 'Rocket', effect: true, shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.12, height: 1.4, segments: 6 }, position: [x, 1, z], scale: 0.001,
       material: { color: '#fff1c4', emissive: 2.5 }, animation: { keys: rocket, ease: 'linear' } });
   }
 
@@ -971,7 +971,7 @@ scene('neon', 'Neon district', 'A rainy cyberpunk street at night: towers with t
       idx.push(b, b + 1, b + 2, b, b + 2, b + 3);
     }
   }
-  o.push({ name: 'Rain', shape: { type: 'mesh', positions: pos, indices: idx }, position: [0, 0, 0], material: { color: '#a9c2ee', emissive: 0.75, doubleSided: true, roughness: 1, specular: 0 },
+  o.push({ name: 'Rain', effect: true, shape: { type: 'mesh', positions: pos, indices: idx }, position: [0, 0, 0], material: { color: '#a9c2ee', emissive: 0.75, doubleSided: true, roughness: 1, specular: 0 },
     animation: { flow: { axis: [-0.06, -1, 0], distance: RH, speed: RH / 1.5, fade: 0 } } });
 
   // ---- elevated train crossing the street on a viaduct

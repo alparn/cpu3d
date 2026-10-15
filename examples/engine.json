@@ -2199,7 +2199,8 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "effect": true
     },
     {
       "id": "obj_50",
@@ -2253,7 +2254,8 @@
           "phase": 0,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_51",
@@ -2307,7 +2309,8 @@
           "phase": 0.5,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_52",
@@ -2337,7 +2340,8 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "effect": true
     },
     {
       "id": "obj_53",
@@ -2391,7 +2395,8 @@
           "phase": 0.17,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_54",
@@ -2445,7 +2450,8 @@
           "phase": 0.67,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_55",
@@ -2475,7 +2481,8 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "effect": true
     },
     {
       "id": "obj_56",
@@ -2529,7 +2536,8 @@
           "phase": 0.34,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_57",
@@ -2583,7 +2591,8 @@
           "phase": 0.84,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_58",
@@ -2619,7 +2628,8 @@
           "axis": [0, 1, 0],
           "speed": 60
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_59",
@@ -2677,7 +2687,8 @@
           "phase": 0,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_60",
@@ -2735,7 +2746,8 @@
           "phase": 0.5,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_61",
@@ -2771,7 +2783,8 @@
           "axis": [0, 1, 0],
           "speed": 60
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_62",
@@ -2829,7 +2842,8 @@
           "phase": 0.17,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_63",
@@ -2887,7 +2901,8 @@
           "phase": 0.67,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_64",
@@ -2917,7 +2932,8 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "effect": true
     },
     {
       "id": "obj_65",
@@ -2978,7 +2994,8 @@
           "phase": 0,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_66",
@@ -3039,7 +3056,8 @@
           "phase": 0.5,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_67",
@@ -3069,7 +3087,8 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "effect": true
     },
     {
       "id": "obj_68",
@@ -3130,7 +3149,8 @@
           "phase": 0.17,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_69",
@@ -3191,7 +3211,8 @@
           "phase": 0.67,
           "fade": 0.5
         }
-      }
+      },
+      "effect": true
     }
   ]
 }

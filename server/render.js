@@ -44,12 +44,12 @@ let poolPromise = null;
 export const getPool = () => (poolPromise ??= ShadePool.create());
 
 export async function renderPNGAsync(doc, { width = 768, height = 512, camera = doc.data.camera, shading = 'gouraud', wireframe = false,
-  highlight = [], quality = 'high', samples = 8, time = 0 } = {}) {
+  highlight = [], quality = 'high', samples = 8, time = 0, effects = true } = {}) {
   const r = new Renderer({ width, height }).setPool(await getPool());
   r.shading = shading;
   r.wireframe = wireframe;
   r.quality = quality;
-  const scene = buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: highlight, time });
+  const scene = buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: highlight, time, effects });
   const cam = cameraFromState(camera);
   const n = quality === 'high' ? Math.max(1, samples) : 1;
   for (let i = 0; i < n; i++) await r.renderAsync(scene, cam, { accumulate: i > 0 });

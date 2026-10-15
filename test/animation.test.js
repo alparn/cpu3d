@@ -147,3 +147,17 @@ test('flow moves along the axis, starts over and fades at the ends', async () =>
   assert.ok(Math.hypot(m[0], m[1], m[2]) < 0.5, 'grows in at the start');
   assert.equal((await call(doc, 'set_animation', { id: o.id, animation: { flow: { axis: [0, 0, 0] } } })).isError, true);
 });
+
+test('effects can be marked and left out of a render', async () => {
+  const doc = new SceneDocument();
+  await call(doc, 'add_objects', { objects: [{ name: 'Body', shape: { type: 'box' } }, { name: 'Wind', shape: { type: 'sphere' }, position: [1.5, 0.5, 0], effect: true }] });
+  assert.equal(doc.data.objects[1].effect, true);
+  assert.equal(doc.data.objects[0].effect, undefined);
+  const count = (effects) => buildRenderScene(doc.data, (s) => doc.geometry(s), { effects }).meshes.filter((m) => m.object).length;
+  assert.equal(count(true), 2);
+  assert.equal(count(false), 1);
+  const img = async (effects) => (await call(doc, 'render_view', { width: 64, height: 48, effects, focus: 'all' })).content[0].data;
+  assert.notEqual(await img(true), await img(false), 'render_view(effects: false) leaves the effect out');
+  await call(doc, 'update_object', { id: doc.data.objects[1].id, effect: false });
+  assert.equal(doc.data.objects[1].effect, undefined, 'update_object clears the mark');
+});

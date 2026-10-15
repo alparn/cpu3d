@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Effects toggle**: objects can be marked `"effect": true` (airflow, rain, fireworks); the editor's **Effects** button (or `E`) shows or hides all of them, remembered per browser; `render_view` and GIF export take `effects: false`. The turbofan airflow, the neon rain and the fairground fireworks are marked
 - Turbofan airflow redone as a wind-tunnel style flow field: an even field of faint streamlines in staggered rings with long, softly tapered glows flowing along every line at one speed (two per line, overlapping without gaps, so the threads brighten in waves instead of showing dashes), swirling behind the fan and leaving the core as a hot jet; replaces the short streaks that looked like rain
 - New gallery scene **Neon district**: a rainy cyberpunk street at night with towers wearing procedurally painted window textures, flickering neon signs with glyphs and their reflections smeared on the wet asphalt, rain as a raw mesh of streaks, flying cars in traffic lanes, an elevated train, swinging lanterns, cables and a rotating hologram in the haze; the build script paints all its textures
 - New gallery scene **Plush dancer**: a fluffy character (round fluffy bottom and a little tail included) with headphones dancing on a light-up floor, with a disco ball, pumping speakers and a neon backdrop; a small skeleton baked into keyframes for every part

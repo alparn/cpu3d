@@ -55,6 +55,9 @@ select {
   background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px;
 }
 .toggle { display: flex; align-items: center; gap: 5px; color: var(--dim); cursor: pointer; }
+.btn.fx { color: var(--dim); }
+.btn.fx.on { color: #111; background: var(--accent); border-color: var(--accent); }
+.btn.fx[hidden] { display: none; }
 input[type=checkbox], input[type=range] { accent-color: var(--accent); }
 
 .menu { position: relative; }

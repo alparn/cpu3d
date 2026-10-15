@@ -277,6 +277,7 @@ export class SceneDocument {
       material: normalizeMaterial(o.material),
       visible: o.visible !== undefined ? !!o.visible : true,
       ...(o.animation ? { animation: normalizeAnimation(o.animation) } : {}),
+      ...(o.effect ? { effect: true } : {}), // a visual effect (airflow, rain, sparks): viewers can hide all of them
     };
   }
 
@@ -301,6 +302,7 @@ export class SceneDocument {
       if (patch.scale !== undefined) o.scale = scale3(patch.scale);
       if (patch.material !== undefined) o.material = normalizeMaterial(patch.material, o.material);
       if (patch.visible !== undefined) o.visible = !!patch.visible;
+      if (patch.effect !== undefined) { if (patch.effect) o.effect = true; else delete o.effect; }
       if (patch.animation !== undefined) {
         const a = normalizeAnimation(patch.animation);
         if (a) o.animation = a; else delete o.animation;

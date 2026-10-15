@@ -35,7 +35,7 @@
     "description": "A turbofan with the casing cut open: 22 twisted fan blades, booster and high-pressure compressor stages, a glowing combustor, heat-tinted turbines, all as radial arrays of NACA-profiled blades.",
     "objects": 69,
     "triangles": 143338,
-    "jsonBytes": 75499,
+    "jsonBytes": 75961,
     "objBytes": 5407130,
     "ramBytes": 3766512
   },
@@ -45,7 +45,7 @@
     "description": "A whole fairground in motion: a Ferris wheel whose gondolas stay upright, a carousel with galloping horses, a wave swinger, a roller coaster train riding its track on spline keyframes with real lift and drop speeds, fireworks, rising balloons and hundreds of lights.",
     "objects": 339,
     "triangles": 98046,
-    "jsonBytes": 418845,
+    "jsonBytes": 419021,
     "objBytes": 3528583,
     "ramBytes": 1343256
   },
@@ -65,7 +65,7 @@
     "description": "A rainy cyberpunk street at night: towers with thousands of lit windows, flickering neon signs mirrored on the wet asphalt, rain, flying cars in traffic lanes, an elevated train crossing, swinging lanterns and a giant rotating hologram in the haze.",
     "objects": 462,
     "triangles": 29082,
-    "jsonBytes": 547710,
+    "jsonBytes": 547732,
     "objBytes": 1326198,
     "ramBytes": 619512
   },

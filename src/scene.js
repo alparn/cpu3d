@@ -144,14 +144,16 @@ export function updateAnimation(scene, t) {
   return moved;
 }
 
+export const sceneHasEffects = (data) => data.objects.some((o) => o.effect);
 export const sceneHasAnimation = (data) => !!data.animation?.camera || data.objects.some((o) => o.animation);
 
 // geometryFor(shape) -> Geometry, normally SceneDocument#geometry (cached)
-export function buildRenderScene(data, geometryFor, { selected = [], showGround = true, time = 0 } = {}) {
+// effects: false leaves out objects marked as effects (airflow, rain, sparks)
+export function buildRenderScene(data, geometryFor, { selected = [], showGround = true, time = 0, effects = true } = {}) {
   const env = data.environment, meshes = [];
   if (env.ground && showGround) meshes.push(new Mesh(ground(), { specular: 0 }));
   for (const o of data.objects) {
-    if (!o.visible) continue;
+    if (!o.visible || (o.effect && !effects)) continue;
     const m = new Mesh(geometryFor(o.shape), {
       color: colorToRGB(o.material.color), specular: o.material.specular,
       shininess: o.material.shininess, doubleSided: o.material.doubleSided, emissive: o.material.emissive || 0,

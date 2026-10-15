@@ -53,6 +53,7 @@ const objectProps = {
   material: materialS,
   visible: { type: 'boolean' },
   animation: { type: ['object', 'null'], description: 'Behaviours: spin, swing, bob, orbit, pulse (see set_animation). null removes' },
+  effect: { type: 'boolean', description: 'Mark as a visual effect (airflow, rain, sparks, steam): viewers can hide all effects at once' },
 };
 const cameraProps = {
   yaw: { type: 'number', description: 'Degrees around the Y axis (0 = looking from +Z)' },
@@ -301,6 +302,7 @@ ease (optional) sets the interpolation of that object or the camera path: smooth
         highlight: idsS,
         time: { type: 'number', description: 'Animation time in seconds (default 0); a camera path is followed unless camera_path is false' },
         camera_path: { type: 'boolean', description: 'false: use the scene camera even if there is a camera path' },
+        effects: { type: 'boolean', description: 'false: leave out objects marked as effects' },
       },
     },
     readOnly: true,
@@ -310,7 +312,7 @@ ease (optional) sets the interpolation of that object or the camera path: smooth
       const width = Math.round(Math.min(1600, Math.max(64, a.width ?? 768)));
       const height = Math.round(Math.min(1200, Math.max(64, a.height ?? 512)));
       const time = typeof a.time === 'number' && Number.isFinite(a.time) ? Math.max(0, a.time) : 0;
-      const png = await ctx.render(doc, { width, height, camera, shading: a.shading, wireframe: a.wireframe, highlight: a.highlight || [], time });
+      const png = await ctx.render(doc, { width, height, camera, shading: a.shading, wireframe: a.wireframe, highlight: a.highlight || [], time, effects: a.effects !== false });
       const cam = `yaw ${camera.yaw.toFixed(0)}°, pitch ${camera.pitch.toFixed(0)}°, distance ${camera.distance.toFixed(2)}, target [${camera.target.map((v) => v.toFixed(2))}]`;
       return [{ type: 'image', data: png, mimeType: 'image/png' }, { type: 'text', text: `${width}x${height}, t = ${time} s, camera: ${cam}` }];
     },

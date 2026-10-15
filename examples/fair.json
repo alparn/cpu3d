@@ -13333,7 +13333,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_220",
@@ -13401,7 +13402,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_221",
@@ -13493,7 +13495,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_222",
@@ -13561,7 +13564,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_223",
@@ -13653,7 +13657,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_224",
@@ -13721,7 +13726,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_225",
@@ -13813,7 +13819,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_226",
@@ -13881,7 +13888,8 @@
           }
         ],
         "ease": "linear"
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_227",

@@ -19,7 +19,7 @@ setTextureLoader(async (src) => {
   return { width: bmp.width, height: bmp.height, data: ctx.getImageData(0, 0, bmp.width, bmp.height).data };
 });
 import { buildRenderScene, cameraFromState, pick, frameBounds, unionBounds, exportOBJ, screenRay, raycast, rayPlane,
-  updateAnimation, sceneHasAnimation, cameraAt, hasCameraPath, keyed } from '../src/scene.js';
+  updateAnimation, sceneHasAnimation, sceneHasEffects, cameraAt, hasCameraPath, keyed } from '../src/scene.js';
 import { renderGIF, renderContactSheet } from '../src/frames.js';
 
 const $ = (id) => document.getElementById(id);
@@ -39,6 +39,7 @@ const state = {
   userPaused: false,      // the user paused: do not auto-play again
   followPath: true,       // the view follows the scene's camera path (orbiting leaves it)
   exporting: false,       // a GIF is being rendered: the viewport pauses
+  effects: (() => { try { return localStorage.getItem('cpu3d-effects') !== 'off'; } catch { return true; } })(), // show effect objects
   mode: 'connecting',     // 'live' | 'local'
   scene: null,
   revision: -1,
@@ -78,7 +79,7 @@ async function browserRender(doc, o) {
   const r = new Renderer({ width: o.width, height: o.height });
   r.shading = o.shading || 'gouraud';
   r.wireframe = !!o.wireframe;
-  r.render(buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: o.highlight, time: o.time || 0 }), cameraFromState(o.camera));
+  r.render(buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: o.highlight, time: o.time || 0, effects: o.effects !== false }), cameraFromState(o.camera));
   return pngBase64(r.pixels, o.width, o.height);
 }
 async function browserSheet(doc, o) {
@@ -165,7 +166,8 @@ function setScene(scene, revision) {
 function rebuild() {
   if (!state.scene) return;
   try {
-    state.renderScene = buildRenderScene(state.scene, geometryFor, { selected: state.selected ? [state.selected] : [], time: state.time });
+    state.renderScene = buildRenderScene(state.scene, geometryFor, { selected: state.selected ? [state.selected] : [], time: state.time, effects: state.effects });
+    syncEffectsButton();
     syncTimeline();
   } catch (e) {
     toast(e.message);
@@ -834,6 +836,7 @@ addEventListener('keydown', (e) => {
   else if (e.key === 'Escape') { if (drag?.move) cancelMove(); else select(null); }
   else if (e.code === 'Space' && !$('timeline').hidden) { e.preventDefault(); togglePlay(); }
   else if ((e.key === 'k' || e.key === 'K') && !mod) setKeyHere();
+  else if ((e.key === 'e' || e.key === 'E') && !mod) toggleEffects();
   else if (e.key === 'f' || e.key === 'F') focusObjects(state.selected ? [state.selected] : state.scene.objects.map((o) => o.id));
   else if (e.shiftKey && !mod && e.code === 'KeyN') { e.preventDefault(); newScene('empty'); }
   else if (e.key === 'w' || e.key === 'W') { $('wire').checked = !$('wire').checked; $('wire').onchange(); }
@@ -859,6 +862,21 @@ $('redoBtn').onclick = () => tool('redo');
 $('shading').onchange = (e) => { renderer.shading = quick.shading = e.target.value; state.dirty = true; };
 $('wire').onchange = () => { renderer.wireframe = quick.wireframe = $('wire').checked; state.dirty = true; };
 $('res').onchange = () => { state.dirty = true; };
+// effects (airflow, rain, fireworks ...): a view setting, the scene itself stays unchanged
+function syncEffectsButton() {
+  const b = $('fxBtn'), has = !!state.scene && sceneHasEffects(state.scene);
+  b.hidden = !has;
+  b.classList.toggle('on', state.effects);
+  b.setAttribute('aria-pressed', String(state.effects));
+}
+function toggleEffects() {
+  if (!state.scene || !sceneHasEffects(state.scene)) return;
+  state.effects = !state.effects;
+  try { localStorage.setItem('cpu3d-effects', state.effects ? 'on' : 'off'); } catch { /* private mode */ }
+  perf.mainFresh = false;
+  rebuild();
+}
+$('fxBtn').onclick = toggleEffects;
 $('quality').onchange = (e) => { renderer.quality = quick.quality = e.target.value; state.dirty = true; };
 
 let toastTimer;
@@ -1006,7 +1024,7 @@ $('gifGo').onclick = async () => {
   $('gifProgress').hidden = false;
   $('gifResult').hidden = true;
   try {
-    const gif = await renderGIF(scene, geometryFor, { width, height, fps, start, seconds, samples: +$('gifSamples').value, camera, pool,
+    const gif = await renderGIF(scene, geometryFor, { width, height, fps, start, seconds, samples: +$('gifSamples').value, camera, pool, effects: state.effects,
       onProgress: (done, total) => {
         $('gifProgress').value = done / total;
         $('gifInfo').textContent = `frame ${done} / ${total}`;

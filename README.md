@@ -263,6 +263,7 @@ GIFs are rendered in high quality with **motion blur** (each frame averages seve
 - **Timeline**: animated scenes play automatically; play/pause and scrub at the bottom of the viewport, with diamonds for the keys of the selected object (or of the camera path)
 - **Keyframing**: `◆` or `K` records the selected object's pose at the current time (with nothing selected: the view as a camera path key). Once an object has keys, moving it or editing its transform sets a key at the current time. `🎥` toggles following the camera path; orbiting the view leaves it
 - The inspector has animation presets (spin, swing, bob, pulse) and a JSON field for behaviours and keys
+- **Effects** button (`E`): shows or hides everything marked as an effect (`"effect": true` on an object: airflow, rain, fireworks); a view setting, the scene stays unchanged. `render_view({ effects: false })` does the same for agents
 - **Export animated GIF** (File menu): rendered in the browser with motion blur, with size, frame rate, clip and camera options
 - Gallery of example scenes; add menu with presets; OBJ and scene JSON import/export
 - Size readouts: what the scene weighs as `scene.json` and as `.obj`, geometry RAM, and the same for the selected object; load and download times and sizes are reported too
@@ -272,7 +273,7 @@ GIFs are rendered in high quality with **motion blur** (each frame averages seve
 
 Mouse: drag rotate · shift/right-drag pan · wheel zoom · click select · drag selected object to move (Alt up/down, Shift snap)
 
-Keyboard: `Space` play/pause · `K` keyframe · `Shift+N` new scene · `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` cancel move / deselect
+Keyboard: `Space` play/pause · `K` keyframe · `E` effects on/off · `Shift+N` new scene · `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` cancel move / deselect
 
 ## Rendering on the CPU
 

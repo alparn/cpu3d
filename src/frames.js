@@ -13,12 +13,12 @@ export const timelineDuration = (data) => data.animation?.duration || 12;
 // Yields { index, time, pixels }; pixels is reused between frames, copy it to keep it.
 // pool: optional ShadePool (pool.js) to shade on several threads.
 export async function* renderFrames(data, geometryFor, { width = 480, height = 320, times, samples = 4, shutter = 0.5, fps = 15,
-  quality = 'high', camera = null, shading = 'gouraud', pool = null } = {}) {
+  quality = 'high', camera = null, shading = 'gouraud', pool = null, effects = true } = {}) {
   const r = new Renderer({ width, height }).setPool(pool);
   r.quality = quality;
   r.shading = shading;
   const duration = timelineDuration(data), wrap = (t) => ((t % duration) + duration) % duration;
-  const scene = buildRenderScene(data, geometryFor, { time: wrap(times[0] ?? 0) });
+  const scene = buildRenderScene(data, geometryFor, { time: wrap(times[0] ?? 0), effects });
   const n = quality === 'high' ? Math.max(1, samples) : 1;
   for (let f = 0; f < times.length; f++) {
     for (let i = 0; i < n; i++) {
@@ -36,11 +36,11 @@ export const frameTimes = (start, count, fps) => Array.from({ length: count }, (
 // Encode a GIF. The palette is built from a few frames spread over the clip, so colors stay stable.
 // onProgress(done, total) is called after each frame; return a Promise from it to yield (browser UI).
 export async function renderGIF(data, geometryFor, { width = 480, height = 320, fps = 15, start = 0, seconds, samples = 4, shutter = 0.5,
-  quality = 'high', camera = null, dither = 1, onProgress, pool = null } = {}) {
+  quality = 'high', camera = null, dither = 1, onProgress, pool = null, effects = true } = {}) {
   const length = Math.min(seconds ?? timelineDuration(data), 60);
   const count = Math.max(1, Math.min(900, Math.round(length * fps)));
   const times = frameTimes(start, count, fps);
-  const opts = { width, height, samples, shutter, fps, quality, camera, pool };
+  const opts = { width, height, samples, shutter, fps, quality, camera, pool, effects };
   const probe = [0, 0.33, 0.66].map((k) => times[Math.floor(k * count)]).filter((t, i, a) => a.indexOf(t) === i);
   const sample = [];
   for await (const { pixels } of renderFrames(data, geometryFor, { ...opts, times: probe, samples: 1 })) sample.push(pixels.slice());

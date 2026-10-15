@@ -11586,7 +11586,8 @@
           "phase": 0,
           "fade": 0
         }
-      }
+      },
+      "effect": true
     },
     {
       "id": "obj_423",
