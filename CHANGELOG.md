@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Shadows in motion: the soft-shadow jitter moved every shadow edge in the image at once each frame; it is now random per pixel (fine noise that temporal AA averages away). Shadow map origins snap to whole texels (no swimming when the framing moves) and the map size changes only when it has to (no popping along camera paths)
+- Detail shadow cascade around the view center for scenes with fairly hard light; soft light keeps one map (its penumbra hides the extra resolution)
+- Temporal AA trusts the history a bit more during slow motion: about 20% less flicker on the watch's camera move
 - Fix: temporal AA wrote its result into the buffer it reads the 3x3 neighbourhood from, so neighbours were already blended (ghost trails behind moving objects, row stripes with several threads); the result now goes to a separate buffer
 - Temporal AA: disocclusion detection with stable mesh ids (uncovered background starts over instead of keeping a ghost), variance clipping in YCoCg towards the mean (no coloured fringes on textures such as the phone's app icons), bicubic overshoot clamped, fast path for still pixels, neighbourhood statistics as sliding sums
 - Fix: animation playback advanced unevenly (time was lost while a frame was still rendering), which looked like jitter; time now follows the wall clock between rendered frames

@@ -56,8 +56,9 @@ export function buildShadowMap(meshes, L, center, radius, size, alloc = (n) => n
   R = R.map((v) => v / rl);
   const U = [L[1] * R[2] - L[2] * R[1], L[2] * R[0] - L[0] * R[2], L[0] * R[1] - L[1] * R[0]];
   const scale = size / (2 * radius);
-  const ox = R[0] * center[0] + R[1] * center[1] + R[2] * center[2] - radius;
-  const oy = U[0] * center[0] + U[1] * center[1] + U[2] * center[2] - radius;
+  // origin snapped to whole texels: when the framing moves, shadow edges do not swim
+  const ox = Math.floor((R[0] * center[0] + R[1] * center[1] + R[2] * center[2] - radius) * scale) / scale;
+  const oy = Math.floor((U[0] * center[0] + U[1] * center[1] + U[2] * center[2] - radius) * scale) / scale;
   const sm = { depth: alloc(size * size).fill(-Infinity), size, R, U, L, ox, oy, scale };
   drawShadowCasters(sm, meshes);
   return sm;
@@ -291,6 +292,24 @@ export function blurRows(ctx, b0, b1) {
   }
 }
 
+// ---- shadow lookup: bilinear PCF in one shadow map at a world-space offset (ju, jv) on the light plane;
+// -1 if the point is outside the map (the caller falls back to the next cascade)
+const TAPS = [-0.15, -0.4, 0.4, -0.15, 0.15, 0.4, -0.4, 0.15]; // rotated grid inside the penumbra disc
+function shadowTap(sm, px, py, pz, nx, ny, nz, ju, jv, penWorld, slope) {
+  const texel = 1 / sm.scale, S = sm.size, D = sm.depth, R = sm.R, U = sm.U, L = sm.L;
+  // normal offset reduces acne on surfaces at grazing angles
+  const off = texel * 1.5, qx = px + nx * off, qy = py + ny * off, qz = pz + nz * off;
+  const u = (R[0] * qx + R[1] * qy + R[2] * qz - sm.ox + ju) * sm.scale - 0.5;
+  const v = (U[0] * qx + U[1] * qy + U[2] * qz - sm.oy + jv) * sm.scale - 0.5;
+  const u0 = Math.floor(u), v0 = Math.floor(v);
+  if (u0 < 0 || v0 < 0 || u0 >= S - 1 || v0 >= S - 1) return -1;
+  // depth bias grows with the PCF disc and the surface slope towards the light (no acne on soft shadows)
+  const d = L[0] * qx + L[1] * qy + L[2] * qz + texel + 0.6 * penWorld * Math.min(slope, 8);
+  const fu = u - u0, fv = v - v0, k = v0 * S + u0;
+  const t00 = d >= D[k] ? 1 : 0, t10 = d >= D[k + 1] ? 1 : 0, t01 = d >= D[k + S] ? 1 : 0, t11 = d >= D[k + S + 1] ? 1 : 0;
+  return (t00 * (1 - fu) + t10 * fu) * (1 - fv) + (t01 * (1 - fu) + t11 * fu) * fv;
+}
+
 // ---- 2b. lighting of pixel rows [y0, y1)
 export function shadeRows(ctx, y0, y1) {
   const { W, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, matMetal, matRough, lights, environment, softness, invTone, eye, R, U, F,
@@ -301,10 +320,14 @@ export function shadeRows(ctx, y0, y1) {
   const S2L = SRGB_TO_LINEAR;
 
   // shadow map setup
-  const sm = shadow, smS = sm ? sm.size : 0, smD = sm ? sm.depth : null;
+  const sm = shadow, smN = ctx.shadowNear || null;
   // soft shadows: the PCF sample point wanders over a disc that grows with the light's softness
-  const pen = 1 + (softness || 0) * 22;
-  const texel = sm ? 1 / sm.scale : 0, smJu = (halton(frame, 2) - 0.5) * pen, smJv = (halton(frame, 3) - 0.5) * pen;
+  // the penumbra is measured in texels of the main map and kept the same size in the detail map
+  const pen = 1 + (softness || 0) * 22, penWorld = sm ? pen / sm.scale : 0;
+  // several rotated PCF taps per pixel while things move (smooth in a single frame), one jittered tap per
+  // frame when the image refines (the average over the frames is the same, at a quarter of the cost)
+  const taps = ctx.post === 'temporal' ? ctx.shadowTaps || 1 : 1, smJu = halton(frame, 2) - 0.5, smJv = halton(frame, 3) - 0.5;
+  const rotate = ctx.post === 'temporal';
   const envType = environment ? environment.type : 'none', sky = environment ? environment.sky : null;
   const extra = lights || [], nExtra = extra.length;
   const aoBuf = ao ? aoBlur : null;
@@ -357,21 +380,23 @@ export function shadeRows(ctx, y0, y1) {
       if (ndl > 0) {
         let vis = 1;
         if (sm) {
-          // normal offset reduces acne on surfaces at grazing angles
-          const off = texel * 1.5;
-          const qx = px + nx * off, qy = py + ny * off, qz = pz + nz * off;
-          const u = (sm.R[0] * qx + sm.R[1] * qy + sm.R[2] * qz - sm.ox) * sm.scale - 0.5 + smJu;
-          const v = (sm.U[0] * qx + sm.U[1] * qy + sm.U[2] * qz - sm.oy) * sm.scale - 0.5 + smJv;
-          const u0 = Math.floor(u), v0 = Math.floor(v);
-          if (u0 >= 0 && v0 >= 0 && u0 < smS - 1 && v0 < smS - 1) {
-            // depth bias grows with the PCF disc and the surface slope towards the light (no acne on soft shadows)
-            const slope = Math.sqrt(Math.max(0, 1 - ndl * ndl)) / Math.max(ndl, 0.08);
-            const d = sm.L[0] * qx + sm.L[1] * qy + sm.L[2] * qz + texel * (1 + 0.6 * pen * Math.min(slope, 8));
-            const fu = u - u0, fv = v - v0, k = v0 * smS + u0;
-            const t00 = d >= smD[k] ? 1 : 0, t10 = d >= smD[k + 1] ? 1 : 0;
-            const t01 = d >= smD[k + smS] ? 1 : 0, t11 = d >= smD[k + smS + 1] ? 1 : 0;
-            vis = (t00 * (1 - fu) + t10 * fu) * (1 - fv) + (t01 * (1 - fu) + t11 * fu) * fv;
+          const slope = Math.sqrt(Math.max(0, 1 - ndl * ndl)) / Math.max(ndl, 0.08);
+          // per pixel rotation of the tap pattern (fine noise that temporal AA averages, instead of the
+          // whole shadow edge moving at once)
+          let ca = 1, sa = 0;
+          if (rotate && taps > 1) { const ang = hash(x, y, frame) * 6.2831853; ca = Math.cos(ang); sa = Math.sin(ang); }
+          let sum = 0;
+          for (let s = 0; s < taps; s++) {
+            let ju = smJu, jv = smJv;
+            if (rotate) {
+              if (taps > 1) { const ox = TAPS[s * 2], oy = TAPS[s * 2 + 1]; ju = ox * ca - oy * sa; jv = ox * sa + oy * ca; }
+              else { ju = hash(x, y, frame) - 0.5; jv = hash(y, x, frame) - 0.5; } // one tap anywhere in the penumbra square
+            }
+            let t = smN ? shadowTap(smN, px, py, pz, nx, ny, nz, ju * penWorld, jv * penWorld, penWorld, slope) : -1;
+            if (t < 0) t = shadowTap(sm, px, py, pz, nx, ny, nz, ju * penWorld, jv * penWorld, penWorld, slope);
+            sum += t < 0 ? 1 : t;
           }
+          vis = sum / taps;
         }
         if (vis > 0) {
           const hx = lx + Vx, hy = ly + Vy, hz = lz + Vz;
@@ -492,7 +517,7 @@ function neighbourhoodRow(ctx, y) {
 
 function taaRow(ctx, colK, ry, y) {
   const { W, H, depth, color: c, eye, R, U, F, taa, MAT } = ctx;
-  const { prevVP: M, currVP: Q, histPrev: hp, histNext: hn, valid, alpha, motion: MV, moving, agePrev, ageNext, matPrev, matNext, meshOf, out, cameraStill } = taa;
+  const { prevVP: M, currVP: Q, histPrev: hp, histNext: hn, valid, alpha, motion: MV, moving, agePrev, ageNext, matPrev, matNext, meshOf, out, cameraStill, motionBase, motionSlope } = taa;
   {
     for (let x = 0; x < W; x++) {
       const i = y * W + x, v = c[i], k = i * 3;
@@ -569,7 +594,7 @@ function taaRow(ctx, colK, ry, y) {
               || matPrev[q2 + pc] === cm || matPrev[q0 + c0] === cm || matPrev[q0 + c2] === cm || matPrev[q2 + c0] === cm || matPrev[q2 + c2] === cm;
             age = seen ? agePrev[q1 + pc] + 1 : 0;
             if (age > 60) age = 60;
-            const run = 1 / (age + 1), fast = speed < 0.05 ? 0 : 0.2 + (speed > 4 ? 0.4 : speed * 0.1);
+            const run = 1 / (age + 1), fast = speed < 0.05 ? 0 : Math.min(0.6, motionBase + speed * motionSlope);
             a = run > alpha ? run : alpha;
             if (fast > a) a = fast;
             if (a > 1) a = 1;

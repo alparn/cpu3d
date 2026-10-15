@@ -43,14 +43,14 @@ test('animated meshes reuse the static shadow map', () => {
   const doc = load('city'), scene = buildRenderScene(doc.data, (s) => doc.geometry(s), { time: 1 });
   const r = new Renderer({ width: 120, height: 80 }), cam = cameraFromState(doc.data.camera);
   r.render(scene, cam);
-  const base = scene._shadow.local.base;
+  const base = scene._shadow['main-local'].base;
   assert.ok(scene.meshes.some((m) => m.dynamic), 'the blimp is dynamic');
   updateAnimation(scene, 2);
   r.render(scene, cam);
-  assert.equal(scene._shadow.local.base, base, 'static casters were not drawn again');
+  assert.equal(scene._shadow['main-local'].base, base, 'static casters were not drawn again');
   scene.staticVersion = 1;
   r.render(scene, cam);
-  assert.notEqual(scene._shadow.local.base, base, 'staticVersion rebuilds the base');
+  assert.notEqual(scene._shadow['main-local'].base, base, 'staticVersion rebuilds the base');
 });
 
 test('temporal AA: moving objects use their own motion, still parts stop flickering', () => {
@@ -80,4 +80,17 @@ test('temporal AA: moving objects use their own motion, still parts stop flicker
   assert.ok(withMv.error < without.error, `motion vectors: ${withMv.error.toFixed(2)} vs ${without.error.toFixed(2)}`);
   assert.ok(withMv.error < 0.8, `close to the 16-sample image while moving (${withMv.error.toFixed(2)})`);
   assert.ok(withMv.flicker < 0.6, `still parts barely change between frames (${withMv.flicker.toFixed(2)})`);
+});
+
+test('shadow maps stay put while the camera moves a little (no popping, no swimming)', () => {
+  const doc = load('watch'), scene = buildRenderScene(doc.data, (s) => doc.geometry(s));
+  const r = new Renderer({ width: 120, height: 80 }), c = { ...doc.data.camera }, layouts = new Set();
+  for (let i = 0; i < 20; i++) {
+    c.distance = doc.data.camera.distance * (1 + 0.12 * Math.sin(i)); // back and forth across a size step
+    r.render(scene, cameraFromState(c), { temporal: true });
+    layouts.add(scene._shadow['main-local'].layout.split('|')[2]);
+  }
+  assert.equal(layouts.size, 1, `one shadow map size, got ${[...layouts]}`);
+  const sm = scene._shadow['main-local'].base;
+  assert.ok(Math.abs(sm.ox * sm.scale - Math.round(sm.ox * sm.scale)) < 1e-6, 'origin on the texel grid');
 });

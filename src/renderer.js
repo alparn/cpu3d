@@ -134,6 +134,8 @@ export class Renderer {
     this.pool = null;
     this._shared = false;
     this._allocMaterials();
+    this.shadowTaps = 1; // soft shadow samples per pixel in temporal frames (rotated per pixel)
+    this.temporalMotion = [0.12, 0.12]; // weight of the new frame for moving pixels: base + per pixel of motion
     this.temporalAlpha = 0.035; // smallest weight of a new frame in temporal anti-aliasing (more while things move)
     this.onTextureLoad = null; // called when a texture finished loading (the editor redraws)
     this._proj = mat4.create();
@@ -364,6 +366,8 @@ export class Renderer {
       invTone: this._invTone,
       eye: [...eye], R, U, F, tanX: tanY * (W / H), tanY, jx, jy, frame, light: { ...L, tone: undefined, invTone: undefined }, tone: this._tone,
       shadow: this.shadows ? this._shadowFor(scene, camera, [L.lx, L.ly, L.lz]) : null,
+      shadowNear: this.shadows ? this._smNear : null,
+      shadowTaps: this.shadowTaps,
       ao: this.ao ? { radius: Math.min(4, Math.max(0.08, viewDist * 0.045)), strength: this.aoStrength } : null,
       aoRaw: this._aoRaw, aoDepth: this._aoDepth, aoBlur: this._aoBlur,
       fog: L.fog ? { near: L.fn, far: L.ff, r: L.fr, g: L.fg, b: L.fb } : null,
@@ -383,7 +387,7 @@ export class Renderer {
       ctx.taa = { prevVP: this._prevVP, currVP: unjittered, histPrev: this._hist[0], histNext: this._hist[1], valid, alpha: this.temporalAlpha,
         motion: this._matMotion, moving: this._matMoving, meshOf: this._matMesh, agePrev: this._age[0], ageNext: this._age[1],
         matPrev: this._histMat[0], matNext: this._histMat[1], out: this._taaOut, ycc: this._ycc,
-        cameraStill: this._prevVP.every((v, k) => v === unjittered[k]) };
+        cameraStill: this._prevVP.every((v, k) => v === unjittered[k]), motionBase: this.temporalMotion[0], motionSlope: this.temporalMotion[1] };
       this._histWeight = valid ? Math.min(8, this._histWeight + 1) : 1;
       this._nextVP = unjittered;
     }
@@ -449,10 +453,11 @@ export class Renderer {
     return { type, sky: { tr: lin(top[0]), tg: lin(top[1]), tb: lin(top[2]), br: lin(bottom[0]), bg: lin(bottom[1]), bb: lin(bottom[2]) } };
   }
 
-  // Shadow map around the area of interest. Meshes marked `dynamic` (animated, dragged) are kept out of
-  // a cached base map; when the scene's `version` changes only they are drawn again, on a copy of it.
-  // The cache lives on the scene, so renderers drawing the same scene (editor: full + reduced resolution)
-  // share it. `staticVersion` invalidates the base (e.g. an object starts being dragged).
+  // Shadow maps: a main map around the area of interest and, when that is much larger than what the camera
+  // looks at, a detail map around the view center (two cascades; the shader uses the detail map where it
+  // covers a point). Meshes marked `dynamic` (animated, dragged) stay out of a cached base map per cascade;
+  // when the scene's `version` changes only they are drawn again, on a copy of it. The cache lives on the
+  // scene, so renderers drawing the same scene share it. `staticVersion` invalidates the bases.
   _shadowFor(scene, camera, L) {
     let min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
     const casters = scene.meshes.filter((m) => m.visible);
@@ -463,16 +468,34 @@ export class Renderer {
       const w = [m[0] * c[0] + m[4] * c[1] + m[8] * c[2] + m[12], m[1] * c[0] + m[5] * c[1] + m[9] * c[2] + m[13], m[2] * c[0] + m[6] * c[1] + m[10] * c[2] + m[14]];
       for (let a = 0; a < 3; a++) { min[a] = Math.min(min[a], w[a] - r); max[a] = Math.max(max[a], w[a] + r); }
     }
-    if (!casters.length) return null;
+    if (!casters.length) { this._smNear = null; return null; }
+    // sizes in steps of 1.25, kept while they still fit (hysteresis): a camera move that changes the size back
+    // and forth would make every shadow jump in resolution
+    const keep = (scene._shadowSize ??= {});
+    const quant = (name, r) => {
+      const last = keep[name];
+      if (last && r <= last && r > last / 1.6) return last;
+      return (keep[name] = 1.25 ** Math.ceil(Math.log(r) / Math.log(1.25)));
+    };
+    const snap = (c, step) => c.map((v) => Math.round(v / step) * step);
     let center = [0, 1, 2].map((a) => (min[a] + max[a]) / 2), radius = Math.hypot(...sub3(max, min)) / 2;
-    const focus = Math.min(400, Math.max(4, Math.hypot(...sub3(camera.target, camera.position)) * 1.6));
+    const dist = Math.hypot(...sub3(camera.target, camera.position));
+    const focus = Math.min(400, Math.max(4, dist * 1.6));
     if (radius > focus) { center = [...camera.target]; radius = focus; }
-    radius = 1.25 ** Math.ceil(Math.log(radius) / Math.log(1.25)); // quantize so small camera moves keep the cache
-    const step = radius / 16;
-    center = center.map((v) => Math.round(v / step) * step);
+    radius = quant('main', radius);
+    const main = this._cascade(scene, casters, 'main', L, snap(center, radius / 16), radius);
+    // detail cascade: about what the camera sees around its target. Only with fairly hard light: a wide
+    // penumbra (soft light) blurs away the extra resolution anyway
+    const penTexels = 1 + (scene.light?.softness ?? 0.1) * 22;
+    const near = quant('near', Math.max(0.05, dist * Math.tan((camera.fov * Math.PI) / 360) * 1.15));
+    this._smNear = penTexels < 4.5 && near < radius * 0.6 ? this._cascade(scene, casters, 'near', L, snap(camera.target, near / 8), near) : null;
+    return main;
+  }
+
+  _cascade(scene, casters, name, L, center, radius) {
     const layout = `${L}|${center}|${radius}|${this.shadowSize}|${scene.staticVersion || 0}`;
     const alloc = (n) => this._alloc(Float32Array, n);
-    const caches = (scene._shadow ??= {}), slot = this._shared ? 'shared' : 'local';
+    const caches = (scene._shadow ??= {}), slot = `${name}-${this._shared ? 'shared' : 'local'}`;
     let e = caches[slot];
     if (!e || e.layout !== layout) {
       e = caches[slot] = { layout, base: buildShadowMap(casters.filter((m) => !m.dynamic), L, center, radius, this.shadowSize, alloc), sm: null, version: null };
