@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Turbofan airflow redone as a wind-tunnel style flow field: an even field of faint streamlines in staggered rings with soft light pulses gliding along every line at one speed (three per line, overlapping into a continuous stream), swirling behind the fan and leaving the core as a hot jet; replaces the short streaks that looked like rain
 - New gallery scene **Neon district**: a rainy cyberpunk street at night with towers wearing procedurally painted window textures, flickering neon signs with glyphs and their reflections smeared on the wet asphalt, rain as a raw mesh of streaks, flying cars in traffic lanes, an elevated train, swinging lanterns, cables and a rotating hologram in the haze; the build script paints all its textures
 - New gallery scene **Plush dancer**: a fluffy character (round fluffy bottom and a little tail included) with headphones dancing on a light-up floor, with a disco ball, pumping speakers and a neon backdrop; a small skeleton baked into keyframes for every part
 - Recipes: **`noise`** on any shape displaces the surface along its normals by fractal noise (fur, plush, rocks, bark), deterministic and seamless (normals of coincident vertices are welded)
