@@ -16,6 +16,16 @@ test('closed primitives face outwards and have the right volume', () => {
   }
 });
 
+test('rounded box and rounded rectangle', () => {
+  const b = G.roundedBox(0.72, 1.5, 0.08, 0.035, 0.11, 8);
+  assert.deepEqual(b.min.map((v) => +v.toFixed(6)), [-0.36, -0.75, -0.04]);
+  assert.deepEqual(b.max.map((v) => +v.toFixed(6)), [0.36, 0.75, 0.04]);
+  const v = b.signedVolume();
+  assert.ok(v > 0 && v < 0.72 * 1.5 * 0.08, 'outward and a bit smaller than the sharp box');
+  const r = G.shapes.roundedRect(1, 1, 0.2, 16);
+  assert.ok(close(G.polygonArea(r), 1 - (4 - Math.PI) * 0.04, 2e-3));
+});
+
 test('ear clipping triangulates concave polygons completely', () => {
   const shape = [[0, 0], [4, 0], [4, 3], [2, 1], [0, 3]];
   const tri = G.triangulate(shape);

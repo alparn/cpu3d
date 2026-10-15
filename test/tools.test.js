@@ -38,6 +38,7 @@ test('invalid input returns helpful errors and leaves the scene untouched', asyn
     ['add_objects', { objects: [{ shape: { type: 'blob' } }] }, /unknown shape type/],
     ['add_objects', { objects: [{ shape: { type: 'box' }, position: [1, 2] }] }, /position/],
     ['update_object', { id: 'obj_42', name: 'x' }, /no object with id/],
+    ['add_objects', { objects: [{ shape: { type: 'box' }, material: { emissive: 50 } }] }, /emissive/],
     ['nope', {}, /Unknown tool/],
   ]) {
     const r = await call(doc, name, args);
@@ -50,7 +51,7 @@ test('invalid input returns helpful errors and leaves the scene untouched', asyn
 
 test('every shape type in the reference builds', () => {
   const samples = {
-    box: {}, sphere: {}, cylinder: {}, cone: {}, torus: {}, plane: {}, terrain: { resolution: 16 },
+    box: {}, roundedBox: { radius: 0.1, cornerRadius: 0.3 }, sphere: {}, cylinder: {}, cone: {}, torus: {}, plane: {}, terrain: { resolution: 16 },
     lathe: { profile: [[0, 0], [1, 0], [0.5, 1]] }, extrude: { shape: { type: 'star' } },
     sweep: { shape: { type: 'rect', width: 0.2, height: 0.1 }, path: { type: 'helix' }, twist: 90 },
     tube: { path: [[0, 0, 0], [1, 1, 0], [2, 0, 0]] }, mesh: { positions: [0, 0, 0, 1, 0, 0, 0, 1, 0], indices: [0, 1, 2] },

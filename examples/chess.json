@@ -36,6 +36,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -57,6 +58,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -78,6 +80,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -99,6 +102,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -120,6 +124,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -141,6 +146,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -162,6 +168,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -183,6 +190,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -204,6 +212,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -225,6 +234,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -246,6 +256,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -267,6 +278,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -288,6 +300,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -309,6 +322,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -330,6 +344,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -351,6 +366,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -372,6 +388,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -393,6 +410,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -414,6 +432,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -435,6 +454,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -456,6 +476,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -477,6 +498,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -498,6 +520,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -519,6 +542,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -540,6 +564,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -561,6 +586,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -582,6 +608,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -603,6 +630,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -624,6 +652,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -645,6 +674,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -666,6 +696,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -687,6 +718,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -708,6 +740,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -729,6 +762,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -750,6 +784,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -771,6 +806,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -792,6 +828,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -813,6 +850,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -834,6 +872,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -855,6 +894,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -876,6 +916,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -897,6 +938,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -918,6 +960,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -939,6 +982,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -960,6 +1004,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -981,6 +1026,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1002,6 +1048,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1023,6 +1070,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1044,6 +1092,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1065,6 +1114,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1086,6 +1136,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1107,6 +1158,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1128,6 +1180,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1149,6 +1202,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1170,6 +1224,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1191,6 +1246,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1212,6 +1268,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1233,6 +1290,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1254,6 +1312,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1275,6 +1334,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1296,6 +1356,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1317,6 +1378,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1338,6 +1400,7 @@
         "color": "#e9dcc0",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1359,6 +1422,7 @@
         "color": "#6b4a2f",
         "specular": 0.35,
         "shininess": 40,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1380,6 +1444,7 @@
         "color": "#3d2716",
         "specular": 0.4,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1401,6 +1466,7 @@
         "color": "#3d2716",
         "specular": 0.4,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1422,6 +1488,7 @@
         "color": "#3d2716",
         "specular": 0.4,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1443,6 +1510,7 @@
         "color": "#3d2716",
         "specular": 0.4,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1465,6 +1533,7 @@
         "color": "#2a201a",
         "specular": 0.2,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1498,6 +1567,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1542,6 +1612,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1586,6 +1657,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1619,6 +1691,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1648,6 +1721,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1682,6 +1756,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": true,
         "doubleSided": false
       },
@@ -1726,6 +1801,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1770,6 +1846,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1799,6 +1876,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1833,6 +1911,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": true,
         "doubleSided": false
       },
@@ -1884,6 +1963,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1928,6 +2008,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -1972,6 +2053,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2023,6 +2105,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2067,6 +2150,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2111,6 +2195,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2155,6 +2240,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2199,6 +2285,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2233,6 +2320,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2254,6 +2342,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2275,6 +2364,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2319,6 +2409,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2363,6 +2454,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2397,6 +2489,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2418,6 +2511,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2439,6 +2533,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2490,6 +2585,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2534,6 +2630,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2578,6 +2675,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2629,6 +2727,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2658,6 +2757,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2692,6 +2792,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": true,
         "doubleSided": false
       },
@@ -2736,6 +2837,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2780,6 +2882,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2809,6 +2912,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2843,6 +2947,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": true,
         "doubleSided": false
       },
@@ -2876,6 +2981,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2920,6 +3026,7 @@
         "color": "#efe6d2",
         "specular": 0.6,
         "shininess": 50,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2964,6 +3071,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -2997,6 +3105,7 @@
         "color": "#2b2522",
         "specular": 0.9,
         "shininess": 60,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },

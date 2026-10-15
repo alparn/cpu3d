@@ -56,10 +56,11 @@ function range(v, name, min, max) {
 
 function normalizeMaterial(m = {}, base = {}) {
   if (typeof m !== 'object' || Array.isArray(m)) fail('"material" must be an object');
-  const out = { color: '#c8c8c8', specular: 0.25, shininess: 24, flat: false, doubleSided: false, ...base };
+  const out = { color: '#c8c8c8', specular: 0.25, shininess: 24, emissive: 0, flat: false, doubleSided: false, ...base };
   if (m.color !== undefined) out.color = parseColor(m.color, 'material.color');
   if (m.specular !== undefined) out.specular = range(m.specular, 'material.specular', 0, 2);
   if (m.shininess !== undefined) out.shininess = range(m.shininess, 'material.shininess', 1, 256);
+  if (m.emissive !== undefined) out.emissive = range(m.emissive, 'material.emissive', 0, 10);
   if (m.flat !== undefined) out.flat = !!m.flat;
   if (m.doubleSided !== undefined) out.doubleSided = !!m.doubleSided;
   return out;

@@ -16,13 +16,14 @@ const PLANES = [NEAR, FAR, LEFT, RIGHT, BOTTOM, TOP];
 const STRIDE = 10; // clip vertex: x y z w r g b nx ny nz
 
 export class Mesh {
-  constructor(geometry, { color = [0.8, 0.8, 0.8], specular = 0.25, shininess = 24, doubleSided = false,
+  constructor(geometry, { color = [0.8, 0.8, 0.8], specular = 0.25, shininess = 24, doubleSided = false, emissive = 0,
     position = [0, 0, 0], rotation = [0, 0, 0], scale = 1 } = {}) {
     this.geometry = geometry;
     this.color = color;
     this.specular = specular;
     this.shininess = shininess;
     this.doubleSided = doubleSided;
+    this.emissive = emissive; // self-illumination: adds color * emissive, independent of lights and shadows
     this.position = position;
     this.rotation = rotation;
     this.scale = typeof scale === 'number' ? [scale, scale, scale] : scale;
@@ -59,7 +60,7 @@ const lin = (c) => S2L[c >= 1 ? 255 : c <= 0 ? 0 : (c * 255 + 0.5) | 0];
 
 // Per-vertex lighting for the fast path: hemisphere ambient + Lambert + Blinn-Phong in linear light,
 // ACES tone mapping, then fog in display space. Material colors are sRGB 0..1. Result in L.r/g/b (0..255).
-function shade(nx, ny, nz, px, py, pz, cr, cg, cb, spec, shin, twoSided) {
+function shade(nx, ny, nz, px, py, pz, cr, cg, cb, spec, shin, twoSided, emissive = 0) {
   const mr = lin(cr), mg = lin(cg), mb = lin(cb), tone = L.tone;
   let vx = L.ex - px, vy = L.ey - py, vz = L.ez - pz;
   const dist = Math.sqrt(vx * vx + vy * vy + vz * vz) || 1;
@@ -81,6 +82,7 @@ function shade(nx, ny, nz, px, py, pz, cr, cg, cb, spec, shin, twoSided) {
       }
     }
   }
+  if (emissive > 0) { r += mr * emissive; g += mg * emissive; b += mb * emissive; }
   let R8 = tone[r >= TONE_MAX_V ? TONE_LAST : (r * TONE_SCALE) | 0];
   let G8 = tone[g >= TONE_MAX_V ? TONE_LAST : (g * TONE_SCALE) | 0];
   let B8 = tone[b >= TONE_MAX_V ? TONE_LAST : (b * TONE_SCALE) | 0];
@@ -122,6 +124,7 @@ export class Renderer {
     this._matSpec = new Float32Array(65536);
     this._matShin = new Float32Array(65536);
     this._matTwo = new Uint8Array(65536);
+    this._matEmis = new Float32Array(65536);
     this._proj = mat4.create();
     this._view = mat4.create();
     this._vp = mat4.create();
@@ -243,7 +246,7 @@ export class Renderer {
       const tanY = Math.tan((camera.fov * Math.PI) / 360), viewDist = Math.hypot(...sub3(camera.target, eye));
       shadePass({
         W, H, depth: this.depth, color: this.color, NX: this._gNX, NY: this._gNY, NZ: this._gNZ, MAT: this._gMat,
-        matSpec: this._matSpec, matShin: this._matShin, matTwo: this._matTwo,
+        matSpec: this._matSpec, matShin: this._matShin, matTwo: this._matTwo, matEmis: this._matEmis,
         eye, R, U, F, tanX: tanY * (W / H), tanY, jx, jy, frame, light: L, tone: this._tone,
         shadow: this.shadows ? this._shadowFor(scene, camera, [L.lx, L.ly, L.lz]) : null,
         ao: this.ao ? { radius: Math.min(4, Math.max(0.08, viewDist * 0.045)), strength: this.aoStrength } : null,
@@ -353,6 +356,7 @@ export class Renderer {
       const id = this._matCount = Math.min(this._matCount + 1, WIRE_MATERIAL - 1);
       this._mat = id;
       this._matSpec[id] = spec; this._matShin[id] = Math.max(1, shin); this._matTwo[id] = two ? 1 : 0;
+      this._matEmis[id] = mesh.emissive || 0;
       this._flatHQ = flatMesh;
     }
 
@@ -397,8 +401,8 @@ export class Renderer {
         } else if (mode === 2) {
           R[v] = (nx * 0.5 + 0.5) * 255; G[v] = (ny * 0.5 + 0.5) * 255; B[v] = (nz * 0.5 + 0.5) * 255;
         } else {
-          if (VC) shade(nx, ny, nz, wx, wy, wz, VC[k], VC[k + 1], VC[k + 2], spec, shin, two);
-          else shade(nx, ny, nz, wx, wy, wz, mr, mg, mb, spec, shin, two);
+          if (VC) shade(nx, ny, nz, wx, wy, wz, VC[k], VC[k + 1], VC[k + 2], spec, shin, two, mesh.emissive);
+          else shade(nx, ny, nz, wx, wy, wz, mr, mg, mb, spec, shin, two, mesh.emissive);
           R[v] = L.r; G[v] = L.g; B[v] = L.b;
         }
       }
@@ -468,7 +472,7 @@ export class Renderer {
       mr = (VC[ka] + VC[kb] + VC[kc]) / 3; mg = (VC[ka + 1] + VC[kb + 1] + VC[kc + 1]) / 3; mb = (VC[ka + 2] + VC[kb + 2] + VC[kc + 2]) / 3;
     } else [mr, mg, mb] = mesh.color;
     shade(nx, ny, nz, (WX[a] + WX[b] + WX[c]) / 3, (WY[a] + WY[b] + WY[c]) / 3, (WZ[a] + WZ[b] + WZ[c]) / 3,
-      mr, mg, mb, mesh.specular, mesh.shininess, mesh.doubleSided);
+      mr, mg, mb, mesh.specular, mesh.shininess, mesh.doubleSided, mesh.emissive);
   }
 
   // Sutherland-Hodgman in homogeneous clip space, only against the planes that are actually crossed.

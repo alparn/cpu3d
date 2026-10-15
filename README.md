@@ -32,26 +32,27 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 ## Gallery
 
-Seven scenes ship with cpu3d. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
+Eight scenes ship with cpu3d. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
 All of them are built in [`examples/build.mjs`](examples/build.mjs) through the same tool API an agent uses, including `probe_height` to put things on terrain.
 
 <table>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 6.0 KB · as .obj 615.2 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 72.8 KB · as .obj 191.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 64.6 KB · as .obj 1.20 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 6.2 KB · as .obj 615.2 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/phone.png" alt="Smartphone"><br><b>Smartphone</b><br><sub>54 objects · 17,976 tris<br>recipes 31.0 KB · as .obj 710.4 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 76.3 KB · as .obj 191.3 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 58.7 KB · as .obj 605.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>287 objects · 7,038 tris<br>recipes 131.3 KB · as .obj 335.8 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 91.7 KB · as .obj 2.19 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 67.1 KB · as .obj 1.20 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 59.5 KB · as .obj 605.3 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>287 objects · 7,038 tris<br>recipes 137.8 KB · as .obj 335.8 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>10 objects · 52,244 tris<br>recipes 5.7 KB · as .obj 1.48 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 93.6 KB · as .obj 2.19 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>10 objects · 52,244 tris<br>recipes 5.9 KB · as .obj 1.48 MB</sub></td>
 </tr>
 </table>
 
-Recipes are compact: the lighthouse island is **5.7 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
+Recipes are compact: the lighthouse island is **5.9 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
 
 ## Quick start
 
@@ -132,7 +133,7 @@ The MCP server also sends a short guide in its `instructions`, so agents know th
 
 ## Shape recipes
 
-An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and the ground is `y = 0`.
+An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and the ground is `y = 0`. Materials have `color`, `specular`, `shininess`, `emissive` (glowing screens and lamps), `flat` and `doubleSided`.
 
 ```json
 {
@@ -148,6 +149,7 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 | Recipe | Idea |
 |---|---|
 | `box` `sphere` `cylinder` `cone` `torus` `plane` | Primitives |
+| `roundedBox` | Box with smooth rounded edges and corners (devices, furniture, buttons) |
 | `lathe` | Revolve a 2D profile around Y (vases, towers, bottles, columns) |
 | `extrude` | Push any 2D polygon (concave too) into depth, caps triangulated by ear clipping |
 | `sweep` | Move a cross-section along a 3D path, with twist and taper (rails, frames, twisted columns, horns) |
@@ -155,7 +157,7 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 | `terrain` | Noise heightfield with water level and height-based colors |
 | `mesh` | Raw triangles |
 
-2D shapes (`circle`, `polygon`, `rect`, `star` or point lists) and paths (`line`, `circle`, `helix`, `torusKnot` or point lists) plug into `extrude`, `sweep` and `tube`. The full reference is what `get_shape_reference` returns, see [`src/recipes.js`](src/recipes.js).
+2D shapes (`circle`, `polygon`, `rect`, `roundedRect`, `star` or point lists) and paths (`line`, `circle`, `helix`, `torusKnot` or point lists) plug into `extrude`, `sweep` and `tube`. The full reference is what `get_shape_reference` returns, see [`src/recipes.js`](src/recipes.js).
 
 ## The editor
 
@@ -252,7 +254,7 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 ## Roadmap
 
 - Multi-threaded tile renderer (Web Workers / worker_threads)
-- Materials: metalness with sky reflections, Fresnel rim, emissive surfaces
+- Materials: metalness with sky reflections, Fresnel rim, bloom for emissive surfaces
 - Bevels for box and extrude, crease angle for smoothing groups
 - Groups and hierarchy, boolean operations (CSG)
 - Textures with perspective-correct UVs

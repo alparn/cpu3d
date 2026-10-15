@@ -148,7 +148,7 @@ function blurAO(src, depth, W, H) {
 
 // ctx: everything the pass needs, prepared by the renderer for this frame
 export function shadePass(ctx) {
-  const { W, H, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, eye, R, U, F, tanX, tanY, jx, jy,
+  const { W, H, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, eye, R, U, F, tanX, tanY, jx, jy,
     light, tone, shadow, frame, ao, fog, debug } = ctx;
   const colK = new Float32Array(W), rowK = new Float32Array(H);
   for (let x = 0; x < W; x++) colK[x] = (((x + 0.5) / W) * 2 - 1 - jx) * tanX;
@@ -278,6 +278,9 @@ export function shadePass(ctx) {
           b += (ab * ndl + sp) * lb * vis;
         }
       }
+
+      const emis = matEmis[mat];
+      if (emis > 0) { r += ar * emis; g += ag * emis; b += ab * emis; }
 
       // tone map, then fog in display space so it matches the background exactly
       let R8 = tone[r >= TONE_MAX_V ? TONE_LAST : (r * TONE_SCALE) | 0];

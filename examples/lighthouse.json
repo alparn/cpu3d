@@ -42,6 +42,7 @@
         "color": "#c8c8c8",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -64,6 +65,7 @@
         "color": "#6e6a66",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": true,
         "doubleSided": false
       },
@@ -90,6 +92,7 @@
         "color": "#f2f0ea",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -113,6 +116,7 @@
         "color": "#c7362f",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -135,6 +139,7 @@
         "color": "#2c2f36",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -175,6 +180,7 @@
         "color": "#2c2f36",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -197,6 +203,7 @@
         "color": "#ffd166",
         "specular": 1.4,
         "shininess": 80,
+        "emissive": 1.2,
         "flat": true,
         "doubleSided": false
       },
@@ -218,6 +225,7 @@
         "color": "#c7362f",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },
@@ -243,6 +251,7 @@
         "color": "#8a4b2a",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": true,
         "doubleSided": false
       },
@@ -264,6 +273,7 @@
         "color": "#d8cbb0",
         "specular": 0.25,
         "shininess": 24,
+        "emissive": 0,
         "flat": false,
         "doubleSided": false
       },

@@ -236,6 +236,9 @@ function renderInspector() {
   crow.className = 'row';
   crow.append(color, spec);
   box.append(field('Material', crow));
+  const glow = Object.assign(document.createElement('input'), { type: 'range', min: 0, max: 3, step: 0.05, value: o.material.emissive || 0, title: 'Self-illumination (screens, lamps)' });
+  glow.onchange = () => upd({ material: { emissive: +glow.value } });
+  box.append(field('Glow', glow));
 
   const checks = document.createElement('div');
   checks.className = 'checks';
@@ -380,6 +383,7 @@ async function duplicateSelected() {
 const PALETTE = ['#f28c33', '#4d99d9', '#59bf73', '#d94d59', '#d9cc59', '#a673d9', '#ccd1db'];
 const PRESETS = [
   ['Box', { type: 'box' }, 0.5],
+  ['Rounded box', { type: 'roundedBox', width: 1, height: 0.6, depth: 0.6, radius: 0.08, cornerRadius: 0.15 }, 0.3],
   ['Sphere', { type: 'sphere', radius: 0.5 }, 0.5],
   ['Cylinder', { type: 'cylinder' }, 0.5],
   ['Cone', { type: 'cone' }, 0.5],

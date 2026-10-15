@@ -1,0 +1,1406 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 12,
+    "pitch": 7,
+    "distance": 2.75,
+    "target": [0.02, 0.9, 0]
+  },
+  "environment": {
+    "background": {
+      "top": "#07080b",
+      "bottom": "#1b1f27"
+    },
+    "fog": null,
+    "light": {
+      "direction": [0.55, 0.9, 0.25],
+      "color": "#fff6ec"
+    },
+    "ground": false
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Floor",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [14, 0],
+          [0, 0]
+        ],
+        "segments": 64
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#121418",
+        "specular": 0.25,
+        "shininess": 30,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Podium",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [1.35, 0],
+          [1.35, 0.13],
+          [1.3, 0.18],
+          [0, 0.18]
+        ],
+        "segments": 96
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2f37",
+        "specular": 0.4,
+        "shininess": 40,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Phone A body",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.72,
+        "height": 1.5,
+        "depth": 0.08,
+        "radius": 0.034,
+        "cornerRadius": 0.11,
+        "segments": 8
+      },
+      "position": [-0.5, 0.9256, 0.35],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3b3e44",
+        "specular": 1.4,
+        "shininess": 70,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Phone A glass",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.7,
+        "height": 1.48,
+        "depth": 0.006,
+        "radius": 0.003,
+        "cornerRadius": 0.1,
+        "segments": 8
+      },
+      "position": [-0.4897, 0.9322, 0.386],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#050608",
+        "specular": 1.6,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Wallpaper",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.6599999999999999,
+          "height": 1.44,
+          "radius": 0.085,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.4885, 0.933, 0.3902],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#161a3d",
+        "specular": 0.05,
+        "shininess": 80,
+        "emissive": 0.8,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Glow violet",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "circle",
+          "radius": 0.26,
+          "points": 48
+        },
+        "depth": 0.002
+      },
+      "position": [-0.559, 1.2091, 0.3619],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4b35b8",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 0.75,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Glow pink",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "circle",
+          "radius": 0.21,
+          "points": 48
+        },
+        "depth": 0.002
+      },
+      "position": [-0.3685, 0.8547, 0.3734],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8306a",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 0.75,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Glow amber",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "circle",
+          "radius": 0.15,
+          "points": 40
+        },
+        "depth": 0.002
+      },
+      "position": [-0.5845, 0.5594, 0.4905],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8692a",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 0.75,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Camera cutout",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.19,
+          "height": 0.052,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.5183, 1.579, 0.2861],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#000000",
+        "specular": 1.5,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_10",
+      "name": "Clock",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.07,
+          "height": 0.022,
+          "radius": 0.006,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.7298, 1.579, 0.3467],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f2f3f7",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 1.2,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_11",
+      "name": "Battery",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.05,
+          "height": 0.022,
+          "radius": 0.007,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.2972, 1.579, 0.2227],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f2f3f7",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 1.2,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_12",
+      "name": "Weather widget",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.56,
+          "height": 0.26,
+          "radius": 0.05,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.5079, 1.3673, 0.3225],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2a6ff2",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.1,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_13",
+      "name": "Widget sun",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "circle",
+          "radius": 0.045,
+          "points": 32
+        },
+        "depth": 0.002
+      },
+      "position": [-0.3459, 1.4071, 0.2708],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ffd34d",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 1.3,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_14",
+      "name": "Widget temp",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.16,
+          "height": 0.06,
+          "radius": 0.012,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.6333, 1.3874, 0.3569],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#eef3ff",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 1.3,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_15",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.6992, 1.1507, 0.4171],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#34c759",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_16",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.5647, 1.1507, 0.3785],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0a84ff",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_17",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.4301, 1.1507, 0.3399],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff9f0a",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_18",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.2955, 1.1507, 0.3013],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff375f",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_19",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.6913, 0.9882, 0.4446],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5e5ce6",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_20",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.5568, 0.9882, 0.406],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#64d2ff",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_21",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.4222, 0.9882, 0.3674],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ffd60a",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_22",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.2876, 0.9882, 0.3288],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#bf5af2",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_23",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.6834, 0.8257, 0.4722],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#30d158",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_24",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.5489, 0.8257, 0.4336],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff6b35",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_25",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.4143, 0.8257, 0.395],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0fb5ae",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_26",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.2797, 0.8257, 0.3564],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f2f2f7",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_27",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.6755, 0.6632, 0.4997],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2d55",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_28",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.541, 0.6632, 0.4611],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e8e93",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_29",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.4064, 0.6632, 0.4225],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#32ade6",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_30",
+      "name": "App icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.2718, 0.6632, 0.3839],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a2845e",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_31",
+      "name": "Dock",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.62,
+          "height": 0.15,
+          "radius": 0.055,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.4581, 0.3431, 0.4961],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3b3f63",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_32",
+      "name": "Dock icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.6594, 0.3435, 0.5558],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#34c759",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_33",
+      "name": "Dock icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.5249, 0.3435, 0.5173],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0a84ff",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_34",
+      "name": "Dock icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.3903, 0.3435, 0.4787],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f2f2f7",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_35",
+      "name": "Dock icon",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.105,
+          "height": 0.105,
+          "radius": 0.026,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.2557, 0.3435, 0.4401],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff9f0a",
+        "specular": 0.05,
+        "shininess": 60,
+        "emissive": 1.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_36",
+      "name": "Home indicator",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "roundedRect",
+          "width": 0.2,
+          "height": 0.012,
+          "radius": 0.006,
+          "segments": 8
+        },
+        "depth": 0.003
+      },
+      "position": [-0.4531, 0.2397, 0.5136],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8dae3",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 1.2,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_37",
+      "name": "Power button",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.03,
+        "height": 0.18,
+        "depth": 0.03,
+        "radius": 0.012,
+        "cornerRadius": 0.012,
+        "segments": 4
+      },
+      "position": [-0.1597, 1.2013, 0.2018],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#45484e",
+        "specular": 1.4,
+        "shininess": 70,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_38",
+      "name": "Volume up",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.03,
+        "height": 0.12,
+        "depth": 0.03,
+        "radius": 0.012,
+        "cornerRadius": 0.012,
+        "segments": 4
+      },
+      "position": [-0.8695, 1.2506, 0.3964],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#45484e",
+        "specular": 1.4,
+        "shininess": 70,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_39",
+      "name": "Volume down",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.03,
+        "height": 0.12,
+        "depth": 0.03,
+        "radius": 0.012,
+        "cornerRadius": 0.012,
+        "segments": 4
+      },
+      "position": [-0.8624, 1.1029, 0.4214],
+      "rotation": [-10, 16, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#45484e",
+        "specular": 1.4,
+        "shininess": 70,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_40",
+      "name": "Phone B body",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.72,
+        "height": 1.5,
+        "depth": 0.08,
+        "radius": 0.034,
+        "cornerRadius": 0.11,
+        "segments": 8
+      },
+      "position": [0.55, 0.9256, -0.2],
+      "rotation": [-170, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#26364f",
+        "specular": 1.4,
+        "shininess": 70,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_41",
+      "name": "Back glass",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.69,
+        "height": 1.47,
+        "depth": 0.006,
+        "radius": 0.003,
+        "cornerRadius": 0.1,
+        "segments": 8
+      },
+      "position": [0.5356, 0.9324, -0.1644],
+      "rotation": [-170, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2d4263",
+        "specular": 0.5,
+        "shininess": 25,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_42",
+      "name": "Camera plateau",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.33,
+        "height": 0.33,
+        "depth": 0.03,
+        "radius": 0.012,
+        "cornerRadius": 0.075,
+        "segments": 8
+      },
+      "position": [0.4117, 1.4467, -0.2981],
+      "rotation": [-170, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#34507a",
+        "specular": 1.2,
+        "shininess": 90,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_43",
+      "name": "Lens ring",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.068,
+        "radiusBottom": 0.068,
+        "height": 0.03,
+        "segments": 48
+      },
+      "position": [0.4872, 1.5295, -0.2581],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b4bcc8",
+        "specular": 1.6,
+        "shininess": 90,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_44",
+      "name": "Lens",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.052,
+        "radiusBottom": 0.052,
+        "height": 0.034,
+        "segments": 48
+      },
+      "position": [0.4868, 1.5297, -0.2572],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#06080c",
+        "specular": 2,
+        "shininess": 160,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_45",
+      "name": "Lens glass",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.03,
+        "segments": 32,
+        "rings": 16
+      },
+      "position": [0.4828, 1.5316, -0.2471],
+      "rotation": [-170, 22, 180],
+      "scale": [1, 1, 0.35],
+      "material": {
+        "color": "#1b2a4a",
+        "specular": 2,
+        "shininess": 200,
+        "emissive": 0.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_46",
+      "name": "Lens ring",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.068,
+        "radiusBottom": 0.068,
+        "height": 0.03,
+        "segments": 48
+      },
+      "position": [0.4768, 1.3719, -0.2323],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b4bcc8",
+        "specular": 1.6,
+        "shininess": 90,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_47",
+      "name": "Lens",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.052,
+        "radiusBottom": 0.052,
+        "height": 0.034,
+        "segments": 48
+      },
+      "position": [0.4764, 1.3721, -0.2314],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#06080c",
+        "specular": 2,
+        "shininess": 160,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_48",
+      "name": "Lens glass",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.03,
+        "segments": 32,
+        "rings": 16
+      },
+      "position": [0.4724, 1.374, -0.2214],
+      "rotation": [-170, 22, 180],
+      "scale": [1, 1, 0.35],
+      "material": {
+        "color": "#1b2a4a",
+        "specular": 2,
+        "shininess": 200,
+        "emissive": 0.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_49",
+      "name": "Lens ring",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.068,
+        "radiusBottom": 0.068,
+        "height": 0.03,
+        "segments": 48
+      },
+      "position": [0.3244, 1.4507, -0.3089],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b4bcc8",
+        "specular": 1.6,
+        "shininess": 90,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_50",
+      "name": "Lens",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.052,
+        "radiusBottom": 0.052,
+        "height": 0.034,
+        "segments": 48
+      },
+      "position": [0.324, 1.4509, -0.308],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#06080c",
+        "specular": 2,
+        "shininess": 160,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_51",
+      "name": "Lens glass",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.03,
+        "segments": 32,
+        "rings": 16
+      },
+      "position": [0.3199, 1.4528, -0.2979],
+      "rotation": [-170, 22, 180],
+      "scale": [1, 1, 0.35],
+      "material": {
+        "color": "#1b2a4a",
+        "specular": 2,
+        "shininess": 200,
+        "emissive": 0.15,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_52",
+      "name": "Flash",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.022,
+        "radiusBottom": 0.022,
+        "height": 0.012,
+        "segments": 32
+      },
+      "position": [0.334, 1.568, -0.3328],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f6ead0",
+        "specular": 1.2,
+        "shininess": 80,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_53",
+      "name": "Sensor",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.016,
+        "radiusBottom": 0.016,
+        "height": 0.012,
+        "segments": 24
+      },
+      "position": [0.3184, 1.3317, -0.2941],
+      "rotation": [-80, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0b0d12",
+        "specular": 1.4,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_54",
+      "name": "Power button",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.03,
+        "height": 0.18,
+        "depth": 0.03,
+        "radius": 0.012,
+        "cornerRadius": 0.012,
+        "segments": 4
+      },
+      "position": [0.227, 1.2013, -0.3829],
+      "rotation": [-170, 22, 180],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2c3d58",
+        "specular": 1.4,
+        "shininess": 70,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    }
+  ]
+}

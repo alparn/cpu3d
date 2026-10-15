@@ -37,7 +37,7 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
     if (!o.visible) continue;
     const m = new Mesh(geometryFor(o.shape), {
       color: colorToRGB(o.material.color), specular: o.material.specular,
-      shininess: o.material.shininess, doubleSided: o.material.doubleSided,
+      shininess: o.material.shininess, doubleSided: o.material.doubleSided, emissive: o.material.emissive || 0,
     });
     m.matrix = objectMatrix(o);
     m.matrixAutoUpdate = false;

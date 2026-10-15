@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- New gallery scene **Smartphone**: a product shot with two phones, a glowing home screen and a triple camera module
+- New recipe `roundedBox` (box with rounded edges and corners) and 2D shape `roundedRect`
+- New material property `emissive` for self-illuminated surfaces (screens, lamps, windows); the lighthouse lantern now glows
 - **High quality renderer** (now the default): deferred per-pixel lighting in linear color space, ACES filmic tone mapping, directional shadow map with soft PCF edges (cached per scene), screen-space ambient occlusion at half resolution with a depth-aware blur, and progressive anti-aliasing by averaging jittered frames. `quality: 'fast'` keeps the per-vertex path, which also gets tone mapping.
 - Editor: quality selector, image refines to 16 samples while the view is still; shadows follow objects while dragging
 - `render_view` and `cpu3d render` return 8 / 16-sample high-quality images (`--quality`, `--samples`)

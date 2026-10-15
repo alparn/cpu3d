@@ -28,6 +28,7 @@ const materialS = {
     shininess: { type: 'number', description: 'Highlight sharpness 1..256 (default 24)' },
     flat: { type: 'boolean', description: 'Faceted flat shading' },
     doubleSided: { type: 'boolean', description: 'Render back faces (open surfaces like vases, planes)' },
+    emissive: { type: 'number', description: 'Self-illumination 0..10 (screens, lamps, windows, neon); 1 shows the color at full strength' },
   },
 };
 const shapeS = {

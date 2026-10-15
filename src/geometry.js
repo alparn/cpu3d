@@ -242,6 +242,18 @@ export const shapes = {
     const a = (Math.PI * i) / points + Math.PI / 2, r = i % 2 ? inner : outer;
     return [r * Math.cos(a), r * Math.sin(a)];
   }),
+  // rectangle with quarter-circle corners, counter-clockwise, 4 * (segments + 1) points
+  roundedRect: (w = 1, h = 1, r = 0.1, segments = 6) => {
+    r = Math.max(1e-5, Math.min(r, w / 2, h / 2));
+    const cx = w / 2 - r, cy = h / 2 - r, pts = [];
+    for (const [ox, oy, a0] of [[cx, -cy, -90], [cx, cy, 0], [-cx, cy, 90], [-cx, -cy, 180]]) {
+      for (let i = 0; i <= segments; i++) {
+        const a = ((a0 + (90 * i) / segments) * Math.PI) / 180;
+        pts.push([ox + r * Math.cos(a), oy + r * Math.sin(a)]);
+      }
+    }
+    return pts;
+  },
 };
 
 export const paths = {
@@ -395,6 +407,26 @@ export function grid(w = 10, d = 10, nx = 10, nz = 10, height = null) {
 }
 
 export const plane = (w = 1, d = 1) => grid(w, d, 1, 1);
+
+// Box with rounded edges (edge radius) and rounded corners in the XY plane (corner radius),
+// centered on the origin, depth along Z. Built from rims: rounded rectangles that shrink
+// along a quarter circle towards the front and back faces, so all edges are smooth.
+export function roundedBox(w = 1, h = 1, d = 1, edge = 0.05, corner = edge, segments = 6) {
+  const e = Math.max(1e-5, Math.min(edge, w / 2, h / 2, d / 2));
+  const c = Math.max(e, Math.min(corner, w / 2, h / 2));
+  const rims = [];
+  const rim = (z, inset) => shapes.roundedRect(w - 2 * inset, h - 2 * inset, Math.max(1e-5, c - inset), segments)
+    .map(([x, y]) => [x, y, z]);
+  for (let k = 0; k <= segments; k++) { // back edge: from the back face out to the side
+    const phi = -Math.PI / 2 + (k / segments) * (Math.PI / 2);
+    rims.push(rim(-(d / 2 - e) + e * Math.sin(phi), e * (1 - Math.cos(phi))));
+  }
+  for (let k = 0; k <= segments; k++) { // front edge: from the side in to the front face
+    const phi = (k / segments) * (Math.PI / 2);
+    rims.push(rim(d / 2 - e + e * Math.sin(phi), e * (1 - Math.cos(phi))));
+  }
+  return fromRims(rims, { capStart: true, capEnd: true }).orientOutward();
+}
 
 // fn(u, v) -> [x, y, z] with u, v in [0, 1]
 export function parametric(fn, nu = 32, nv = 32, { closeU = false, closeV = false } = {}) {
