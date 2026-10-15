@@ -3,6 +3,7 @@ import { Mesh, Camera } from './renderer.js';
 import { grid } from './geometry.js';
 import { colorToRGB, objectMatrix } from './document.js';
 import { vec3, mat4 } from './math.js';
+import { normalizeWindForRender } from './wind.js';
 
 let groundGeometry = null;
 const ground = () => (groundGeometry ??= grid(40, 40, 40, 40).setFaceColors((x, y, z) =>
@@ -33,7 +34,7 @@ export function exportOBJ(objects, geometryFor) {
 const D2R = Math.PI / 180, TMP_A = mat4.create(), TMP_B = mat4.create(), TMP_C = mat4.create();
 const wave = (t, period, phase) => Math.sin(2 * Math.PI * (t / period + phase));
 const TRANSFORM_KEYS = (keys) => keys?.some((k) => k.position || k.rotation || k.scale);
-export const hasMotion = (o) => !!(o.animation && (o.animation.spin || o.animation.swing || o.animation.bob || o.animation.orbit || o.animation.flow || TRANSFORM_KEYS(o.animation.keys)));
+export const hasMotion = (o) => !!(o.animation && (o.animation.spin || o.animation.swing || o.animation.bob || o.animation.orbit || o.animation.flow || o.animation.wind || TRANSFORM_KEYS(o.animation.keys)));
 
 // flow: position along the way (0..1) and the grow / shrink factor at both ends
 const flowAt = (f, t) => {
@@ -140,6 +141,7 @@ export function updateAnimation(scene, t) {
     if (hasMotion(o)) { m.matrix = animatedMatrix(o, t); moved = true; }
     if (o.animation.pulse || o.animation.keys || o.animation.flow) m.emissive = animatedEmissive(o, t);
   }
+  scene.time = t;
   if (moved) scene.version = (scene.version || 0) + 1;
   return moved;
 }
@@ -165,6 +167,8 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
     m.matrixAutoUpdate = false;
     m.object = o;
     m.dynamic = hasMotion(o); // moving meshes stay out of the cached static shadow map
+    if (o.material.castShadow === false) m.castShadow = false;
+    if (o.animation?.wind) m.wind = normalizeWindForRender(o.animation.wind);
     if (o.animation?.pulse || o.animation?.keys || o.animation?.flow) m.emissive = animatedEmissive(o, time);
     m.flat = o.material.flat;
     m.wireframe = selected.includes(o.id) ? SELECTION_COLOR : false;
@@ -173,6 +177,7 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
   }
   const bottom = colorToRGB(env.background.bottom);
   return {
+    time,
     meshes,
     background: { top: colorToRGB(env.background.top), bottom },
     light: {
@@ -181,6 +186,7 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
     },
     lights: (env.lights || []).map((l) => ({ direction: l.direction, color: colorToRGB(l.color), intensity: l.intensity ?? 0.5 })),
     reflections: env.reflections || 'sky',
+    atmosphere: env.atmosphere ? { ...env.atmosphere, color: colorToRGB(env.atmosphere.color), rayColor: colorToRGB(env.atmosphere.rayColor) } : null,
     fog: env.fog ? { near: env.fog.near, far: env.fog.far, color: bottom } : null,
   };
 }

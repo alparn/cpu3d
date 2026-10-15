@@ -6,6 +6,8 @@
 // renderer's progressive accumulation.
 
 import { evalPattern } from './patterns.js';
+import { windAt } from './wind.js';
+import * as WIND from './wind.js';
 import * as PAT from './patterns.js';
 
 // ---------------------------------------------------------------- color
@@ -51,7 +53,7 @@ export function halton(i, b) {
 // ---------------------------------------------------------------- shadow map
 // Orthographic depth render from the light. Stores "closeness" = dot(p, L) (L points to the light),
 // so the standard "greater wins" depth test keeps the surface nearest to the light.
-export function buildShadowMap(meshes, L, center, radius, size, alloc = (n) => new Float32Array(n)) {
+export function buildShadowMap(meshes, L, center, radius, size, alloc = (n) => new Float32Array(n), time = 0) {
   const up = Math.abs(L[1]) < 0.95 ? [0, 1, 0] : [1, 0, 0];
   // basis: R, U span the shadow map plane, L is the depth axis
   let R = [up[1] * L[2] - up[2] * L[1], up[2] * L[0] - up[0] * L[2], up[0] * L[1] - up[1] * L[0]];
@@ -63,22 +65,23 @@ export function buildShadowMap(meshes, L, center, radius, size, alloc = (n) => n
   const ox = Math.floor((R[0] * center[0] + R[1] * center[1] + R[2] * center[2] - radius) * scale) / scale;
   const oy = Math.floor((U[0] * center[0] + U[1] * center[1] + U[2] * center[2] - radius) * scale) / scale;
   const sm = { depth: alloc(size * size).fill(-Infinity), size, R, U, L, ox, oy, scale };
-  drawShadowCasters(sm, meshes);
+  drawShadowCasters(sm, meshes, time);
   return sm;
 }
 
 // Adds meshes to an existing shadow map (moving objects on top of the cached static ones).
-export function drawShadowCasters(sm, meshes) {
+export function drawShadowCasters(sm, meshes, time = 0) {
   const { depth, size, R, U, L, ox, oy, scale } = sm, s16 = scale * 16;
   for (const mesh of meshes) {
     if (mesh.castShadow === false) continue;
-    const g = mesh.geometry, m = mesh.matrix, P = g.positions, I = g.indices, n = P.length / 3;
+    const g = mesh.geometry, m = mesh.matrix, P = g.positions, I = g.indices, n = P.length / 3, wind = mesh.wind, base = g.min[1];
     const X = new Int32Array(n), Y = new Int32Array(n), Z = new Float32Array(n);
     for (let v = 0, k = 0; v < n; v++, k += 3) {
       const x = P[k], y = P[k + 1], z = P[k + 2];
-      const wx = m[0] * x + m[4] * y + m[8] * z + m[12];
-      const wy = m[1] * x + m[5] * y + m[9] * z + m[13];
-      const wz = m[2] * x + m[6] * y + m[10] * z + m[14];
+      let wx = m[0] * x + m[4] * y + m[8] * z + m[12];
+      let wy = m[1] * x + m[5] * y + m[9] * z + m[13];
+      let wz = m[2] * x + m[6] * y + m[10] * z + m[14];
+      if (wind) { windAt(wind, y, base, wx, wz, time); wx += WIND.DX; wy += WIND.DY; wz += WIND.DZ; }
       X[v] = Math.round((R[0] * wx + R[1] * wy + R[2] * wz - ox) * s16);
       Y[v] = Math.round((U[0] * wx + U[1] * wy + U[2] * wz - oy) * s16);
       Z[v] = L[0] * wx + L[1] * wy + L[2] * wz;
@@ -492,7 +495,7 @@ export function shadeRows(ctx, y0, y1) {
       }
       color[i] = 0xff000000 | ((B8 | 0) << 16) | ((G8 | 0) << 8) | (R8 | 0);
     }
-    if (ycc) toYCoCg(color, ycc, row, row + W);
+    if (ycc && !ctx.atmos) toYCoCg(color, ycc, row, row + W); // with a medium, after atmosphereRows
   }
 }
 
@@ -661,9 +664,89 @@ function crw(t) {
   return w;
 }
 
+// ---- 2c. participating medium (haze, water): exponential extinction towards the medium colour, plus light
+// shafts: the view ray is sampled at a few depths; at each, a noise pattern across the light direction (moving
+// with time) decides how much light is scattered towards the eye, and the shadow map blocks it behind objects.
+// Works in display space after tone mapping, like the fog, and on background pixels too.
+export function atmosphereRows(ctx, y0, y1) {
+  const { atmos: A, shadow: sm, light } = ctx;
+  const { colK, rowK } = prepare(ctx);
+  // per frame constants, then one call per row (V8 optimises the row function as a whole)
+  const lx = light.lx, ly = light.ly, lz = light.lz;
+  let bx = -lz, bz = lx;
+  const bl = Math.hypot(bx, bz) || 1; bx /= bl; bz /= bl;
+  const P = {
+    ar: A.color[0] * 255, ag: A.color[1] * 255, ab: A.color[2] * 255, rr: A.rayColor[0] * 255, rg: A.rayColor[1] * 255, rb: A.rayColor[2] * 255,
+    dens: A.density / 10, far: A.far, rays: A.rays, inv: 1 / A.scale, t: A.time * A.speed,
+    bx, bz, cx: ly * bz, cy: lz * bx - lx * bz, cz: -ly * bx, sm, smD: sm ? sm.depth : null, smS: sm ? sm.size : 0,
+    ycc: ctx.post === 'temporal' ? ctx.taa.ycc : null,
+  };
+  for (let y = y0; y < y1; y++) atmosRow(ctx, P, colK, rowK[y], y);
+}
+
+function atmosRow(ctx, P, colK, ry, y) {
+  const { W, depth, color, eye, R, U, F, frame } = ctx;
+  const { ar, ag, ab, rr, rg, rb, dens, far, rays, inv, t, bx, bz, cx, cy, cz, sm, smD, smS, ycc } = P;
+  const STEPS = 8;
+  for (let x = 0; x < W; x++) {
+    const i = y * W + x, iw = depth[i];
+    const vx = colK[x], vy = ry;
+    const vl = Math.sqrt(vx * vx + vy * vy + 1);
+    const dist = iw === 0 ? far : Math.min(far, vl / iw);
+    const dx = (R[0] * vx + U[0] * vy + F[0]) / vl, dy = (R[1] * vx + U[1] * vy + F[1]) / vl, dz = (R[2] * vx + U[2] * vy + F[2]) / vl;
+    // light shafts along the ray, jittered per pixel and frame (temporal AA smooths them); interleaved gradient
+    // noise instead of white noise: neighbouring pixels get evenly spread offsets, so the grain averages out locally
+    let shaft = 0;
+    if (rays > 0) {
+      const fo = (frame & 63) * 5.588238;
+      let j = 52.9829189 * ((0.06711056 * (x + fo) + 0.00583715 * (y + fo)) % 1);
+      j -= Math.floor(j);
+      const step = dist / STEPS, fall = Math.exp(-dens * step);
+      let att = Math.exp(-dens * j * step); // light reaching the eye from each sample: one exp per pixel
+      for (let s = 0; s < STEPS; s++, att *= fall) {
+        const d = (s + j) * step, px = eye[0] + dx * d, py = eye[1] + dy * d, pz = eye[2] + dz * d;
+        const u = (px * bx + pz * bz) * inv, v = (px * cx + py * cy + pz * cz) * inv;
+        // broad beams with a slow shimmer on top; thresholded so dark gaps separate the beams
+        let n = noise3(u + t, v * 0.6, t * 0.4) * 0.8 + Math.sin(u * 2.3 - t * 1.3 + v * 0.7) * 0.1;
+        n = n > 0.08 ? (n - 0.08) * 2.2 : 0;
+        if (n > 0 && smD) {
+          const su = Math.floor((sm.R[0] * px + sm.R[1] * py + sm.R[2] * pz - sm.ox) * sm.scale), sv = Math.floor((sm.U[0] * px + sm.U[1] * py + sm.U[2] * pz - sm.oy) * sm.scale);
+          if (su >= 0 && sv >= 0 && su < smS && sv < smS && sm.L[0] * px + sm.L[1] * py + sm.L[2] * pz < smD[sv * smS + su] - 0.05) n = 0;
+        }
+        shaft += n * att;
+      }
+      shaft *= rays * step * dens * 1.4;
+    }
+    const f = 1 - Math.exp(-dens * dist), c = color[i];
+    let r = (c & 255) + (ar - (c & 255)) * f, g = ((c >>> 8) & 255) + (ag - ((c >>> 8) & 255)) * f, b = ((c >>> 16) & 255) + (ab - ((c >>> 16) & 255)) * f;
+    // shafts blend towards the ray colour with a soft roll-off, so stacked beams glow instead of clipping to white
+    const k = 1 - Math.exp(-shaft);
+    r += (rr - r) * k; g += (rg - g) * k; b += (rb - b) * k;
+    color[i] = 0xff000000 | ((b > 255 ? 255 : b | 0) << 16) | ((g > 255 ? 255 : g | 0) << 8) | (r > 255 ? 255 : r | 0);
+  }
+  if (ycc) toYCoCg(color, ycc, y * W, y * W + W); // statistics for temporal AA see the final colours
+}
+
+// smooth value noise in [-1, 1] (light shafts); written out, no closures: it runs millions of times a frame
+function lattice(x, y, z) {
+  let h = Math.imul(x, 73856093) ^ Math.imul(y, 19349663) ^ Math.imul(z, 83492791);
+  h = Math.imul(h ^ (h >>> 15), 2246822519);
+  return ((h ^ (h >>> 13)) >>> 0) / 2147483648 - 1;
+}
+function noise3(x, y, z) {
+  const x0 = Math.floor(x), y0 = Math.floor(y), z0 = Math.floor(z), fx = x - x0, fy = y - y0, fz = z - z0;
+  const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy), w = fz * fz * (3 - 2 * fz);
+  const a = lattice(x0, y0, z0), b = lattice(x0 + 1, y0, z0), c = lattice(x0, y0 + 1, z0), d = lattice(x0 + 1, y0 + 1, z0);
+  const e = lattice(x0, y0, z0 + 1), f = lattice(x0 + 1, y0, z0 + 1), g = lattice(x0, y0 + 1, z0 + 1), k = lattice(x0 + 1, y0 + 1, z0 + 1);
+  const ab = a + (b - a) * u, cd = c + (d - c) * u, ef = e + (f - e) * u, gk = g + (k - g) * u;
+  const lo = ab + (cd - ab) * v, hi = ef + (gk - ef) * v;
+  return lo + (hi - lo) * w;
+}
+
 // All stages on the calling thread.
 export function shadePass(ctx) {
   const { aoH } = prepare(ctx);
   if (ctx.ao) { aoRows(ctx, 0, aoH); blurRows(ctx, 0, aoH); }
   shadeRows(ctx, 0, ctx.H);
+  if (ctx.atmos) atmosphereRows(ctx, 0, ctx.H);
 }

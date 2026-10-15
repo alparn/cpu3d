@@ -32,6 +32,10 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 ## Gallery
 
+<img src="docs/seagrass.png" alt="Seagrass meadow: an underwater world with swaying seagrass, fish schools and light shafts" width="100%">
+
+<sub>Seagrass meadow: 64,000 blades swaying in one current (the <code>wind</code> behaviour bends every vertex, harder towards the tip), tall kelp, rocks, two schools of fish circling, drifting plankton and volumetric light shafts through the water that the fish cut with their shadows, seen from a slowly gliding drone. 55 objects, 463k triangles from 53 KB of JSON, thanks to <code>scatter</code>.</sub>
+
 <img src="docs/garage.png" alt="Café racer garage: a motorcycle on a paddock stand in a brick workshop at night" width="100%">
 
 <sub>Café racer garage: a motorcycle at real scale on a paddock stand, its rear wheel spinning. Wire-spoke wheels with tread, a finned parallel twin, chrome headers into megaphones, shocks with chrome springs, a chain, a glossy tank and a leather hump seat; brick walls, sealed concrete, a workbench, a roller door and a swinging work lamp. 131 objects, 99 KB of JSON, every surface procedural.</sub>
@@ -75,6 +79,9 @@ All of them are built in [`examples/build.mjs`](examples/build.mjs) through the 
 <td width="33%" valign="top"><img src="examples/thumbs/engine.png" alt="Turbofan cutaway"><br><b>Turbofan cutaway</b><br><sub>69 objects · 143,338 tris<br>recipes 74.2 KB · as .obj 5.16 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/fair.png" alt="Fairground at dusk"><br><b>Fairground at dusk</b><br><sub>339 objects · 98,046 tris<br>recipes 409.2 KB · as .obj 3.37 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/plush.png" alt="Plush dancer"><br><b>Plush dancer</b><br><sub>62 objects · 76,990 tris<br>recipes 270.8 KB · as .obj 2.43 MB</sub></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><img src="examples/thumbs/seagrass.png" alt="Seagrass meadow"><br><b>Seagrass meadow</b><br><sub>55 objects · 462,666 tris<br>recipes 53.0 KB · as .obj 23.71 MB</sub></td>
 </tr>
 <tr>
 <td width="33%" valign="top"><img src="examples/thumbs/neon.png" alt="Neon district"><br><b>Neon district</b><br><sub>462 objects · 29,082 tris<br>recipes 534.9 KB · as .obj 1.26 MB</sub></td>
@@ -164,8 +171,8 @@ curl -X POST http://localhost:8173/api/tools/add_objects \
 | `remove_objects` / `clear_scene` | Delete objects |
 | `load_scene` | Replace the whole scene with a scene document |
 | `set_camera` | Set the scene camera, or `focus` on objects to frame them |
-| `set_environment` | Background gradient, fog, light, ground grid |
-| `set_animation` | Make objects move: behaviours (`spin`, `swing`, `bob`, `orbit`, `pulse`), keyframes, a camera path, the timeline length |
+| `set_environment` | Background gradient, fog, light, ground grid, an `atmosphere` (water or haze with volumetric light shafts) |
+| `set_animation` | Make objects move: behaviours (`spin`, `swing`, `bob`, `orbit`, `pulse`, `flow`, `wind`), keyframes, a camera path, the timeline length |
 | `set_keyframe` | Add, merge or delete one keyframe of an object or of the camera path |
 | `render_animation` | **One image with several frames of the animation**, so the agent sees the motion at a glance |
 | `export_gif` | Render an animated GIF with motion blur (saved to `exports/`, downloaded in the browser editor) |
@@ -202,6 +209,8 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 | `tube` | Sweep of a circle (pipes, cables, springs, handles, knots) |
 | `terrain` | Noise heightfield with water level and height-based colors |
 | `mesh` | Raw triangles |
+| `blade` | A tapered, bent ribbon: grass, seagrass, kelp, leaves, feathers |
+| `scatter` | Thousands of copies of any shape over an area with random scale, yaw, tilt and clumping, in one object (meadows, forests, rocks, particles) |
 | `noise` on any recipe | Displace the surface along its normals by fractal noise: fur and plush, rocks, bark, clay |
 
 2D shapes (`circle`, `polygon`, `rect`, `roundedRect` with optional squircle corners, `star` or point lists) and paths (`line`, `circle`, `helix`, `torusKnot` or point lists) plug into `extrude`, `sweep` and `tube`. The full reference is what `get_shape_reference` returns, see [`src/recipes.js`](src/recipes.js).

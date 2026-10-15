@@ -103,6 +103,7 @@ function normalizeMaterial(m = {}, base = {}) {
     if (m.pattern === null) delete out.pattern;
     else out.pattern = normalizePattern(m.pattern);
   }
+  if (m.castShadow !== undefined) { if (m.castShadow === false) out.castShadow = false; else delete out.castShadow; }
   if (m.flat !== undefined) out.flat = !!m.flat;
   if (m.doubleSided !== undefined) out.doubleSided = !!m.doubleSided;
   return out;
@@ -114,6 +115,7 @@ function normalizeMaterial(m = {}, base = {}) {
 //   bob   { axis [0,1,0] (world), amplitude 0.1, period 2 s, phase 0..1 }
 //   orbit { center [0,0,0], axis [0,1,0], speed 30 deg/s }   rigid rotation around a world axis
 //   pulse { min 0.5, max 1.5, period 1.5 s, phase 0..1, blink false }   scales emissive
+//   wind  { strength 0.08, wavelength 4, speed 1.5, direction [x, z] }   bends vertices with their height (grass, kelp)
 //   flow  { axis [1,0,0] (world), distance 4, speed 2 units/s, phase 0..1, fade 0.2 }   moves along the axis and
 //         starts over (wind, particles, conveyor belts); grows in / shrinks out over `fade` of the way
 //   keys  [{ t, position?, rotation?, scale?, emissive? }] with ease 'smooth' | 'linear' | 'spline' | 'step'
@@ -123,7 +125,7 @@ function normalizeMaterial(m = {}, base = {}) {
 export function normalizeAnimation(a) {
   if (a === null || a === undefined) return null;
   if (typeof a !== 'object' || Array.isArray(a)) fail('"animation" must be an object like { "spin": { "speed": 90 } } or null');
-  const known = ['spin', 'swing', 'bob', 'orbit', 'pulse', 'flow', 'keys', 'ease'];
+  const known = ['spin', 'swing', 'bob', 'orbit', 'pulse', 'flow', 'wind', 'keys', 'ease'];
   for (const k of Object.keys(a)) if (!known.includes(k)) fail(`unknown animation "${k}" (use ${known.join(', ')})`);
   const obj = (v, n) => { if (!v || typeof v !== 'object' || Array.isArray(v)) fail(`"animation.${n}" must be an object`); return v; };
   const opt = (v, def, n, min, max) => (v === undefined ? def : range(v, `animation.${n}`, min, max));
@@ -161,6 +163,15 @@ export function normalizeAnimation(a) {
     out.flow = { axis: s.axis === undefined ? [1, 0, 0] : vec3(s.axis, 'animation.flow.axis'), distance: opt(s.distance, 4, 'flow.distance', 0.001, 1e4),
       speed: opt(s.speed, 2, 'flow.speed', -1e4, 1e4), phase: opt(s.phase, 0, 'flow.phase', -1e4, 1e4), fade: opt(s.fade, 0.2, 'flow.fade', 0, 0.5) };
     if (!Math.hypot(...out.flow.axis)) fail('"animation.flow.axis" must not be zero');
+  }
+  if (a.wind) {
+    const s = obj(a.wind, 'wind');
+    out.wind = { strength: opt(s.strength, 0.08, 'wind.strength', 0, 100), wavelength: opt(s.wavelength, 4, 'wind.wavelength', 0.01, 1e4),
+      speed: opt(s.speed, 1.5, 'wind.speed', -1e4, 1e4) };
+    if (s.direction !== undefined) {
+      if (!Array.isArray(s.direction) || s.direction.length !== 2 || !s.direction.every(Number.isFinite) || !Math.hypot(...s.direction)) fail('"animation.wind.direction" must be [x, z]');
+      out.wind.direction = [...s.direction];
+    } else out.wind.direction = [1, 0];
   }
   if (a.keys !== undefined && a.keys !== null) {
     const keys = normalizeKeys(a.keys, 'animation.keys', (k, n) => {
@@ -215,6 +226,18 @@ export function normalizeCameraPath(c) {
   }, 'yaw, pitch, distance or target');
   if (!keys.length) return null;
   return { keys, ease: c.ease === undefined ? 'spline' : normalizeEase(c.ease, 'camera.ease') };
+}
+
+// participating medium: haze or water with volumetric light shafts from the main light
+//   { color, density 0..2 (per 10 units), rays 0..4 (shaft strength), rayColor, scale (shaft size, units), speed, far }
+function normalizeAtmosphere(a) {
+  if (!a || typeof a !== 'object' || Array.isArray(a)) fail('"atmosphere" must be an object like { "color": "#1d5a6e", "density": 0.4, "rays": 1 } or null');
+  return {
+    color: parseColor(a.color ?? '#20586a', 'atmosphere.color'), rayColor: parseColor(a.rayColor ?? '#bfefff', 'atmosphere.rayColor'),
+    density: a.density === undefined ? 0.35 : range(a.density, 'atmosphere.density', 0, 20), rays: a.rays === undefined ? 1 : range(a.rays, 'atmosphere.rays', 0, 4),
+    scale: a.scale === undefined ? 3 : range(a.scale, 'atmosphere.scale', 0.01, 1e4), speed: a.speed === undefined ? 0.3 : range(a.speed, 'atmosphere.speed', -100, 100),
+    far: a.far === undefined ? 60 : range(a.far, 'atmosphere.far', 0.1, 1e5),
+  };
 }
 
 // main light: direction, color, intensity, softness (shadow penumbra); extra lights cast no shadows
@@ -411,6 +434,7 @@ export class SceneDocument {
         e.reflections = patch.reflections;
       }
       if (patch.ground !== undefined) e.ground = !!patch.ground;
+      if (patch.atmosphere !== undefined) e.atmosphere = patch.atmosphere === null ? null : normalizeAtmosphere(patch.atmosphere);
       return e;
     });
   }
@@ -444,6 +468,7 @@ export class SceneDocument {
     e.lights = safe(() => (Array.isArray(e.lights) ? e.lights.slice(0, 4).map((l, i) => normalizeLight(l, { direction: [0, 1, 0], color: '#ffffff', intensity: 0.5 }, `lights[${i}]`, false)) : []), []);
     e.reflections = ['sky', 'studio', 'none'].includes(e.reflections) ? e.reflections : 'sky';
     e.ground = e.ground !== false;
+    e.atmosphere = safe(() => (e.atmosphere ? normalizeAtmosphere(e.atmosphere) : null), null);
     // timeline length in seconds (playback loops)
     const dur = data.animation?.duration;
     next.animation = { duration: typeof dur === 'number' && dur >= 1 && dur <= 3600 ? dur : 12 };

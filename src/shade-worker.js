@@ -1,6 +1,6 @@
 // Shading worker: runs the row-range stages of lighting.js on its share of the frame.
 // Works as a browser module worker and as a Node worker thread; all big buffers are shared memory.
-import { aoRows, blurRows, shadeRows, accumulateRows, temporalRows } from './lighting.js';
+import { aoRows, blurRows, shadeRows, atmosphereRows, accumulateRows, temporalRows } from './lighting.js';
 
 let job = null;
 
@@ -13,6 +13,7 @@ function run(m) {
     else if (m.phase === 'shade') {
       if (job.ao) blurRows(job, b0, b1);
       shadeRows(job, y0, y1);
+      if (job.atmos) atmosphereRows(job, y0, y1);
     } else if (job.post === 'accumulate') accumulateRows(job, y0, y1);
     else temporalRows(job, y0, y1);
   }

@@ -92,8 +92,8 @@ export function fbm(x, y, seed = 1, octaves = 5) {
 }
 
 // ---- builder --------------------------------------------------------------------------------
-export const SHAPE_TYPES = ['radial', 'box', 'roundedBox', 'sphere', 'cylinder', 'cone', 'torus', 'plane', 'terrain',
-  'lathe', 'extrude', 'sweep', 'tube', 'mesh'];
+export const SHAPE_TYPES = ['radial', 'scatter', 'box', 'roundedBox', 'sphere', 'cylinder', 'cone', 'torus', 'plane', 'terrain',
+  'lathe', 'extrude', 'sweep', 'tube', 'blade', 'mesh'];
 
 export function buildShape(r, depth = 0) {
   if (!r || typeof r !== 'object' || Array.isArray(r)) fail('shape must be an object with a "type"');
@@ -146,6 +146,24 @@ export function buildShape(r, depth = 0) {
     case 'plane':
       g = G.plane(num(r.width, 1, 'width', 1e-4), num(r.depth, 1, 'depth', 1e-4));
       break;
+    case 'blade':
+      g = G.blade(num(r.width, 0.05, 'width', 1e-5, 100), num(r.height, 0.6, 'height', 1e-4, 1000), int(r.segments, 4, 'segments', 1, 32),
+        num(r.bend, 0.15, 'bend', -10, 10), num(r.taper, 1, 'taper', 0, 1));
+      break;
+    case 'scatter': {
+      // many copies of a shape over an area, merged into one geometry (grass, pebbles, plants, crowds)
+      if (depth >= 3) fail('"scatter" can be nested at most 3 levels deep');
+      const child = buildShape(r.shape, depth + 1);
+      const count = int(r.count, 100, 'count', 1, 200000);
+      if (child.triangleCount * count > LIMITS.maxTrianglesPerObject) fail(`scatter would create ${child.triangleCount * count} triangles, the limit is ${LIMITS.maxTrianglesPerObject}`);
+      const sc = r.scale === undefined ? [0.75, 1.25] : typeof r.scale === 'number' ? [r.scale, r.scale] : r.scale;
+      if (!Array.isArray(sc) || sc.length !== 2 || !sc.every(Number.isFinite)) fail('"scale" must be a number or [min, max]');
+      const width = num(r.width, 10, 'width', 1e-4, 1e5);
+      g = G.scatter(child, { count, width, depth: num(r.depth, width, 'depth', 1e-4, 1e5), seed: int(r.seed, 1, 'seed', 0, 1e9), scale: sc,
+        yaw: bool(r.yaw, true, 'yaw'), tilt: num(r.tilt, 0, 'tilt', 0, 90), clump: num(r.clump, 0, 'clump', 0, 1), radius: r.round ? 1 : 0,
+        height: r.height === undefined ? [0, 0] : typeof r.height === 'number' ? [0, num(r.height, 0, 'height', 0, 1e5)] : r.height });
+      break;
+    }
     case 'terrain': {
       const w = num(r.width, 20, 'width', 1e-3), d = num(r.depth, w, 'depth', 1e-3);
       const res = int(r.resolution, 96, 'resolution', 2, 700), h = num(r.height, 4, 'height', 0);
@@ -229,12 +247,13 @@ material = { color: "#rrggbb", specular 0..2, shininess 1..256, emissive 0..10 (
               wood (grain along X), marble, leather (pebbled grain), carbon, fabric, brushed (streaks along X), checker,
               stripes (across Y), knurl (diamond grip around Y), concrete, brick (running bond, one brick high per unit). scale = size of one feature in units (leather ~1 mm,
               wood rings ~1 cm at real scale), bump 0..2. Example: { type: "wood", colors: ["#62402a", "#2e1b0e"], scale: 0.01 } }.
-Animation: set_animation({ id, animation: { spin | swing | bob | orbit | pulse | flow | keys } }), e.g. { "spin": { "axis": [0,1,0], "speed": 90 } }
+Animation: set_animation({ id, animation: { spin | swing | bob | orbit | pulse | flow | wind | keys } }), e.g. { "spin": { "axis": [0,1,0], "speed": 90 } }
             or keyframes { "keys": [{ "t": 0, "position": [0,1,0] }, { "t": 2, "position": [3,1,0] }], "ease": "spline" };
             a camera path with set_animation({ camera: { keys: [{ t, yaw, pitch, distance, target }] } }). Details in the
             set_animation tool description. Check motion with render_animation (several frames in one image).
 Environment: set_environment({ reflections: "sky" | "studio" | "none", light: { direction, color, intensity, softness 0..1 },
-            lights: [{ direction, color, intensity }] (up to 4 extra lights without shadows, e.g. fill and rim) }).
+            lights: [{ direction, color, intensity }] (up to 4 extra lights without shadows, e.g. fill and rim),
+            atmosphere: { color, rayColor, density, rays, scale, speed, far } (underwater or haze with light shafts) }).
 Shapes are built around their own origin (see "origin" below); use position to place them.
 
 ## Primitives
@@ -258,6 +277,13 @@ Shapes are built around their own origin (see "origin" below); use position to p
             Example vase: [[0,0],[0.4,0],[0.5,0.3],[0.3,1.0],[0.35,1.4]]
             phiLength < 360 revolves only partly (cutaway models). Closed profiles (first point = last point,
             or both ends at r = 0) then get flat caps on the cut faces.
+- scatter   { type: "scatter", shape: Recipe, count=100, width=10, depth=width, seed=1, scale=[0.75,1.25] (or a number),
+              yaw=true (random turn), tilt=0 (max random lean in degrees), clump=0..1 (patches instead of even cover),
+              round=false (circular area), height=0 or [min, max] (random height: particles, bubbles, birds) }
+            Many copies of a shape scattered over an area around the origin (y = 0), merged into ONE object: grass,
+            seagrass, pebbles, flowers, a crowd. Tens of thousands of copies are fine. Pair with animation wind.
+- blade     { type: "blade", width=0.05, height=0.6, segments=4, bend=0.15, taper=1 }   origin: base
+            A curved, tapered ribbon (grass blade, seagrass, kelp leaf, feather). Use material.doubleSided.
 - radial    { type: "radial", shape: Recipe, count=8, radius=0, offset=[0,0,0], rotation=[0,0,0], axis="y", angle=360, startAngle=0 }
             Repeats a shape around an axis: the child (rotated by rotation, moved by radius along +X, or +Y for
             axis x, plus offset) is copied count times over angle degrees. Turbine blade rings, spokes, columns,

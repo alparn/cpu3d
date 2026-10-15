@@ -1,0 +1,2468 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 20,
+    "pitch": 6,
+    "distance": 10,
+    "target": [-6, 1.1, 5]
+  },
+  "environment": {
+    "background": {
+      "top": "#1b6a7e",
+      "bottom": "#041820"
+    },
+    "fog": null,
+    "light": {
+      "direction": [0.5, 1, 0.25],
+      "color": "#c4f0ff",
+      "intensity": 1.05,
+      "softness": 0.45
+    },
+    "lights": [
+      {
+        "direction": [-0.5, 0.3, 0.6],
+        "color": "#2f8fb0",
+        "intensity": 0.35
+      },
+      {
+        "direction": [0.3, -0.4, -0.6],
+        "color": "#1f5a4a",
+        "intensity": 0.2
+      }
+    ],
+    "reflections": "sky",
+    "ground": false,
+    "atmosphere": {
+      "color": "#0c3a48",
+      "rayColor": "#a6ecff",
+      "density": 0.85,
+      "rays": 2.6,
+      "scale": 3.2,
+      "speed": 0.3,
+      "far": 42
+    }
+  },
+  "animation": {
+    "duration": 24,
+    "camera": {
+      "keys": [
+        {
+          "t": 0,
+          "yaw": 20,
+          "pitch": 6,
+          "distance": 10,
+          "target": [-6, 1.1, 5]
+        },
+        {
+          "t": 8,
+          "yaw": 55,
+          "pitch": 12,
+          "distance": 11,
+          "target": [1, 1.4, 0]
+        },
+        {
+          "t": 16,
+          "yaw": 110,
+          "pitch": 5,
+          "distance": 8,
+          "target": [7, 1.2, -6]
+        },
+        {
+          "t": 24,
+          "yaw": 20,
+          "pitch": 6,
+          "distance": 10,
+          "target": [-6, 1.1, 5]
+        }
+      ],
+      "ease": "spline"
+    }
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Seafloor",
+      "shape": {
+        "type": "terrain",
+        "width": 140,
+        "resolution": 140,
+        "height": 0.6,
+        "scale": 0.05,
+        "seed": 8,
+        "waterLevel": 0,
+        "colorize": false
+      },
+      "position": [0, -0.45, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8996f",
+        "specular": 0.05,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.9,
+        "pattern": {
+          "type": "concrete",
+          "colors": ["#c2b48c", "#9e906a", "#5f5640"],
+          "scale": 0.7,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 11,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_3",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 12,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_4",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 13,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_5",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 18,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_6",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 19,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_7",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 20,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_8",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 25,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_9",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 26,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_10",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 27,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_11",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 32,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_12",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 33,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_13",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 34,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-15.75, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_14",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 39,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_15",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 40,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_16",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 41,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_17",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 46,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_18",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 47,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_19",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 48,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_20",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 53,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_21",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 54,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_22",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 55,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_23",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 60,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_24",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 61,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_25",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 62,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [-5.25, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_26",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 67,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_27",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 68,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_28",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 69,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_29",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 74,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_30",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 75,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_31",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 76,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_32",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 81,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_33",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 82,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_34",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 83,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_35",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 88,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_36",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 89,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_37",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 90,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [5.25, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_38",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 95,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_39",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 96,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_40",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 97,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, -15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_41",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 102,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_42",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 103,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_43",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 104,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, -5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_44",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 109,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_45",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 110,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_46",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 111,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, 5.25],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_47",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1500,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 116,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.35,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f7340",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_48",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1400,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 117,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 1.05,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9142",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_49",
+      "name": "Seagrass",
+      "shape": {
+        "type": "scatter",
+        "count": 1100,
+        "width": 10.5,
+        "depth": 10.5,
+        "seed": 118,
+        "clump": 0.55,
+        "tilt": 22,
+        "scale": [0.6, 1.4],
+        "shape": {
+          "type": "blade",
+          "width": 0.07,
+          "height": 0.75,
+          "segments": 3,
+          "bend": 0.14
+        }
+      },
+      "position": [15.75, 0, 15.75],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c9c4c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.6,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.13,
+          "wavelength": 6,
+          "speed": 1.2,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_50",
+      "name": "Kelp",
+      "shape": {
+        "type": "scatter",
+        "count": 22,
+        "width": 40,
+        "depth": 12,
+        "seed": 5,
+        "clump": 0.4,
+        "scale": [0.7, 1.2],
+        "tilt": 6,
+        "shape": {
+          "type": "blade",
+          "width": 0.3,
+          "height": 6,
+          "segments": 12,
+          "bend": 0.3,
+          "taper": 0.6
+        }
+      },
+      "position": [2, 0, -15],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a7d3c",
+        "specular": 0.4,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.5
+      },
+      "visible": true,
+      "animation": {
+        "wind": {
+          "strength": 0.022,
+          "wavelength": 11,
+          "speed": 0.8,
+          "direction": [1, 0.35]
+        }
+      }
+    },
+    {
+      "id": "obj_51",
+      "name": "Rocks",
+      "shape": {
+        "type": "scatter",
+        "count": 36,
+        "width": 56,
+        "depth": 56,
+        "seed": 9,
+        "clump": 0.3,
+        "scale": [0.3, 1.5],
+        "tilt": 25,
+        "shape": {
+          "type": "sphere",
+          "radius": 0.8,
+          "segments": 20,
+          "rings": 12,
+          "noise": {
+            "amplitude": 0.25,
+            "scale": 1.4,
+            "seed": 4
+          }
+        }
+      },
+      "position": [0, -0.15, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4b514c",
+        "specular": 0.15,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.85,
+        "pattern": {
+          "type": "concrete",
+          "colors": ["#5c625c", "#434843", "#2b2f2b"],
+          "scale": 0.4,
+          "bump": 0.6
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_52",
+      "name": "Fish school",
+      "shape": {
+        "type": "radial",
+        "count": 26,
+        "radius": 3.2,
+        "shape": {
+          "type": "radial",
+          "axis": "z",
+          "count": 3,
+          "radius": 0.45,
+          "angle": 140,
+          "startAngle": 20,
+          "shape": {
+            "type": "lathe",
+            "segments": 10,
+            "profile": [
+              [0, -0.26],
+              [0.03, -0.2],
+              [0.012, -0.15],
+              [0.055, -0.1],
+              [0.07, 0],
+              [0.055, 0.12],
+              [0.025, 0.2],
+              [0, 0.23]
+            ]
+          },
+          "rotation": [90, 0, 0]
+        }
+      },
+      "position": [6, 3.2, -4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b9c7cf",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.7,
+        "roughness": 0.25
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 24
+        },
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.4,
+          "period": 6,
+          "phase": 0
+        }
+      }
+    },
+    {
+      "id": "obj_53",
+      "name": "Fish school",
+      "shape": {
+        "type": "radial",
+        "count": 18,
+        "radius": 2.4,
+        "shape": {
+          "type": "radial",
+          "axis": "z",
+          "count": 3,
+          "radius": 0.45,
+          "angle": 140,
+          "startAngle": 20,
+          "shape": {
+            "type": "lathe",
+            "segments": 10,
+            "profile": [
+              [0, -0.26],
+              [0.03, -0.2],
+              [0.012, -0.15],
+              [0.055, -0.1],
+              [0.07, 0],
+              [0.055, 0.12],
+              [0.025, 0.2],
+              [0, 0.23]
+            ]
+          },
+          "rotation": [90, 0, 0]
+        }
+      },
+      "position": [-9, 4.6, 7],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b9c7cf",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.7,
+        "roughness": 0.25
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": -30
+        },
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.4,
+          "period": 6,
+          "phase": 0.5
+        }
+      }
+    },
+    {
+      "id": "obj_54",
+      "name": "Plankton",
+      "shape": {
+        "type": "scatter",
+        "count": 700,
+        "width": 40,
+        "depth": 40,
+        "seed": 21,
+        "height": [0, 12],
+        "scale": [0.5, 1.4],
+        "shape": {
+          "type": "sphere",
+          "radius": 0.02,
+          "segments": 6,
+          "rings": 4
+        }
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8fbff",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "flow": {
+          "axis": [0.1, 1, 0],
+          "distance": 12,
+          "speed": 0.5,
+          "phase": 0,
+          "fade": 0
+        }
+      },
+      "effect": true
+    },
+    {
+      "id": "obj_55",
+      "name": "Plankton",
+      "shape": {
+        "type": "scatter",
+        "count": 700,
+        "width": 40,
+        "depth": 40,
+        "seed": 21,
+        "height": [12, 24],
+        "scale": [0.5, 1.4],
+        "shape": {
+          "type": "sphere",
+          "radius": 0.02,
+          "segments": 6,
+          "rings": 4
+        }
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8fbff",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false,
+        "castShadow": false
+      },
+      "visible": true,
+      "animation": {
+        "flow": {
+          "axis": [0.1, 1, 0],
+          "distance": 12,
+          "speed": 0.5,
+          "phase": 0,
+          "fade": 0
+        }
+      },
+      "effect": true
+    }
+  ]
+}

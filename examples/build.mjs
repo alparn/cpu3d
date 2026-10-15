@@ -1316,6 +1316,55 @@ scene('garage', 'Café racer garage', 'A café racer on a paddock stand in a wor
   ] } });
 });
 
+scene('seagrass', 'Seagrass meadow', 'An ambient underwater world: a seagrass meadow of 64,000 blades swaying in the current (wind bends every vertex), tall kelp, rocks, two schools of fish, drifting plankton and volumetric light shafts through the water, seen from a slowly gliding drone.', async (doc) => {
+  const LOOP = 24;
+  await tool(doc, 'set_environment', {
+    background: { top: '#1b6a7e', bottom: '#041820' }, fog: null, ground: false, reflections: 'sky',
+    light: { direction: [0.5, 1, 0.25], color: '#c4f0ff', intensity: 1.05, softness: 0.45 },
+    lights: [{ direction: [-0.5, 0.3, 0.6], color: '#2f8fb0', intensity: 0.35 }, { direction: [0.3, -0.4, -0.6], color: '#1f5a4a', intensity: 0.2 }],
+    atmosphere: { color: '#0c3a48', rayColor: '#a6ecff', density: 0.85, rays: 2.6, scale: 3.2, speed: 0.3, far: 42 },
+  });
+  const current = (strength, wavelength = 6, speed = 1.2) => ({ wind: { strength, wavelength, speed, direction: [1, 0.35] } });
+  const o = [];
+  o.push({ name: 'Seafloor', shape: { type: 'terrain', width: 140, resolution: 140, height: 0.6, scale: 0.05, seed: 8, waterLevel: 0, colorize: false }, position: [0, -0.45, 0],
+    material: { color: '#a8996f', roughness: 0.9, specular: 0.05, pattern: { type: 'concrete', colors: ['#c2b48c', '#9e906a', '#5f5640'], scale: 0.7, bump: 0 } } });
+  // seagrass: three patches of differently coloured blades, clumped, all swaying in one current
+  // in 4 x 4 tiles so the renderer can skip the ones the drone does not see; no shadows (thousands of tiny ones
+  // would cost a lot and vanish in the soft underwater light)
+  const TILE = 10.5;
+  for (let ti = 0; ti < 4; ti++) for (let tj = 0; tj < 4; tj++) {
+    for (const [k, color, count, h] of [[0, '#2f7340', 1500, 1.35], [1, '#4f9142', 1400, 1.05], [2, '#7c9c4c', 1100, 0.75]]) {
+      o.push({ name: 'Seagrass', position: [r4((ti - 1.5) * TILE), 0, r4((tj - 1.5) * TILE)],
+        shape: { type: 'scatter', count, width: TILE, depth: TILE, seed: 11 + k + (ti * 4 + tj) * 7, clump: 0.55, tilt: 22, scale: [0.6, 1.4],
+          shape: { type: 'blade', width: 0.07, height: h, segments: 3, bend: 0.14 } }, material: { color, roughness: 0.6, specular: 0.25, doubleSided: true, castShadow: false }, animation: current(0.13) });
+    }
+  }
+  // kelp stands behind the meadow, away from the drone's path
+  o.push({ name: 'Kelp', position: [2, 0, -15], shape: { type: 'scatter', count: 22, width: 40, depth: 12, seed: 5, clump: 0.4, scale: [0.7, 1.2], tilt: 6,
+    shape: { type: 'blade', width: 0.3, height: 6, segments: 12, bend: 0.3, taper: 0.6 } }, material: { color: '#8a7d3c', roughness: 0.5, specular: 0.4, doubleSided: true }, animation: current(0.022, 11, 0.8) });
+  o.push({ name: 'Rocks', shape: { type: 'scatter', count: 36, width: 56, depth: 56, seed: 9, clump: 0.3, scale: [0.3, 1.5], tilt: 25,
+    shape: { type: 'sphere', radius: 0.8, segments: 20, rings: 12, noise: { amplitude: 0.25, scale: 1.4, seed: 4 } } }, position: [0, -0.15, 0],
+    material: { color: '#4b514c', roughness: 0.85, specular: 0.15, pattern: { type: 'concrete', colors: ['#5c625c', '#434843', '#2b2f2b'], scale: 0.4, bump: 0.6 } } });
+  // two schools of fish circling at different heights and speeds: spindle bodies (lathe) pointing along the circle,
+  // three abreast in a fanned column
+  const fish = { type: 'lathe', segments: 10, profile: [[0, -0.26], [0.03, -0.2], [0.012, -0.15], [0.055, -0.1], [0.07, 0], [0.055, 0.12], [0.025, 0.2], [0, 0.23]] };
+  for (const [k, c, r, y, n, speed] of [[0, [6, 0, -4], 3.2, 3.2, 26, 24], [1, [-9, 0, 7], 2.4, 4.6, 18, -30]]) {
+    o.push({ name: 'Fish school', shape: { type: 'radial', count: n, radius: r, shape: { type: 'radial', axis: 'z', count: 3, radius: 0.45, angle: 140, startAngle: 20,
+      shape: fish, rotation: [90, 0, 0] } }, position: [c[0], y, c[2]],
+      material: { color: '#b9c7cf', metalness: 0.7, roughness: 0.25, specular: 1 }, animation: { spin: { axis: [0, 1, 0], speed }, bob: { amplitude: 0.4, period: 6, phase: k * 0.5 } } });
+  }
+  // plankton drifting upwards: two identical stacked layers, so rising by one layer loops seamlessly
+  for (const dy of [0, 12]) {
+    o.push({ name: 'Plankton', effect: true, shape: { type: 'scatter', count: 700, width: 40, depth: 40, seed: 21, height: [dy, dy + 12], scale: [0.5, 1.4], shape: { type: 'sphere', radius: 0.02, segments: 6, rings: 4 } },
+      position: [0, 0, 0], material: { color: '#d8fbff', emissive: 0.9, castShadow: false }, animation: { flow: { axis: [0.1, 1, 0], distance: 12, speed: 0.5, fade: 0 } } });
+  }
+
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 20, pitch: 6, distance: 10, target: [-6, 1.1, 5] });
+  // a slow drone glide low over the meadow and back
+  await cameraPath(doc, LOOP, [{ t: 8, yaw: 55, pitch: 12, distance: 11, target: [1, 1.4, 0] }, { t: 16, yaw: 110, pitch: 5, distance: 8, target: [7, 1.2, -6] }]);
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)

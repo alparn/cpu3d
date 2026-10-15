@@ -35,6 +35,7 @@ const materialS = {
     metalness: { type: 'number', description: '0 dielectric .. 1 metal (reflections tinted by the color, no diffuse)' },
     roughness: { type: 'number', description: '0 polished/mirror .. 1 matte (default 0.7); controls how sharp reflections are' },
     texture: { type: 'string', description: 'PNG image: project path (e.g. "examples/textures/screen.png") or "data:image/png;base64,...". By default projected along the thinnest local axis (flat in Z: top = +Y; flat in Y like plane: top = -Z)' },
+    castShadow: { type: 'boolean', description: 'false: the object casts no shadow (dense grass, particles: much faster)' },
     mapping: { type: 'string', enum: ['planar', 'box', 'cylinder', 'sphere'], description: 'How the texture wraps: planar (default), box (from all sides, for patterns on any shape), cylinder (labels around Y), sphere' },
     repeat: { type: ['number', 'array'], items: { type: 'number' }, description: 'Tile the texture: a number or [u, v]' },
     pattern: { type: ['object', 'null'], description: 'Procedural surface, no image needed: { type: wood | marble | leather | carbon | fabric | brushed | checker | stripes | knurl | concrete | brick, colors: [2 or 3 colours], scale: size of one feature in units, bump: 0..2 relief }' },
@@ -168,7 +169,7 @@ export const TOOLS = [
   },
   {
     name: 'set_environment',
-    description: 'Changes background gradient, fog, light and the ground grid.',
+    description: 'Changes background gradient, fog, light, the ground grid and the atmosphere (underwater, haze, light shafts).',
     inputSchema: {
       type: 'object',
       properties: {
@@ -178,6 +179,7 @@ export const TOOLS = [
         lights: { type: 'array', items: { type: 'object' }, description: 'Up to 4 extra lights without shadows: [{ direction, color, intensity }] (fill, rim)' },
         reflections: { type: 'string', enum: ['sky', 'studio', 'none'], description: 'What glossy surfaces reflect: the sky gradient, a photo studio with softboxes, or nothing' },
         ground: { type: 'boolean', description: 'Show the checker ground at y = 0' },
+        atmosphere: { type: ['object', 'null'], description: 'Water or haze with volumetric light shafts: { color, rayColor, density 0..5, rays 0..5 (shaft strength, 0 = none), scale (beam width), speed, far } or null' },
       },
     },
     run: (doc, a, act) => text(doc.setEnvironment(a, act(`changed the environment (${Object.keys(a).join(', ')})`))),
@@ -220,6 +222,8 @@ Behaviours (combine freely):
   flow  { axis: world [1,0,0], distance, speed: units/s, phase, fade: 0..0.5 }   moves along the axis and starts over,
         growing in and shrinking out at the ends: wind streaks, particles, exhaust, rain, conveyor belts.
         Tip: a radial array of thin glowing cylinders with flow (and spin for swirl) reads as airflow.
+  wind  { strength, wavelength, speed, direction: [x, z] }      bends every vertex by its height above the object's base, in
+        travelling gusts: grass, seagrass, kelp, flags, trees (best on a scatter of blades)
 Without pivot, spin/swing turn around the object's own origin and LOCAL axis; with pivot, around a WORLD axis through that point
 (use the same pivot for parts that must move together).
 Keyframes: keys: [{ t: seconds, position?, rotation? (deg), scale?, emissive? }], ease: "smooth" (default, eases in and out

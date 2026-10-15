@@ -626,3 +626,60 @@ export function displaceNoise(g, { amplitude = 0.02, scale = 10, octaves = 3, se
   }
   return new Geometry(out, g.indices).weldNormals();
 }
+
+// ---- vegetation
+// A grass blade: a ribbon along Y that tapers to a point and curves forward (+Z) by bend * height.
+export function blade(width = 0.05, height = 0.6, segments = 4, bend = 0.15, taper = 1) {
+  const pos = [], idx = [];
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments, w = (width / 2) * (1 - taper * t ** 1.2), y = height * t, z = bend * height * t * t;
+    if (i < segments) pos.push(-w, y, z, w, y, z);
+    else pos.push(0, y, z);
+  }
+  for (let i = 0; i < segments - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 3, a, a + 3, a + 2); }
+  const a = (segments - 1) * 2;
+  idx.push(a, a + 1, a + 2);
+  return new Geometry(pos, idx);
+}
+
+// Copies of a geometry scattered over width x depth around the origin (random position, size, turn, lean),
+// written straight into one set of arrays.
+export function scatter(child, { count = 100, width = 10, depth = 10, seed = 1, scale = [0.75, 1.25], yaw = true, tilt = 0, clump = 0, radius = 0, height = [0, 0] } = {}) {
+  let s = seed | 0;
+  const rnd = () => { s = (s + 0x6d2b79f5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const P = child.positions, N = child.normals, I = child.indices, nv = P.length / 3;
+  const pos = new Float32Array(nv * count * 3), nor = new Float32Array(nv * count * 3), idx = new Uint32Array(I.length * count);
+  const D = Math.PI / 180;
+  // clumping: points are kept with a probability that follows a smooth noise, so they gather in patches
+  const patch = (x, z) => 0.5 + 0.5 * Math.sin(x * 0.9 + Math.sin(z * 0.7) * 2) * Math.sin(z * 0.8 + Math.sin(x * 0.6) * 2);
+  for (let c = 0; c < count; c++) {
+    let x, z;
+    for (let tries = 0; ; tries++) {
+      x = (rnd() - 0.5) * width; z = (rnd() - 0.5) * depth;
+      if (radius && (x / (width / 2)) ** 2 + (z / (depth / 2)) ** 2 > 1) continue;
+      if (!clump || tries > 20 || rnd() < 1 - clump + clump * patch(x, z)) break;
+    }
+    const k = scale[0] + (scale[1] - scale[0]) * rnd(), a = yaw ? rnd() * Math.PI * 2 : 0, lean = tilt * D * rnd(), la = rnd() * Math.PI * 2;
+    const y0 = height[0] + (height[1] - height[0]) * rnd();
+    // rotation: lean around a random horizontal axis, then turn around Y
+    const ca = Math.cos(a), sa = Math.sin(a), cl = Math.cos(lean), sl = Math.sin(lean), ax = Math.cos(la), az = Math.sin(la);
+    // R = Ry(a) * Rot(axis (ax, 0, az), lean)
+    const t = 1 - cl;
+    const r00 = t * ax * ax + cl, r01 = -sl * az, r02 = t * ax * az, r10 = sl * az, r11 = cl, r12 = -sl * ax, r20 = t * ax * az, r21 = sl * ax, r22 = t * az * az + cl;
+    const m00 = ca * r00 + sa * r20, m01 = ca * r01 + sa * r21, m02 = ca * r02 + sa * r22;
+    const m20 = -sa * r00 + ca * r20, m21 = -sa * r01 + ca * r21, m22 = -sa * r02 + ca * r22;
+    const o = c * nv * 3;
+    for (let v = 0, j = 0; v < nv; v++, j += 3) {
+      const px = P[j], py = P[j + 1], pz = P[j + 2], nx = N[j], ny = N[j + 1], nz = N[j + 2];
+      pos[o + j] = x + k * (m00 * px + m01 * py + m02 * pz);
+      pos[o + j + 1] = y0 + k * (r10 * px + r11 * py + r12 * pz);
+      pos[o + j + 2] = z + k * (m20 * px + m21 * py + m22 * pz);
+      nor[o + j] = m00 * nx + m01 * ny + m02 * nz;
+      nor[o + j + 1] = r10 * nx + r11 * ny + r12 * nz;
+      nor[o + j + 2] = m20 * nx + m21 * ny + m22 * nz;
+    }
+    const io = c * I.length, base = c * nv;
+    for (let q = 0; q < I.length; q++) idx[io + q] = I[q] + base;
+  }
+  return new Geometry(pos, idx, { normals: nor });
+}

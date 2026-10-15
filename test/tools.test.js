@@ -68,6 +68,7 @@ test('every shape type in the reference builds', () => {
     lathe: { profile: [[0, 0], [1, 0], [0.5, 1]] }, extrude: { shape: { type: 'star' } },
     sweep: { shape: { type: 'rect', width: 0.2, height: 0.1 }, path: { type: 'helix' }, twist: 90 },
     tube: { path: [[0, 0, 0], [1, 1, 0], [2, 0, 0]] }, mesh: { positions: [0, 0, 0, 1, 0, 0, 0, 1, 0], indices: [0, 1, 2] },
+    blade: {}, scatter: { count: 50, shape: { type: 'blade' } },
   };
   for (const type of SHAPE_TYPES) assert.ok(buildShape({ type, ...samples[type] }).triangleCount > 0, type);
 });
@@ -97,4 +98,18 @@ test('export and import OBJ', async () => {
   assert.match(obj, /^v 3\.5 /m);
   const imported = json(await call(doc, 'import_obj', { text: obj, fit: null }));
   assert.equal(imported.triangles, 12);
+});
+
+test('scatter places copies over the area, wind is a validated behaviour', async () => {
+  const g = buildShape({ type: 'scatter', count: 200, width: 10, depth: 4, seed: 3, shape: { type: 'blade', height: 1, segments: 3 } });
+  assert.equal(g.triangleCount, 200 * 5);
+  assert.ok(g.min[0] > -5.6 && g.max[0] < 5.6 && g.min[2] > -2.6 && g.max[2] < 2.6, 'inside the area');
+  assert.deepEqual(Array.from(g.positions.slice(0, 9)), Array.from(buildShape({ type: 'scatter', count: 200, width: 10, depth: 4, seed: 3, shape: { type: 'blade', height: 1, segments: 3 } }).positions.slice(0, 9)), 'deterministic');
+  const doc = new SceneDocument();
+  await call(doc, 'add_objects', { objects: [{ shape: { type: 'blade' }, animation: { wind: { strength: 0.2, direction: [0, 1] } } }] });
+  assert.deepEqual(doc.data.objects[0].animation.wind, { strength: 0.2, wavelength: 4, speed: 1.5, direction: [0, 1] });
+  assert.equal((await call(doc, 'set_animation', { id: doc.data.objects[0].id, animation: { wind: { direction: [0, 0] } } })).isError, true);
+  await call(doc, 'set_environment', { atmosphere: { color: '#1d5a6e', density: 0.5, rays: 1.2 } });
+  assert.equal(doc.data.environment.atmosphere.rays, 1.2);
+  assert.equal((await call(doc, 'set_environment', { atmosphere: { density: -1 } })).isError, true);
 });

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- New gallery scene **Seagrass meadow**: an ambient underwater world after the Gaussian-splat demos, but rasterized: 64,000 seagrass blades swaying in one current, kelp, rocks, two circling fish schools, rising plankton and light shafts through the water on a 24 s drone glide (463k triangles from 53 KB of JSON)
+- **`wind` behaviour**: bends every vertex of an object with the height above its base (stiff at the root, loose at the tip) in travelling gusts (`strength`, `wavelength`, `speed`, `direction`); applied in the vertex stage, so one scatter of thousands of blades sways like a field
+- Recipes **`blade`** (tapered, bent ribbon) and **`scatter`** (up to 200,000 copies of a shape over an area with random scale, yaw, tilt, clumping and a height range)
+- **Atmosphere** (`set_environment({ atmosphere })`): a participating medium (water, haze) with exponential extinction and ray-marched volumetric light shafts that move with time and are blocked by the shadow map; multi-threaded with the shading
+- Materials can opt out of casting shadows (`castShadow: false`), for grass, particles and other small things whose shadows cost more than they show
 - New gallery scene **Café racer garage**: a motorcycle at real scale on a paddock stand (spinning rear wheel) with wire-spoke wheels and tread, a finned parallel twin, chrome headers and megaphones, shocks, chain, glossy tank and leather seat, in a brick workshop at night with a workbench, tools, a roller door, a neon sign and a swinging work lamp
 - New patterns **concrete** and **brick** (running bond with recessed mortar)
 - Editor resolution **Auto** (new default): renders at the display's pixel density (Retina) when the view is still and never below 1 pixel per CSS pixel while moving; the choice is remembered. Before, high-density screens showed a 1x image stretched to twice its size

@@ -90,6 +90,16 @@
     "ramBytes": 1075440
   },
   {
+    "id": "seagrass",
+    "title": "Seagrass meadow",
+    "description": "An ambient underwater world: a seagrass meadow of 64,000 blades swaying in the current (wind bends every vertex), tall kelp, rocks, two schools of fish, drifting plankton and volumetric light shafts through the water, seen from a slowly gliding drone.",
+    "objects": 55,
+    "triangles": 462666,
+    "jsonBytes": 54297,
+    "objBytes": 24856716,
+    "ramBytes": 18280416
+  },
+  {
     "id": "castle",
     "title": "Castle",
     "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",

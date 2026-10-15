@@ -56,12 +56,16 @@ The `SceneDocument` is the single source of truth. Every mutation runs on a copy
 
 **Transform.** Every vertex is multiplied by the model-view-projection matrix into **homogeneous clip coordinates** `(x, y, z, w)`, where w is roughly the distance to the camera. Dividing by w produces perspective. Screen coordinates are rounded to a **1/16 sub-pixel grid** and stored as integers, so the rasterizer works with exact numbers.
 
+**Wind.** Objects with the `wind` behaviour are deformed here, in world space, before the projection: each vertex is pushed along the wind direction by `strength · h²` (h = height above the object's base, so roots stay put and tips swing), scaled by a travelling wave `sin((t · speed − x_along) · 2π / wavelength)` plus a faster harmonic, and lowered a little so the blade bends instead of stretching. Because the wave depends on the world position, neighbouring blades of one `scatter` move together like gusts over a field. The shadow map applies the same displacement.
+
 **Lighting (Gouraud).** Light is computed per vertex and interpolated across the triangle:
 
 - hemisphere ambient: blend between ground and sky color by how much the normal points up
 - Lambert diffuse: `max(0, N · L)`
 - Blinn-Phong highlight: `(N · H)^shininess` with the half vector `H = normalize(L + V)`
 - linear fog by distance
+
+**Atmosphere.** With `set_environment({ atmosphere })` every pixel (background included) gets an extra pass after shading: the color is blended towards the medium color by `1 − e^(−density · distance)`, and the view ray is marched in 8 steps through the medium. At each step a moving noise field across the light direction says how much light is scattered towards the eye there (thresholded, so beams are separated by dark gaps), attenuated by the medium in front and blocked when the shadow map says the point is in shadow. The step offset is interleaved gradient noise that shifts every frame, so temporal AA averages the march; the pass runs per row on the worker pool like the shading.
 
 ## 4. Primitive stage
 

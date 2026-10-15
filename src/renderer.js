@@ -12,6 +12,8 @@ import { mat4 } from './math.js';
 import { buildToneLUT, buildInverseToneLUT, buildShadowMap, drawShadowCasters, shadePass, accumulateRows, temporalRows, halton, SRGB_TO_LINEAR, TONE_SCALE, TONE_MAX_V, TONE_LAST, WIRE_MATERIAL } from './lighting.js';
 import { getTexture } from './textures.js';
 import { PATTERN_ID } from './patterns.js';
+import { windAt } from './wind.js';
+import * as WIND from './wind.js';
 
 const GUARD = 8; // guard band (in NDC units): only triangles crossing it are clipped in x/y
 const NEAR = 1, FAR = 2, LEFT = 4, RIGHT = 8, BOTTOM = 16, TOP = 32;
@@ -347,6 +349,7 @@ export class Renderer {
     }
 
     this._hq = hq;
+    this._time = scene.time || 0; // animation time (wind)
     this._matCount = 0;
     for (let k = 0; k < scene.meshes.length; k++) {
       const mesh = scene.meshes[k];
@@ -384,6 +387,7 @@ export class Renderer {
       ao: this.ao ? { radius: Math.min(4, Math.max(0.08, viewDist * 0.045)), strength: this.aoStrength } : null,
       aoRaw: this._aoRaw, aoDepth: this._aoDepth, aoBlur: this._aoBlur,
       fog: L.fog ? { near: L.fn, far: L.ff, r: L.fr, g: L.fg, b: L.fb } : null,
+      atmos: scene.atmosphere ? { ...scene.atmosphere, time: this._time } : null,
       debug: this.debug,
     };
     if (accumulate) {
@@ -473,7 +477,7 @@ export class Renderer {
   // scene, so renderers drawing the same scene share it. `staticVersion` invalidates the bases.
   _shadowFor(scene, camera, L) {
     let min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
-    const casters = scene.meshes.filter((m) => m.visible);
+    const casters = scene.meshes.filter((m) => m.visible && m.castShadow !== false);
     for (const mesh of casters) {
       const g = mesh.geometry, m = mesh.matrix, c = g.center;
       const s = Math.sqrt(Math.max(m[0] ** 2 + m[1] ** 2 + m[2] ** 2, m[4] ** 2 + m[5] ** 2 + m[6] ** 2, m[8] ** 2 + m[9] ** 2 + m[10] ** 2));
@@ -511,14 +515,14 @@ export class Renderer {
     const caches = (scene._shadow ??= {}), slot = `${name}-${this._shared ? 'shared' : 'local'}`;
     let e = caches[slot];
     if (!e || e.layout !== layout) {
-      e = caches[slot] = { layout, base: buildShadowMap(casters.filter((m) => !m.dynamic), L, center, radius, this.shadowSize, alloc), sm: null, version: null };
+      e = caches[slot] = { layout, base: buildShadowMap(casters.filter((m) => !m.dynamic), L, center, radius, this.shadowSize, alloc, scene.time || 0), sm: null, version: null };
     }
     const dynamic = casters.filter((m) => m.dynamic);
     if (!dynamic.length) return e.base;
     if (e.version !== (scene.version || 0) || !e.sm) {
       e.sm ??= { ...e.base, depth: alloc(e.base.depth.length) };
       e.sm.depth.set(e.base.depth);
-      drawShadowCasters(e.sm, dynamic);
+      drawShadowCasters(e.sm, dynamic, scene.time || 0);
       e.version = scene.version || 0;
     }
     return e.sm;
@@ -604,16 +608,28 @@ export class Renderer {
     }
 
     // ---- vertex stage
+    const wind = mesh.wind, vp = this._vp, wt = this._time || 0, wbase = geo.min[1];
     for (let v = 0, k = 0; v < n; v++, k += 3) {
       const x = P[k], y = P[k + 1], z = P[k + 2];
-      const wx = m[0] * x + m[4] * y + m[8] * z + m[12];
-      const wy = m[1] * x + m[5] * y + m[9] * z + m[13];
-      const wz = m[2] * x + m[6] * y + m[10] * z + m[14];
+      let wx = m[0] * x + m[4] * y + m[8] * z + m[12];
+      let wy = m[1] * x + m[5] * y + m[9] * z + m[13];
+      let wz = m[2] * x + m[6] * y + m[10] * z + m[14];
+      let cx, cy, cz, cw;
+      if (wind) {
+        // wind bends the vertex in world space; project the moved point
+        windAt(wind, y, wbase, wx, wz, wt);
+        wx += WIND.DX; wy += WIND.DY; wz += WIND.DZ;
+        cx = vp[0] * wx + vp[4] * wy + vp[8] * wz + vp[12];
+        cy = vp[1] * wx + vp[5] * wy + vp[9] * wz + vp[13];
+        cz = vp[2] * wx + vp[6] * wy + vp[10] * wz + vp[14];
+        cw = vp[3] * wx + vp[7] * wy + vp[11] * wz + vp[15];
+      } else {
+        cx = mvp[0] * x + mvp[4] * y + mvp[8] * z + mvp[12];
+        cy = mvp[1] * x + mvp[5] * y + mvp[9] * z + mvp[13];
+        cz = mvp[2] * x + mvp[6] * y + mvp[10] * z + mvp[14];
+        cw = mvp[3] * x + mvp[7] * y + mvp[11] * z + mvp[15];
+      }
       WX[v] = wx; WY[v] = wy; WZ[v] = wz;
-      const cx = mvp[0] * x + mvp[4] * y + mvp[8] * z + mvp[12];
-      const cy = mvp[1] * x + mvp[5] * y + mvp[9] * z + mvp[13];
-      const cz = mvp[2] * x + mvp[6] * y + mvp[10] * z + mvp[14];
-      const cw = mvp[3] * x + mvp[7] * y + mvp[11] * z + mvp[15];
       CX[v] = cx; CY[v] = cy; CZ[v] = cz; CW[v] = cw;
       const gw = GUARD * cw;
       let o = 0;
