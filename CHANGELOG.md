@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Editor resolution **Auto** (new default): renders at the display's pixel density (Retina) when the view is still and never below 1 pixel per CSS pixel while moving; the choice is remembered. Before, high-density screens showed a 1x image stretched to twice its size
+- Patterns get a level of detail: features smaller than about two pixels fade to the pattern's average, relief included, so fine leather grain or knurling no longer flickers at a distance
 - **Procedural patterns with relief**: `material.pattern` = wood, marble, leather, carbon, fabric, brushed, checker, stripes or knurl, with 2-3 colours, a feature `scale` and `bump`. Evaluated per visible pixel in object space by the (multi-threaded) shading stage, so they work on any shape without UVs, move with the object and tilt the normal for real relief
 - **Texture mapping**: `material.mapping` `planar` (default), `box` (projected from all sides, blended by the surface direction), `cylinder` and `sphere`, plus `repeat` for tiling; the rasterizer interpolates the object position per pixel
 - New gallery scene **Photographer's desk**: a vintage rangefinder at real scale (pebbled leather, satin chrome, knurled dials, coated lens glass, leather strap) on oiled walnut, with an espresso on a marble coaster, a cloth-bound notebook, a pencil and a film canister; every surface is a pattern, no image files

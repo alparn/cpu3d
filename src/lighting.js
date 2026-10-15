@@ -334,6 +334,7 @@ export function shadeRows(ctx, y0, y1) {
   const envType = environment ? environment.type : 'none', sky = environment ? environment.sky : null;
   const extra = lights || [], nExtra = extra.length;
   const aoBuf = ao ? aoBlur : null;
+  const pixelAngle = (2 * ctx.tanY) / ctx.H; // world size of one pixel per unit of distance (pattern level of detail)
 
   const fogOn = !!fog, fn = fog ? fog.near : 0, fspan = fog ? Math.max(1e-6, fog.far - fog.near) : 1;
   const fr = fog ? fog.r : 0, fg = fog ? fog.g : 0, fb = fog ? fog.b : 0;
@@ -369,13 +370,16 @@ export function shadeRows(ctx, y0, y1) {
         // object-space normal (2D patterns use the plane the surface faces)
         const onx = M3[j9] * nx + M3[j9 + 1] * ny + M3[j9 + 2] * nz, ony = M3[j9 + 3] * nx + M3[j9 + 4] * ny + M3[j9 + 5] * nz, onz = M3[j9 + 6] * nx + M3[j9 + 7] * ny + M3[j9 + 8] * nz;
         evalPattern(pt, qx, qy, qz, onx, ony, onz);
-        const t = PAT.PT, h0 = PAT.PH, C = matPatC;
+        // level of detail: a feature smaller than about two pixels would only flicker, so it fades to the
+        // pattern's average (like a mipmap); the relief fades with it
+        const fp = (dist * pixelAngle) * is, detail = fp < 0.25 ? 1 : fp > 0.7 ? 0 : (0.7 - fp) / 0.45;
+        const t = 0.5 + (PAT.PT - 0.5) * detail, h0 = PAT.PH, C = matPatC;
         // three colour stops: 0 -> first, 0.5 -> second, 1 -> third (two colours: the second is repeated)
         let r8, g8, b8;
         if (t < 0.5) { const k = t * 2; r8 = C[j9] + (C[j9 + 3] - C[j9]) * k; g8 = C[j9 + 1] + (C[j9 + 4] - C[j9 + 1]) * k; b8 = C[j9 + 2] + (C[j9 + 5] - C[j9 + 2]) * k; }
         else { const k = t * 2 - 1; r8 = C[j9 + 3] + (C[j9 + 6] - C[j9 + 3]) * k; g8 = C[j9 + 4] + (C[j9 + 7] - C[j9 + 4]) * k; b8 = C[j9 + 5] + (C[j9 + 8] - C[j9 + 5]) * k; }
         ar = S2L[r8 | 0]; ag = S2L[g8 | 0]; ab = S2L[b8 | 0];
-        const bump = matPatB[mat];
+        const bump = matPatB[mat] * detail;
         if (bump > 0) {
           const e = 0.04;
           evalPattern(pt, qx + e, qy, qz, onx, ony, onz); const hx = PAT.PH;

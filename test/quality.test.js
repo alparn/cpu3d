@@ -101,7 +101,11 @@ test('procedural patterns and texture mappings', async () => {
   assert.ok(variance(render()) > plain * 3, 'checker pattern shows on the sphere');
   doc.updateObject(id, { material: { pattern: { type: 'leather', colors: ['#808080', '#808080'] } } }, { source: 't' });
   assert.equal(doc.data.objects[0].material.pattern.scale, 0.012, 'default scale per pattern type');
+  // grain far below one pixel fades to its average instead of flickering (level of detail)
+  const tiny = variance(render());
+  doc.updateObject(id, { material: { pattern: { type: 'leather', colors: ['#808080', '#808080'], scale: 0.15, bump: 1.5 } } }, { source: 't' });
   assert.ok(variance(render()) > plain, 'leather relief changes the shading even with one colour');
+  assert.ok(Math.abs(tiny - plain) < plain * 0.1, `sub-pixel grain fades out (${tiny.toFixed(0)} vs ${plain.toFixed(0)})`);
   assert.throws(() => doc.updateObject(id, { material: { pattern: { type: 'lava', colors: ['#000', '#fff'] } } }, { source: 't' }), /pattern.type/);
   assert.throws(() => doc.updateObject(id, { material: { mapping: 'cube' } }, { source: 't' }), /mapping/);
   doc.updateObject(id, { material: { pattern: null, mapping: 'sphere', repeat: [4, 2] } }, { source: 't' });

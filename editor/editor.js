@@ -861,7 +861,9 @@ $('undoBtn').onclick = () => tool('undo');
 $('redoBtn').onclick = () => tool('redo');
 $('shading').onchange = (e) => { renderer.shading = quick.shading = e.target.value; state.dirty = true; };
 $('wire').onchange = () => { renderer.wireframe = quick.wireframe = $('wire').checked; state.dirty = true; };
-$('res').onchange = () => { state.dirty = true; };
+// resolution: remembered per browser; Auto renders at the display's pixel density and lets motion scale down
+try { const saved = localStorage.getItem('cpu3d-res'); if (saved && [...$('res').options].some((o) => o.value === saved)) $('res').value = saved; } catch { /* private mode */ }
+$('res').onchange = () => { try { localStorage.setItem('cpu3d-res', $('res').value); } catch { /* private mode */ } state.dirty = true; };
 // effects (airflow, rain, fireworks ...): a view setting, the scene itself stays unchanged
 function syncEffectsButton() {
   const b = $('fxBtn'), has = !!state.scene && sceneHasEffects(state.scene);
@@ -1071,7 +1073,9 @@ function motionScale(now) {
   if (!perf.fullMs || renderer.quality !== 'high') return 1;
   if (now - perf.lastMotion < 400) return perf.scale; // keep it during a motion (stable temporal history)
   const s = Math.sqrt(BUDGET_MS / perf.fullMs);
-  return s >= 0.9 ? 1 : Math.max(0.4, Math.round(s * 10) / 10);
+  // Auto on a high-density display: never go below 1 pixel per CSS pixel while moving
+  const floor = $('res').value === 'auto' && devicePixelRatio > 1 ? Math.min(1, 1 / devicePixelRatio) : 0.4;
+  return s >= 0.9 ? 1 : Math.max(floor, Math.round(s * 10) / 10);
 }
 
 let lastTick = performance.now();
@@ -1083,7 +1087,7 @@ function frame() {
   const now = performance.now(), dt = Math.min(0.25, (now - lastTick) / 1000);
   lastTick = now;
   if (state.playing && state.renderScene && !drag?.move) setTime((state.time + dt) % duration());
-  const res = $('res').value, s = res === 'dpr' ? devicePixelRatio : +res;
+  const res = $('res').value, s = res === 'dpr' || res === 'auto' ? Math.min(2, devicePixelRatio || 1) : +res;
   const w = Math.max(1, Math.round(canvas.clientWidth * s)), h = Math.max(1, Math.round(canvas.clientHeight * s));
   if (w !== canvas.width || h !== canvas.height) { canvas.width = w; canvas.height = h; }
   if (w !== renderer.width || h !== renderer.height) { renderer.setSize(w, h); perf.mainFresh = false; state.dirty = true; }

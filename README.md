@@ -274,7 +274,7 @@ GIFs are rendered in high quality with **motion blur** (each frame averages seve
 - Gallery of example scenes; add menu with presets; OBJ and scene JSON import/export
 - Size readouts: what the scene weighs as `scene.json` and as `.obj`, geometry RAM, and the same for the selected object; load and download times and sizes are reported too
 - **High quality** rendering with shadows and ambient occlusion that refines itself when the view is still, or **Fast** mode
-- Orbit / pan / zoom, smooth, flat and normal shading, wireframe, resolution scaling
+- Orbit / pan / zoom, smooth, flat and normal shading, wireframe, resolution: Auto (full Retina resolution when still), 0.5×, 1×, Retina
 - **Local mode**: without a server (for example on GitHub Pages) the same tools run in the browser
 
 Mouse: drag rotate · shift/right-drag pan · wheel zoom · click select · drag selected object to move (Alt up/down, Shift snap)
