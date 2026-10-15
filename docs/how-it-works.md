@@ -44,6 +44,8 @@ Most shapes are just different rim generators:
 
 Agents never send code. They send recipes, plain JSON such as `{ "type": "lathe", "profile": [...] }`, which `recipes.js` validates field by field and turns into geometry. Geometry is cached by the recipe's JSON, so 36 identical torus knots share one geometry.
 
+Animation is data too: an object can carry behaviours such as `{ "spin": { "speed": 90 } }`. Each frame, `updateAnimation` recomputes only the affected object matrices and emissive values from the time `t`. Geometry, caches and the G-buffer layout stay untouched, and the scene version is bumped so the shadow map is rebuilt for the new pose.
+
 The `SceneDocument` is the single source of truth. Every mutation runs on a copy, is validated, then committed with an undo snapshot and broadcast to listeners (SSE clients, autosave, the activity feed).
 
 ## 3. Vertex stage

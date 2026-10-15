@@ -34,6 +34,9 @@
     "reflections": "studio",
     "ground": false
   },
+  "animation": {
+    "duration": 60
+  },
   "objects": [
     {
       "id": "obj_1",
@@ -1597,7 +1600,13 @@
         "metalness": 1,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": 6
+        }
+      }
     },
     {
       "id": "obj_17",
@@ -1625,7 +1634,13 @@
         "metalness": 1,
         "roughness": 0.12
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": 6
+        }
+      }
     },
     {
       "id": "obj_18",
@@ -1919,7 +1934,14 @@
         "metalness": 1,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -6,
+          "step": 1
+        }
+      }
     },
     {
       "id": "obj_19",
@@ -1947,7 +1969,14 @@
         "metalness": 1,
         "roughness": 0.12
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -6,
+          "step": 1
+        }
+      }
     },
     {
       "id": "obj_20",
@@ -2090,7 +2119,14 @@
         "metalness": 1,
         "roughness": 0.12
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -24,
+          "step": 0.5
+        }
+      }
     },
     {
       "id": "obj_21",
@@ -2118,7 +2154,14 @@
         "metalness": 1,
         "roughness": 0.12
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -24,
+          "step": 0.5
+        }
+      }
     },
     {
       "id": "obj_22",
@@ -2482,7 +2525,16 @@
         "metalness": 1,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_25",
@@ -2509,7 +2561,16 @@
         "metalness": 1,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_26",
@@ -2534,7 +2595,16 @@
         "metalness": 1,
         "roughness": 0.15
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_27",
@@ -2561,7 +2631,16 @@
         "metalness": 1,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_28",
@@ -2586,7 +2665,16 @@
         "metalness": 1,
         "roughness": 0.15
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_29",
@@ -2613,7 +2701,16 @@
         "metalness": 1,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_30",
@@ -2638,7 +2735,16 @@
         "metalness": 1,
         "roughness": 0.15
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_31",
@@ -2924,7 +3030,16 @@
         "metalness": 1,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 1, 0],
+          "amplitude": 150,
+          "period": 1,
+          "phase": 0,
+          "pivot": [-0.5, 0.6, 0.8]
+        }
+      }
     },
     {
       "id": "obj_32",
@@ -2957,7 +3072,15 @@
         "metalness": 1,
         "roughness": 0.12
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0, 0, 1],
+          "amplitude": 7,
+          "period": 1,
+          "phase": 0
+        }
+      }
     },
     {
       "id": "obj_33",
@@ -5816,7 +5939,13 @@
         "metalness": 1,
         "roughness": 0.12
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -0.1
+        }
+      }
     },
     {
       "id": "obj_129",
@@ -5844,7 +5973,13 @@
         "doubleSided": false,
         "roughness": 0.5
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -0.1
+        }
+      }
     },
     {
       "id": "obj_130",
@@ -5871,7 +6006,14 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -6,
+          "step": 1
+        }
+      }
     },
     {
       "id": "obj_131",
@@ -5918,7 +6060,14 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -6,
+          "step": 1
+        }
+      }
     },
     {
       "id": "obj_132",

@@ -85,6 +85,25 @@ export const mat4 = {
     return o;
   },
 
+  // rotation by `rad` around a (not necessarily normalized) axis through the origin
+  axisAngle(o, axis, rad) {
+    const l = Math.hypot(axis[0], axis[1], axis[2]) || 1, x = axis[0] / l, y = axis[1] / l, z = axis[2] / l;
+    const c = Math.cos(rad), s = Math.sin(rad), t = 1 - c;
+    o.fill(0);
+    o[0] = t * x * x + c; o[1] = t * x * y + s * z; o[2] = t * x * z - s * y;
+    o[4] = t * x * y - s * z; o[5] = t * y * y + c; o[6] = t * y * z + s * x;
+    o[8] = t * x * z + s * y; o[9] = t * y * z - s * x; o[10] = t * z * z + c;
+    o[15] = 1;
+    return o;
+  },
+
+  translation(o, v) {
+    o.fill(0);
+    o[0] = o[5] = o[10] = o[15] = 1;
+    o[12] = v[0]; o[13] = v[1]; o[14] = v[2];
+    return o;
+  },
+
   determinant3(m) {
     return m[0] * (m[5] * m[10] - m[9] * m[6]) - m[4] * (m[1] * m[10] - m[9] * m[2]) + m[8] * (m[1] * m[6] - m[5] * m[2]);
   },

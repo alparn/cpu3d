@@ -17,7 +17,8 @@ setTextureLoader(async (src) => {
   ctx.drawImage(bmp, 0, 0);
   return { width: bmp.width, height: bmp.height, data: ctx.getImageData(0, 0, bmp.width, bmp.height).data };
 });
-import { buildRenderScene, cameraFromState, pick, frameBounds, unionBounds, exportOBJ, screenRay, raycast, rayPlane } from '../src/scene.js';
+import { buildRenderScene, cameraFromState, pick, frameBounds, unionBounds, exportOBJ, screenRay, raycast, rayPlane,
+  updateAnimation, sceneHasAnimation } from '../src/scene.js';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('viewport');
@@ -25,6 +26,9 @@ const renderer = new Renderer({ canvas });
 const camera = new Camera();
 
 const state = {
+  time: 0,                // animation time in seconds
+  playing: false,
+  userPaused: false,      // the user paused: do not auto-play again
   mode: 'connecting',     // 'live' | 'local'
   scene: null,
   revision: -1,
@@ -56,7 +60,7 @@ async function browserRender(doc, o) {
   const r = new Renderer({ width: o.width, height: o.height });
   r.shading = o.shading || 'gouraud';
   r.wireframe = !!o.wireframe;
-  r.render(buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: o.highlight }), cameraFromState(o.camera));
+  r.render(buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: o.highlight, time: o.time || 0 }), cameraFromState(o.camera));
   const c = document.createElement('canvas');
   c.width = o.width; c.height = o.height;
   c.getContext('2d').putImageData(new ImageData(r.pixels, o.width, o.height), 0, 0);
@@ -136,7 +140,8 @@ function setScene(scene, revision) {
 function rebuild() {
   if (!state.scene) return;
   try {
-    state.renderScene = buildRenderScene(state.scene, geometryFor, { selected: state.selected ? [state.selected] : [] });
+    state.renderScene = buildRenderScene(state.scene, geometryFor, { selected: state.selected ? [state.selected] : [], time: state.time });
+    syncTimeline();
   } catch (e) {
     toast(e.message);
   }
@@ -299,6 +304,35 @@ function renderInspector() {
     };
     box.append(ta, apply);
   }
+
+  // animation: presets plus the editable JSON (same format the set_animation tool takes)
+  const ah = document.createElement('div');
+  ah.className = 'subhead';
+  ah.innerHTML = `<span>Animation</span><span>${o.animation ? Object.keys(o.animation).join(' + ') : 'none'}</span>`;
+  box.append(ah);
+  const setAnim = (animation) => {
+    state.userPaused = false;
+    tool('set_animation', { id: o.id, animation });
+  };
+  const presets = document.createElement('div');
+  presets.className = 'actions';
+  const pb = (label, anim) => Object.assign(document.createElement('button'), { className: 'btn', textContent: label, onclick: () => setAnim(anim) });
+  presets.append(pb('Spin', { spin: { axis: [0, 1, 0], speed: 60 } }), pb('Swing', { swing: { axis: [0, 0, 1], amplitude: 20, period: 2 } }),
+    pb('Bob', { bob: { amplitude: 0.15, period: 2 } }), pb('Pulse', { pulse: { min: 0.3, max: 1.6, period: 1.5 } }), pb('None', null));
+  box.append(presets);
+  const at = document.createElement('textarea');
+  at.spellcheck = false;
+  at.style.minHeight = '64px';
+  at.placeholder = '{ "spin": { "axis": [0, 1, 0], "speed": 90 } }';
+  at.value = o.animation ? pretty(o.animation) : '';
+  const aApply = Object.assign(document.createElement('button'), { className: 'btn', textContent: 'Apply animation' });
+  aApply.onclick = () => {
+    let anim = null;
+    if (at.value.trim()) { try { anim = JSON.parse(at.value); } catch (e) { return toast(`Invalid JSON: ${e.message}`); } }
+    at.blur();
+    setAnim(anim);
+  };
+  box.append(at, aApply);
 
   const actions = document.createElement('div');
   actions.className = 'actions';
@@ -756,6 +790,7 @@ addEventListener('keydown', (e) => {
   else if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicateSelected(); }
   else if (e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
   else if (e.key === 'Escape') { if (drag?.move) cancelMove(); else select(null); }
+  else if (e.code === 'Space' && !$('timeline').hidden) { e.preventDefault(); togglePlay(); }
   else if (e.key === 'f' || e.key === 'F') focusObjects(state.selected ? [state.selected] : state.scene.objects.map((o) => o.id));
   else if (e.shiftKey && !mod && e.code === 'KeyN') { e.preventDefault(); newScene('empty'); }
   else if (e.key === 'w' || e.key === 'W') { $('wire').checked = !$('wire').checked; $('wire').onchange(); }
@@ -806,8 +841,46 @@ function renderStats() {
 // ---------------------------------------------------------------- render loop (only when something changed)
 let lastMs = 0;
 const MAX_SAMPLES = 16;
+// ---------------------------------------------------------------- animation timeline
+const duration = () => state.scene?.animation?.duration || 12;
+
+function syncTimeline() {
+  const animated = !!state.scene && sceneHasAnimation(state.scene);
+  $('timeline').hidden = !animated;
+  $('timeSlider').max = duration();
+  if (!animated) { state.playing = false; state.time = 0; }
+  else if (!state.playing && !state.userPaused) state.playing = true; // animated scenes start playing
+  showTime();
+}
+
+function showTime() {
+  $('playBtn').textContent = state.playing ? '❚❚' : '▶';
+  $('timeSlider').value = state.time;
+  $('timeLabel').textContent = `${state.time.toFixed(2)} s`;
+}
+
+function setTime(t) {
+  state.time = t;
+  if (state.renderScene) updateAnimation(state.renderScene, t);
+  state.dirty = true;
+  showTime();
+}
+
+function togglePlay() {
+  state.playing = !state.playing;
+  state.userPaused = !state.playing;
+  showTime();
+}
+
+$('playBtn').onclick = togglePlay;
+$('timeSlider').oninput = (e) => { state.playing = false; state.userPaused = true; setTime(+e.target.value); };
+
+let lastTick = performance.now();
 function frame() {
   requestAnimationFrame(frame);
+  const now = performance.now(), dt = Math.min(0.25, (now - lastTick) / 1000);
+  lastTick = now;
+  if (state.playing && state.renderScene && !drag?.move) setTime((state.time + dt) % duration());
   const res = $('res').value, s = res === 'dpr' ? devicePixelRatio : +res;
   const w = Math.max(1, Math.round(canvas.clientWidth * s)), h = Math.max(1, Math.round(canvas.clientHeight * s));
   if (w !== renderer.width || h !== renderer.height) { renderer.setSize(w, h); state.dirty = true; }

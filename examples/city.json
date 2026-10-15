@@ -32,6 +32,9 @@
     "reflections": "sky",
     "ground": false
   },
+  "animation": {
+    "duration": 12
+  },
   "objects": [
     {
       "id": "obj_1",
@@ -451,7 +454,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_20",
@@ -1202,7 +1214,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_54",
@@ -1362,7 +1383,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_61",
@@ -1500,7 +1530,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_67",
@@ -1657,7 +1696,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_74",
@@ -1792,7 +1840,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_80",
@@ -1883,7 +1940,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_84",
@@ -2533,7 +2599,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_113",
@@ -2646,7 +2721,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_118",
@@ -2762,7 +2846,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_123",
@@ -2853,7 +2946,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_127",
@@ -2947,7 +3049,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_131",
@@ -3104,7 +3215,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_138",
@@ -3264,7 +3384,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_145",
@@ -3399,7 +3528,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_151",
@@ -3600,7 +3738,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_160",
@@ -4266,7 +4413,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_190",
@@ -4360,7 +4516,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_194",
@@ -4454,7 +4619,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_198",
@@ -4592,7 +4766,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_204",
@@ -4683,7 +4866,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_208",
@@ -4774,7 +4966,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_212",
@@ -4931,7 +5132,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_219",
@@ -5352,7 +5562,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_238",
@@ -5729,7 +5948,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_255",
@@ -5867,7 +6095,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.3333333333333333,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_261",
@@ -6046,7 +6283,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0.6666666666666666,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_269",
@@ -6599,7 +6845,16 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.1,
+          "max": 1,
+          "period": 1.5,
+          "phase": 0,
+          "blink": true
+        }
+      }
     },
     {
       "id": "obj_294",

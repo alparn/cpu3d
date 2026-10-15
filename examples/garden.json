@@ -37,6 +37,9 @@
     "reflections": "sky",
     "ground": false
   },
+  "animation": {
+    "duration": 12
+  },
   "objects": [
     {
       "id": "obj_1",
@@ -116,7 +119,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.30127108190208673, 0, 0.3512107962742448],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.1417661067098379
+        }
+      }
     },
     {
       "id": "obj_3",
@@ -169,7 +180,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.3216717173345387, 0, 0.22380440053530037],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.6888616101350635
+        }
+      }
     },
     {
       "id": "obj_4",
@@ -222,7 +241,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.2372815664857626, 0, 0.41945425304584205],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.13086165417917073
+        }
+      }
     },
     {
       "id": "obj_5",
@@ -275,7 +302,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.1322905202396214, 0, 0.19801577320322394],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.5872853912878782
+        }
+      }
     },
     {
       "id": "obj_6",
@@ -328,7 +363,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.21657021855935454, 0, 0.4378167246468365],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.2870224826037884
+        }
+      }
     },
     {
       "id": "obj_7",
@@ -381,7 +424,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.23027130821719766, 0, 0.14197408966720104],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.3669367264956236
+        }
+      }
     },
     {
       "id": "obj_8",
@@ -434,7 +485,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.035546236904338, 0, 0.3974383221939206],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.8655588570982218
+        }
+      }
     },
     {
       "id": "obj_9",
@@ -487,7 +546,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.04467201931402087, 0, 0.37368772458285093],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.18981598201207817
+        }
+      }
     },
     {
       "id": "obj_10",
@@ -540,7 +607,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.17728202790021896, 0, -0.16643956606276333],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.04809490358456969
+        }
+      }
     },
     {
       "id": "obj_11",
@@ -593,7 +668,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.37631188333034515, 0, -0.29546361858956516],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.5263562232721597
+        }
+      }
     },
     {
       "id": "obj_12",
@@ -646,7 +729,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.005909140687435865, 0, -0.4252636954188347],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.8342261982616037
+        }
+      }
     },
     {
       "id": "obj_13",
@@ -699,7 +790,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.20372491842135787, 0, -0.3032020756509155],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.06833140342496336
+        }
+      }
     },
     {
       "id": "obj_14",
@@ -752,7 +851,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.011200368870049715, 0, -0.19029960874468088],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.6587297026999295
+        }
+      }
     },
     {
       "id": "obj_15",
@@ -805,7 +912,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.20784815470688045, 0, 0.05335038201883435],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.9570691918488592
+        }
+      }
     },
     {
       "id": "obj_16",
@@ -858,7 +973,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.06788585684262216, 0, -0.33987473137676716],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.5175393219105899
+        }
+      }
     },
     {
       "id": "obj_17",
@@ -911,7 +1034,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.17466852813959122, 0, 0.03676076768897474],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.7997471541166306
+        }
+      }
     },
     {
       "id": "obj_18",
@@ -964,7 +1095,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.0770665614400059, 0, 0.1136935178656131],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.5335312054958194
+        }
+      }
     },
     {
       "id": "obj_19",
@@ -1017,7 +1156,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.15659809042699635, 0, -0.0031648799777030945],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.17975140549242496
+        }
+      }
     },
     {
       "id": "obj_20",
@@ -1070,7 +1217,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.42968627414666116, 0, 0.09691302897408605],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.6411583276931196
+        }
+      }
     },
     {
       "id": "obj_21",
@@ -1123,7 +1278,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.05300451209768653, 0, 0.15678328927606344],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.9825291044544429
+        }
+      }
     },
     {
       "id": "obj_22",
@@ -1176,7 +1339,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.4174753485713154, 0, -0.47856670687906444],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.7317516920156777
+        }
+      }
     },
     {
       "id": "obj_23",
@@ -1229,7 +1400,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.40495818411000073, 0, 0.16585241490975022],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.6400994006544352
+        }
+      }
     },
     {
       "id": "obj_24",
@@ -1282,7 +1461,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.4748383625410497, 0, 0.23451611422933638],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.904851202853024
+        }
+      }
     },
     {
       "id": "obj_25",
@@ -1335,7 +1522,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.29452250245958567, 0, -0.26773323700763285],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.6861210989300162
+        }
+      }
     },
     {
       "id": "obj_26",
@@ -1388,7 +1583,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.4571681567467749, 0, -0.377287934999913],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.9415901878383011
+        }
+      }
     },
     {
       "id": "obj_27",
@@ -1441,7 +1644,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.18540076399222016, 0, 0.2931747455149889],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.3459380096755922
+        }
+      }
     },
     {
       "id": "obj_28",
@@ -1494,7 +1705,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.26911814021877944, 0, -0.17723028920590878],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.7150323179084808
+        }
+      }
     },
     {
       "id": "obj_29",
@@ -1547,7 +1766,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.35738155199214816, 0, -0.43058460648171604],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.5835528385359794
+        }
+      }
     },
     {
       "id": "obj_30",
@@ -1600,7 +1827,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [0.056864124489948153, 0, -0.17982298717834055],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.5344467961695045
+        }
+      }
     },
     {
       "id": "obj_31",
@@ -1653,7 +1888,15 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [-0.21628495398908854, 0, -0.01203614054247737],
+          "amplitude": 6,
+          "period": 4,
+          "phase": 0.186128708999604
+        }
+      }
     },
     {
       "id": "obj_32",
@@ -1705,7 +1948,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.8194044434931129,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_34",
@@ -1757,7 +2009,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.6925681841094047,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_36",
@@ -1809,7 +2070,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.5713706731330603,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_38",
@@ -1861,7 +2131,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.9433846254833043,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_40",
@@ -1913,7 +2192,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.8412623815238476,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_42",
@@ -1965,7 +2253,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.03477028920315206,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_44",
@@ -2017,7 +2314,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.2150332983583212,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_46",
@@ -2069,7 +2375,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.5957673089578748,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_48",
@@ -2121,7 +2436,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.6853079125285149,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_50",
@@ -2173,7 +2497,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.19776472076773643,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_52",
@@ -2225,7 +2558,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.2627159550320357,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_54",
@@ -2277,7 +2619,16 @@
         "doubleSided": false,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.55,
+          "max": 1.35,
+          "period": 3,
+          "phase": 0.8942764850798994,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_56",
@@ -3172,7 +3523,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.6424997304566205,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_65",
@@ -3195,7 +3555,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.0026529785245656967,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_66",
@@ -3218,7 +3587,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.46095429197885096,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_67",
@@ -3241,7 +3619,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.09095897804945707,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_68",
@@ -3264,7 +3651,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.19177050818689167,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_69",
@@ -3287,7 +3683,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.11176307033747435,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_70",
@@ -3310,7 +3715,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.17659733979962766,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_71",
@@ -3333,7 +3747,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.19165135151706636,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_72",
@@ -3356,7 +3779,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.2886372525244951,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_73",
@@ -3379,7 +3811,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.8261902369558811,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_74",
@@ -3402,7 +3843,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.14665641053579748,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_75",
@@ -3425,7 +3875,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.8553098817355931,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_76",
@@ -3448,7 +3907,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.6897088394034654,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_77",
@@ -3471,7 +3939,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.8324964118655771,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_78",
@@ -3494,7 +3971,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.37882368662394583,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_79",
@@ -3517,7 +4003,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.9480186633300036,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_80",
@@ -3540,7 +4035,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.5312569772358984,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_81",
@@ -3563,7 +4067,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.9530947695020586,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_82",
@@ -3586,7 +4099,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.8281138679012656,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_83",
@@ -3609,7 +4131,16 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.4,
+          "max": 1.8,
+          "period": 2,
+          "phase": 0.48252126947045326,
+          "blink": false
+        }
+      }
     }
   ]
 }

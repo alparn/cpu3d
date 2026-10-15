@@ -136,8 +136,9 @@ curl -X POST http://localhost:8173/api/tools/add_objects \
 | `load_scene` | Replace the whole scene with a scene document |
 | `set_camera` | Set the scene camera, or `focus` on objects to frame them |
 | `set_environment` | Background gradient, fog, light, ground grid |
+| `set_animation` | Make objects move: `spin`, `swing`, `bob`, `orbit`, `pulse` (combinable), and the timeline length |
 | `probe_height` | Raycast down at `[x, z]` points: where is the surface? Place things on terrain or on other objects |
-| `render_view` | **Render a PNG and return it to the agent**, with optional camera, focus, shading, wireframe, highlight |
+| `render_view` | **Render a PNG and return it to the agent**, with optional camera, focus, shading, wireframe, highlight and animation `time` |
 | `export_obj` / `import_obj` | Wavefront OBJ out and in |
 | `undo` / `redo` | Shared history for humans and agents |
 
@@ -190,6 +191,24 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 
 `set_environment` controls what glossy surfaces reflect (`reflections: "sky" | "studio" | "none"`), the main light (`intensity`, `softness` for soft shadows) and up to four extra `lights` for fill and rim lighting.
 
+### Animation
+
+Objects move with declarative behaviours instead of keyframes, so an agent can animate a whole machine in a few calls. Behaviours combine freely and are evaluated per frame. Geometry is never rebuilt, only the object matrix and the glow change.
+
+| Behaviour | Parameters | Good for |
+|---|---|---|
+| `spin` | `axis`, `speed` (deg/s), `step` (s, ticking), `pivot` | rotors, wheels, clock hands |
+| `swing` | `axis`, `amplitude` (deg), `period`, `phase`, `pivot` | pendulums, balance wheels, doors |
+| `bob` | world `axis`, `amplitude`, `period`, `phase` | floating boats, hovering drones |
+| `orbit` | `center`, `axis`, `speed` | turntables, planets, satellites |
+| `pulse` | `min`, `max`, `period`, `phase`, `blink` | breathing lights, warning beacons |
+
+```json
+{ "id": "obj_7", "animation": { "spin": { "axis": [0, 0, 1], "speed": -6, "step": 1, "pivot": [0, 0.4, 0] } } }
+```
+
+Without `pivot`, spin and swing turn around the object's own origin and local axis; with `pivot`, around a world axis through that point, so several parts can turn as one. The timeline loops after `duration` seconds (default 12). Agents check the motion with `render_view({ time: 2.5 })`, and the CLI does the same with `cpu3d render --time 2.5`. Every gallery scene is animated: the watch ticks, the turbofan spins, the station rotates, the city beacons blink, the lighthouse lantern pulses while a boat rocks on the sea.
+
 ## The editor
 
 - Live sync over Server-Sent Events: agent changes appear instantly, with an **activity feed** that attributes each step to its agent (`claude-code`, `cursor`, `you`, ...)
@@ -197,6 +216,7 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 - Click to select (CPU ray picking), then **drag the selected object with the mouse** to move it on the ground; hold **Alt** to move it up/down, **Shift** to snap to a 0.25 m grid. Each drag is one `update_object` call, so it is undoable and visible to agents
 - Outliner, inspector (transform, material, editable JSON recipe), undo/redo
 - **New scene** (File menu, `Shift+N`, or the top of the gallery): an empty stage with ground grid, or a ready photo studio with podium and softboxes
+- **Timeline**: animated scenes play automatically; play/pause and scrub at the bottom of the viewport. The inspector has animation presets (spin, swing, bob, pulse) and a JSON field for the full set
 - Gallery of example scenes; add menu with presets; OBJ and scene JSON import/export
 - Size readouts: what the scene weighs as `scene.json` and as `.obj`, geometry RAM, and the same for the selected object; load and download times and sizes are reported too
 - **High quality** rendering with shadows and ambient occlusion that refines itself when the view is still, or **Fast** mode
@@ -205,7 +225,7 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 
 Mouse: drag rotate · shift/right-drag pan · wheel zoom · click select · drag selected object to move (Alt up/down, Shift snap)
 
-Keyboard: `Shift+N` new scene · `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` cancel move / deselect
+Keyboard: `Space` play/pause · `Shift+N` new scene · `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` cancel move / deselect
 
 ## Rendering on the CPU
 
@@ -297,6 +317,7 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 - Groups and hierarchy, boolean operations (CSG)
 - Textures with perspective-correct UVs
 - glTF export
+- Keyframes and camera paths, GIF/video export of animations
 - MCP resources for scenes and live notifications
 
 Ideas and pull requests are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md).

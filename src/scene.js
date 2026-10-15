@@ -2,7 +2,7 @@
 import { Mesh, Camera } from './renderer.js';
 import { grid } from './geometry.js';
 import { colorToRGB, objectMatrix } from './document.js';
-import { vec3 } from './math.js';
+import { vec3, mat4 } from './math.js';
 
 let groundGeometry = null;
 const ground = () => (groundGeometry ??= grid(40, 40, 40, 40).setFaceColors((x, y, z) =>
@@ -29,8 +29,63 @@ export function exportOBJ(objects, geometryFor) {
   return out.join('\n') + '\n';
 }
 
+// ---- animation ------------------------------------------------------------------------------
+const D2R = Math.PI / 180, TMP_A = mat4.create(), TMP_B = mat4.create(), TMP_C = mat4.create();
+const wave = (t, period, phase) => Math.sin(2 * Math.PI * (t / period + phase));
+export const hasMotion = (o) => !!(o.animation && (o.animation.spin || o.animation.swing || o.animation.bob || o.animation.orbit));
+
+// world rotation around an axis through point p, applied on the left: m = T(p) R T(-p) m
+function rotateAround(m, p, axis, deg) {
+  mat4.axisAngle(TMP_A, axis, deg * D2R);
+  mat4.translation(TMP_B, [-p[0], -p[1], -p[2]]);
+  mat4.multiply(TMP_A, TMP_A, TMP_B);
+  mat4.translation(TMP_C, p);
+  mat4.multiply(TMP_A, TMP_C, TMP_A);
+  return mat4.multiply(m, TMP_A, m);
+}
+const rotateLocal = (m, axis, deg) => mat4.multiply(m, m, mat4.axisAngle(TMP_A, axis, deg * D2R));
+
+// object matrix at time t (seconds)
+export function animatedMatrix(o, t) {
+  const m = objectMatrix(o), a = o.animation;
+  if (!a || !t) return m;
+  const turn = (spec, deg) => (spec.pivot ? rotateAround(m, spec.pivot, spec.axis, deg) : rotateLocal(m, spec.axis, deg));
+  if (a.spin) turn(a.spin, a.spin.speed * (a.spin.step ? a.spin.step * Math.floor(t / a.spin.step + 1e-9) : t));
+  if (a.swing) turn(a.swing, a.swing.amplitude * wave(t, a.swing.period, a.swing.phase));
+  if (a.orbit) rotateAround(m, a.orbit.center, a.orbit.axis, a.orbit.speed * t);
+  if (a.bob) {
+    const ax = a.bob.axis, l = Math.hypot(...ax) || 1, d = (a.bob.amplitude * wave(t, a.bob.period, a.bob.phase)) / l;
+    mat4.multiply(m, mat4.translation(TMP_A, [ax[0] * d, ax[1] * d, ax[2] * d]), m);
+  }
+  return m;
+}
+
+// emissive at time t: pulse scales the material's emissive (or 1 if the material has none)
+export function animatedEmissive(o, t) {
+  const base = o.material.emissive || 0, p = o.animation?.pulse;
+  if (!p) return base;
+  const w = wave(t, p.period, p.phase), k = p.blink ? (w > 0 ? 1 : 0) : 0.5 + 0.5 * w;
+  return (base || 1) * (p.min + (p.max - p.min) * k);
+}
+
+// Update the meshes of a render scene to time t in place (cheap: matrices and emissive only).
+// Bumps scene.version when something moved, so shadows are rebuilt.
+export function updateAnimation(scene, t) {
+  let moved = false;
+  for (const m of scene.meshes) {
+    const o = m.object;
+    if (!o || !o.animation) continue;
+    if (hasMotion(o)) { m.matrix = animatedMatrix(o, t); moved = true; }
+    if (o.animation.pulse) m.emissive = animatedEmissive(o, t);
+  }
+  if (moved) scene.version = (scene.version || 0) + 1;
+  return moved;
+}
+
+export const sceneHasAnimation = (data) => data.objects.some((o) => o.animation);
+
 // geometryFor(shape) -> Geometry, normally SceneDocument#geometry (cached)
-export function buildRenderScene(data, geometryFor, { selected = [], showGround = true } = {}) {
+export function buildRenderScene(data, geometryFor, { selected = [], showGround = true, time = 0 } = {}) {
   const env = data.environment, meshes = [];
   if (env.ground && showGround) meshes.push(new Mesh(ground(), { specular: 0 }));
   for (const o of data.objects) {
@@ -40,8 +95,10 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
       shininess: o.material.shininess, doubleSided: o.material.doubleSided, emissive: o.material.emissive || 0,
       metalness: o.material.metalness || 0, roughness: o.material.roughness, texture: o.material.texture || null,
     });
-    m.matrix = objectMatrix(o);
+    m.matrix = o.animation ? animatedMatrix(o, time) : objectMatrix(o);
     m.matrixAutoUpdate = false;
+    m.object = o;
+    if (o.animation?.pulse) m.emissive = animatedEmissive(o, time);
     m.flat = o.material.flat;
     m.wireframe = selected.includes(o.id) ? SELECTION_COLOR : false;
     m.objectId = o.id;

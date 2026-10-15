@@ -49,6 +49,7 @@ const objectProps = {
   scale: { type: ['number', 'array'], items: { type: 'number' }, description: 'Uniform number or [x, y, z]' },
   material: materialS,
   visible: { type: 'boolean' },
+  animation: { type: ['object', 'null'], description: 'Behaviours: spin, swing, bob, orbit, pulse (see set_animation). null removes' },
 };
 const cameraProps = {
   yaw: { type: 'number', description: 'Degrees around the Y axis (0 = looking from +Z)' },
@@ -199,6 +200,39 @@ export const TOOLS = [
     summary: (doc, a) => `probed the height at ${a.points?.length ?? 0} points`,
   },
   {
+    name: 'set_animation',
+    description: `Animates an object with declarative behaviours (combine freely), or sets the timeline length.
+  spin  { axis: [0,1,0], speed: deg/s, step?: seconds (ticking clock hands), pivot?: [x,y,z] }
+  swing { axis, amplitude: deg, period: s, phase: 0..1, pivot? }   oscillating rotation (pendulum, balance wheel)
+  bob   { axis: world [0,1,0], amplitude, period: s, phase }      up/down (floating boat)
+  orbit { center: [x,y,z], axis, speed: deg/s }                   rigid rotation around a world axis (turntable, planets)
+  pulse { min, max, period: s, phase, blink: bool }               scales emissive (glowing, blinking lights)
+Without pivot, spin/swing turn around the object's own origin and LOCAL axis; with pivot, around a WORLD axis through that point
+(use the same pivot for parts that must move together). animation: null removes it. Check the motion with render_view(time).`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', description: 'Object to animate (omit to only change the timeline duration)' },
+        animation: { type: ['object', 'null'] },
+        duration: { type: 'number', description: 'Timeline length in seconds (playback loops), default 12' },
+      },
+    },
+    run: (doc, a, act) => {
+      if (a.duration !== undefined) {
+        if (typeof a.duration !== 'number' || a.duration < 1 || a.duration > 3600) throw new Error('"duration" must be 1..3600 seconds');
+        if (a.id === undefined) {
+          doc.commit(act(`set the timeline to ${a.duration} s`), (d) => { d.animation = { ...(d.animation || {}), duration: a.duration }; });
+          return text({ duration: a.duration });
+        }
+      }
+      if (a.id === undefined) throw new Error('"id" is required (or give only "duration")');
+      const kinds = a.animation ? Object.keys(a.animation).join(', ') : 'removed';
+      const o = doc.updateObject(a.id, { animation: a.animation ?? null }, act(`animated ${doc.getObject(a.id).name} (${kinds})`));
+      if (a.duration !== undefined) doc.commit(act(`set the timeline to ${a.duration} s`), (d) => { d.animation = { ...(d.animation || {}), duration: a.duration }; });
+      return text({ id: o.id, animation: o.animation ?? null, hint: 'Check it with render_view at a few different time values.' });
+    },
+  },
+  {
     name: 'render_view',
     description: 'Renders the scene on the CPU and returns a PNG image so you can see your work. Optional camera overrides do not change the scene camera.',
     inputSchema: {
@@ -210,6 +244,7 @@ export const TOOLS = [
         shading: { type: 'string', enum: ['gouraud', 'flat', 'normals'] },
         wireframe: { type: 'boolean', description: 'Show triangle edges' },
         highlight: idsS,
+        time: { type: 'number', description: 'Animation time in seconds (default 0)' },
       },
     },
     readOnly: true,
@@ -218,9 +253,10 @@ export const TOOLS = [
       const camera = resolveCamera(doc, a);
       const width = Math.round(Math.min(1600, Math.max(64, a.width ?? 768)));
       const height = Math.round(Math.min(1200, Math.max(64, a.height ?? 512)));
-      const png = await ctx.render(doc, { width, height, camera, shading: a.shading, wireframe: a.wireframe, highlight: a.highlight || [] });
+      const time = typeof a.time === 'number' && Number.isFinite(a.time) ? Math.max(0, a.time) : 0;
+      const png = await ctx.render(doc, { width, height, camera, shading: a.shading, wireframe: a.wireframe, highlight: a.highlight || [], time });
       const cam = `yaw ${camera.yaw.toFixed(0)}°, pitch ${camera.pitch.toFixed(0)}°, distance ${camera.distance.toFixed(2)}, target [${camera.target.map((v) => v.toFixed(2))}]`;
-      return [{ type: 'image', data: png, mimeType: 'image/png' }, { type: 'text', text: `${width}x${height}, camera: ${cam}` }];
+      return [{ type: 'image', data: png, mimeType: 'image/png' }, { type: 'text', text: `${width}x${height}, t = ${time} s, camera: ${cam}` }];
     },
     summary: () => 'rendered a view',
     details: (doc, a) => ({ camera: resolveCamera(doc, a) }),

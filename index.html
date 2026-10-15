@@ -80,6 +80,11 @@
         <button class="btn primary" data-open-connect>Connect agent</button>
       </div>
       <div id="vstats" class="vstats"></div>
+      <div id="timeline" class="timeline" hidden>
+        <button id="playBtn" class="btn icon" title="Play / pause (Space)">▶</button>
+        <input id="timeSlider" type="range" min="0" max="12" step="0.01" value="0" aria-label="Animation time">
+        <span id="timeLabel">0.00 s</span>
+      </div>
       <div class="vhint">drag rotate · shift/right-drag pan · wheel zoom · click select · drag selected to move (Alt up/down, Shift snap) · F focus</div>
     </section>
 

@@ -34,6 +34,9 @@
     "reflections": "studio",
     "ground": false
   },
+  "animation": {
+    "duration": 24
+  },
   "objects": [
     {
       "id": "obj_1",
@@ -90,7 +93,14 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_3",
@@ -118,7 +128,14 @@
         "metalness": 1,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_4",
@@ -146,7 +163,14 @@
         "metalness": 1,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_5",
@@ -174,7 +198,14 @@
         "metalness": 1,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_6",
@@ -202,7 +233,14 @@
         "metalness": 1,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_7",
@@ -230,7 +268,14 @@
         "metalness": 1,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_8",
@@ -253,7 +298,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_9",
@@ -276,7 +328,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_10",
@@ -299,7 +358,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_11",
@@ -322,7 +388,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_12",
@@ -349,7 +422,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_13",
@@ -373,7 +453,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_14",
@@ -397,7 +484,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_15",
@@ -421,7 +515,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_16",
@@ -445,7 +546,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_17",
@@ -469,7 +577,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_18",
@@ -493,7 +608,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_19",
@@ -517,7 +639,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_20",
@@ -541,7 +670,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_21",
@@ -565,7 +701,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_22",
@@ -589,7 +732,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_23",
@@ -613,7 +763,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_24",
@@ -637,7 +794,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_25",
@@ -664,7 +828,14 @@
         "doubleSided": false,
         "roughness": 0.04
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_26",
@@ -694,7 +865,14 @@
         "roughness": 0.04,
         "texture": "examples/textures/screen.png"
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_27",
@@ -723,7 +901,14 @@
         "doubleSided": false,
         "roughness": 0.05
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_28",
@@ -751,7 +936,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_29",
@@ -779,7 +971,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_30",
@@ -807,7 +1006,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_31",
@@ -835,7 +1041,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_32",
@@ -863,7 +1076,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_33",
@@ -886,7 +1106,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_34",
@@ -909,7 +1136,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_35",
@@ -932,7 +1166,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_36",
@@ -955,7 +1196,14 @@
         "doubleSided": false,
         "roughness": 0.45
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_37",
@@ -982,7 +1230,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_38",
@@ -1006,7 +1261,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_39",
@@ -1030,7 +1292,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_40",
@@ -1054,7 +1323,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_41",
@@ -1078,7 +1354,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_42",
@@ -1102,7 +1385,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_43",
@@ -1126,7 +1416,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_44",
@@ -1150,7 +1447,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_45",
@@ -1174,7 +1478,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_46",
@@ -1198,7 +1509,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_47",
@@ -1222,7 +1540,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_48",
@@ -1246,7 +1571,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_49",
@@ -1270,7 +1602,14 @@
         "doubleSided": false,
         "roughness": 0.6
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_50",
@@ -1297,7 +1636,14 @@
         "doubleSided": false,
         "roughness": 0.5
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_51",
@@ -1324,7 +1670,14 @@
         "doubleSided": false,
         "roughness": 0.1
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_52",
@@ -1349,7 +1702,14 @@
         "metalness": 1,
         "roughness": 0.18
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_53",
@@ -1373,7 +1733,14 @@
         "doubleSided": false,
         "roughness": 0.35
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_54",
@@ -1397,7 +1764,14 @@
         "doubleSided": false,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_55",
@@ -1420,7 +1794,14 @@
         "doubleSided": false,
         "roughness": 0.05
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_56",
@@ -1445,7 +1826,14 @@
         "metalness": 1,
         "roughness": 0.18
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_57",
@@ -1469,7 +1857,14 @@
         "doubleSided": false,
         "roughness": 0.35
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_58",
@@ -1493,7 +1888,14 @@
         "doubleSided": false,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_59",
@@ -1516,7 +1918,14 @@
         "doubleSided": false,
         "roughness": 0.05
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_60",
@@ -1541,7 +1950,14 @@
         "metalness": 1,
         "roughness": 0.18
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_61",
@@ -1565,7 +1981,14 @@
         "doubleSided": false,
         "roughness": 0.35
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_62",
@@ -1589,7 +2012,14 @@
         "doubleSided": false,
         "roughness": 0.2
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_63",
@@ -1612,7 +2042,14 @@
         "doubleSided": false,
         "roughness": 0.05
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_64",
@@ -1636,7 +2073,14 @@
         "doubleSided": false,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     },
     {
       "id": "obj_65",
@@ -1660,7 +2104,14 @@
         "doubleSided": false,
         "roughness": 0.08
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 15
+        }
+      }
     }
   ]
 }

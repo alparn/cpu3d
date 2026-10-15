@@ -125,6 +125,13 @@ input[type=checkbox], input[type=range] { accent-color: var(--accent); }
   background: rgba(10,12,16,.55); padding: 3px 7px; border-radius: 5px; pointer-events: none;
 }
 .vstats { bottom: 10px; white-space: pre; }
+.timeline {
+  position: absolute; right: 10px; bottom: 10px; display: flex; align-items: center; gap: 8px; padding: 5px 10px;
+  background: rgba(10, 12, 16, 0.7); border: 1px solid var(--line); border-radius: 8px; backdrop-filter: blur(6px);
+}
+.timeline input { width: 220px; accent-color: var(--accent); }
+.timeline span { font: 11px var(--mono); color: rgba(255, 255, 255, 0.8); min-width: 52px; text-align: right; }
+.timeline .btn { width: 30px; }
 .vstats .size { color: #ffc98a; }
 .vhint { top: 10px; color: rgba(255,255,255,.55); }
 .empty {

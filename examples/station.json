@@ -29,6 +29,9 @@
     "reflections": "sky",
     "ground": false
   },
+  "animation": {
+    "duration": 45
+  },
   "objects": [
     {
       "id": "obj_1",
@@ -51,7 +54,14 @@
         "doubleSided": false,
         "roughness": 0.35
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_2",
@@ -100,7 +110,14 @@
         "doubleSided": false,
         "roughness": 0.35
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_4",
@@ -123,7 +140,21 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        },
+        "pulse": {
+          "min": 0.7,
+          "max": 1.2,
+          "period": 3,
+          "phase": 0,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_5",
@@ -148,7 +179,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_6",
@@ -173,7 +211,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_7",
@@ -198,7 +243,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_8",
@@ -223,7 +275,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_9",
@@ -248,7 +307,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_10",
@@ -273,7 +339,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_11",
@@ -298,7 +371,14 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "orbit": {
+          "center": [0, 0, 0],
+          "axis": [0, 1, 0],
+          "speed": 8
+        }
+      }
     },
     {
       "id": "obj_12",
@@ -813,7 +893,15 @@
         "doubleSided": false,
         "roughness": 0.35
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.35,
+          "period": 5,
+          "phase": 0
+        }
+      }
     },
     {
       "id": "obj_33",
@@ -841,7 +929,15 @@
         "flat": true,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.35,
+          "period": 5,
+          "phase": 0
+        }
+      }
     },
     {
       "id": "obj_34",
@@ -863,7 +959,22 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.35,
+          "period": 5,
+          "phase": 0
+        },
+        "pulse": {
+          "min": 0.7,
+          "max": 1.4,
+          "period": 0.5,
+          "phase": 0,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_35",

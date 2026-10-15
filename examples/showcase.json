@@ -32,6 +32,9 @@
     "reflections": "studio",
     "ground": true
   },
+  "animation": {
+    "duration": 12
+  },
   "objects": [
     {
       "id": "obj_1",
@@ -60,7 +63,13 @@
         "doubleSided": false,
         "roughness": 0.15
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 30
+        }
+      }
     },
     {
       "id": "obj_2",
@@ -159,7 +168,13 @@
         "metalness": 1,
         "roughness": 0.3
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": -30
+        }
+      }
     },
     {
       "id": "obj_4",
@@ -186,7 +201,13 @@
         "doubleSided": false,
         "roughness": 0.22
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 60
+        }
+      }
     },
     {
       "id": "obj_5",
@@ -210,7 +231,15 @@
         "metalness": 1,
         "roughness": 0.14
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.18,
+          "period": 2.4,
+          "phase": 0
+        }
+      }
     },
     {
       "id": "obj_6",
@@ -232,7 +261,13 @@
         "doubleSided": false,
         "roughness": 0.35
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [1, 0, 0],
+          "speed": 60
+        }
+      }
     },
     {
       "id": "obj_7",
@@ -262,7 +297,15 @@
         "metalness": 1,
         "roughness": 0.25
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.08,
+          "period": 1.5,
+          "phase": 0
+        }
+      }
     },
     {
       "id": "obj_8",

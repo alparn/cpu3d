@@ -22,6 +22,7 @@ export function createEmptyScene() {
       reflections: 'sky',
       ground: true,
     },
+    animation: { duration: 12 },
     objects: [],
   };
 }
@@ -77,6 +78,53 @@ function normalizeMaterial(m = {}, base = {}) {
   if (m.flat !== undefined) out.flat = !!m.flat;
   if (m.doubleSided !== undefined) out.doubleSided = !!m.doubleSided;
   return out;
+}
+
+// ---- animation: declarative behaviours, evaluated per frame (see scene.js animatedMatrix)
+//   spin  { axis [0,1,0], speed 90 deg/s, step? seconds (ticking), pivot? world point }
+//   swing { axis [0,1,0], amplitude 15 deg, period 2 s, phase 0..1, pivot? }
+//   bob   { axis [0,1,0] (world), amplitude 0.1, period 2 s, phase 0..1 }
+//   orbit { center [0,0,0], axis [0,1,0], speed 30 deg/s }   rigid rotation around a world axis
+//   pulse { min 0.5, max 1.5, period 1.5 s, phase 0..1, blink false }   scales emissive
+// Without pivot, spin and swing turn around the object's own origin and local axis;
+// with pivot, around a world axis through that point (parts that move together).
+export function normalizeAnimation(a) {
+  if (a === null || a === undefined) return null;
+  if (typeof a !== 'object' || Array.isArray(a)) fail('"animation" must be an object like { "spin": { "speed": 90 } } or null');
+  const known = ['spin', 'swing', 'bob', 'orbit', 'pulse'];
+  for (const k of Object.keys(a)) if (!known.includes(k)) fail(`unknown animation "${k}" (use ${known.join(', ')})`);
+  const obj = (v, n) => { if (!v || typeof v !== 'object' || Array.isArray(v)) fail(`"animation.${n}" must be an object`); return v; };
+  const opt = (v, def, n, min, max) => (v === undefined ? def : range(v, `animation.${n}`, min, max));
+  const axis = (v, n) => { const ax = v === undefined ? [0, 1, 0] : vec3(v, `animation.${n}.axis`); if (!Math.hypot(...ax)) fail(`"animation.${n}.axis" must not be zero`); return ax; };
+  const out = {};
+  if (a.spin) {
+    const s = obj(a.spin, 'spin');
+    out.spin = { axis: axis(s.axis, 'spin'), speed: opt(s.speed, 90, 'spin.speed', -1e5, 1e5) };
+    if (s.step !== undefined) out.spin.step = range(s.step, 'animation.spin.step', 0.001, 3600);
+    if (s.pivot !== undefined) out.spin.pivot = vec3(s.pivot, 'animation.spin.pivot');
+  }
+  if (a.swing) {
+    const s = obj(a.swing, 'swing');
+    out.swing = { axis: axis(s.axis, 'swing'), amplitude: opt(s.amplitude, 15, 'swing.amplitude', 0, 3600),
+      period: opt(s.period, 2, 'swing.period', 0.01, 1e4), phase: opt(s.phase, 0, 'swing.phase', -1e4, 1e4) };
+    if (s.pivot !== undefined) out.swing.pivot = vec3(s.pivot, 'animation.swing.pivot');
+  }
+  if (a.bob) {
+    const s = obj(a.bob, 'bob');
+    out.bob = { axis: axis(s.axis, 'bob'), amplitude: opt(s.amplitude, 0.1, 'bob.amplitude', -1e4, 1e4),
+      period: opt(s.period, 2, 'bob.period', 0.01, 1e4), phase: opt(s.phase, 0, 'bob.phase', -1e4, 1e4) };
+  }
+  if (a.orbit) {
+    const s = obj(a.orbit, 'orbit');
+    out.orbit = { center: s.center === undefined ? [0, 0, 0] : vec3(s.center, 'animation.orbit.center'), axis: axis(s.axis, 'orbit'),
+      speed: opt(s.speed, 30, 'orbit.speed', -1e5, 1e5) };
+  }
+  if (a.pulse) {
+    const s = obj(a.pulse, 'pulse');
+    out.pulse = { min: opt(s.min, 0.5, 'pulse.min', 0, 20), max: opt(s.max, 1.5, 'pulse.max', 0, 20),
+      period: opt(s.period, 1.5, 'pulse.period', 0.01, 1e4), phase: opt(s.phase, 0, 'pulse.phase', -1e4, 1e4), blink: !!s.blink };
+  }
+  return Object.keys(out).length ? out : null;
 }
 
 // main light: direction, color, intensity, softness (shadow penumbra); extra lights cast no shadows
@@ -166,6 +214,7 @@ export class SceneDocument {
       scale: o.scale !== undefined ? scale3(o.scale) : [1, 1, 1],
       material: normalizeMaterial(o.material),
       visible: o.visible !== undefined ? !!o.visible : true,
+      ...(o.animation ? { animation: normalizeAnimation(o.animation) } : {}),
     };
   }
 
@@ -190,6 +239,10 @@ export class SceneDocument {
       if (patch.scale !== undefined) o.scale = scale3(patch.scale);
       if (patch.material !== undefined) o.material = normalizeMaterial(patch.material, o.material);
       if (patch.visible !== undefined) o.visible = !!patch.visible;
+      if (patch.animation !== undefined) {
+        const a = normalizeAnimation(patch.animation);
+        if (a) o.animation = a; else delete o.animation;
+      }
       return o;
     });
   }
@@ -273,6 +326,9 @@ export class SceneDocument {
     e.lights = safe(() => (Array.isArray(e.lights) ? e.lights.slice(0, 4).map((l, i) => normalizeLight(l, { direction: [0, 1, 0], color: '#ffffff', intensity: 0.5 }, `lights[${i}]`, false)) : []), []);
     e.reflections = ['sky', 'studio', 'none'].includes(e.reflections) ? e.reflections : 'sky';
     e.ground = e.ground !== false;
+    // timeline length in seconds (playback loops)
+    const dur = data.animation?.duration;
+    next.animation = { duration: typeof dur === 'number' && dur >= 1 && dur <= 3600 ? dur : 12 };
 
     let maxId = 0;
     data.objects.forEach((o, i) => {

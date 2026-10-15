@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **Animation**: declarative behaviours per object (`spin` with optional ticking `step`, `swing`, `bob`, `orbit`, `pulse` for glow, each with an optional `pivot`), evaluated per frame without rebuilding geometry; scene `animation.duration` sets the looping timeline
+- New tool `set_animation`; `render_view` and `cpu3d render` take `time`
+- Editor: timeline with play/pause and scrubbing (`Space`), animated scenes play automatically, animation presets and JSON in the inspector
+- All gallery scenes are animated: ticking watch with swinging balance wheel, spinning turbofan, rotating station, turntable phones, blinking beacons, swaying tentacles, a pulsing lighthouse lantern and a rocking boat
 - New recipe `radial`: repeats any shape around an axis (blade rings, spokes, colonnades); hundreds of copies stay one small object
 - `lathe` takes `phiStart` / `phiLength` for cutaway models; closed profiles get capped cut faces
 - New gallery scene **Turbofan cutaway**: 22 twisted fan blades, booster and HP compressor stages, a glowing combustor and heat-tinted turbines from NACA-profiled radial arrays; 47 KB of JSON, 112k triangles

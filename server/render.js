@@ -24,12 +24,12 @@ export const preloadTextures = (doc) => loadTextures(sceneTextures(doc));
 // quality 'high' averages `samples` jittered frames (anti-aliasing, soft shadows, smooth AO).
 // Call preloadTextures(doc) first if the scene uses textures.
 export function renderPNG(doc, { width = 768, height = 512, camera = doc.data.camera, shading = 'gouraud', wireframe = false,
-  highlight = [], quality = 'high', samples = 8 } = {}) {
+  highlight = [], quality = 'high', samples = 8, time = 0 } = {}) {
   const r = new Renderer({ width, height });
   r.shading = shading;
   r.wireframe = wireframe;
   r.quality = quality;
-  const scene = buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: highlight });
+  const scene = buildRenderScene(doc.data, (s) => doc.geometry(s), { selected: highlight, time });
   const cam = cameraFromState(camera);
   const n = quality === 'high' ? Math.max(1, samples) : 1;
   for (let i = 0; i < n; i++) r.render(scene, cam, { accumulate: i > 0 });

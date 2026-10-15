@@ -32,6 +32,9 @@
     "reflections": "sky",
     "ground": false
   },
+  "animation": {
+    "duration": 12
+  },
   "objects": [
     {
       "id": "obj_1",
@@ -240,7 +243,16 @@
         "flat": true,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.35,
+          "max": 1.6,
+          "period": 3,
+          "phase": 0,
+          "blink": false
+        }
+      }
     },
     {
       "id": "obj_9",
@@ -289,7 +301,22 @@
         "flat": true,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [1, 0, 0],
+          "amplitude": 4,
+          "period": 4,
+          "phase": 0,
+          "pivot": [-4, 0, 16]
+        },
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.06,
+          "period": 4,
+          "phase": 0.25
+        }
+      }
     },
     {
       "id": "obj_11",
@@ -311,7 +338,22 @@
         "flat": false,
         "doubleSided": false
       },
-      "visible": true
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [1, 0, 0],
+          "amplitude": 4,
+          "period": 4,
+          "phase": 0,
+          "pivot": [-4, 0, 16]
+        },
+        "bob": {
+          "axis": [0, 1, 0],
+          "amplitude": 0.06,
+          "period": 4,
+          "phase": 0.25
+        }
+      }
     }
   ]
 }

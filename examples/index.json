@@ -5,7 +5,7 @@
     "description": "Every generator in one place: lathe, sweep with twist, extrude, tubes along knots and helices.",
     "objects": 9,
     "triangles": 20844,
-    "jsonBytes": 6838,
+    "jsonBytes": 7638,
     "objBytes": 630002,
     "ramBytes": 506136
   },
@@ -15,7 +15,7 @@
     "description": "Studio product shot: squircle bodies with polished metal frames, a textured home screen under glass, softbox reflections and a stepped triple camera.",
     "objects": 65,
     "triangles": 25188,
-    "jsonBytes": 38348,
+    "jsonBytes": 47413,
     "objBytes": 860250,
     "ramBytes": 323136
   },
@@ -25,7 +25,7 @@
     "description": "A mechanical skeleton watch at 10:10: spoked brass gears (extrude with holes), a hairspring (tube along a spiral), blued screws, ruby jewels, polished steel and a leather strap.",
     "objects": 170,
     "triangles": 32758,
-    "jsonBytes": 172525,
+    "jsonBytes": 175524,
     "objBytes": 1312811,
     "ramBytes": 794520
   },
@@ -35,7 +35,7 @@
     "description": "A turbofan with the casing cut open: 22 twisted fan blades, booster and high-pressure compressor stages, a glowing combustor, heat-tinted turbines, all as radial arrays of NACA-profiled blades.",
     "objects": 48,
     "triangles": 111978,
-    "jsonBytes": 47718,
+    "jsonBytes": 50533,
     "objBytes": 4352959,
     "ramBytes": 3363312
   },
@@ -45,7 +45,7 @@
     "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",
     "objects": 156,
     "triangles": 4703,
-    "jsonBytes": 78587,
+    "jsonBytes": 79281,
     "objBytes": 195902,
     "ramBytes": 39156
   },
@@ -55,7 +55,7 @@
     "description": "Italian opening on a wooden board. Every piece is a lathe profile, the knights are extruded silhouettes.",
     "objects": 109,
     "triangles": 40224,
-    "jsonBytes": 71754,
+    "jsonBytes": 86915,
     "objBytes": 1257425,
     "ramBytes": 178128
   },
@@ -65,7 +65,7 @@
     "description": "A rotating-wheel station with spokes, solar wings, docking modules, an antenna dish, an approaching shuttle and a ringed planet.",
     "objects": 37,
     "triangles": 18876,
-    "jsonBytes": 62342,
+    "jsonBytes": 64550,
     "objBytes": 619787,
     "ramBytes": 476520
   },
@@ -75,7 +75,7 @@
     "description": "A procedural downtown: 36 blocks, towers with setbacks, round glass towers, rooftop details and a park with a pond.",
     "objects": 315,
     "triangles": 12414,
-    "jsonBytes": 156667,
+    "jsonBytes": 161830,
     "objBytes": 517028,
     "ramBytes": 173592
   },
@@ -85,7 +85,7 @@
     "description": "Tapered sweeps along procedural curves, glowing mushrooms, spiral shells and crystals, all placed on the terrain with probe_height.",
     "objects": 83,
     "triangles": 73316,
-    "jsonBytes": 98567,
+    "jsonBytes": 111070,
     "objBytes": 2297658,
     "ramBytes": 1389768
   },
@@ -95,7 +95,7 @@
     "description": "A noise terrain island; the lighthouse and boat were placed on the surface and on the water with probe_height.",
     "objects": 11,
     "triangles": 52246,
-    "jsonBytes": 6810,
+    "jsonBytes": 7671,
     "objBytes": 1550807,
     "ramBytes": 1580436
   }

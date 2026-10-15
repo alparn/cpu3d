@@ -29,6 +29,13 @@ async function tool(doc, name, args) {
   return r.content[0].type === 'text' ? r.content[0].text : r;
 }
 const add = (doc, objects) => tool(doc, 'add_objects', { objects });
+// animate every object whose name matches (string, list of names or predicate); anim may depend on the index
+async function animate(doc, match, anim) {
+  const hit = (o) => (typeof match === 'function' ? match(o) : Array.isArray(match) ? match.includes(o.name) : o.name === match);
+  const list = doc.data.objects.filter(hit);
+  for (const [i, o] of list.entries()) await tool(doc, 'set_animation', { id: o.id, animation: typeof anim === 'function' ? anim(o, i) : anim });
+}
+const timeline = (doc, seconds) => tool(doc, 'set_animation', { duration: seconds });
 async function probe(doc, points) { return JSON.parse(await tool(doc, 'probe_height', { points })).map((p) => p.y ?? 0); }
 
 // profile helper: arc of a circle centered on (cx, cy), angles in degrees, for lathe profiles
@@ -77,6 +84,13 @@ scene('showcase', 'Shape showcase', 'Every generator in one place: lathe, sweep 
     { name: 'Spire', shape: { type: 'cone', radius: 0.3, height: 1.0 }, position: [p(6)[0], 0.9, p(6)[1]], material: { color: '#9a62d6', roughness: 0.4, specular: 0.5, shininess: 60, flat: true } },
   ]);
   await tool(doc, 'set_camera', { yaw: 28, pitch: 24, distance: 10.5, target: [0, 0.9, 0] });
+  await animate(doc, 'Torus knot', { spin: { axis: [0, 1, 0], speed: 30 } });
+  await animate(doc, 'Twisted column', { spin: { axis: [0, 1, 0], speed: -30 } });
+  await animate(doc, 'Star', { spin: { axis: [0, 1, 0], speed: 60 } });
+  await animate(doc, 'Torus', { spin: { axis: [1, 0, 0], speed: 60 } });
+  await animate(doc, 'Chrome sphere', { bob: { amplitude: 0.18, period: 2.4 } });
+  await animate(doc, 'Spring', { bob: { amplitude: 0.08, period: 1.5 } });
+  await timeline(doc, 12);
 });
 
 scene('phone', 'Smartphone', 'Studio product shot: squircle bodies with polished metal frames, a textured home screen under glass, softbox reflections and a stepped triple camera.', async (doc) => {
@@ -156,6 +170,9 @@ scene('phone', 'Smartphone', 'Studio product shot: squircle bodies with polished
   );
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 12, pitch: 7, distance: 2.7, target: [0.02, 0.9, 0] });
+  // turntable: everything on the podium turns around the vertical axis
+  await animate(doc, (o) => o.name !== 'Floor', { orbit: { center: [0, 0, 0], axis: [0, 1, 0], speed: 15 } });
+  await timeline(doc, 24);
 });
 
 scene('watch', 'Skeleton watch', 'A mechanical skeleton watch at 10:10: spoked brass gears (extrude with holes), a hairspring (tube along a spiral), blued screws, ruby jewels, polished steel and a leather strap.', async (doc) => {
@@ -309,6 +326,16 @@ scene('watch', 'Skeleton watch', 'A mechanical skeleton watch at 10:10: spoked b
   }
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 28, pitch: 50, distance: 6.1, target: [0.2, 0.62, 0.25] });
+  // the seconds hand and fourth wheel tick once per second, the escapement twice, the balance swings
+  const dialAxis = { axis: [0, 0, 1] }; // flat parts: their local z is the watch's vertical axis
+  await animate(doc, 'Seconds hand', { spin: { ...dialAxis, speed: -6, step: 1 } });
+  await animate(doc, 'Minute hand', { spin: { ...dialAxis, speed: -0.1 } });
+  await animate(doc, ['Fourth wheel', 'Fourth wheel pinion'], { spin: { ...dialAxis, speed: -6, step: 1 } });
+  await animate(doc, ['Third wheel', 'Third wheel pinion'], { spin: { ...dialAxis, speed: 6 } });
+  await animate(doc, ['Escape wheel', 'Escape wheel pinion'], { spin: { ...dialAxis, speed: -24, step: 0.5 } });
+  await animate(doc, 'Pallet fork', { swing: { ...dialAxis, amplitude: 7, period: 1 } });
+  await animate(doc, ['Balance rim', 'Balance arm', 'Balance screw', 'Hairspring'], { swing: { axis: [0, 1, 0], amplitude: 150, period: 1, pivot: [-0.5, 0.6, 0.8] } });
+  await timeline(doc, 60);
 });
 
 scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twisted fan blades, booster and high-pressure compressor stages, a glowing combustor, heat-tinted turbines, all as radial arrays of NACA-profiled blades.', async (doc) => {
@@ -416,6 +443,14 @@ scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twi
 
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 38, pitch: 14, distance: 4.7, target: [0.1, 1.5, 0] });
+  // low-pressure spool (fan, booster, LP turbine) and the faster high-pressure spool spin around the engine axis
+  const lp = (o) => /^(Spinner|Spinner swirl|Fan disk|Fan blades|Booster rotor|LP turbine \d|Shaft|Turbine disks)/.test(o.name);
+  const hp = (o) => /^(HP rotor|HP turbine|Compressor drum)/.test(o.name);
+  await animate(doc, lp, { spin: { axis: [0, 1, 0], speed: 240 } });
+  await animate(doc, hp, { spin: { axis: [0, 1, 0], speed: 480 } });
+  await animate(doc, 'Combustion glow', { pulse: { min: 0.75, max: 1.3, period: 0.375 } });
+  await animate(doc, 'Flames', { pulse: { min: 0.6, max: 1.4, period: 0.25 } });
+  await timeline(doc, 12);
 });
 
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
@@ -470,6 +505,8 @@ scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, g
   }
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 32, pitch: 22, distance: 29, target: [0, 2.8, 0] });
+  await animate(doc, 'Flag', (o, i) => ({ swing: { axis: [0, 1, 0], amplitude: 14, period: 1.5, phase: i * 0.27 } }));
+  await timeline(doc, 12);
 });
 
 scene('chess', 'Chess set', 'Italian opening on a wooden board. Every piece is a lathe profile, the knights are extruded silhouettes.', async (doc) => {
@@ -514,6 +551,9 @@ scene('chess', 'Chess set', 'Italian opening on a wooden board. Every piece is a
   }
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 20, pitch: 30, distance: 10.5, target: [0, 0.2, 0.4] });
+  // slow turntable of board and pieces (the round table is symmetric)
+  await animate(doc, (o) => o.name !== 'Table', { orbit: { center: [0, 0, 0], axis: [0, 1, 0], speed: 6 } });
+  await timeline(doc, 60);
 });
 
 scene('station', 'Space station', 'A rotating-wheel station with spokes, solar wings, docking modules, an antenna dish, an approaching shuttle and a ringed planet.', async (doc) => {
@@ -566,6 +606,11 @@ scene('station', 'Space station', 'A rotating-wheel station with spokes, solar w
   o.push({ name: 'Stars', shape: { type: 'mesh', positions: stars, indices: idx }, material: { color: '#ffffff', emissive: 1.4, doubleSided: true, specular: 0 } });
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 38, pitch: 24, distance: 40, target: [2, 0, 0] });
+  await animate(doc, (o) => /^(Hub|Habitat ring|Light strip|Inner ring|Spoke)/.test(o.name), { orbit: { center: [0, 0, 0], axis: [0, 1, 0], speed: 8 } });
+  await animate(doc, 'Light strip', { orbit: { center: [0, 0, 0], axis: [0, 1, 0], speed: 8 }, pulse: { min: 0.7, max: 1.2, period: 3 } });
+  await animate(doc, ['Shuttle fuselage', 'Shuttle wings'], { bob: { axis: [0, 1, 0], amplitude: 0.35, period: 5 } });
+  await animate(doc, 'Engine glow', { bob: { axis: [0, 1, 0], amplitude: 0.35, period: 5 }, pulse: { min: 0.7, max: 1.4, period: 0.5 } });
+  await timeline(doc, 45);
 });
 
 scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setbacks, round glass towers, rooftop details and a park with a pond.', async (doc) => {
@@ -623,6 +668,8 @@ scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setba
   }
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 35, pitch: 27, distance: 82, target: [0, 8, 0] });
+  await animate(doc, 'Warning light', (o, i) => ({ pulse: { min: 0.1, max: 1, period: 1.5, phase: (i % 3) / 3, blink: true } }));
+  await timeline(doc, 12);
 });
 
 scene('garden', 'Alien garden', 'Tapered sweeps along procedural curves, glowing mushrooms, spiral shells and crystals, all placed on the terrain with probe_height.', async (doc) => {
@@ -655,6 +702,11 @@ scene('garden', 'Alien garden', 'Tapered sweeps along procedural curves, glowing
   });
   await add(doc, o);
   await tool(doc, 'set_camera', { yaw: 15, pitch: 16, distance: 22, target: [0, 2.2, 0] });
+  const r2 = rng(9);
+  await animate(doc, 'Tentacle', () => ({ swing: { axis: [r2() - 0.5, 0, r2() - 0.5], amplitude: 6, period: 4, phase: r2() } }));
+  await animate(doc, 'Mushroom cap', () => ({ pulse: { min: 0.55, max: 1.35, period: 3, phase: r2() } }));
+  await animate(doc, 'Crystal', () => ({ pulse: { min: 0.4, max: 1.8, period: 2, phase: r2() } }));
+  await timeline(doc, 12);
 });
 
 scene('lighthouse', 'Lighthouse island', 'A noise terrain island; the lighthouse and boat were placed on the surface and on the water with probe_height.', async (doc) => {
@@ -680,6 +732,10 @@ scene('lighthouse', 'Lighthouse island', 'A noise terrain island; the lighthouse
     { name: 'Mast', shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.05, height: 1.8 }, position: [-4, 1.05, 16], material: { color: '#d8cbb0' } },
   ]);
   await tool(doc, 'set_camera', { yaw: 20, pitch: 14, distance: 27, target: [0, 4, 7] });
+  await animate(doc, 'Lantern', { pulse: { min: 0.35, max: 1.6, period: 3 } });
+  const rock = { swing: { axis: [1, 0, 0], amplitude: 4, period: 4, pivot: [-4, 0, 16] }, bob: { amplitude: 0.06, period: 4, phase: 0.25 } };
+  await animate(doc, ['Boat hull', 'Mast'], rock);
+  await timeline(doc, 12);
 });
 
 // ------------------------------------------------------------------------------------ build
