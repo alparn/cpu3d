@@ -1,0 +1,72 @@
+[
+  {
+    "id": "showcase",
+    "title": "Shape showcase",
+    "description": "Every generator in one place: lathe, sweep with twist, extrude, tubes along knots and helices.",
+    "objects": 9,
+    "triangles": 20844,
+    "jsonBytes": 6114,
+    "objBytes": 630002,
+    "ramBytes": 506136
+  },
+  {
+    "id": "castle",
+    "title": "Castle",
+    "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",
+    "objects": 156,
+    "triangles": 4703,
+    "jsonBytes": 74510,
+    "objBytes": 195902,
+    "ramBytes": 39156
+  },
+  {
+    "id": "chess",
+    "title": "Chess set",
+    "description": "Italian opening on a wooden board. Every piece is a lathe profile, the knights are extruded silhouettes.",
+    "objects": 109,
+    "triangles": 40224,
+    "jsonBytes": 66153,
+    "objBytes": 1257425,
+    "ramBytes": 178128
+  },
+  {
+    "id": "station",
+    "title": "Space station",
+    "description": "A rotating-wheel station with spokes, solar wings, docking modules, an antenna dish, an approaching shuttle and a ringed planet.",
+    "objects": 37,
+    "triangles": 18876,
+    "jsonBytes": 60080,
+    "objBytes": 619787,
+    "ramBytes": 476520
+  },
+  {
+    "id": "city",
+    "title": "City block",
+    "description": "A procedural downtown: 36 blocks, towers with setbacks, round glass towers, rooftop details and a park with a pond.",
+    "objects": 287,
+    "triangles": 7038,
+    "jsonBytes": 134460,
+    "objBytes": 343875,
+    "ramBytes": 163800
+  },
+  {
+    "id": "garden",
+    "title": "Alien garden",
+    "description": "Tapered sweeps along procedural curves, glowing mushrooms, spiral shells and crystals, all placed on the terrain with probe_height.",
+    "objects": 83,
+    "triangles": 73316,
+    "jsonBytes": 93927,
+    "objBytes": 2297658,
+    "ramBytes": 1389768
+  },
+  {
+    "id": "lighthouse",
+    "title": "Lighthouse island",
+    "description": "A noise terrain island; the lighthouse and boat were placed on the surface and on the water with probe_height.",
+    "objects": 10,
+    "triangles": 52244,
+    "jsonBytes": 5852,
+    "objBytes": 1550701,
+    "ramBytes": 1580316
+  }
+]

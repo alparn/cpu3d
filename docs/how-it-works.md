@@ -1,0 +1,116 @@
+# How cpu3d works
+
+cpu3d does in JavaScript what a GPU does in hardware. This document walks through the pieces, from JSON recipe to pixel.
+
+```mermaid
+flowchart LR
+  A[Agent<br>MCP / HTTP] -->|tool calls| T[tools.js]
+  E[Editor UI] -->|same tool calls| T
+  T --> D[SceneDocument<br>JSON + undo]
+  D -->|recipes| G[recipes.js + geometry.js<br>rims → triangles]
+  G --> R[renderer.js<br>software rasterizer]
+  R -->|PNG| A
+  R -->|canvas| E
+  D -->|SSE live sync| E
+```
+
+## 1. Geometry from rims
+
+The core idea comes from the old Babylon.js GeometryBuilder: a surface is a list of **rims** (rings of points). `fromRims` stitches rim *i* to rim *i + 1*, and each quad between them becomes two triangles:
+
+```
+rim i+1:  c ─── d
+          │ ╲   │      triangles (a, c, b) and (b, c, d)
+rim i:    a ─── b
+```
+
+Most shapes are just different rim generators:
+
+| Shape | Where the rims come from |
+|---|---|
+| lathe | every profile point `[r, y]` becomes a circle of radius r at height y |
+| sphere, cylinder, cone | special cases of lathe (half circle, two rims) |
+| sweep | a 2D cross-section placed at every point of a 3D path |
+| tube, torus | sweep of a circle along a path / along a circle |
+| parametric | `f(u, v)`: u picks the rim, v the point on it |
+
+**Sweep frames.** To orient the cross-section along a path, each path point needs a local frame: the tangent **T** plus two perpendicular axes **N** and **B**. Frenet frames (derived from curvature) flip at inflection points and the tube twists. cpu3d uses **parallel transport** instead: the previous N is reused with its component along the new tangent removed, `N' = normalize(N − T(N·T))`, `B = T × N`. On closed paths the leftover rotation after one loop is measured and spread evenly over all frames, so there is no seam.
+
+**Extrude caps** are triangulated with **ear clipping**: find a convex corner whose triangle contains no other vertex, cut it off, repeat. O(n²), fine for hand-made shapes, and it handles concave polygons.
+
+**Normals** are area-weighted: each triangle adds its cross product `(b − a) × (c − a)` to its three vertices, then they are normalized. **Orientation** is checked with the signed volume `Σ a · (b × c) / 6`; if it is negative the triangles face inwards and `orientOutward()` flips them. The test suite checks volumes against analytic values (sphere ≈ 4/3 π r³, etc.).
+
+## 2. Recipes and the document
+
+Agents never send code. They send recipes, plain JSON such as `{ "type": "lathe", "profile": [...] }`, which `recipes.js` validates field by field and turns into geometry. Geometry is cached by the recipe's JSON, so 36 identical torus knots share one geometry.
+
+The `SceneDocument` is the single source of truth. Every mutation runs on a copy, is validated, then committed with an undo snapshot and broadcast to listeners (SSE clients, autosave, the activity feed).
+
+## 3. Vertex stage
+
+**Mesh culling.** Each geometry has a bounding sphere. The six frustum planes are extracted from the view-projection matrix (Gribb/Hartmann). A mesh whose sphere lies completely behind one plane is skipped.
+
+**Transform.** Every vertex is multiplied by the model-view-projection matrix into **homogeneous clip coordinates** `(x, y, z, w)`, where w is roughly the distance to the camera. Dividing by w produces perspective. Screen coordinates are rounded to a **1/16 sub-pixel grid** and stored as integers, so the rasterizer works with exact numbers.
+
+**Lighting (Gouraud).** Light is computed per vertex and interpolated across the triangle:
+
+- hemisphere ambient: blend between ground and sky color by how much the normal points up
+- Lambert diffuse: `max(0, N · L)`
+- Blinn-Phong highlight: `(N · H)^shininess` with the half vector `H = normalize(L + V)`
+- linear fog by distance
+
+## 4. Primitive stage
+
+**Outcodes.** Each vertex gets 6 bits, one per clip plane. `a & b & c ≠ 0` means all three vertices are outside the same plane, so the triangle is rejected immediately. `a | b | c = 0` means fully inside: fast path.
+
+**Guard band.** Triangles are clipped sideways only at 8× the screen size; the rasterizer's bounding box takes care of everything in between. In practice almost only triangles crossing the near plane need real clipping (3 of 23,000 in the showcase).
+
+**Sutherland-Hodgman clipping** runs in homogeneous space, before the division by w, which matters for points behind the camera. The polygon is clipped against each crossed plane, intersections interpolate position and color, and the result (up to 9 vertices) is drawn as a triangle fan.
+
+**Back-face culling** uses the signed area `(x1 − x0)(y2 − y0) − (x2 − x0)(y1 − y0)`. Because screen y points down, front faces have a negative area here.
+
+## 5. Rasterization
+
+**Edge functions.** For each edge a → b:
+
+```
+E(p) = (bx − ax)(py − ay) − (by − ay)(px − ax)
+```
+
+A pixel center is inside when all three edge functions are ≥ 0. E is linear, so stepping one pixel to the right is a single addition.
+
+**Top-left fill rule.** A pixel center exactly on an edge shared by two triangles must be drawn by exactly one of them, otherwise you get cracks or double-drawn pixels. Like Direct3D and OpenGL, cpu3d only accepts such pixels on top or left edges; other edges get a bias of −1. Because everything is integer math on the sub-pixel grid, this is exact.
+
+**Spans instead of pixel tests.** Instead of testing every pixel in the bounding box, each row's covered span is solved directly:
+
+```
+E(x) = A·x + e_row ≥ 0   →   x ≥ ⌈−e/A⌉   (A > 0)
+                             x ≤ ⌊e/−A⌋   (A < 0)
+```
+
+Intersecting the three conditions gives `[xs, xe]`, and the inner loop only does the depth test and the write. The divisions are exact because all values are integers far below 2⁵³. The test suite compares 1,500 random triangles against a brute-force reference, pixel for pixel.
+
+**Interpolation.** Depth and color are planes over the screen: `value(px, py) = base + dx·px + dy·py`. The gradients are solved once per triangle (Cramer's rule), after that each attribute costs one addition per pixel.
+
+**Depth buffer with 1/w.** cpu3d stores `1/w` (larger = closer). 1/w is exactly linear in screen space, so interpolating it is correct, and near objects get the most precision.
+
+**Wireframe.** Dividing E by the length of its gradient gives the pixel's distance to the edge, so edges are drawn inside the same loop, with hidden-line removal for free.
+
+## 6. Why it is fast
+
+| Technique | Effect |
+|---|---|
+| typed arrays everywhere | compact memory, V8 compiles the hot loops to near machine code |
+| no allocations in hot loops | no garbage collection pauses |
+| one 32-bit store per pixel | `0xff000000 \| b<<16 \| g<<8 \| r` writes all four channels at once |
+| screen coordinates cached per vertex | a vertex shared by six triangles is transformed once |
+| cull early and cheaply | mesh sphere → outcodes → signed area → bounding box |
+| clipping only when needed | the guard band keeps it below 1 % of triangles |
+| spans solved analytically | no work for pixels outside the triangle |
+| render on demand in the editor | nothing is drawn when nothing changed |
+
+The result is about 12 million triangles and up to 280 million pixels per second on one core.
+
+## 7. Agents in the loop
+
+`render_view` uses the same renderer headlessly: it renders into a `Uint8ClampedArray`, encodes a PNG with `zlib` (no dependencies) and returns it as MCP image content. The agent sees what it built, and with `probe_height` (vertical raycasts with Möller-Trumbore) it can place objects on terrain or on top of each other instead of guessing coordinates.

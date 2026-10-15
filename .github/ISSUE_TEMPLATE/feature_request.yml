@@ -1,0 +1,15 @@
+name: Feature request
+description: A new recipe, tool, editor feature or integration
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like to build or do?
+    validations:
+      required: true
+  - type: textarea
+    id: agent
+    attributes:
+      label: How would an agent use it?
+      description: cpu3d is tools-first. Describe the tool call you would expect, if any.

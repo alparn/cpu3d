@@ -1,0 +1,3384 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 32,
+    "pitch": 22,
+    "distance": 29,
+    "target": [0, 2.8, 0]
+  },
+  "environment": {
+    "background": {
+      "top": "#6f9fd8",
+      "bottom": "#dce7f1"
+    },
+    "fog": {
+      "near": 45,
+      "far": 140
+    },
+    "light": {
+      "direction": [0.5, 0.8, 0.35],
+      "color": "#fff5e6"
+    },
+    "ground": false
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Meadow",
+      "shape": {
+        "type": "plane",
+        "width": 90,
+        "depth": 90
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a8a42",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Moat",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [12.5, 0.03],
+          [9, 0.03]
+        ],
+        "segments": 72
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f6290",
+        "specular": 1,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Bridge",
+      "shape": {
+        "type": "box",
+        "width": 2.4,
+        "height": 0.25,
+        "depth": 4
+      },
+      "position": [0, 0.2, 10.7],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Road",
+      "shape": {
+        "type": "box",
+        "width": 2.4,
+        "height": 0.04,
+        "depth": 30
+      },
+      "position": [0, 0.02, 27.7],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a48f6c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Wall north",
+      "shape": {
+        "type": "box",
+        "width": 10,
+        "height": 3,
+        "depth": 0.8
+      },
+      "position": [0, 1.5, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Wall west",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 3,
+        "depth": 10
+      },
+      "position": [-5, 1.5, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Wall south",
+      "shape": {
+        "type": "box",
+        "width": 10,
+        "height": 3,
+        "depth": 0.8
+      },
+      "position": [0, 1.5, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Wall east",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 3,
+        "depth": 10
+      },
+      "position": [5, 1.5, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-4.4, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_10",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, -4.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_11",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-4.4, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_12",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, -4.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_13",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-3.6, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_14",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_15",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-3.6, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_16",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_17",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-2.8, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_18",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, -2.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_19",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-2.8, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_20",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, -2.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_21",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-2, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_22",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, -2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_23",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-2, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_24",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, -2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_25",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-1.2, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_26",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, -1.2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_27",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-1.2, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_28",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, -1.2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_29",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-0.4, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_30",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, -0.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_31",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [-0.4, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_32",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, -0.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_33",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [0.4, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_34",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, 0.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_35",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [0.4, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_36",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, 0.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_37",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [1.2, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_38",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, 1.2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_39",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [1.2, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_40",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, 1.2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_41",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [2, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_42",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, 2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_43",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [2, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_44",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, 2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_45",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [2.8, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_46",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, 2.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_47",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [2.8, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_48",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, 2.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_49",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [3.6, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_50",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_51",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [3.6, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_52",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_53",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [4.4, 3.25, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_54",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [-5, 3.25, 4.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_55",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 0.8
+      },
+      "position": [4.4, 3.25, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_56",
+      "name": "Merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.5,
+        "depth": 0.45
+      },
+      "position": [5, 3.25, 4.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_57",
+      "name": "Tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.25,
+        "radiusBottom": 1.4,
+        "height": 5.5,
+        "segments": 28
+      },
+      "position": [-5, 2.75, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_58",
+      "name": "Tower gallery",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.55,
+        "radiusBottom": 1.3,
+        "height": 0.6,
+        "segments": 28
+      },
+      "position": [-5, 5.8, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_59",
+      "name": "Tower roof",
+      "shape": {
+        "type": "cone",
+        "radius": 1.7,
+        "height": 2.6,
+        "segments": 28
+      },
+      "position": [-5, 7.4, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8c2f24",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_60",
+      "name": "Flagpole",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.04,
+        "height": 1.3,
+        "segments": 8
+      },
+      "position": [-5, 9.3, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#333333",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_61",
+      "name": "Flag",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [0, 0],
+          [0.8, 0.22],
+          [0, 0.45]
+        ],
+        "depth": 0.03
+      },
+      "position": [-4.97, 9.45, -5],
+      "rotation": [0, -30, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e8c547",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": true
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_62",
+      "name": "Tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.25,
+        "radiusBottom": 1.4,
+        "height": 5.5,
+        "segments": 28
+      },
+      "position": [5, 2.75, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_63",
+      "name": "Tower gallery",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.55,
+        "radiusBottom": 1.3,
+        "height": 0.6,
+        "segments": 28
+      },
+      "position": [5, 5.8, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_64",
+      "name": "Tower roof",
+      "shape": {
+        "type": "cone",
+        "radius": 1.7,
+        "height": 2.6,
+        "segments": 28
+      },
+      "position": [5, 7.4, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8c2f24",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_65",
+      "name": "Flagpole",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.04,
+        "height": 1.3,
+        "segments": 8
+      },
+      "position": [5, 9.3, -5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#333333",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_66",
+      "name": "Flag",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [0, 0],
+          [0.8, 0.22],
+          [0, 0.45]
+        ],
+        "depth": 0.03
+      },
+      "position": [5.03, 9.45, -5],
+      "rotation": [0, -30, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e8c547",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": true
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_67",
+      "name": "Tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.25,
+        "radiusBottom": 1.4,
+        "height": 5.5,
+        "segments": 28
+      },
+      "position": [-5, 2.75, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_68",
+      "name": "Tower gallery",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.55,
+        "radiusBottom": 1.3,
+        "height": 0.6,
+        "segments": 28
+      },
+      "position": [-5, 5.8, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_69",
+      "name": "Tower roof",
+      "shape": {
+        "type": "cone",
+        "radius": 1.7,
+        "height": 2.6,
+        "segments": 28
+      },
+      "position": [-5, 7.4, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8c2f24",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_70",
+      "name": "Flagpole",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.04,
+        "height": 1.3,
+        "segments": 8
+      },
+      "position": [-5, 9.3, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#333333",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_71",
+      "name": "Flag",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [0, 0],
+          [0.8, 0.22],
+          [0, 0.45]
+        ],
+        "depth": 0.03
+      },
+      "position": [-4.97, 9.45, 5],
+      "rotation": [0, -30, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e8c547",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": true
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_72",
+      "name": "Tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.25,
+        "radiusBottom": 1.4,
+        "height": 5.5,
+        "segments": 28
+      },
+      "position": [5, 2.75, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_73",
+      "name": "Tower gallery",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.55,
+        "radiusBottom": 1.3,
+        "height": 0.6,
+        "segments": 28
+      },
+      "position": [5, 5.8, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_74",
+      "name": "Tower roof",
+      "shape": {
+        "type": "cone",
+        "radius": 1.7,
+        "height": 2.6,
+        "segments": 28
+      },
+      "position": [5, 7.4, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8c2f24",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_75",
+      "name": "Flagpole",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.04,
+        "height": 1.3,
+        "segments": 8
+      },
+      "position": [5, 9.3, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#333333",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_76",
+      "name": "Flag",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [0, 0],
+          [0.8, 0.22],
+          [0, 0.45]
+        ],
+        "depth": 0.03
+      },
+      "position": [5.03, 9.45, 5],
+      "rotation": [0, -30, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e8c547",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": true
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_77",
+      "name": "Keep",
+      "shape": {
+        "type": "box",
+        "width": 4,
+        "height": 6.5,
+        "depth": 4
+      },
+      "position": [0, 3.25, -1.2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_78",
+      "name": "Keep roof",
+      "shape": {
+        "type": "cone",
+        "radius": 3.1,
+        "height": 2.6,
+        "segments": 4
+      },
+      "position": [0, 7.8, -1.2],
+      "rotation": [0, 45, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8c2f24",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_79",
+      "name": "Keep turret",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.75, 0],
+          [0.7, 7.5],
+          [0.9, 7.6],
+          [0.9, 8.1],
+          [0, 8.1]
+        ],
+        "segments": 24
+      },
+      "position": [1.9, 0, 0.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a19b90",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_80",
+      "name": "Turret roof",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 1.8,
+        "segments": 24
+      },
+      "position": [1.9, 9, 0.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8c2f24",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_81",
+      "name": "Gatehouse",
+      "shape": {
+        "type": "box",
+        "width": 3.4,
+        "height": 4.2,
+        "depth": 1.8
+      },
+      "position": [0, 2.1, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_82",
+      "name": "Gate",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [-0.75, 0],
+          [0.75, 0],
+          [0.75, 1.5],
+          [0.7244, 1.6941],
+          [0.6495, 1.875],
+          [0.5303, 2.0303],
+          [0.375, 2.1495],
+          [0.1941, 2.2244],
+          [0, 2.25],
+          [-0.1941, 2.2244],
+          [-0.375, 2.1495],
+          [-0.5303, 2.0303],
+          [-0.6495, 1.875],
+          [-0.7244, 1.6941],
+          [-0.75, 1.5]
+        ],
+        "depth": 0.1
+      },
+      "position": [0, 0, 5.92],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3b2716",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_83",
+      "name": "Gate merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 1.8
+      },
+      "position": [-1.3, 4.45, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_84",
+      "name": "Gate merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 1.8
+      },
+      "position": [-0.434, 4.45, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_85",
+      "name": "Gate merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 1.8
+      },
+      "position": [0.432, 4.45, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_86",
+      "name": "Gate merlon",
+      "shape": {
+        "type": "box",
+        "width": 0.45,
+        "height": 0.5,
+        "depth": 1.8
+      },
+      "position": [1.298, 4.45, 5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#857f75",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_87",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-26.5882, 0.73542, -1.9391],
+      "rotation": [0, 0, 0],
+      "scale": [1.2257, 1.2257, 1.2257],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_88",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-26.5882, 2.9417, -1.9391],
+      "rotation": [0, 0, 0],
+      "scale": [1.2257, 1.2257, 1.2257],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_89",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-28.4504, 0.70596, -18.0947],
+      "rotation": [0, 0, 0],
+      "scale": [1.1766, 1.1766, 1.1766],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_90",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-28.4504, 2.8238, -18.0947],
+      "rotation": [0, 0, 0],
+      "scale": [1.1766, 1.1766, 1.1766],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_91",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [23.37, 0.73524, 12.8528],
+      "rotation": [0, 0, 0],
+      "scale": [1.2254, 1.2254, 1.2254],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_92",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [23.37, 2.941, 12.8528],
+      "rotation": [0, 0, 0],
+      "scale": [1.2254, 1.2254, 1.2254],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_93",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-24.326, 0.8343, 7.8491],
+      "rotation": [0, 0, 0],
+      "scale": [1.3905, 1.3905, 1.3905],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_94",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-24.326, 3.3372, 7.8491],
+      "rotation": [0, 0, 0],
+      "scale": [1.3905, 1.3905, 1.3905],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_95",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-26.0632, 0.7662599999999999, 14.3335],
+      "rotation": [0, 0, 0],
+      "scale": [1.2771, 1.2771, 1.2771],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_96",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-26.0632, 3.065, 14.3335],
+      "rotation": [0, 0, 0],
+      "scale": [1.2771, 1.2771, 1.2771],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_97",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [10.0599, 0.59598, 16.0325],
+      "rotation": [0, 0, 0],
+      "scale": [0.9933, 0.9933, 0.9933],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_98",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [10.0599, 2.3839, 16.0325],
+      "rotation": [0, 0, 0],
+      "scale": [0.9933, 0.9933, 0.9933],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_99",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-18.4872, 0.72468, 14.1702],
+      "rotation": [0, 0, 0],
+      "scale": [1.2078, 1.2078, 1.2078],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_100",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-18.4872, 2.8987, 14.1702],
+      "rotation": [0, 0, 0],
+      "scale": [1.2078, 1.2078, 1.2078],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_101",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [19.5824, 0.72216, 20.2028],
+      "rotation": [0, 0, 0],
+      "scale": [1.2036, 1.2036, 1.2036],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_102",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [19.5824, 2.8886, 20.2028],
+      "rotation": [0, 0, 0],
+      "scale": [1.2036, 1.2036, 1.2036],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_103",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-29.2584, 0.8182799999999999, 16.466],
+      "rotation": [0, 0, 0],
+      "scale": [1.3638, 1.3638, 1.3638],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_104",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-29.2584, 3.2731, 16.466],
+      "rotation": [0, 0, 0],
+      "scale": [1.3638, 1.3638, 1.3638],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_105",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [2.5918, 0.7417199999999999, -21.8341],
+      "rotation": [0, 0, 0],
+      "scale": [1.2362, 1.2362, 1.2362],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_106",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [2.5918, 2.9669, -21.8341],
+      "rotation": [0, 0, 0],
+      "scale": [1.2362, 1.2362, 1.2362],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_107",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-2.0839, 0.60468, -36.4492],
+      "rotation": [0, 0, 0],
+      "scale": [1.0078, 1.0078, 1.0078],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_108",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-2.0839, 2.4187, -36.4492],
+      "rotation": [0, 0, 0],
+      "scale": [1.0078, 1.0078, 1.0078],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_109",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [18.98, 0.6257999999999999, 24.9618],
+      "rotation": [0, 0, 0],
+      "scale": [1.043, 1.043, 1.043],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_110",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [18.98, 2.5032, 24.9618],
+      "rotation": [0, 0, 0],
+      "scale": [1.043, 1.043, 1.043],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_111",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-26.1403, 0.8351399999999999, -9.1238],
+      "rotation": [0, 0, 0],
+      "scale": [1.3919, 1.3919, 1.3919],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_112",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-26.1403, 3.3406, -9.1238],
+      "rotation": [0, 0, 0],
+      "scale": [1.3919, 1.3919, 1.3919],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_113",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [20.9477, 0.82452, 26.3903],
+      "rotation": [0, 0, 0],
+      "scale": [1.3742, 1.3742, 1.3742],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_114",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [20.9477, 3.2981, 26.3903],
+      "rotation": [0, 0, 0],
+      "scale": [1.3742, 1.3742, 1.3742],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_115",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-11.6522, 0.51222, 10.3108],
+      "rotation": [0, 0, 0],
+      "scale": [0.8537, 0.8537, 0.8537],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_116",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-11.6522, 2.0489, 10.3108],
+      "rotation": [0, 0, 0],
+      "scale": [0.8537, 0.8537, 0.8537],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_117",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [14.0791, 0.7009799999999999, -21.7864],
+      "rotation": [0, 0, 0],
+      "scale": [1.1683, 1.1683, 1.1683],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_118",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [14.0791, 2.8039, -21.7864],
+      "rotation": [0, 0, 0],
+      "scale": [1.1683, 1.1683, 1.1683],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_119",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-3.3341, 0.7884, 25.8299],
+      "rotation": [0, 0, 0],
+      "scale": [1.314, 1.314, 1.314],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_120",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-3.3341, 3.1536, 25.8299],
+      "rotation": [0, 0, 0],
+      "scale": [1.314, 1.314, 1.314],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_121",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [24.7366, 0.49895999999999996, 15.4596],
+      "rotation": [0, 0, 0],
+      "scale": [0.8316, 0.8316, 0.8316],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_122",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [24.7366, 1.9958, 15.4596],
+      "rotation": [0, 0, 0],
+      "scale": [0.8316, 0.8316, 0.8316],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_123",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-27.2244, 0.89346, 9.8907],
+      "rotation": [0, 0, 0],
+      "scale": [1.4891, 1.4891, 1.4891],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_124",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-27.2244, 3.5738, 9.8907],
+      "rotation": [0, 0, 0],
+      "scale": [1.4891, 1.4891, 1.4891],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_125",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-22.7284, 0.6282, 11.0124],
+      "rotation": [0, 0, 0],
+      "scale": [1.047, 1.047, 1.047],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_126",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-22.7284, 2.5128, 11.0124],
+      "rotation": [0, 0, 0],
+      "scale": [1.047, 1.047, 1.047],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_127",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [29.7134, 0.65616, 9.3004],
+      "rotation": [0, 0, 0],
+      "scale": [1.0936, 1.0936, 1.0936],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_128",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [29.7134, 2.6246, 9.3004],
+      "rotation": [0, 0, 0],
+      "scale": [1.0936, 1.0936, 1.0936],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_129",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [1.2838, 0.7130399999999999, -21.5702],
+      "rotation": [0, 0, 0],
+      "scale": [1.1884, 1.1884, 1.1884],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_130",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [1.2838, 2.8522, -21.5702],
+      "rotation": [0, 0, 0],
+      "scale": [1.1884, 1.1884, 1.1884],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_131",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-19.3375, 0.54726, 27.3955],
+      "rotation": [0, 0, 0],
+      "scale": [0.9121, 0.9121, 0.9121],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_132",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-19.3375, 2.189, 27.3955],
+      "rotation": [0, 0, 0],
+      "scale": [0.9121, 0.9121, 0.9121],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_133",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [21.2176, 0.7418999999999999, 19.5705],
+      "rotation": [0, 0, 0],
+      "scale": [1.2365, 1.2365, 1.2365],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_134",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [21.2176, 2.9676, 19.5705],
+      "rotation": [0, 0, 0],
+      "scale": [1.2365, 1.2365, 1.2365],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_135",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [16.3003, 0.63858, 16.3988],
+      "rotation": [0, 0, 0],
+      "scale": [1.0643, 1.0643, 1.0643],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_136",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [16.3003, 2.5543, 16.3988],
+      "rotation": [0, 0, 0],
+      "scale": [1.0643, 1.0643, 1.0643],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_137",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [31.178, 0.7445399999999999, -12.9593],
+      "rotation": [0, 0, 0],
+      "scale": [1.2409, 1.2409, 1.2409],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_138",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [31.178, 2.9782, -12.9593],
+      "rotation": [0, 0, 0],
+      "scale": [1.2409, 1.2409, 1.2409],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_139",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-29.8349, 0.7266, 18.7042],
+      "rotation": [0, 0, 0],
+      "scale": [1.211, 1.211, 1.211],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_140",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-29.8349, 2.9064, 18.7042],
+      "rotation": [0, 0, 0],
+      "scale": [1.211, 1.211, 1.211],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_141",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-19.9745, 0.69612, 8.6647],
+      "rotation": [0, 0, 0],
+      "scale": [1.1602, 1.1602, 1.1602],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_142",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-19.9745, 2.7845, 8.6647],
+      "rotation": [0, 0, 0],
+      "scale": [1.1602, 1.1602, 1.1602],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_143",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [34.3255, 0.6066600000000001, 1.8553],
+      "rotation": [0, 0, 0],
+      "scale": [1.0111, 1.0111, 1.0111],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_144",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [34.3255, 2.4266, 1.8553],
+      "rotation": [0, 0, 0],
+      "scale": [1.0111, 1.0111, 1.0111],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_145",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-14.8469, 0.5134799999999999, 9.6672],
+      "rotation": [0, 0, 0],
+      "scale": [0.8558, 0.8558, 0.8558],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_146",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-14.8469, 2.0539, 9.6672],
+      "rotation": [0, 0, 0],
+      "scale": [0.8558, 0.8558, 0.8558],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_147",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-0.8304, 0.6959399999999999, -26.9666],
+      "rotation": [0, 0, 0],
+      "scale": [1.1599, 1.1599, 1.1599],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_148",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-0.8304, 2.7838, -26.9666],
+      "rotation": [0, 0, 0],
+      "scale": [1.1599, 1.1599, 1.1599],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_149",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [21.7525, 0.74124, 16.5174],
+      "rotation": [0, 0, 0],
+      "scale": [1.2354, 1.2354, 1.2354],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_150",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [21.7525, 2.965, 16.5174],
+      "rotation": [0, 0, 0],
+      "scale": [1.2354, 1.2354, 1.2354],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_151",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [27.0275, 0.7312199999999999, -24.0071],
+      "rotation": [0, 0, 0],
+      "scale": [1.2187, 1.2187, 1.2187],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_152",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [27.0275, 2.9249, -24.0071],
+      "rotation": [0, 0, 0],
+      "scale": [1.2187, 1.2187, 1.2187],
+      "material": {
+        "color": "#2f6b34",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_153",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [-21.9492, 0.68454, -16.7497],
+      "rotation": [0, 0, 0],
+      "scale": [1.1409, 1.1409, 1.1409],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_154",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [-21.9492, 2.7382, -16.7497],
+      "rotation": [0, 0, 0],
+      "scale": [1.1409, 1.1409, 1.1409],
+      "material": {
+        "color": "#3d7d3a",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_155",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.12,
+        "radiusBottom": 0.18,
+        "height": 1.2,
+        "segments": 8
+      },
+      "position": [24.3238, 0.75336, 16.404],
+      "rotation": [0, 0, 0],
+      "scale": [1.2556, 1.2556, 1.2556],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_156",
+      "name": "Tree",
+      "shape": {
+        "type": "cone",
+        "radius": 1,
+        "height": 2.8,
+        "segments": 9
+      },
+      "position": [24.3238, 3.0134, 16.404],
+      "rotation": [0, 0, 0],
+      "scale": [1.2556, 1.2556, 1.2556],
+      "material": {
+        "color": "#285c2e",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    }
+  ]
+}

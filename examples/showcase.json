@@ -1,0 +1,282 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 28,
+    "pitch": 24,
+    "distance": 10.5,
+    "target": [0, 0.9, 0]
+  },
+  "environment": {
+    "background": {
+      "top": "#171a21",
+      "bottom": "#545a66"
+    },
+    "fog": {
+      "near": 16,
+      "far": 45
+    },
+    "light": {
+      "direction": [0.55, 0.85, 0.4],
+      "color": "#fff5e6"
+    },
+    "ground": true
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Torus knot",
+      "shape": {
+        "type": "tube",
+        "path": {
+          "type": "torusKnot",
+          "p": 2,
+          "q": 3,
+          "steps": 256,
+          "size": 1.6
+        },
+        "radius": 0.14,
+        "sides": 12
+      },
+      "position": [0, 1.7, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f28c33",
+        "specular": 0.6,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Vase",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.3071, 0],
+          [0.3482, 0.0475],
+          [0.3855, 0.095],
+          [0.4145, 0.1425],
+          [0.4336, 0.19],
+          [0.4437, 0.2375],
+          [0.4484, 0.285],
+          [0.4526, 0.3325],
+          [0.4612, 0.38],
+          [0.4779, 0.4275],
+          [0.5038, 0.475],
+          [0.5371, 0.5225],
+          [0.5739, 0.57],
+          [0.6084, 0.6175],
+          [0.6351, 0.665],
+          [0.6499, 0.7125],
+          [0.6512, 0.76],
+          [0.6401, 0.8075],
+          [0.6205, 0.855],
+          [0.5976, 0.9025],
+          [0.5769, 0.95],
+          [0.5624, 0.9975],
+          [0.5558, 1.045],
+          [0.5559, 1.0925],
+          [0.5593, 1.14],
+          [0.5607, 1.1875],
+          [0.5553, 1.235],
+          [0.5392, 1.2825],
+          [0.5112, 1.33],
+          [0.473, 1.3775],
+          [0.4286, 1.425],
+          [0.3838, 1.4725],
+          [0.3443, 1.52],
+          [0.3145, 1.5675],
+          [0.2963, 1.615],
+          [0.2889, 1.6625],
+          [0.2889, 1.71],
+          [0.2913, 1.7575],
+          [0.2909, 1.805],
+          [0.2841, 1.8525],
+          [0.2692, 1.9]
+        ],
+        "segments": 48
+      },
+      "position": [3.4, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4d99d9",
+        "specular": 0.5,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": true
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Twisted column",
+      "shape": {
+        "type": "sweep",
+        "shape": {
+          "type": "star",
+          "points": 6,
+          "outer": 0.45,
+          "inner": 0.28
+        },
+        "path": {
+          "type": "line",
+          "from": [0, 0, 0],
+          "to": [0, 1.9, 0],
+          "steps": 60
+        },
+        "twist": 180
+      },
+      "position": [2.1199, 0, 2.6582],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9cc59",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Star",
+      "shape": {
+        "type": "extrude",
+        "shape": {
+          "type": "star",
+          "points": 5,
+          "outer": 0.75,
+          "inner": 0.32
+        },
+        "depth": 0.3
+      },
+      "position": [-0.7566, 1, 3.3148],
+      "rotation": [0, 30, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d94d59",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Chrome sphere",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 40,
+        "rings": 20
+      },
+      "position": [-3.0633, 0.65, 1.4752],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ccd1db",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Torus",
+      "shape": {
+        "type": "torus",
+        "radius": 0.55,
+        "tube": 0.2
+      },
+      "position": [-3.0633, 0.8, -1.4752],
+      "rotation": [70, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#59bf73",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Spring",
+      "shape": {
+        "type": "tube",
+        "path": {
+          "type": "helix",
+          "radius": 0.4,
+          "height": 1.6,
+          "turns": 5,
+          "steps": 300
+        },
+        "radius": 0.07,
+        "sides": 10
+      },
+      "position": [-0.7566, 0.1, -3.3148],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#bfbfcc",
+        "specular": 0.8,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Base",
+      "shape": {
+        "type": "box",
+        "width": 0.9,
+        "height": 0.4,
+        "depth": 0.9
+      },
+      "position": [2.1199, 0.2, -2.6582],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a673d9",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Spire",
+      "shape": {
+        "type": "cone",
+        "radius": 0.3,
+        "height": 1
+      },
+      "position": [2.1199, 0.9, -2.6582],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a673d9",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    }
+  ]
+}

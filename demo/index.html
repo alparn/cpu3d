@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cpu3d benchmark demo</title>
+  <style>
+    :root { --panel: rgba(16, 18, 22, 0.82); --line: rgba(255, 255, 255, 0.09); --text: #e6e8ec; --dim: #8c929c; --accent: #f0a050; }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html, body { margin: 0; height: 100%; background: #15171b; color: var(--text); overflow: hidden;
+      font: 13px/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    #view { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; image-rendering: pixelated; touch-action: none; cursor: grab; }
+    #view:active { cursor: grabbing; }
+    .card { position: fixed; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    #panel { top: 12px; left: 12px; width: 236px; padding: 12px 14px; display: grid; gap: 9px; }
+    #panel h1 { margin: 0 0 2px; font-size: 14px; letter-spacing: 0.02em; }
+    #panel h1 span { color: var(--dim); font-weight: 400; }
+    label.row { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--dim); }
+    select, input[type=range] { width: 130px; accent-color: var(--accent); }
+    select { background: #22252b; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; font: inherit; }
+    .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; color: var(--dim); }
+    .checks label { display: flex; gap: 6px; align-items: center; }
+    input[type=checkbox] { accent-color: var(--accent); margin: 0; }
+    .hint { color: var(--dim); font-size: 11.5px; border-top: 1px solid var(--line); padding-top: 8px; }
+    #stats { top: 12px; right: 12px; margin: 0; padding: 10px 12px; min-width: 210px;
+      font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
+    #stats b { color: var(--accent); font-weight: 600; }
+    #drop { position: fixed; inset: 0; display: none; place-items: center; font-size: 20px;
+      background: rgba(240, 160, 80, 0.12); border: 2px dashed var(--accent); }
+    #drop.on { display: grid; }
+    @media (max-width: 640px) {
+      #panel { top: auto; bottom: 12px; left: 12px; right: 12px; width: auto; }
+      #stats { left: 12px; right: auto; min-width: 0; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <aside id="panel" class="card">
+    <h1>cpu3d <span>· benchmark demo</span></h1>
+    <label class="row">Scene
+      <select id="scene">
+        <option value="showcase">Showcase</option>
+        <option value="terrain">Terrain (97k △)</option>
+        <option value="stress">Stress test</option>
+        <option value="obj">OBJ model</option>
+      </select>
+    </label>
+    <label class="row" id="countRow" hidden>Count <input id="count" type="range" min="1" max="14" value="6"></label>
+    <label class="row">Shading
+      <select id="shading">
+        <option value="gouraud">Gouraud</option>
+        <option value="flat">Flat</option>
+        <option value="normals">Normals</option>
+      </select>
+    </label>
+    <label class="row">Resolution
+      <select id="res">
+        <option value="0.25">25 %</option>
+        <option value="0.5">50 %</option>
+        <option value="0.75">75 %</option>
+        <option value="1" selected>100 %</option>
+        <option value="dpr">Retina (DPR)</option>
+      </select>
+    </label>
+    <div class="checks">
+      <label><input type="checkbox" id="wire"> Wireframe</label>
+      <label><input type="checkbox" id="cull" checked> Culling</label>
+      <label><input type="checkbox" id="fog" checked> Fog</label>
+      <label><input type="checkbox" id="anim" checked> Animate</label>
+    </div>
+    <div class="hint">Drag to rotate · wheel / pinch to zoom<br>Drop an .obj file to load it</div>
+  </aside>
+
+  <pre id="stats" class="card"></pre>
+  <div id="drop">Drop .obj here</div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

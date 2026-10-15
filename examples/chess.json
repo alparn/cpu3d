@@ -1,0 +1,3006 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 20,
+    "pitch": 30,
+    "distance": 10.5,
+    "target": [0, 0.2, 0.4]
+  },
+  "environment": {
+    "background": {
+      "top": "#1d1814",
+      "bottom": "#4a3b2e"
+    },
+    "fog": null,
+    "light": {
+      "direction": [-0.5, 0.9, 0.6],
+      "color": "#fff3e0"
+    },
+    "ground": false
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Square a1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Square a2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Square a3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Square a4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Square a5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Square a6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Square a7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Square a8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-3.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Square b1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_10",
+      "name": "Square b2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_11",
+      "name": "Square b3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_12",
+      "name": "Square b4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_13",
+      "name": "Square b5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_14",
+      "name": "Square b6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_15",
+      "name": "Square b7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_16",
+      "name": "Square b8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-2.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_17",
+      "name": "Square c1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_18",
+      "name": "Square c2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_19",
+      "name": "Square c3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_20",
+      "name": "Square c4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_21",
+      "name": "Square c5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_22",
+      "name": "Square c6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_23",
+      "name": "Square c7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_24",
+      "name": "Square c8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-1.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_25",
+      "name": "Square d1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_26",
+      "name": "Square d2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_27",
+      "name": "Square d3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_28",
+      "name": "Square d4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_29",
+      "name": "Square d5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_30",
+      "name": "Square d6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_31",
+      "name": "Square d7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_32",
+      "name": "Square d8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [-0.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_33",
+      "name": "Square e1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_34",
+      "name": "Square e2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_35",
+      "name": "Square e3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_36",
+      "name": "Square e4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_37",
+      "name": "Square e5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_38",
+      "name": "Square e6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_39",
+      "name": "Square e7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_40",
+      "name": "Square e8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [0.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_41",
+      "name": "Square f1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_42",
+      "name": "Square f2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_43",
+      "name": "Square f3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_44",
+      "name": "Square f4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_45",
+      "name": "Square f5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_46",
+      "name": "Square f6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_47",
+      "name": "Square f7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_48",
+      "name": "Square f8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [1.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_49",
+      "name": "Square g1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_50",
+      "name": "Square g2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_51",
+      "name": "Square g3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_52",
+      "name": "Square g4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_53",
+      "name": "Square g5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_54",
+      "name": "Square g6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_55",
+      "name": "Square g7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_56",
+      "name": "Square g8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [2.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_57",
+      "name": "Square h1",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_58",
+      "name": "Square h2",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_59",
+      "name": "Square h3",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_60",
+      "name": "Square h4",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_61",
+      "name": "Square h5",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_62",
+      "name": "Square h6",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_63",
+      "name": "Square h7",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9dcc0",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_64",
+      "name": "Square h8",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 0.2,
+        "depth": 1
+      },
+      "position": [3.5, 0.1, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6b4a2f",
+        "specular": 0.35,
+        "shininess": 40,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_65",
+      "name": "Frame",
+      "shape": {
+        "type": "box",
+        "width": 8.9,
+        "height": 0.3,
+        "depth": 0.6
+      },
+      "position": [0, 0.15, 4.3],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3d2716",
+        "specular": 0.4,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_66",
+      "name": "Frame",
+      "shape": {
+        "type": "box",
+        "width": 8.9,
+        "height": 0.3,
+        "depth": 0.6
+      },
+      "position": [0, 0.15, -4.3],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3d2716",
+        "specular": 0.4,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_67",
+      "name": "Frame",
+      "shape": {
+        "type": "box",
+        "width": 0.6,
+        "height": 0.3,
+        "depth": 8
+      },
+      "position": [4.3, 0.15, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3d2716",
+        "specular": 0.4,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_68",
+      "name": "Frame",
+      "shape": {
+        "type": "box",
+        "width": 0.6,
+        "height": 0.3,
+        "depth": 8
+      },
+      "position": [-4.3, 0.15, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3d2716",
+        "specular": 0.4,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_69",
+      "name": "Table",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 9,
+        "radiusBottom": 9,
+        "height": 0.4,
+        "segments": 64
+      },
+      "position": [0, -0.2, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2a201a",
+        "specular": 0.2,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_70",
+      "name": "White rook",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.36, 0],
+          [0.36, 0.06],
+          [0.3312, 0.1],
+          [0.288, 0.13],
+          [0.26, 0.2],
+          [0.21, 0.7],
+          [0.28, 0.74],
+          [0.3, 0.95],
+          [0.21, 0.95],
+          [0.21, 0.87],
+          [0, 0.87]
+        ],
+        "segments": 32
+      },
+      "position": [-3.5, 0.2, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_71",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-3.5, 0.2, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_72",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-3.5, 0.2, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_73",
+      "name": "Black rook",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.36, 0],
+          [0.36, 0.06],
+          [0.3312, 0.1],
+          [0.288, 0.13],
+          [0.26, 0.2],
+          [0.21, 0.7],
+          [0.28, 0.74],
+          [0.3, 0.95],
+          [0.21, 0.95],
+          [0.21, 0.87],
+          [0, 0.87]
+        ],
+        "segments": 32
+      },
+      "position": [-3.5, 0.2, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_74",
+      "name": "White knight",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.35, 0],
+          [0.35, 0.06],
+          [0.322, 0.1],
+          [0.28, 0.13],
+          [0.26, 0.18],
+          [0.24, 0.25],
+          [0, 0.25]
+        ],
+        "segments": 32
+      },
+      "position": [-2.5, 0.2, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_75",
+      "name": "White knight head",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [-0.2, 0],
+          [0.2, 0],
+          [0.16, 0.22],
+          [0.08, 0.38],
+          [0.3, 0.52],
+          [0.36, 0.63],
+          [0.3, 0.71],
+          [0.1, 0.72],
+          [0.03, 0.84],
+          [-0.06, 0.78],
+          [-0.18, 0.66],
+          [-0.24, 0.45],
+          [-0.25, 0.2]
+        ],
+        "depth": 0.26
+      },
+      "position": [-2.5, 0.43, 3.5],
+      "rotation": [0, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_76",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-2.5, 0.2, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_77",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-2.5, 0.2, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_78",
+      "name": "Black knight",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.35, 0],
+          [0.35, 0.06],
+          [0.322, 0.1],
+          [0.28, 0.13],
+          [0.26, 0.18],
+          [0.24, 0.25],
+          [0, 0.25]
+        ],
+        "segments": 32
+      },
+      "position": [-1.5, 0.2, -1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_79",
+      "name": "Black knight head",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [-0.2, 0],
+          [0.2, 0],
+          [0.16, 0.22],
+          [0.08, 0.38],
+          [0.3, 0.52],
+          [0.36, 0.63],
+          [0.3, 0.71],
+          [0.1, 0.72],
+          [0.03, 0.84],
+          [-0.06, 0.78],
+          [-0.18, 0.66],
+          [-0.24, 0.45],
+          [-0.25, 0.2]
+        ],
+        "depth": 0.26
+      },
+      "position": [-1.5, 0.43, -1.5],
+      "rotation": [0, -90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_80",
+      "name": "White bishop",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.34, 0],
+          [0.34, 0.06],
+          [0.3128, 0.1],
+          [0.272, 0.13],
+          [0.22, 0.18],
+          [0.12, 0.62],
+          [0.2, 0.66],
+          [0.2, 0.69],
+          [0.1, 0.72],
+          [0.0634, 0.7101],
+          [0.0904, 0.7304],
+          [0.1135, 0.7574],
+          [0.1315, 0.7898],
+          [0.1437, 0.8262],
+          [0.1495, 0.865],
+          [0.1487, 0.9045],
+          [0.1413, 0.9428],
+          [0.1277, 0.9784],
+          [0.1084, 1.0097],
+          [0.0842, 1.0351],
+          [0.0564, 1.0537],
+          [0.026, 1.0647],
+          [0.025, 1.0567],
+          [0.041, 1.0713],
+          [0.0492, 1.0913],
+          [0.0483, 1.1129],
+          [0.0383, 1.1321],
+          [0.0211, 1.1453],
+          [0, 1.15]
+        ],
+        "segments": 32
+      },
+      "position": [-1.5, 0.2, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_81",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-1.5, 0.2, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_82",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-1.5, 0.2, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_83",
+      "name": "Black bishop",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.34, 0],
+          [0.34, 0.06],
+          [0.3128, 0.1],
+          [0.272, 0.13],
+          [0.22, 0.18],
+          [0.12, 0.62],
+          [0.2, 0.66],
+          [0.2, 0.69],
+          [0.1, 0.72],
+          [0.0634, 0.7101],
+          [0.0904, 0.7304],
+          [0.1135, 0.7574],
+          [0.1315, 0.7898],
+          [0.1437, 0.8262],
+          [0.1495, 0.865],
+          [0.1487, 0.9045],
+          [0.1413, 0.9428],
+          [0.1277, 0.9784],
+          [0.1084, 1.0097],
+          [0.0842, 1.0351],
+          [0.0564, 1.0537],
+          [0.026, 1.0647],
+          [0.025, 1.0567],
+          [0.041, 1.0713],
+          [0.0492, 1.0913],
+          [0.0483, 1.1129],
+          [0.0383, 1.1321],
+          [0.0211, 1.1453],
+          [0, 1.15]
+        ],
+        "segments": 32
+      },
+      "position": [-1.5, 0.2, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_84",
+      "name": "White queen",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.37, 0],
+          [0.37, 0.06],
+          [0.3404, 0.1],
+          [0.296, 0.13],
+          [0.24, 0.2],
+          [0.13, 0.82],
+          [0.22, 0.87],
+          [0.22, 0.91],
+          [0.13, 0.94],
+          [0.21, 1.13],
+          [0.25, 1.17],
+          [0.15, 1.14],
+          [0.07, 1.16],
+          [0.045, 1.1664],
+          [0.059, 1.1824],
+          [0.0676, 1.2019],
+          [0.0699, 1.2231],
+          [0.0658, 1.2439],
+          [0.0555, 1.2626],
+          [0.0402, 1.2773],
+          [0.021, 1.2868],
+          [0, 1.29]
+        ],
+        "segments": 32
+      },
+      "position": [-0.5, 0.2, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_85",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-0.5, 0.2, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_86",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [-0.5, 0.2, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_87",
+      "name": "Black queen",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.37, 0],
+          [0.37, 0.06],
+          [0.3404, 0.1],
+          [0.296, 0.13],
+          [0.24, 0.2],
+          [0.13, 0.82],
+          [0.22, 0.87],
+          [0.22, 0.91],
+          [0.13, 0.94],
+          [0.21, 1.13],
+          [0.25, 1.17],
+          [0.15, 1.14],
+          [0.07, 1.16],
+          [0.045, 1.1664],
+          [0.059, 1.1824],
+          [0.0676, 1.2019],
+          [0.0699, 1.2231],
+          [0.0658, 1.2439],
+          [0.0555, 1.2626],
+          [0.0402, 1.2773],
+          [0.021, 1.2868],
+          [0, 1.29]
+        ],
+        "segments": 32
+      },
+      "position": [-0.5, 0.2, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_88",
+      "name": "White king",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.38, 0],
+          [0.38, 0.06],
+          [0.3496, 0.1],
+          [0.304, 0.13],
+          [0.25, 0.2],
+          [0.14, 0.86],
+          [0.23, 0.91],
+          [0.23, 0.95],
+          [0.14, 0.98],
+          [0.22, 1.19],
+          [0.13, 1.25],
+          [0, 1.25]
+        ],
+        "segments": 32
+      },
+      "position": [0.5, 0.2, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_89",
+      "name": "White king cross",
+      "shape": {
+        "type": "box",
+        "width": 0.07,
+        "height": 0.26,
+        "depth": 0.07
+      },
+      "position": [0.5, 1.57, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_90",
+      "name": "White king cross bar",
+      "shape": {
+        "type": "box",
+        "width": 0.2,
+        "height": 0.07,
+        "depth": 0.07
+      },
+      "position": [0.5, 1.6, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_91",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [0.5, 0.2, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_92",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [0.5, 0.2, -0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_93",
+      "name": "Black king",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.38, 0],
+          [0.38, 0.06],
+          [0.3496, 0.1],
+          [0.304, 0.13],
+          [0.25, 0.2],
+          [0.14, 0.86],
+          [0.23, 0.91],
+          [0.23, 0.95],
+          [0.14, 0.98],
+          [0.22, 1.19],
+          [0.13, 1.25],
+          [0, 1.25]
+        ],
+        "segments": 32
+      },
+      "position": [0.5, 0.2, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_94",
+      "name": "Black king cross",
+      "shape": {
+        "type": "box",
+        "width": 0.07,
+        "height": 0.26,
+        "depth": 0.07
+      },
+      "position": [0.5, 1.57, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_95",
+      "name": "Black king cross bar",
+      "shape": {
+        "type": "box",
+        "width": 0.2,
+        "height": 0.07,
+        "depth": 0.07
+      },
+      "position": [0.5, 1.6, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_96",
+      "name": "White bishop",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.34, 0],
+          [0.34, 0.06],
+          [0.3128, 0.1],
+          [0.272, 0.13],
+          [0.22, 0.18],
+          [0.12, 0.62],
+          [0.2, 0.66],
+          [0.2, 0.69],
+          [0.1, 0.72],
+          [0.0634, 0.7101],
+          [0.0904, 0.7304],
+          [0.1135, 0.7574],
+          [0.1315, 0.7898],
+          [0.1437, 0.8262],
+          [0.1495, 0.865],
+          [0.1487, 0.9045],
+          [0.1413, 0.9428],
+          [0.1277, 0.9784],
+          [0.1084, 1.0097],
+          [0.0842, 1.0351],
+          [0.0564, 1.0537],
+          [0.026, 1.0647],
+          [0.025, 1.0567],
+          [0.041, 1.0713],
+          [0.0492, 1.0913],
+          [0.0483, 1.1129],
+          [0.0383, 1.1321],
+          [0.0211, 1.1453],
+          [0, 1.15]
+        ],
+        "segments": 32
+      },
+      "position": [-1.5, 0.2, 0.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_97",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [1.5, 0.2, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_98",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [1.5, 0.2, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_99",
+      "name": "Black bishop",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.34, 0],
+          [0.34, 0.06],
+          [0.3128, 0.1],
+          [0.272, 0.13],
+          [0.22, 0.18],
+          [0.12, 0.62],
+          [0.2, 0.66],
+          [0.2, 0.69],
+          [0.1, 0.72],
+          [0.0634, 0.7101],
+          [0.0904, 0.7304],
+          [0.1135, 0.7574],
+          [0.1315, 0.7898],
+          [0.1437, 0.8262],
+          [0.1495, 0.865],
+          [0.1487, 0.9045],
+          [0.1413, 0.9428],
+          [0.1277, 0.9784],
+          [0.1084, 1.0097],
+          [0.0842, 1.0351],
+          [0.0564, 1.0537],
+          [0.026, 1.0647],
+          [0.025, 1.0567],
+          [0.041, 1.0713],
+          [0.0492, 1.0913],
+          [0.0483, 1.1129],
+          [0.0383, 1.1321],
+          [0.0211, 1.1453],
+          [0, 1.15]
+        ],
+        "segments": 32
+      },
+      "position": [1.5, 0.2, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_100",
+      "name": "White knight",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.35, 0],
+          [0.35, 0.06],
+          [0.322, 0.1],
+          [0.28, 0.13],
+          [0.26, 0.18],
+          [0.24, 0.25],
+          [0, 0.25]
+        ],
+        "segments": 32
+      },
+      "position": [1.5, 0.2, 1.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_101",
+      "name": "White knight head",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [-0.2, 0],
+          [0.2, 0],
+          [0.16, 0.22],
+          [0.08, 0.38],
+          [0.3, 0.52],
+          [0.36, 0.63],
+          [0.3, 0.71],
+          [0.1, 0.72],
+          [0.03, 0.84],
+          [-0.06, 0.78],
+          [-0.18, 0.66],
+          [-0.24, 0.45],
+          [-0.25, 0.2]
+        ],
+        "depth": 0.26
+      },
+      "position": [1.5, 0.43, 1.5],
+      "rotation": [0, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_102",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [2.5, 0.2, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_103",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [2.5, 0.2, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_104",
+      "name": "Black knight",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.35, 0],
+          [0.35, 0.06],
+          [0.322, 0.1],
+          [0.28, 0.13],
+          [0.26, 0.18],
+          [0.24, 0.25],
+          [0, 0.25]
+        ],
+        "segments": 32
+      },
+      "position": [2.5, 0.2, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_105",
+      "name": "Black knight head",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [-0.2, 0],
+          [0.2, 0],
+          [0.16, 0.22],
+          [0.08, 0.38],
+          [0.3, 0.52],
+          [0.36, 0.63],
+          [0.3, 0.71],
+          [0.1, 0.72],
+          [0.03, 0.84],
+          [-0.06, 0.78],
+          [-0.18, 0.66],
+          [-0.24, 0.45],
+          [-0.25, 0.2]
+        ],
+        "depth": 0.26
+      },
+      "position": [2.5, 0.43, -3.5],
+      "rotation": [0, -90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_106",
+      "name": "White rook",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.36, 0],
+          [0.36, 0.06],
+          [0.3312, 0.1],
+          [0.288, 0.13],
+          [0.26, 0.2],
+          [0.21, 0.7],
+          [0.28, 0.74],
+          [0.3, 0.95],
+          [0.21, 0.95],
+          [0.21, 0.87],
+          [0, 0.87]
+        ],
+        "segments": 32
+      },
+      "position": [3.5, 0.2, 3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_107",
+      "name": "White pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [3.5, 0.2, 2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#efe6d2",
+        "specular": 0.6,
+        "shininess": 50,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_108",
+      "name": "Black pawn",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.33, 0],
+          [0.33, 0.06],
+          [0.3036, 0.1],
+          [0.264, 0.13],
+          [0.2, 0.18],
+          [0.12, 0.4],
+          [0.2, 0.43],
+          [0.2, 0.46],
+          [0.1, 0.49],
+          [0.0803, 0.4853],
+          [0.1025, 0.5047],
+          [0.1202, 0.5282],
+          [0.1326, 0.555],
+          [0.1391, 0.5837],
+          [0.1394, 0.6132],
+          [0.1335, 0.6421],
+          [0.1217, 0.6691],
+          [0.1046, 0.6931],
+          [0.0828, 0.7129],
+          [0.0573, 0.7277],
+          [0.0293, 0.7369],
+          [0, 0.74]
+        ],
+        "segments": 32
+      },
+      "position": [3.5, 0.2, -2.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_109",
+      "name": "Black rook",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 0],
+          [0.36, 0],
+          [0.36, 0.06],
+          [0.3312, 0.1],
+          [0.288, 0.13],
+          [0.26, 0.2],
+          [0.21, 0.7],
+          [0.28, 0.74],
+          [0.3, 0.95],
+          [0.21, 0.95],
+          [0.21, 0.87],
+          [0, 0.87]
+        ],
+        "segments": 32
+      },
+      "position": [3.5, 0.2, -3.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2522",
+        "specular": 0.9,
+        "shininess": 60,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    }
+  ]
+}

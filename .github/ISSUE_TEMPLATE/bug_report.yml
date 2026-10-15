@@ -1,0 +1,20 @@
+name: Bug report
+description: Something renders wrong, a tool fails, or an agent cannot connect
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the tool call or recipe if possible, and a screenshot for rendering issues.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "cpu3d 0.1.0, Node 22, macOS, Claude Code 2.x"

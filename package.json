@@ -1,0 +1,38 @@
+{
+  "name": "cpu3d",
+  "version": "0.1.0",
+  "description": "Agentic-first 3D modeling: AI agents build geometry over MCP, a tiny pure-JavaScript CPU rasterizer renders it. Zero dependencies, no GPU.",
+  "type": "module",
+  "bin": {
+    "cpu3d": "bin/cpu3d.js"
+  },
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./renderer": "./src/renderer.js",
+    "./geometry": "./src/geometry.js"
+  },
+  "files": ["bin", "server", "src", "editor", "index.html", "examples", "demo"],
+  "scripts": {
+    "start": "node bin/cpu3d.js serve",
+    "dev": "node bin/cpu3d.js serve --file scene.json",
+    "mcp": "node bin/cpu3d.js mcp",
+    "test": "node --test test/*.test.js",
+    "bench": "node bench.mjs showcase 1280 720 120",
+    "examples": "node examples/build.mjs"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": ["3d", "software-renderer", "rasterizer", "cpu", "mcp", "model-context-protocol", "ai-agents", "claude", "procedural-geometry", "geometry", "modeling", "javascript", "zero-dependencies"],
+  "author": "alparn",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alparn/cpu3d.git"
+  },
+  "homepage": "https://github.com/alparn/cpu3d#readme",
+  "bugs": {
+    "url": "https://github.com/alparn/cpu3d/issues"
+  }
+}

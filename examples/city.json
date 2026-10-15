@@ -1,0 +1,6109 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 35,
+    "pitch": 27,
+    "distance": 82,
+    "target": [0, 8, 0]
+  },
+  "environment": {
+    "background": {
+      "top": "#7fa6d6",
+      "bottom": "#e6edf3"
+    },
+    "fog": {
+      "near": 45,
+      "far": 120
+    },
+    "light": {
+      "direction": [0.6, 0.75, 0.3],
+      "color": "#fff6e8"
+    },
+    "ground": false
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Asphalt",
+      "shape": {
+        "type": "plane",
+        "width": 80,
+        "depth": 80
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3a3d42",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-27.5, 0.075, -27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7399,
+        "height": 4.8113,
+        "depth": 3.0213
+      },
+      "position": [-29.4, 2.55565, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-29, 5.1613, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3056,
+        "height": 6.026,
+        "depth": 3.1966
+      },
+      "position": [-25.6, 3.163, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-25.2, 6.376, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6031,
+        "height": 4.823,
+        "depth": 2.9766
+      },
+      "position": [-29.4, 2.5615, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-27.5, 0.075, -16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7486,
+        "height": 2.9867,
+        "depth": 3.2268
+      },
+      "position": [-29.4, 1.6433499999999999, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_10",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-29, 3.3367, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_11",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8556,
+        "height": 6.943,
+        "depth": 2.9599
+      },
+      "position": [-29.4, 3.6214999999999997, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_12",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-29, 7.293, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_13",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-27.5, 0.075, -5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_14",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7676,
+        "height": 5.5845,
+        "depth": 2.8429
+      },
+      "position": [-29.4, 2.94225, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_15",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8344,
+        "height": 5.0294,
+        "depth": 2.6598
+      },
+      "position": [-25.6, 2.6647, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_16",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.355,
+        "height": 9.3046,
+        "depth": 2.9449
+      },
+      "position": [-29.4, 4.802300000000001, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_17",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.3485,
+        "height": 4.9565,
+        "depth": 2.0614
+      },
+      "position": [-29.4, 11.9329, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_18",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-29.4, 15.6611, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_19",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-27.5, 0.075, 5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_20",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6621,
+        "height": 6.9159,
+        "depth": 3.1757
+      },
+      "position": [-25.6, 3.6079499999999998, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_21",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2575,
+        "height": 5.7037,
+        "depth": 2.6965
+      },
+      "position": [-29.4, 3.00185, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_22",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8696,
+        "height": 7.7844,
+        "depth": 3.077
+      },
+      "position": [-25.6, 4.0422, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_23",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-25.2, 8.1344, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_24",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-27.5, 0.075, 16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_25",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1561,
+        "height": 4.6307,
+        "depth": 3.3952
+      },
+      "position": [-29.4, 2.46535, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_26",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1574,
+        "height": 5.1348,
+        "depth": 2.8506
+      },
+      "position": [-25.6, 2.7174, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_27",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.704,
+        "height": 3.9071,
+        "depth": 3.3782
+      },
+      "position": [-29.4, 2.10355, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_28",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-29, 4.2571, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_29",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7307,
+        "height": 5.5182,
+        "depth": 3.1237
+      },
+      "position": [-25.6, 2.9091, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_30",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-25.2, 5.8682, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_31",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-27.5, 0.075, 27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_32",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2339,
+        "height": 5.5748,
+        "depth": 2.9144
+      },
+      "position": [-29.4, 2.9374, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_33",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-29, 5.9248, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_34",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1082,
+        "height": 3.4902,
+        "depth": 3.3007
+      },
+      "position": [-25.6, 1.8951, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_35",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.638,
+        "height": 5,
+        "depth": 3.1644
+      },
+      "position": [-29.4, 2.65, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_36",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7767,
+        "height": 3.5039,
+        "depth": 3.3948
+      },
+      "position": [-25.6, 1.9019499999999998, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_37",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-25.2, 3.8539, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_38",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-16.5, 0.075, -27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_39",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.834,
+        "height": 3.2062,
+        "depth": 2.9157
+      },
+      "position": [-18.4, 1.7530999999999999, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_40",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-18, 3.5562, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_41",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3165,
+        "height": 6.0292,
+        "depth": 2.8619
+      },
+      "position": [-14.6, 3.1646, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_42",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-14.2, 6.3792, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_43",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8603,
+        "height": 6.0851,
+        "depth": 2.839
+      },
+      "position": [-18.4, 3.1925499999999998, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_44",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-18, 6.4351, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_45",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8514,
+        "height": 3.4293,
+        "depth": 2.6999
+      },
+      "position": [-14.6, 1.86465, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_46",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-14.2, 3.7793, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_47",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-16.5, 0.075, -16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_48",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1696,
+        "height": 6.329,
+        "depth": 3.3301
+      },
+      "position": [-14.6, 3.3145, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_49",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2723,
+        "height": 8.9197,
+        "depth": 3.3156
+      },
+      "position": [-18.4, 4.609850000000001, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_50",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.2906,
+        "height": 3.4344,
+        "depth": 2.3209
+      },
+      "position": [-18.4, 10.7869, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_51",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-18.4, 13.7541, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_52",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0365,
+        "height": 6.7444,
+        "depth": 3.3876
+      },
+      "position": [-14.6, 3.5221999999999998, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_53",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-14.2, 7.0944, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_54",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-16.5, 0.075, -5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_55",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 13.5072,
+        "segments": 28
+      },
+      "position": [-18.4, 6.9036, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6f93b5",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_56",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [-18.4, 14.2572, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_57",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [-18.4, 16.3572, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_58",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1053,
+        "height": 13.029,
+        "depth": 3.2696
+      },
+      "position": [-14.6, 6.6645, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_59",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.1737,
+        "height": 6.5912,
+        "depth": 2.2887
+      },
+      "position": [-14.6, 16.4746, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_60",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 13.3962,
+        "segments": 28
+      },
+      "position": [-18.4, 6.8481000000000005, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#86a9c4",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_61",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [-18.4, 14.1462, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_62",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [-18.4, 16.2462, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_63",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.616,
+        "height": 12.5571,
+        "depth": 2.6684
+      },
+      "position": [-14.6, 6.42855, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_64",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.8312,
+        "height": 5.5791,
+        "depth": 1.8679
+      },
+      "position": [-14.6, 15.4967, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_65",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-16.5, 0.075, 5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_66",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7161,
+        "height": 10.6181,
+        "depth": 2.8185
+      },
+      "position": [-18.4, 5.45905, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_67",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.9013,
+        "height": 3.0977,
+        "depth": 1.9729
+      },
+      "position": [-18.4, 12.317, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_68",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-18.4, 15.1158, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_69",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2349,
+        "height": 9.9856,
+        "depth": 3.2278
+      },
+      "position": [-14.6, 5.1428, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_70",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.2644,
+        "height": 3.0833,
+        "depth": 2.2595
+      },
+      "position": [-14.6, 11.6773, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_71",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.94,
+        "height": 8.9048,
+        "depth": 2.8655
+      },
+      "position": [-18.4, 4.6024, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_72",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.058,
+        "height": 3.0479,
+        "depth": 2.0058
+      },
+      "position": [-18.4, 10.5788, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_73",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-18.4, 13.3527, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_74",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1179,
+        "height": 8.8733,
+        "depth": 2.9498
+      },
+      "position": [-14.6, 4.586650000000001, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_75",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.1825,
+        "height": 2.5772,
+        "depth": 2.0649
+      },
+      "position": [-14.6, 10.3119, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_76",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-14.6, 12.8505, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_77",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-16.5, 0.075, 16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_78",
+      "name": "Park lawn",
+      "shape": {
+        "type": "box",
+        "width": 7.4,
+        "height": 0.2,
+        "depth": 7.4
+      },
+      "position": [-16.5, 0.1, 16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d8c45",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_79",
+      "name": "Pond",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [1.7, 0.21],
+          [0, 0.21]
+        ],
+        "segments": 40
+      },
+      "position": [-15.5, 0, 17.3],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3b6f99",
+        "specular": 1.2,
+        "shininess": 70,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_80",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.08,
+        "radiusBottom": 0.1,
+        "height": 0.8,
+        "segments": 8
+      },
+      "position": [-18.6109, 0.6, 19.1594],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_81",
+      "name": "Tree",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.6109, 1.4, 19.1594],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3f7a35",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_82",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.08,
+        "radiusBottom": 0.1,
+        "height": 0.8,
+        "segments": 8
+      },
+      "position": [-19.0842, 0.6, 18.7239],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_83",
+      "name": "Tree",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-19.0842, 1.4, 18.7239],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3f7a35",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_84",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.08,
+        "radiusBottom": 0.1,
+        "height": 0.8,
+        "segments": 8
+      },
+      "position": [-18.9073, 0.6, 18.43],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_85",
+      "name": "Tree",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.9073, 1.4, 18.43],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3f7a35",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_86",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.08,
+        "radiusBottom": 0.1,
+        "height": 0.8,
+        "segments": 8
+      },
+      "position": [-19.1596, 0.6, 15.7237],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_87",
+      "name": "Tree",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-19.1596, 1.4, 15.7237],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3f7a35",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_88",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.08,
+        "radiusBottom": 0.1,
+        "height": 0.8,
+        "segments": 8
+      },
+      "position": [-18.1217, 0.6, 17.7166],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_89",
+      "name": "Tree",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-18.1217, 1.4, 17.7166],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3f7a35",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_90",
+      "name": "Trunk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.08,
+        "radiusBottom": 0.1,
+        "height": 0.8,
+        "segments": 8
+      },
+      "position": [-16.1157, 0.6, 14.0677],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5b3a22",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_91",
+      "name": "Tree",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 12,
+        "rings": 8
+      },
+      "position": [-16.1157, 1.4, 14.0677],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3f7a35",
+        "specular": 0,
+        "shininess": 24,
+        "flat": true,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_92",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-16.5, 0.075, 27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_93",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6625,
+        "height": 6.9184,
+        "depth": 2.6767
+      },
+      "position": [-18.4, 3.6092, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_94",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-18, 7.2684, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_95",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3813,
+        "height": 6.8431,
+        "depth": 2.6177
+      },
+      "position": [-14.6, 3.57155, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_96",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-14.2, 7.1931, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_97",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.764,
+        "height": 5.8221,
+        "depth": 3.3554
+      },
+      "position": [-18.4, 3.06105, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_98",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.148,
+        "height": 6.8458,
+        "depth": 3.0548
+      },
+      "position": [-14.6, 3.5728999999999997, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_99",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-5.5, 0.075, -27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_100",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1498,
+        "height": 7.6408,
+        "depth": 3.0434
+      },
+      "position": [-7.4, 3.9703999999999997, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_101",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-7, 7.9908, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_102",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1052,
+        "height": 9.6817,
+        "depth": 3.1343
+      },
+      "position": [-3.6, 4.99085, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_103",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.1736,
+        "height": 4.9319,
+        "depth": 2.194
+      },
+      "position": [-3.6, 12.2976, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_104",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-3.6, 16.0136, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_105",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8717,
+        "height": 7.5657,
+        "depth": 3.0263
+      },
+      "position": [-7.4, 3.9328499999999997, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_106",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8294,
+        "height": 8.8488,
+        "depth": 3.3692
+      },
+      "position": [-3.6, 4.574400000000001, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_107",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.9806,
+        "height": 3.5041,
+        "depth": 2.3584
+      },
+      "position": [-3.6, 10.7509, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_108",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-3.6, 13.7529, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_109",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-5.5, 0.075, -16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_110",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 13.1611,
+        "segments": 28
+      },
+      "position": [-7.4, 6.73055, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#86a9c4",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_111",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [-7.4, 13.9111, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_112",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [-7.4, 16.0111, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_113",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9999,
+        "height": 9.3347,
+        "depth": 3.3146
+      },
+      "position": [-3.6, 4.81735, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_114",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0999,
+        "height": 4.2247,
+        "depth": 2.3202
+      },
+      "position": [-3.6, 11.5971, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_115",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-3.6, 14.9594, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_116",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 12.3097,
+        "segments": 28
+      },
+      "position": [-7.4, 6.30485, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6f93b5",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_117",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [-7.4, 13.0597, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_118",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [-7.4, 15.159699999999999, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_119",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-5.5, 0.075, -5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_120",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6678,
+        "height": 18.7987,
+        "depth": 2.6262
+      },
+      "position": [-7.4, 9.54935, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_121",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.8675,
+        "height": 6.2239,
+        "depth": 1.8383
+      },
+      "position": [-7.4, 22.0607, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_122",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8761,
+        "height": 16.9888,
+        "depth": 2.6798
+      },
+      "position": [-3.6, 8.644400000000001, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_123",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0133,
+        "height": 7.4439,
+        "depth": 1.8759
+      },
+      "position": [-3.6, 20.8608, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_124",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-3.6, 25.8327, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_125",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0152,
+        "height": 7.9198,
+        "depth": 2.9905
+      },
+      "position": [-7.4, 4.1099000000000006, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_126",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-7, 8.2698, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_127",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-5.5, 0.075, 5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_128",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 21.7241,
+        "segments": 28
+      },
+      "position": [-7.4, 11.01205, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6f93b5",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_129",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [-7.4, 22.4741, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_130",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [-7.4, 24.5741, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_131",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.065,
+        "height": 7.2076,
+        "depth": 3.272
+      },
+      "position": [-3.6, 3.7538, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_132",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-3.2, 7.5576, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_133",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7635,
+        "height": 15.6991,
+        "depth": 3.2284
+      },
+      "position": [-7.4, 7.99955, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_134",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.9345,
+        "height": 6.3035,
+        "depth": 2.2599
+      },
+      "position": [-7.4, 19.0009, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_135",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-7.4, 23.4026, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_136",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-5.5, 0.075, 16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_137",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3613,
+        "height": 13.2474,
+        "depth": 2.7403
+      },
+      "position": [-7.4, 6.773700000000001, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_138",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.3529,
+        "height": 3.8901,
+        "depth": 1.9182
+      },
+      "position": [-7.4, 15.3425, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_139",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.708,
+        "height": 11.251,
+        "depth": 3.1279
+      },
+      "position": [-3.6, 5.7755, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_140",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.8956,
+        "height": 4.8473,
+        "depth": 2.1895
+      },
+      "position": [-3.6, 13.8247, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_141",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6399,
+        "height": 11.3956,
+        "depth": 3.366
+      },
+      "position": [-7.4, 5.8478, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_142",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.8479,
+        "height": 4.833,
+        "depth": 2.3562
+      },
+      "position": [-7.4, 13.9621, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_143",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [-7.4, 17.6286, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_144",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [-5.5, 0.075, 27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_145",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2902,
+        "height": 8.5651,
+        "depth": 2.9646
+      },
+      "position": [-7.4, 4.43255, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_146",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.3031,
+        "height": 2.6106,
+        "depth": 2.0752
+      },
+      "position": [-7.4, 10.0204, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_147",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7091,
+        "height": 6.9177,
+        "depth": 3.396
+      },
+      "position": [-3.6, 3.60885, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_148",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-3.2, 7.2677, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_149",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1394,
+        "height": 7.0615,
+        "depth": 2.7267
+      },
+      "position": [-7.4, 3.6807499999999997, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_150",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2098,
+        "height": 4.386,
+        "depth": 2.9568
+      },
+      "position": [-3.6, 2.343, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_151",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [-3.2, 4.736, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_152",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [5.5, 0.075, -27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_153",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8909,
+        "height": 4.1674,
+        "depth": 2.9408
+      },
+      "position": [3.6, 2.2337, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_154",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [4, 4.5174, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_155",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3209,
+        "height": 5.4164,
+        "depth": 3.2106
+      },
+      "position": [7.4, 2.8582, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_156",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9853,
+        "height": 5.0807,
+        "depth": 3.01
+      },
+      "position": [3.6, 2.69035, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_157",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [4, 5.4307, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_158",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.603,
+        "height": 4.3884,
+        "depth": 3.1529
+      },
+      "position": [7.4, 2.3442, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_159",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [7.8, 4.7384, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_160",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [5.5, 0.075, -16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_161",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3221,
+        "height": 15.0886,
+        "depth": 2.9697
+      },
+      "position": [3.6, 7.6943, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_162",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.3255,
+        "height": 3.9786,
+        "depth": 2.0788
+      },
+      "position": [3.6, 17.2279, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_163",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6971,
+        "height": 8.8913,
+        "depth": 3.1719
+      },
+      "position": [7.4, 4.59565, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_164",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.888,
+        "height": 3.8101,
+        "depth": 2.2203
+      },
+      "position": [7.4, 10.9463, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_165",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6498,
+        "height": 4.0075,
+        "depth": 3.0129
+      },
+      "position": [3.6, 2.15375, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_166",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [4, 4.3575, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_167",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1314,
+        "height": 10.8946,
+        "depth": 3.3874
+      },
+      "position": [7.4, 5.597300000000001, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_168",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.192,
+        "height": 5.9249,
+        "depth": 2.3712
+      },
+      "position": [7.4, 14.0071, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_169",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [5.5, 0.075, -5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_170",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 20.8144,
+        "segments": 28
+      },
+      "position": [3.6, 10.5572, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#86a9c4",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_171",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [3.6, 21.5644, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_172",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [3.6, 23.6644, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_173",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 18.0424,
+        "segments": 28
+      },
+      "position": [3.6, 9.1712, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#86a9c4",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_174",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [3.6, 18.7924, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_175",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [3.6, 20.892400000000002, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_176",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 17.8043,
+        "segments": 28
+      },
+      "position": [7.4, 9.052150000000001, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f7898",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_177",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [7.4, 18.5543, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_178",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [7.4, 20.654300000000003, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_179",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [5.5, 0.075, 5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_180",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0967,
+        "height": 4.751,
+        "depth": 2.8994
+      },
+      "position": [3.6, 2.5255, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_181",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 18.2774,
+        "segments": 28
+      },
+      "position": [7.4, 9.2887, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#86a9c4",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_182",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [7.4, 19.0274, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_183",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [7.4, 21.1274, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_184",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9051,
+        "height": 13.9602,
+        "depth": 3.2736
+      },
+      "position": [3.6, 7.1301000000000005, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_185",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0336,
+        "height": 6.1334,
+        "depth": 2.2915
+      },
+      "position": [3.6, 17.1769, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_186",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [3.6, 21.4936, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_187",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6597,
+        "height": 22.5117,
+        "depth": 3.1153
+      },
+      "position": [7.4, 11.405850000000001, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_188",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.8618,
+        "height": 11.0001,
+        "depth": 2.1807
+      },
+      "position": [7.4, 28.1618, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_189",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [7.4, 34.9118, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_190",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [5.5, 0.075, 16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_191",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7352,
+        "height": 9.6263,
+        "depth": 3.3812
+      },
+      "position": [3.6, 4.963150000000001, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_192",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.9146,
+        "height": 2.9301,
+        "depth": 2.3668
+      },
+      "position": [3.6, 11.2414, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_193",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3169,
+        "height": 10.2462,
+        "depth": 3.2173
+      },
+      "position": [7.4, 5.2731, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_194",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.3218,
+        "height": 2.562,
+        "depth": 2.2521
+      },
+      "position": [7.4, 11.6772, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_195",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [7.4, 14.2082, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_196",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.646,
+        "height": 2.3795,
+        "depth": 3.1961
+      },
+      "position": [7.4, 1.33975, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_197",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [5.5, 0.075, 27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_198",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1941,
+        "height": 6.9926,
+        "depth": 3.1221
+      },
+      "position": [7.4, 3.6463, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_199",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [7.8, 7.3426, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_200",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9321,
+        "height": 8.5155,
+        "depth": 3.0705
+      },
+      "position": [3.6, 4.40775, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_201",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0525,
+        "height": 3.1794,
+        "depth": 2.1493
+      },
+      "position": [3.6, 10.2552, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_202",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8255,
+        "height": 5.9956,
+        "depth": 3.3386
+      },
+      "position": [7.4, 3.1477999999999997, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_203",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [16.5, 0.075, -27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_204",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3831,
+        "height": 5.4757,
+        "depth": 3.313
+      },
+      "position": [14.6, 2.88785, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_205",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7866,
+        "height": 7.276,
+        "depth": 2.7206
+      },
+      "position": [18.4, 3.788, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_206",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [18.8, 7.626, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_207",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1214,
+        "height": 7.1692,
+        "depth": 3.0828
+      },
+      "position": [14.6, 3.7346, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_208",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.845,
+        "height": 6.5744,
+        "depth": 3.01
+      },
+      "position": [18.4, 3.4372, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_209",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [18.8, 6.9244, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_210",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [16.5, 0.075, -16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_211",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8527,
+        "height": 10.011,
+        "depth": 3.0084
+      },
+      "position": [14.6, 5.1555, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_212",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.9969,
+        "height": 3.5975,
+        "depth": 2.1059
+      },
+      "position": [14.6, 11.9598, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_213",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [14.6, 15.0085, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_214",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0324,
+        "height": 10.8182,
+        "depth": 3.3108
+      },
+      "position": [18.4, 5.5591, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_215",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.1227,
+        "height": 4.6107,
+        "depth": 2.3176
+      },
+      "position": [18.4, 13.2735, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_216",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1282,
+        "height": 7.828,
+        "depth": 3.1005
+      },
+      "position": [14.6, 4.064, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_217",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [15, 8.178, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_218",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8613,
+        "height": 7.1801,
+        "depth": 2.6152
+      },
+      "position": [18.4, 3.74005, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_219",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [18.8, 7.5301, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_220",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [16.5, 0.075, -5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_221",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1598,
+        "height": 3.5949,
+        "depth": 2.7093
+      },
+      "position": [14.6, 1.94745, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_222",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.88,
+        "height": 9.9046,
+        "depth": 3.0927
+      },
+      "position": [18.4, 5.1023000000000005, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_223",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.016,
+        "height": 3.8662,
+        "depth": 2.1649
+      },
+      "position": [18.4, 11.9877, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_224",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9726,
+        "height": 13.0605,
+        "depth": 2.7394
+      },
+      "position": [18.4, 6.68025, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_225",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0808,
+        "height": 5.8564,
+        "depth": 1.9176
+      },
+      "position": [18.4, 16.1387, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_226",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [16.5, 0.075, 5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_227",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7299,
+        "height": 10.1945,
+        "depth": 3.3214
+      },
+      "position": [14.6, 5.24725, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_228",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.9109,
+        "height": 4.302,
+        "depth": 2.325
+      },
+      "position": [14.6, 12.4955, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_229",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [14.6, 15.8965, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_230",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0785,
+        "height": 8.2269,
+        "depth": 3.3809
+      },
+      "position": [14.6, 4.263450000000001, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_231",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.155,
+        "height": 3.3546,
+        "depth": 2.3666
+      },
+      "position": [14.6, 10.0542, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_232",
+      "name": "Glass tower",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.4,
+        "radiusBottom": 1.6,
+        "height": 15.2763,
+        "segments": 28
+      },
+      "position": [18.4, 7.788150000000001, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#86a9c4",
+        "specular": 1.4,
+        "shininess": 80,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_233",
+      "name": "Crown",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.9,
+        "radiusBottom": 1.4,
+        "height": 1.2,
+        "segments": 28
+      },
+      "position": [18.4, 16.0263, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_234",
+      "name": "Spire",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.02,
+        "radiusBottom": 0.08,
+        "height": 3,
+        "segments": 6
+      },
+      "position": [18.4, 18.1263, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d9dde2",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_235",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [16.5, 0.075, 16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_236",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.8596,
+        "height": 8.7084,
+        "depth": 2.8975
+      },
+      "position": [14.6, 4.5042, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_237",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0017,
+        "height": 3.055,
+        "depth": 2.0283
+      },
+      "position": [14.6, 10.3859, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_238",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.994,
+        "height": 7.2565,
+        "depth": 3.0134
+      },
+      "position": [18.4, 3.77825, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_239",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9432,
+        "height": 10.8783,
+        "depth": 2.6339
+      },
+      "position": [14.6, 5.58915, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_240",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0602,
+        "height": 3.224,
+        "depth": 1.8437
+      },
+      "position": [14.6, 12.6403, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_241",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [14.6, 15.5023, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_242",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9611,
+        "height": 8.9186,
+        "depth": 2.9033
+      },
+      "position": [18.4, 4.6093, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_243",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.0728,
+        "height": 4.8973,
+        "depth": 2.0323
+      },
+      "position": [18.4, 11.5173, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_244",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [16.5, 0.075, 27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_245",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0674,
+        "height": 5.8098,
+        "depth": 2.8112
+      },
+      "position": [14.6, 3.0549, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_246",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [15, 6.1598, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_247",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6349,
+        "height": 3.8916,
+        "depth": 3.2019
+      },
+      "position": [18.4, 2.0958, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_248",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [18.8, 4.2416, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_249",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7756,
+        "height": 6.1159,
+        "depth": 3.3776
+      },
+      "position": [18.4, 3.20795, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_250",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [18.8, 6.4659, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_251",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [27.5, 0.075, -27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_252",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.9063,
+        "height": 2.5553,
+        "depth": 2.9855
+      },
+      "position": [25.6, 1.4276499999999999, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_253",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [26, 2.9053, -29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_254",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.752,
+        "height": 5.3369,
+        "depth": 3.1513
+      },
+      "position": [25.6, 2.81845, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_255",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1651,
+        "height": 6.468,
+        "depth": 3.0072
+      },
+      "position": [29.4, 3.384, -25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_256",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [27.5, 0.075, -16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_257",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3456,
+        "height": 4.7194,
+        "depth": 2.7812
+      },
+      "position": [25.6, 2.5097, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_258",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [26, 5.0694, -18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_259",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1079,
+        "height": 6.7268,
+        "depth": 3.1504
+      },
+      "position": [25.6, 3.5134, -14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_260",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [27.5, 0.075, -5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_261",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6622,
+        "height": 5.4726,
+        "depth": 2.8195
+      },
+      "position": [25.6, 2.8863, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_262",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2484,
+        "height": 5.2312,
+        "depth": 2.6317
+      },
+      "position": [29.4, 2.7656, -7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_263",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7179,
+        "height": 10.4479,
+        "depth": 2.8882
+      },
+      "position": [25.6, 5.373950000000001, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_264",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 1.9025,
+        "height": 3.4969,
+        "depth": 2.0217
+      },
+      "position": [25.6, 12.3464, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_265",
+      "name": "Antenna",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.03,
+        "radiusBottom": 0.06,
+        "height": 2.5,
+        "segments": 6
+      },
+      "position": [25.6, 15.3448, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cfd3d8",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_266",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0725,
+        "height": 7.1075,
+        "depth": 2.6512
+      },
+      "position": [29.4, 3.70375, -3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_267",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [27.5, 0.075, 5.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_268",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.7795,
+        "height": 6.535,
+        "depth": 2.9403
+      },
+      "position": [25.6, 3.4175, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e9aa6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_269",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [26, 6.885, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_270",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.0871,
+        "height": 3.9243,
+        "depth": 3.0468
+      },
+      "position": [29.4, 2.11215, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_271",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [29.8, 4.2743, 3.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_272",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6645,
+        "height": 5.504,
+        "depth": 3.098
+      },
+      "position": [25.6, 2.9019999999999997, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e3ddd0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_273",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2225,
+        "height": 9.6868,
+        "depth": 2.7175
+      },
+      "position": [29.4, 4.9934, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_274",
+      "name": "Setback",
+      "shape": {
+        "type": "box",
+        "width": 2.2558,
+        "height": 3.7554,
+        "depth": 1.9022
+      },
+      "position": [29.4, 11.7145, 7.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_275",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [27.5, 0.075, 16.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_276",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.946,
+        "height": 5.9343,
+        "depth": 3.3392
+      },
+      "position": [25.6, 3.11715, 14.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_277",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2387,
+        "height": 6.3355,
+        "depth": 2.8751
+      },
+      "position": [25.6, 3.3177499999999998, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7f8b96",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_278",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1927,
+        "height": 6.0284,
+        "depth": 2.9679
+      },
+      "position": [29.4, 3.1642, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d6a78",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_279",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [29.8, 6.3784, 18.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_280",
+      "name": "Sidewalk",
+      "shape": {
+        "type": "box",
+        "width": 8,
+        "height": 0.15,
+        "depth": 8
+      },
+      "position": [27.5, 0.075, 27.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a8a49c",
+        "specular": 0,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_281",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 2.6237,
+        "height": 3.7948,
+        "depth": 3.1673
+      },
+      "position": [25.6, 2.0474, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa7b0",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_282",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [26, 4.1448, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_283",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.1867,
+        "height": 3.1056,
+        "depth": 3.0396
+      },
+      "position": [29.4, 1.7027999999999999, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9c2b6",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_284",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [29.8, 3.4556, 25.6],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_285",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.2255,
+        "height": 5.2772,
+        "depth": 3.2981
+      },
+      "position": [25.6, 2.7885999999999997, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#d8d2c4",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_286",
+      "name": "Building",
+      "shape": {
+        "type": "box",
+        "width": 3.3855,
+        "height": 4.3648,
+        "depth": 2.839
+      },
+      "position": [29.4, 2.3324, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b6a48e",
+        "specular": 0.15,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_287",
+      "name": "Rooftop unit",
+      "shape": {
+        "type": "box",
+        "width": 0.8,
+        "height": 0.4,
+        "depth": 0.6
+      },
+      "position": [29.8, 4.7148, 29.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a8f96",
+        "specular": 0.25,
+        "shininess": 24,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    }
+  ]
+}

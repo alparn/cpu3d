@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cpu3d editor</title>
+  <meta name="description" content="Agentic-first 3D modeling. Connect Claude or any agent over MCP and watch it build geometry, rendered on the CPU.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 28 10v12L16 29 4 22V10z' fill='%23f59e42'/%3E%3Cpath d='M16 3v26M4 10l12 7 12-7' stroke='%23161a20' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="editor/editor.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 28 10v12L16 29 4 22V10z" fill="var(--accent)"/><path d="M16 3v26M4 10l12 7 12-7" stroke="var(--bg)" stroke-width="2" fill="none"/></svg>
+      <span>cpu3d</span>
+    </div>
+    <div id="status" class="status" title="Connection to the cpu3d server">
+      <i></i><span>connecting…</span>
+    </div>
+
+    <nav class="tools">
+      <div class="menu">
+        <button id="addBtn" class="btn">+ Add</button>
+        <div id="addMenu" class="dropdown" hidden></div>
+      </div>
+      <button id="undoBtn" class="btn icon" title="Undo (Ctrl/Cmd+Z)">↶</button>
+      <button id="redoBtn" class="btn icon" title="Redo (Shift+Ctrl/Cmd+Z)">↷</button>
+      <span class="sep"></span>
+      <select id="shading" title="Shading">
+        <option value="gouraud">Smooth</option>
+        <option value="flat">Flat</option>
+        <option value="normals">Normals</option>
+      </select>
+      <label class="toggle" title="Show triangle edges (W)"><input type="checkbox" id="wire"> Wire</label>
+      <label class="toggle" title="Move the viewport to wherever the agent renders"><input type="checkbox" id="follow" checked> Follow agent</label>
+      <select id="res" title="Render resolution">
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+        <option value="dpr">Retina</option>
+      </select>
+      <span class="sep"></span>
+      <div class="menu">
+        <button id="fileBtn" class="btn">File</button>
+        <div id="fileMenu" class="dropdown" hidden>
+          <button data-file="import">Import .obj / .json…</button>
+          <button data-file="obj">Export .obj</button>
+          <button data-file="json">Export scene .json</button>
+        </div>
+      </div>
+    </nav>
+
+    <button id="galleryBtn" class="btn">Gallery</button>
+    <button id="connectBtn" class="btn primary">Connect agent</button>
+  </header>
+
+  <main class="layout">
+    <aside class="panel left">
+      <section>
+        <h2>Scene <span id="sceneCount" class="muted"></span></h2>
+        <ul id="outliner" class="outliner"></ul>
+      </section>
+      <section class="gallery-side">
+        <h2>Gallery <button class="link" id="galleryOpen2">open ↗</button></h2>
+        <ul id="galleryList" class="gallery-list"></ul>
+      </section>
+    </aside>
+
+    <section class="viewport" id="viewportWrap">
+      <canvas id="viewport"></canvas>
+      <div id="empty" class="empty" hidden>
+        <h3>Empty scene</h3>
+        <p>Ask your agent to build something, or add a shape.</p>
+        <button class="btn primary" data-open-connect>Connect agent</button>
+      </div>
+      <div id="vstats" class="vstats"></div>
+      <div class="vhint">drag rotate · shift/right-drag pan · wheel zoom · click select · F focus</div>
+    </section>
+
+    <aside class="panel right">
+      <section class="inspector">
+        <h2 id="inspectorTitle">Inspector</h2>
+        <div id="inspector"></div>
+      </section>
+      <section class="activity">
+        <h2>Agent activity <span id="working" class="working" hidden>working…</span></h2>
+        <ol id="activity"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <dialog id="connectDialog" class="dialog">
+    <form method="dialog" class="dialog-head">
+      <h2>Connect an agent</h2>
+      <button class="btn icon" aria-label="Close">✕</button>
+    </form>
+    <p class="muted" id="connectIntro"></p>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="claude-code">Claude Code</button>
+      <button class="tab" data-tab="claude-desktop">Claude Desktop</button>
+      <button class="tab" data-tab="mcp">Cursor / other MCP</button>
+      <button class="tab" data-tab="http">Any agent (HTTP)</button>
+    </div>
+    <div id="connectBody" class="connect-body"></div>
+    <p class="muted small">Then just ask: <em>“Build a small wooden table with a vase on it and check it with render_view.”</em></p>
+  </dialog>
+
+  <dialog id="galleryDialog" class="dialog wide">
+    <form method="dialog" class="dialog-head">
+      <h2>Gallery</h2>
+      <button class="btn icon" aria-label="Close">✕</button>
+    </form>
+    <p class="muted">Every scene was built with the same tools an agent uses (<code>examples/build.mjs</code>). Sizes are the scene file (JSON recipes) and the same scene exported as triangles (.obj).</p>
+    <div id="galleryGrid" class="gallery-grid"></div>
+  </dialog>
+
+  <input type="file" id="fileInput" accept=".obj,.json" hidden>
+  <div id="toast" class="toast" hidden></div>
+
+  <script type="module" src="editor/editor.js"></script>
+</body>
+</html>
