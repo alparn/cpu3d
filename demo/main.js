@@ -5,6 +5,7 @@ import { scenes, orbitCamera } from './scenes.js';
 const $ = (id) => document.getElementById(id);
 const canvas = $('view');
 const renderer = new Renderer({ canvas });
+renderer.quality = 'fast'; // raw rasterizer benchmark: per-vertex lighting, single pass
 const camera = new Camera();
 
 let scene, view, time = 0, last = performance.now();

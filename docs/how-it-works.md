@@ -96,7 +96,18 @@ Intersecting the three conditions gives `[xs, xe]`, and the inner loop only does
 
 **Wireframe.** Dividing E by the length of its gradient gives the pixel's distance to the edge, so edges are drawn inside the same loop, with hidden-line removal for free.
 
-## 6. Why it is fast
+## 6. The high quality path
+
+The default `quality: 'high'` turns the renderer into a small deferred renderer:
+
+1. **G-buffer.** The rasterizer writes per pixel: depth (1/w), a perspective-correct normal (attributes interpolated as `n/w` and divided by the interpolated `1/w`), the sRGB albedo and a material index. No lighting yet, so hidden pixels cost almost nothing.
+2. **Shadow map.** The scene is rasterized once more from the light with an orthographic projection fitted to the area around the camera target, using a depth-only version of the same edge-function rasterizer. It is cached until the scene, the light or the framing changes, so orbiting the camera does not redraw it.
+3. **Ambient occlusion (SSAO).** For one pixel per 2×2 block, 8 points in a disc around the pixel (radius in world units, projected to pixels) are read back from the depth buffer and turned into view-space positions. Points that lie above the surface (along the normal) and within the radius occlude. The sample disc is rotated in a 4×4 pattern and per frame, then a 4×4 box blur that skips pixels at a different depth removes the pattern without bleeding across silhouettes.
+4. **Shading.** For every covered pixel the world position is reconstructed from depth and the camera basis, then: hemisphere ambient × AO + sun × (Lambert + Blinn-Phong highlight, `pow` replaced by Schlick's rational approximation) × shadow visibility. The shadow test uses a normal offset against acne and bilinear PCF over 2×2 texels.
+5. **Color.** Albedo is decoded from sRGB to linear, light is added in linear space, and an **ACES filmic** curve plus sRGB encoding (one 65,536-entry lookup table) bring it back to the display range. Fog is mixed afterwards in display space so it matches the background exactly.
+6. **Progressive refinement.** When the view does not change, every new frame shifts the projection by a sub-pixel Halton offset, rotates the AO kernel and moves the PCF sample point. The frames are averaged in an accumulation buffer: anti-aliased edges, soft shadow borders and smooth AO appear within a few frames.
+
+## 7. Why it is fast
 
 | Technique | Effect |
 |---|---|
@@ -111,6 +122,6 @@ Intersecting the three conditions gives `[xs, xe]`, and the inner loop only does
 
 The result is about 12 million triangles and up to 280 million pixels per second on one core.
 
-## 7. Agents in the loop
+## 8. Agents in the loop
 
 `render_view` uses the same renderer headlessly: it renders into a `Uint8ClampedArray`, encodes a PNG with `zlib` (no dependencies) and returns it as MCP image content. The agent sees what it built, and with `probe_height` (vertical raycasts with Möller-Trumbore) it can place objects on terrain or on top of each other instead of guessing coordinates.

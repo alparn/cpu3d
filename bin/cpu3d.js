@@ -21,6 +21,7 @@ Usage
   cpu3d mcp    [--port 8173] [--file scene.json]                    MCP over stdio (Claude Desktop, Cursor, ...)
   cpu3d render <scene.json> <out.png> [--width 1280] [--height 720] [--yaw deg] [--pitch deg] [--distance d]
                                       [--focus all] [--shading gouraud|flat|normals] [--wireframe]
+                                      [--quality high|fast] [--samples 16]
 
 Connect an agent while "serve" runs
   Claude Code   claude mcp add --transport http cpu3d http://localhost:8173/mcp
@@ -155,7 +156,8 @@ function renderCli(opts) {
   if (opts.pitch !== undefined) camera.pitch = +opts.pitch;
   if (opts.distance !== undefined) camera.distance = +opts.distance;
   const t0 = performance.now();
-  const png = renderPNG(doc, { width: +(opts.width ?? 1280), height: +(opts.height ?? 720), camera, shading: opts.shading || 'gouraud', wireframe: !!opts.wireframe });
+  const png = renderPNG(doc, { width: +(opts.width ?? 1280), height: +(opts.height ?? 720), camera, shading: opts.shading || 'gouraud', wireframe: !!opts.wireframe,
+    quality: opts.quality || 'high', samples: +(opts.samples ?? 16) });
   writeFileSync(output, png);
   log(`${output} written (${(performance.now() - t0).toFixed(1)} ms incl. PNG encoding)`);
 }

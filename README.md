@@ -165,6 +165,7 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 - Outliner, inspector (transform, material, editable JSON recipe), undo/redo
 - Gallery of example scenes; add menu with presets; OBJ and scene JSON import/export
 - Size readouts: what the scene weighs as `scene.json` and as `.obj`, geometry RAM, and the same for the selected object; load and download times and sizes are reported too
+- **High quality** rendering with shadows and ambient occlusion that refines itself when the view is still, or **Fast** mode
 - Orbit / pan / zoom, smooth, flat and normal shading, wireframe, resolution scaling
 - **Local mode**: without a server (for example on GitHub Pages) the same tools run in the browser
 
@@ -176,24 +177,38 @@ Keyboard: `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Sh
 
 <img src="docs/wireframe.png" alt="Wireframe render of the showcase scene" width="49%"> <img src="docs/lighthouse.png" alt="Lighthouse scene rendered on the CPU" width="49%">
 
-Both images were rendered by the CLI: `cpu3d render examples/showcase.json out.png --wireframe`.
+Both images were rendered by the CLI, for example `cpu3d render examples/lighthouse.json out.png`.
 
 The pipeline is the same one a GPU runs, written out in JavaScript:
 
 1. **Mesh culling** with bounding spheres against the six frustum planes
-2. **Vertex stage**: model-view-projection, outcodes, projection onto a 1/16 sub-pixel grid, per-vertex lighting (hemisphere ambient, Lambert, Blinn-Phong, fog)
+2. **Vertex stage**: model-view-projection, outcodes, projection onto a 1/16 sub-pixel grid
 3. **Primitive stage**: trivial reject, homogeneous Sutherland-Hodgman clipping only against near/far and a guard band, back-face culling by signed area
 4. **Rasterization**: half-space edge functions in exact integer math with the top-left fill rule, **per-row spans solved analytically** (no per-pixel inside tests), attributes as plane equations (one add per pixel), 1/w depth buffer
 
-Coverage is verified pixel-exact against a brute-force reference in the test suite. The details are in [docs/how-it-works.md](docs/how-it-works.md).
+### Two quality modes
 
-| Scene (1280×720, one core, Node 23, Apple Silicon) | Triangles | Frame |
-|---|---:|---:|
-| Showcase | 23k | 3.3 ms |
-| Terrain | 97k | 7.7 ms |
-| Stress test (36 torus knots) | 224k | 17.3 ms |
+| | **High** (default) | **Fast** |
+|---|---|---|
+| Lighting | per pixel (deferred G-buffer), linear color space | per vertex (Gouraud) |
+| Shadows | directional shadow map, soft PCF edges, cached per scene | none |
+| Ambient occlusion | screen-space AO, half resolution, depth-aware blur | none |
+| Tone mapping | ACES filmic + sRGB | ACES filmic + sRGB |
+| Anti-aliasing | progressive: jittered frames are averaged while the view is still | none |
 
-That is about 12 million triangles and up to 280 million pixels per second on a single thread. Run `npm run bench` or open [`demo/`](demo/index.html) for the interactive benchmark.
+<img src="docs/before-after.png" alt="Before (left) and after (right): per-vertex lighting versus shadows, ambient occlusion, tone mapping and anti-aliasing" width="100%">
+
+<sub>Left: the first release (fast mode). Right: high quality. Same scenes, same recipes.</sub>
+
+The editor refines the image up to 16 samples when the camera stops; `render_view` returns 8-sample renders to agents.
+
+| Scene (1280×720, one core, Node 23, Apple Silicon) | Triangles | Fast | High (1 sample) |
+|---|---:|---:|---:|
+| Showcase | 23k | 3.3 ms | 27 ms |
+| Terrain | 97k | 7.5 ms | 38 ms |
+| Stress test (36 torus knots) | 224k | 16.5 ms | 39 ms |
+
+The fast path pushes about 12 million triangles and up to 280 million pixels per second on a single thread. Coverage is verified pixel-exact against a brute-force reference in the test suite. Run `npm run bench` or open [`demo/`](demo/index.html) for the interactive benchmark; the details are in [docs/how-it-works.md](docs/how-it-works.md).
 
 ## Use it as a library
 
@@ -204,10 +219,12 @@ const renderer = new Renderer({ canvas: document.querySelector('canvas') }); // 
 const knot = tube(paths.torusKnot(2, 3, 256, 1.5), 0.14, 12, { closed: true });
 const column = sweep(shapes.star(6, 0.45, 0.28), paths.line([0, 0, 0], [0, 2, 0], 60), { twist: Math.PI });
 
-renderer.render(
-  { meshes: [new Mesh(knot, { color: [1, 0.55, 0.2] }), new Mesh(column, { position: [3, 0, 0] })] },
-  new Camera({ position: [0, 3, 8] }),
-);
+const scene = { meshes: [new Mesh(knot, { color: [1, 0.55, 0.2] }), new Mesh(column, { position: [3, 0, 0] })] };
+const camera = new Camera({ position: [0, 3, 8] });
+
+renderer.quality = 'high';                                   // or 'fast'
+renderer.render(scene, camera);                              // first sample
+for (let i = 0; i < 7; i++) renderer.render(scene, camera, { accumulate: true }); // refine
 // Node: renderer.pixels is an RGBA Uint8ClampedArray
 ```
 
@@ -235,6 +252,8 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 ## Roadmap
 
 - Multi-threaded tile renderer (Web Workers / worker_threads)
+- Materials: metalness with sky reflections, Fresnel rim, emissive surfaces
+- Bevels for box and extrude, crease angle for smoothing groups
 - Groups and hierarchy, boolean operations (CSG)
 - Textures with perspective-correct UVs
 - glTF export

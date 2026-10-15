@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **High quality renderer** (now the default): deferred per-pixel lighting in linear color space, ACES filmic tone mapping, directional shadow map with soft PCF edges (cached per scene), screen-space ambient occlusion at half resolution with a depth-aware blur, and progressive anti-aliasing by averaging jittered frames. `quality: 'fast'` keeps the per-vertex path, which also gets tone mapping.
+- Editor: quality selector, image refines to 16 samples while the view is still; shadows follow objects while dragging
+- `render_view` and `cpu3d render` return 8 / 16-sample high-quality images (`--quality`, `--samples`)
 - Editor: move the selected object by dragging it with the mouse (ground plane, Alt for height, Shift to snap to 0.25 m, Esc cancels); committed as one undoable `update_object`
 
 ## 0.1.0 (2026-10-15)

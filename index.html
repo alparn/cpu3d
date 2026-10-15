@@ -33,6 +33,10 @@
       </select>
       <label class="toggle" title="Show triangle edges (W)"><input type="checkbox" id="wire"> Wire</label>
       <label class="toggle" title="Move the viewport to wherever the agent renders"><input type="checkbox" id="follow" checked> Follow agent</label>
+      <select id="quality" title="High: per-pixel light, shadows, ambient occlusion, refines when idle. Fast: per-vertex light.">
+        <option value="high" selected>High quality</option>
+        <option value="fast">Fast</option>
+      </select>
       <select id="res" title="Render resolution">
         <option value="0.5">0.5×</option>
         <option value="1" selected>1×</option>

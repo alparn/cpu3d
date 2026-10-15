@@ -623,6 +623,7 @@ function moveSelected(e) {
   if (e.shiftKey) for (const a of d.vertical ? [1] : [0, 2]) pos[a] = Math.round(pos[a] / SNAP) * SNAP;
   d.pos = pos.map((v) => Math.round(v * 1000) / 1000);
   mesh.matrix = objectMatrix({ ...o, position: d.pos }); // live preview, committed on release
+  state.renderScene.version = (state.renderScene.version || 0) + 1; // shadows follow the object
   state.dirty = true;
   canvas.style.cursor = d.vertical ? 'ns-resize' : 'move';
   state.frameStats = `moving "${o.name}" to [${d.pos.map((v) => v.toFixed(2)).join(', ')}]${e.shiftKey ? ' · snap' : ''}`;
@@ -698,6 +699,7 @@ $('redoBtn').onclick = () => tool('redo');
 $('shading').onchange = (e) => { renderer.shading = e.target.value; state.dirty = true; };
 $('wire').onchange = () => { renderer.wireframe = $('wire').checked; state.dirty = true; };
 $('res').onchange = () => { state.dirty = true; };
+$('quality').onchange = (e) => { renderer.quality = e.target.value; state.dirty = true; };
 
 let toastTimer;
 function toast(msg, kind = 'error') {
@@ -721,18 +723,24 @@ function renderStats() {
 
 // ---------------------------------------------------------------- render loop (only when something changed)
 let lastMs = 0;
+const MAX_SAMPLES = 16;
 function frame() {
   requestAnimationFrame(frame);
   const res = $('res').value, s = res === 'dpr' ? devicePixelRatio : +res;
   const w = Math.max(1, Math.round(canvas.clientWidth * s)), h = Math.max(1, Math.round(canvas.clientHeight * s));
   if (w !== renderer.width || h !== renderer.height) { renderer.setSize(w, h); state.dirty = true; }
-  if (!state.dirty || !state.renderScene) return;
+  if (!state.renderScene) return;
+  // something changed: render a fresh frame; otherwise refine the high-quality image with one more
+  // jittered sample (anti-aliasing, soft shadows, smoother AO) until MAX_SAMPLES is reached
+  const refine = !state.dirty && renderer.quality === 'high' && renderer.samples < MAX_SAMPLES && !pointers.size;
+  if (!state.dirty && !refine) return;
   state.dirty = false;
-  renderer.render(state.renderScene, cameraFromState(state.view, camera));
+  renderer.render(state.renderScene, cameraFromState(state.view, camera), { accumulate: refine });
   lastMs = renderer.stats.ms;
   const st = renderer.stats;
   if (drag?.move) return; // the move readout owns the stats line while dragging
-  state.frameStats = `CPU ${lastMs.toFixed(1)} ms · ${st.triangles.toLocaleString('en')} tris · ${st.drawn.toLocaleString('en')} rasterized · ${w}×${h}`;
+  const q = renderer.quality === 'high' ? ` · ${renderer.samples}/${MAX_SAMPLES} samples` : '';
+  state.frameStats = `CPU ${lastMs.toFixed(1)} ms · ${st.triangles.toLocaleString('en')} tris · ${st.drawn.toLocaleString('en')} rasterized · ${w}×${h}${q}`;
   renderStats();
 }
 

@@ -8,11 +8,12 @@
 // The canvas is only used at the very end to blit the finished frame (putImageData).
 
 import { mat4 } from './math.js';
+import { buildToneLUT, buildShadowMap, shadePass, halton, SRGB_TO_LINEAR, TONE_SCALE, TONE_MAX_V, TONE_LAST, WIRE_MATERIAL } from './lighting.js';
 
 const GUARD = 8; // guard band (in NDC units): only triangles crossing it are clipped in x/y
 const NEAR = 1, FAR = 2, LEFT = 4, RIGHT = 8, BOTTOM = 16, TOP = 32;
 const PLANES = [NEAR, FAR, LEFT, RIGHT, BOTTOM, TOP];
-const STRIDE = 7; // clip vertex: x y z w r g b
+const STRIDE = 10; // clip vertex: x y z w r g b nx ny nz
 
 export class Mesh {
   constructor(geometry, { color = [0.8, 0.8, 0.8], specular = 0.25, shininess = 24, doubleSided = false,
@@ -49,12 +50,17 @@ const L = {
   lx: 0, ly: 1, lz: 0, lr: 1, lg: 1, lb: 1,
   sr: 0.3, sg: 0.3, sb: 0.35, gr: 0.1, gg: 0.1, gb: 0.1,
   ex: 0, ey: 0, ez: 0,
-  fog: false, fn: 0, ff: 1, fr: 0, fg: 0, fb: 0,
+  fog: false, fn: 0, ff: 1, fr: 0, fg: 0, fb: 0, // fog color in display units (0..255)
+  tone: null,
   r: 0, g: 0, b: 0,
 };
+const S2L = SRGB_TO_LINEAR;
+const lin = (c) => S2L[c >= 1 ? 255 : c <= 0 ? 0 : (c * 255 + 0.5) | 0];
 
-// Hemisphere ambient + Lambert + Blinn-Phong + linear fog. Result in L.r/g/b (0..255).
-function shade(nx, ny, nz, px, py, pz, mr, mg, mb, spec, shin, twoSided) {
+// Per-vertex lighting for the fast path: hemisphere ambient + Lambert + Blinn-Phong in linear light,
+// ACES tone mapping, then fog in display space. Material colors are sRGB 0..1. Result in L.r/g/b (0..255).
+function shade(nx, ny, nz, px, py, pz, cr, cg, cb, spec, shin, twoSided) {
+  const mr = lin(cr), mg = lin(cg), mb = lin(cb), tone = L.tone;
   let vx = L.ex - px, vy = L.ey - py, vz = L.ez - pz;
   const dist = Math.sqrt(vx * vx + vy * vy + vz * vz) || 1;
   vx /= dist; vy /= dist; vz /= dist;
@@ -75,16 +81,17 @@ function shade(nx, ny, nz, px, py, pz, mr, mg, mb, spec, shin, twoSided) {
       }
     }
   }
+  let R8 = tone[r >= TONE_MAX_V ? TONE_LAST : (r * TONE_SCALE) | 0];
+  let G8 = tone[g >= TONE_MAX_V ? TONE_LAST : (g * TONE_SCALE) | 0];
+  let B8 = tone[b >= TONE_MAX_V ? TONE_LAST : (b * TONE_SCALE) | 0];
   if (L.fog) {
     let f = (dist - L.fn) / (L.ff - L.fn);
     if (f > 0) {
       if (f > 1) f = 1;
-      r += (L.fr - r) * f; g += (L.fg - g) * f; b += (L.fb - b) * f;
+      R8 += (L.fr - R8) * f; G8 += (L.fg - G8) * f; B8 += (L.fb - B8) * f;
     }
   }
-  L.r = r >= 1 ? 255 : r * 255;
-  L.g = g >= 1 ? 255 : g * 255;
-  L.b = b >= 1 ? 255 : b * 255;
+  L.r = R8; L.g = G8; L.b = B8;
 }
 
 export class Renderer {
@@ -96,7 +103,25 @@ export class Renderer {
     this.wireWidth = 0.75; // pixels
     this.cullBack = true;
     this.fog = true;
+    // 'high': deferred per-pixel lighting, shadows, ambient occlusion, progressive anti-aliasing
+    // 'fast': per-vertex lighting (Gouraud), single pass
+    this.quality = 'high';
+    this.shadows = true;
+    this.ao = true;
+    this.aoStrength = 3.2;
+    this.sunIntensity = 1.4; // linear light units; tone mapping maps them back to display range
+    this.skyIntensity = 1;
+    this.shadowSize = 2048;
+    this.exposure = 1;
+    this.samples = 0; // accumulated samples of the current high-quality image
     this.stats = { meshes: 0, triangles: 0, drawn: 0, clipped: 0, pixels: 0, ms: 0 };
+    this._tone = buildToneLUT(this.exposure);
+    this._toneExposure = this.exposure;
+    this._tv = new Float64Array(27);
+    this._fn = new Float64Array(3);
+    this._matSpec = new Float32Array(65536);
+    this._matShin = new Float32Array(65536);
+    this._matTwo = new Uint8Array(65536);
     this._proj = mat4.create();
     this._view = mat4.create();
     this._vp = mat4.create();
@@ -125,6 +150,18 @@ export class Renderer {
     this.width = w;
     this.height = h;
     this._bgKey = '';
+    this._gNX = null; // G-buffer and accumulation buffer are allocated on first high-quality frame
+    this._acc = null;
+    this._accN = 0;
+  }
+
+  _ensureGBuffer() {
+    const n = this.width * this.height;
+    if (this._gNX && this._gNX.length === n) return;
+    this._gNX = new Float32Array(n); this._gNY = new Float32Array(n); this._gNZ = new Float32Array(n);
+    this._gMat = new Uint16Array(n);
+    this._acc = new Float32Array(n * 3);
+    this._accN = 0;
   }
 
   _reserve(n) {
@@ -134,6 +171,7 @@ export class Renderer {
     this._cx = new Float64Array(c); this._cy = new Float64Array(c); this._cz = new Float64Array(c); this._cw = new Float64Array(c);
     this._wx = new Float32Array(c); this._wy = new Float32Array(c); this._wz = new Float32Array(c);
     this._r = new Float32Array(c); this._g = new Float32Array(c); this._b = new Float32Array(c);
+    this._vnx = new Float32Array(c); this._vny = new Float32Array(c); this._vnz = new Float32Array(c);
     this._oc = new Uint8Array(c);
     this._cap = c;
   }
@@ -156,35 +194,113 @@ export class Renderer {
     this.depth.fill(0);
   }
 
-  render(scene, camera) {
+  // opts.accumulate: same view as the previous call -> add one more jittered sample to the
+  // high-quality image (progressive anti-aliasing, soft shadows, smoother AO). Otherwise start over.
+  render(scene, camera, opts = {}) {
     const t0 = performance.now();
     const st = this.stats;
     st.meshes = st.triangles = st.drawn = st.clipped = st.pixels = 0;
+    const W = this.width, H = this.height;
+    const hq = this.quality === 'high' && this.shading !== 'normals';
+    if (hq) this._ensureGBuffer();
+    const accumulate = hq && opts.accumulate && this._accN > 0;
+    const frame = accumulate ? this._accN : 0;
+    const jx = accumulate ? ((halton(frame, 2) - 0.5) * 2) / W : 0, jy = accumulate ? ((halton(frame, 3) - 0.5) * 2) / H : 0;
     this._clear(scene.background);
 
-    mat4.perspective(this._proj, (camera.fov * Math.PI) / 180, this.width / this.height, camera.near, camera.far);
+    mat4.perspective(this._proj, (camera.fov * Math.PI) / 180, W / H, camera.near, camera.far);
+    this._proj[8] -= jx; // sub-pixel jitter: shifts geometry by (jx, jy) in NDC
+    this._proj[9] -= jy;
     mat4.lookAt(this._view, camera.position, camera.target, camera.up);
     mat4.multiply(this._vp, this._proj, this._view);
     this._extractPlanes();
 
+    if (this.exposure !== this._toneExposure) { this._tone = buildToneLUT(this.exposure); this._toneExposure = this.exposure; }
     const light = scene.light ?? {};
     const d = light.direction ?? [0.5, 0.9, 0.35], dl = Math.hypot(d[0], d[1], d[2]) || 1;
     const lc = light.color ?? [1, 1, 1], sky = light.sky ?? [0.3, 0.32, 0.38], gnd = light.ground ?? [0.1, 0.09, 0.08];
     L.lx = d[0] / dl; L.ly = d[1] / dl; L.lz = d[2] / dl;
-    [L.lr, L.lg, L.lb] = lc; [L.sr, L.sg, L.sb] = sky; [L.gr, L.gg, L.gb] = gnd;
+    [L.lr, L.lg, L.lb] = lc.map((c) => lin(c) * this.sunIntensity);
+    [L.sr, L.sg, L.sb] = sky.map((c) => c * this.skyIntensity);
+    [L.gr, L.gg, L.gb] = gnd.map((c) => c * this.skyIntensity);
     [L.ex, L.ey, L.ez] = camera.position;
+    L.tone = this._tone;
     const fog = scene.fog;
     L.fog = !!(fog && this.fog);
     if (L.fog) {
       L.fn = fog.near; L.ff = fog.far;
-      [L.fr, L.fg, L.fb] = fog.color ?? scene.background?.bottom ?? [0.25, 0.27, 0.3];
+      const fc = fog.color ?? scene.background?.bottom ?? [0.25, 0.27, 0.3];
+      L.fr = fc[0] * 255; L.fg = fc[1] * 255; L.fb = fc[2] * 255;
     }
 
+    this._hq = hq;
+    this._matCount = 0;
     for (const mesh of scene.meshes) if (mesh.visible) this._drawMesh(mesh);
+
+    if (hq) {
+      const eye = camera.position;
+      const F = norm3(sub3(camera.target, eye)), R = norm3(cross3(F, camera.up)), U = cross3(R, F);
+      const tanY = Math.tan((camera.fov * Math.PI) / 360), viewDist = Math.hypot(...sub3(camera.target, eye));
+      shadePass({
+        W, H, depth: this.depth, color: this.color, NX: this._gNX, NY: this._gNY, NZ: this._gNZ, MAT: this._gMat,
+        matSpec: this._matSpec, matShin: this._matShin, matTwo: this._matTwo,
+        eye, R, U, F, tanX: tanY * (W / H), tanY, jx, jy, frame, light: L, tone: this._tone,
+        shadow: this.shadows ? this._shadowFor(scene, camera, [L.lx, L.ly, L.lz]) : null,
+        ao: this.ao ? { radius: Math.min(4, Math.max(0.08, viewDist * 0.045)), strength: this.aoStrength } : null,
+        fog: L.fog ? { near: L.fn, far: L.ff, r: L.fr, g: L.fg, b: L.fb } : null,
+        debug: this.debug,
+      });
+      this._accumulate(accumulate);
+    }
+    this.samples = hq ? this._accN : 1;
 
     st.ms = performance.now() - t0;
     if (this.ctx) this.ctx.putImageData(this.image, 0, 0);
     return this;
+  }
+
+  // Running average of jittered frames.
+  _accumulate(add) {
+    const c = this.color, acc = this._acc, n = c.length;
+    if (!add) {
+      for (let i = 0, k = 0; i < n; i++, k += 3) { const v = c[i]; acc[k] = v & 255; acc[k + 1] = (v >>> 8) & 255; acc[k + 2] = (v >>> 16) & 255; }
+      this._accN = 1;
+      return;
+    }
+    const cnt = ++this._accN, inv = 1 / cnt;
+    for (let i = 0, k = 0; i < n; i++, k += 3) {
+      const v = c[i];
+      const r = (acc[k] += v & 255), g = (acc[k + 1] += (v >>> 8) & 255), b = (acc[k + 2] += (v >>> 16) & 255);
+      c[i] = 0xff000000 | (((b * inv + 0.5) | 0) << 16) | (((g * inv + 0.5) | 0) << 8) | ((r * inv + 0.5) | 0);
+    }
+  }
+
+  // Shadow map around the area of interest; cached until the scene, light or framing changes.
+  // A scene can set `version` (incremented when meshes move) to invalidate the cache.
+  _shadowFor(scene, camera, L) {
+    let min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
+    const casters = scene.meshes.filter((m) => m.visible);
+    for (const mesh of casters) {
+      const g = mesh.geometry, m = mesh.matrix, c = g.center;
+      const s = Math.sqrt(Math.max(m[0] ** 2 + m[1] ** 2 + m[2] ** 2, m[4] ** 2 + m[5] ** 2 + m[6] ** 2, m[8] ** 2 + m[9] ** 2 + m[10] ** 2));
+      const r = g.radius * s;
+      const w = [m[0] * c[0] + m[4] * c[1] + m[8] * c[2] + m[12], m[1] * c[0] + m[5] * c[1] + m[9] * c[2] + m[13], m[2] * c[0] + m[6] * c[1] + m[10] * c[2] + m[14]];
+      for (let a = 0; a < 3; a++) { min[a] = Math.min(min[a], w[a] - r); max[a] = Math.max(max[a], w[a] + r); }
+    }
+    if (!casters.length) return null;
+    let center = [0, 1, 2].map((a) => (min[a] + max[a]) / 2), radius = Math.hypot(...sub3(max, min)) / 2;
+    const focus = Math.min(400, Math.max(4, Math.hypot(...sub3(camera.target, camera.position)) * 1.6));
+    if (radius > focus) { center = [...camera.target]; radius = focus; }
+    radius = 1.25 ** Math.ceil(Math.log(radius) / Math.log(1.25)); // quantize so small camera moves keep the cache
+    const step = radius / 16;
+    center = center.map((v) => Math.round(v / step) * step);
+    const key = `${scene.version || 0}|${L}|${center}|${radius}|${this.shadowSize}`;
+    if (this._smScene !== scene || this._smKey !== key) {
+      this._sm = buildShadowMap(casters, L, center, radius, this.shadowSize);
+      this._smScene = scene;
+      this._smKey = key;
+    }
+    return this._sm;
   }
 
   // Frustum planes (Gribb/Hartmann) for bounding-sphere culling of whole meshes.
@@ -224,12 +340,21 @@ export class Renderer {
     const X = this._x, Y = this._y, Z = this._z, CX = this._cx, CY = this._cy, CZ = this._cz, CW = this._cw;
     const WX = this._wx, WY = this._wy, WZ = this._wz, R = this._r, G = this._g, B = this._b, OC = this._oc;
     const W8 = this.width * 8, H8 = this.height * 8; // NDC -> 1/16 sub-pixel units
-    const mode = this.shading === 'normals' ? 2 : this.shading === 'flat' || mesh.flat ? 0 : 1;
+    const hq = this._hq, flatMesh = this.shading === 'flat' || mesh.flat;
+    // modes: 0 flat (fast), 1 gouraud (fast), 2 normals, 3 g-buffer (high quality)
+    const mode = this.shading === 'normals' ? 2 : hq ? 3 : flatMesh ? 0 : 1;
     const wire = this.wireframe || mesh.wireframe;
     this._wire = !!wire;
     this._wireCol = Array.isArray(wire)
       ? 0xff000000 | ((wire[2] * 255) << 16) | ((wire[1] * 255) << 8) | (wire[0] * 255) : 0;
     const [mr, mg, mb] = mesh.color, spec = mesh.specular, shin = mesh.shininess, two = mesh.doubleSided;
+    const VNX = this._vnx, VNY = this._vny, VNZ = this._vnz;
+    if (hq) {
+      const id = this._matCount = Math.min(this._matCount + 1, WIRE_MATERIAL - 1);
+      this._mat = id;
+      this._matSpec[id] = spec; this._matShin[id] = Math.max(1, shin); this._matTwo[id] = two ? 1 : 0;
+      this._flatHQ = flatMesh;
+    }
 
     // ---- vertex stage
     for (let v = 0, k = 0; v < n; v++, k += 3) {
@@ -265,7 +390,11 @@ export class Renderer {
         let nz = nm[6] * ox + nm[7] * oy + nm[8] * oz;
         const il = 1 / (Math.sqrt(nx * nx + ny * ny + nz * nz) || 1);
         nx *= il; ny *= il; nz *= il;
-        if (mode === 2) {
+        if (mode === 3) {
+          VNX[v] = nx; VNY[v] = ny; VNZ[v] = nz;
+          const cr = VC ? VC[k] : mr, cg = VC ? VC[k + 1] : mg, cb = VC ? VC[k + 2] : mb;
+          R[v] = cr >= 1 ? 255 : cr * 255; G[v] = cg >= 1 ? 255 : cg * 255; B[v] = cb >= 1 ? 255 : cb * 255;
+        } else if (mode === 2) {
           R[v] = (nx * 0.5 + 0.5) * 255; G[v] = (ny * 0.5 + 0.5) * 255; B[v] = (nz * 0.5 + 0.5) * 255;
         } else {
           if (VC) shade(nx, ny, nz, wx, wy, wz, VC[k], VC[k + 1], VC[k + 2], spec, shin, two);
@@ -288,7 +417,19 @@ export class Renderer {
         const x0 = X[a], y0 = Y[a], x1 = X[b], y1 = Y[b], x2 = X[c2], y2 = Y[c2];
         const area = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0);
         if (area === 0 || (area > 0 && cull)) continue; // screen y points down: front faces have area < 0
-        if (mode === 0) {
+        if (mode === 3) {
+          const T = this._tv, fn = this._fn;
+          if (flatMesh) this._faceNormal(a, b, c2);
+          let o = 0;
+          for (const v of [a, b, c2]) {
+            const iw = Z[v];
+            T[o] = X[v]; T[o + 1] = Y[v]; T[o + 2] = iw;
+            T[o + 3] = (flatMesh ? fn[0] : VNX[v]) * iw; T[o + 4] = (flatMesh ? fn[1] : VNY[v]) * iw; T[o + 5] = (flatMesh ? fn[2] : VNZ[v]) * iw;
+            T[o + 6] = R[v]; T[o + 7] = G[v]; T[o + 8] = B[v];
+            o += 9;
+          }
+          this._rasterG();
+        } else if (mode === 0) {
           this._faceColor(a, b, c2, mesh);
           const r = L.r, g = L.g, bl = L.b;
           this._raster(x0, y0, Z[a], r, g, bl, x1, y1, Z[b], r, g, bl, x2, y2, Z[c2], r, g, bl);
@@ -297,9 +438,20 @@ export class Renderer {
         }
       } else {
         if (mode === 0) this._faceColor(a, b, c2, mesh);
+        if (mode === 3 && flatMesh) this._faceNormal(a, b, c2);
         this._clip(a, b, c2, oa | ob | oc);
       }
     }
+  }
+
+  // World-space face normal into this._fn (flat meshes in the high quality path).
+  _faceNormal(a, b, c) {
+    const WX = this._wx, WY = this._wy, WZ = this._wz, fn = this._fn;
+    const ux = WX[b] - WX[a], uy = WY[b] - WY[a], uz = WZ[b] - WZ[a];
+    const vx = WX[c] - WX[a], vy = WY[c] - WY[a], vz = WZ[c] - WZ[a];
+    const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+    const il = 1 / (Math.sqrt(nx * nx + ny * ny + nz * nz) || 1);
+    fn[0] = nx * il; fn[1] = ny * il; fn[2] = nz * il;
   }
 
   // Flat shading: one lighting evaluation per triangle at its centroid.
@@ -327,6 +479,10 @@ export class Renderer {
       const v = idx[i], o = i * STRIDE;
       inp[o] = this._cx[v]; inp[o + 1] = this._cy[v]; inp[o + 2] = this._cz[v]; inp[o + 3] = this._cw[v];
       inp[o + 4] = flat ? L.r : this._r[v]; inp[o + 5] = flat ? L.g : this._g[v]; inp[o + 6] = flat ? L.b : this._b[v];
+      if (this._hq) {
+        const fl = this._flatHQ, fn = this._fn;
+        inp[o + 7] = fl ? fn[0] : this._vnx[v]; inp[o + 8] = fl ? fn[1] : this._vny[v]; inp[o + 9] = fl ? fn[2] : this._vnz[v];
+      }
     }
     for (let p = 0; p < 6; p++) {
       const bit = PLANES[p];
@@ -357,12 +513,112 @@ export class Renderer {
       inp[o + 1] = Math.round(H8 - inp[o + 1] * iw * H8);
       inp[o + 2] = iw;
     }
+    if (this._hq) {
+      const T = this._tv;
+      for (let i = 1; i < n - 1; i++) {
+        let o = 0;
+        for (const p of [0, i * STRIDE, (i + 1) * STRIDE]) {
+          const iw = inp[p + 2];
+          T[o] = inp[p]; T[o + 1] = inp[p + 1]; T[o + 2] = iw;
+          T[o + 3] = inp[p + 7] * iw; T[o + 4] = inp[p + 8] * iw; T[o + 5] = inp[p + 9] * iw;
+          T[o + 6] = inp[p + 4]; T[o + 7] = inp[p + 5]; T[o + 8] = inp[p + 6];
+          o += 9;
+        }
+        this._rasterG();
+      }
+      return;
+    }
     for (let i = 1; i < n - 1; i++) {
       const p1 = i * STRIDE, p2 = p1 + STRIDE;
       this._raster(inp[0], inp[1], inp[2], inp[4], inp[5], inp[6],
         inp[p1], inp[p1 + 1], inp[p1 + 2], inp[p1 + 4], inp[p1 + 5], inp[p1 + 6],
         inp[p2], inp[p2 + 1], inp[p2 + 2], inp[p2 + 4], inp[p2 + 5], inp[p2 + 6]);
     }
+  }
+
+  // High quality path: rasterize into the G-buffer (depth, perspective-correct normal, albedo, material).
+  // Vertices come from this._tv: per vertex [x, y (1/16 px), 1/w, nx/w, ny/w, nz/w, r, g, b (sRGB 0..255)].
+  // Same edge setup and span solving as _raster below.
+  _rasterG() {
+    const T = this._tv;
+    const x0 = T[0], y0 = T[1];
+    let o1 = 9, o2 = 18;
+    let area = (T[9] - x0) * (T[19] - y0) - (T[18] - x0) * (T[10] - y0);
+    if (area === 0) return;
+    if (area > 0) {
+      if (this._cull) return; // back face
+    } else { o1 = 18; o2 = 9; area = -area; }
+    const x1 = T[o1], y1 = T[o1 + 1], x2 = T[o2], y2 = T[o2 + 1];
+    const W = this.width, H = this.height;
+    let minX = Math.ceil((Math.min(x0, x1, x2) - 8) / 16), maxX = Math.floor((Math.max(x0, x1, x2) - 8) / 16);
+    let minY = Math.ceil((Math.min(y0, y1, y2) - 8) / 16), maxY = Math.floor((Math.max(y0, y1, y2) - 8) / 16);
+    if (minX < 0) minX = 0;
+    if (minY < 0) minY = 0;
+    if (maxX > W - 1) maxX = W - 1;
+    if (maxY > H - 1) maxY = H - 1;
+    if (minX > maxX || minY > maxY) return;
+    this.stats.drawn++;
+
+    const A0 = (y1 - y2) * 16, B0 = (x2 - x1) * 16;
+    const A1 = (y2 - y0) * 16, B1 = (x0 - x2) * 16;
+    const A2 = (y0 - y1) * 16, B2 = (x1 - x0) * 16;
+    let C0 = (x2 - x1) * (8 - y1) - (y2 - y1) * (8 - x1);
+    let C1 = (x0 - x2) * (8 - y2) - (y0 - y2) * (8 - x2);
+    let C2 = (x1 - x0) * (8 - y0) - (y1 - y0) * (8 - x0);
+    if (!(y2 < y1 || (y2 === y1 && x2 > x1))) C0 -= 1;
+    if (!(y0 < y2 || (y0 === y2 && x0 > x2))) C1 -= 1;
+    if (!(y1 < y0 || (y1 === y0 && x1 > x0))) C2 -= 1;
+
+    // attribute planes: value(px, py) = base + dx * px + dy * py
+    const k = 16 / area, ex1 = x1 - x0, ey1 = y1 - y0, ex2 = x2 - x0, ey2 = y2 - y0;
+    const ox = 0.5 - x0 / 16, oy = 0.5 - y0 / 16;
+    for (let a = 2; a < 9; a++) {
+      const v0 = T[a], v1 = T[o1 + a], v2 = T[o2 + a];
+      const dx = ((v1 - v0) * ey2 - (v2 - v0) * ey1) * k, dy = ((v2 - v0) * ex1 - (v1 - v0) * ex2) * k;
+      PL[a * 3] = v0 + dx * ox + dy * oy; PL[a * 3 + 1] = dx; PL[a * 3 + 2] = dy;
+    }
+    const zb = PL[6], zdx = PL[7], zdy = PL[8];
+    const nxb = PL[9], nxdx = PL[10], nxdy = PL[11], nyb = PL[12], nydx = PL[13], nydy = PL[14];
+    const nzb = PL[15], nzdx = PL[16], nzdy = PL[17], rb = PL[18], rdx = PL[19], rdy = PL[20];
+    const gb = PL[21], gdx = PL[22], gdy = PL[23], bb = PL[24], bdx = PL[25], bdy = PL[26];
+
+    const depth = this.depth, color = this.color, NX = this._gNX, NY = this._gNY, NZ = this._gNZ, MAT = this._gMat;
+    const mat = this._mat, wire = this._wire, wireCol = this._wireCol, LW = this.wireWidth;
+    const n0 = wire ? 1 / Math.hypot(A0, B0) : 0, n1 = wire ? 1 / Math.hypot(A1, B1) : 0, n2 = wire ? 1 / Math.hypot(A2, B2) : 0;
+    let pix = 0, q;
+    for (let py = minY; py <= maxY; py++) {
+      const e0 = B0 * py + C0, e1 = B1 * py + C1, e2 = B2 * py + C2;
+      let xs = minX, xe = maxX;
+      if (A0 > 0) { q = Math.ceil(-e0 / A0); if (q > xs) xs = q; } else if (A0 < 0) { q = Math.floor(e0 / -A0); if (q < xe) xe = q; } else if (e0 < 0) xe = -1;
+      if (A1 > 0) { q = Math.ceil(-e1 / A1); if (q > xs) xs = q; } else if (A1 < 0) { q = Math.floor(e1 / -A1); if (q < xe) xe = q; } else if (e1 < 0) xe = -1;
+      if (A2 > 0) { q = Math.ceil(-e2 / A2); if (q > xs) xs = q; } else if (A2 < 0) { q = Math.floor(e2 / -A2); if (q < xe) xe = q; } else if (e2 < 0) xe = -1;
+      if (xs > xe) continue;
+      pix += xe - xs + 1;
+      let i = py * W + xs;
+      const end = py * W + xe;
+      let z = zb + zdx * xs + zdy * py;
+      let nx = nxb + nxdx * xs + nxdy * py, ny = nyb + nydx * xs + nydy * py, nz = nzb + nzdx * xs + nzdy * py;
+      let r = rb + rdx * xs + rdy * py, g = gb + gdx * xs + gdy * py, b = bb + bdx * xs + bdy * py;
+      let d0 = (e0 + A0 * xs) * n0, d1 = (e1 + A1 * xs) * n1, d2 = (e2 + A2 * xs) * n2;
+      const s0 = A0 * n0, s1 = A1 * n1, s2 = A2 * n2;
+      for (; i <= end; i++) {
+        if (z > depth[i]) {
+          depth[i] = z;
+          if (wire && (d0 < LW || d1 < LW || d2 < LW)) {
+            color[i] = wireCol || 0xff000000 | (((b * 0.25) | 0) << 16) | (((g * 0.25) | 0) << 8) | ((r * 0.25) | 0);
+            MAT[i] = WIRE_MATERIAL;
+          } else {
+            const iz = 1 / z;
+            NX[i] = nx * iz; NY[i] = ny * iz; NZ[i] = nz * iz;
+            color[i] = 0xff000000 | ((b | 0) << 16) | ((g | 0) << 8) | (r | 0);
+            MAT[i] = mat;
+          }
+        }
+        z += zdx; nx += nxdx; ny += nydx; nz += nzdx; r += rdx; g += gdx; b += bdx;
+        d0 += s0; d1 += s1; d2 += s2;
+      }
+    }
+    this.stats.pixels += pix;
   }
 
   // x/y in 1/16 pixel units (integers), z = 1/w, r/g/b in 0..255
@@ -463,6 +719,11 @@ export class Renderer {
     this.stats.pixels += pix;
   }
 }
+
+const PL = new Float64Array(27); // attribute plane scratch for _rasterG
+const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const cross3 = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const norm3 = (a) => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
 
 function planeDist(bit, v, o) {
   const x = v[o], y = v[o + 1], z = v[o + 2], w = v[o + 3];
