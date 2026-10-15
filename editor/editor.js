@@ -1053,7 +1053,7 @@ $('gifGo').onclick = async () => {
 // that fits the frame budget, otherwise on `quick` at a lower resolution. When everything is still, the
 // full-resolution image refines itself progressively, starting from the temporal history.
 const BUDGET_MS = 34;
-const perf = { fullMs: 0, scale: 1, lastMotion: 0, mainFresh: false, busy: false, frames: 0 };
+const perf = { fullMs: 0, scale: 1, lastMotion: 0, scaleAt: 0, mainFresh: false, busy: false, frames: 0 };
 
 let blitImage = null;
 function blit(r) {
@@ -1068,10 +1068,13 @@ function blit(r) {
   view2d.drawImage(blitCanvas, 0, 0, canvas.width, canvas.height);
 }
 
-// resolution scale for motion: sqrt(budget / cost of a full frame), in steps of 0.1, 0.4 .. 1
+// resolution scale for motion: sqrt(budget / cost of a full frame), in steps of 0.1
 function motionScale(now) {
   if (!perf.fullMs || renderer.quality !== 'high') return 1;
-  if (now - perf.lastMotion < 400) return perf.scale; // keep it during a motion (stable temporal history)
+  // keep it during a motion (a new size restarts the temporal history), but look again every second:
+  // playback is one endless motion, and the first frames do not know the cost yet
+  if (now - perf.lastMotion < 400 && now - perf.scaleAt < 1000) return perf.scale;
+  perf.scaleAt = now;
   const s = Math.sqrt(BUDGET_MS / perf.fullMs);
   // Auto on a high-density display: about 1 pixel per CSS pixel while moving, a bit less for heavy scenes
   // (smooth motion first; the still image refines at full resolution)
@@ -1124,6 +1127,7 @@ function frame() {
     // cost estimate of a full-resolution motion frame (the first frames are slow: JIT warm-up, shadow map)
     if (++perf.frames > 3 && r === renderer && motion) perf.fullMs = perf.fullMs ? perf.fullMs * 0.7 + st.ms * 0.3 : st.ms;
     if (r === quick && perf.frames > 3) perf.fullMs = perf.fullMs * 0.8 + (st.ms / (perf.scale * perf.scale)) * 0.2;
+    if (perf.frames > 3 && r === renderer && motion && st.ms > BUDGET_MS * 2.5) perf.scaleAt = 0; // far over budget: rescale now
     if (drag?.move) return; // the move readout owns the stats line while dragging
     const q = hq ? (r === quick ? ` · ${Math.round(perf.scale * 100)}% while moving` : motion ? ' · temporal AA' : ` · ${r.samples}/${MAX_SAMPLES} samples`) : '';
     const threads = r.pool ? ` · ${r.pool.size} threads` : '';

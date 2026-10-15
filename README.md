@@ -34,7 +34,7 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 <img src="docs/seagrass.png" alt="Seagrass meadow: an underwater world with swaying seagrass, fish schools and light shafts" width="100%">
 
-<sub>Seagrass meadow: 64,000 blades swaying in one current (the <code>wind</code> behaviour bends every vertex, harder towards the tip), tall kelp, rocks, two schools of fish circling, drifting plankton and volumetric light shafts through the water that the fish cut with their shadows, seen from a slowly gliding drone. 55 objects, 463k triangles from 53 KB of JSON, thanks to <code>scatter</code>.</sub>
+<sub>Seagrass meadow: 35,000 blades swaying in one current (the <code>wind</code> behaviour bends every vertex, harder towards the tip), tall kelp, rocks, two schools of fish circling, drifting plankton and volumetric light shafts through the water that the fish cut with their shadows, seen from a slowly gliding drone. Designed for a fluid frame rate: full density only where the drone flies, light shafts marched once per 2x2 pixels. 55 objects, 204k triangles from 53 KB of JSON, thanks to <code>scatter</code>.</sub>
 
 <img src="docs/garage.png" alt="Café racer garage: a motorcycle on a paddock stand in a brick workshop at night" width="100%">
 
@@ -81,7 +81,7 @@ All of them are built in [`examples/build.mjs`](examples/build.mjs) through the 
 <td width="33%" valign="top"><img src="examples/thumbs/plush.png" alt="Plush dancer"><br><b>Plush dancer</b><br><sub>62 objects · 76,990 tris<br>recipes 270.8 KB · as .obj 2.43 MB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/seagrass.png" alt="Seagrass meadow"><br><b>Seagrass meadow</b><br><sub>55 objects · 462,666 tris<br>recipes 53.0 KB · as .obj 23.71 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/seagrass.png" alt="Seagrass meadow"><br><b>Seagrass meadow</b><br><sub>55 objects · 204,162 tris<br>recipes 52.9 KB · as .obj 11.25 MB</sub></td>
 </tr>
 <tr>
 <td width="33%" valign="top"><img src="examples/thumbs/neon.png" alt="Neon district"><br><b>Neon district</b><br><sub>462 objects · 29,082 tris<br>recipes 534.9 KB · as .obj 1.26 MB</sub></td>
@@ -343,7 +343,7 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 
 | Frame with TAA, 960×540, 8 threads (Node, Apple Silicon) | Triangles | Shading on threads only | Whole frame on threads |
 |---|---:|---:|---:|
-| Seagrass meadow | 463k | 105 ms | 39 ms |
+| Seagrass meadow (first version) | 463k | 105 ms | 39 ms |
 | Neon district | 29k | 42 ms | 21 ms |
 | Fairground at dusk | 98k | 23 ms | 16 ms |
 | Skeleton watch | 33k | 24 ms | 17 ms |

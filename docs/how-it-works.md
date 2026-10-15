@@ -65,7 +65,7 @@ The `SceneDocument` is the single source of truth. Every mutation runs on a copy
 - Blinn-Phong highlight: `(N · H)^shininess` with the half vector `H = normalize(L + V)`
 - linear fog by distance
 
-**Atmosphere.** With `set_environment({ atmosphere })` every pixel (background included) gets an extra pass after shading: the color is blended towards the medium color by `1 − e^(−density · distance)`, and the view ray is marched in 8 steps through the medium. At each step a moving noise field across the light direction says how much light is scattered towards the eye there (thresholded, so beams are separated by dark gaps), attenuated by the medium in front and blocked when the shadow map says the point is in shadow. The step offset is interleaved gradient noise that shifts every frame, so temporal AA averages the march; the pass runs per row on the worker pool like the shading.
+**Atmosphere.** With `set_environment({ atmosphere })` every pixel (background included) gets an extra pass after shading: the color is blended towards the medium color by `1 − e^(−density · distance)`, and a ray per 2x2 block of pixels is marched through the medium (10 steps, 6 while moving, packed towards the eye), keeping the running sum of scattered light that each pixel reads at its own depth. At each step a moving noise field across the light direction says how much light is scattered towards the eye there (thresholded, so beams are separated by dark gaps), attenuated by the medium in front and blocked when the shadow map says the point is in shadow. The step offset is interleaved gradient noise that shifts every frame, so temporal AA averages the march; the pass runs per row on the worker pool like the shading.
 
 ## 4. Primitive stage
 

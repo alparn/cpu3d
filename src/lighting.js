@@ -725,13 +725,17 @@ function crw(t) {
 }
 
 // ---- 2c. participating medium (haze, water): exponential extinction towards the medium colour, plus light
-// shafts: the view ray is sampled at a few depths; at each, a noise pattern across the light direction (moving
-// with time) decides how much light is scattered towards the eye, and the shadow map blocks it behind objects.
-// Works in display space after tone mapping, like the fog, and on background pixels too.
+// shafts: a ray is marched through the medium; at each step a noise pattern across the light direction (moving
+// with time) decides how much light is scattered towards the eye there, and the shadow map blocks it behind
+// objects. One ray per 2x2 block, marched to the farthest of its pixels with samples packed towards the eye; it
+// keeps the running sum of in-scattered light, and every pixel reads that sum at its own depth (so thin grass in
+// front of open water gets only the light in front of it, no halo). Works in display space after tone mapping,
+// like the fog, and on background pixels too. Rows come in pairs (y0 is even: chunks are AO block rows).
+const ATMOS_MAX_STEPS = 12;
 export function atmosphereRows(ctx, y0, y1) {
   const { atmos: A, shadow: sm, light } = ctx;
   const { colK, rowK } = prepare(ctx);
-  // per frame constants, then one call per row (V8 optimises the row function as a whole)
+  // per frame constants, then one call per row pair (V8 optimises the row function as a whole)
   const lx = light.lx, ly = light.ly, lz = light.lz;
   let bx = -lz, bz = lx;
   const bl = Math.hypot(bx, bz) || 1; bx /= bl; bz /= bl;
@@ -741,32 +745,40 @@ export function atmosphereRows(ctx, y0, y1) {
     bx, bz, cx: ly * bz, cy: lz * bx - lx * bz, cz: -ly * bx, sm, smD: sm ? sm.depth : null, smS: sm ? sm.size : 0,
     ycc: ctx.post === 'temporal' ? ctx.taa.ycc : null,
     // fewer march steps while things move: the per-frame jitter and temporal AA fill in between
-    steps: ctx.post === 'temporal' && ctx.taa.valid ? 4 : 8,
+    steps: ctx.post === 'temporal' && ctx.taa.valid ? 6 : 10,
+    acc: new Float64Array(ATMOS_MAX_STEPS + 1), dist: new Float64Array(4),
   };
-  for (let y = y0; y < y1; y++) atmosRow(ctx, P, colK, rowK[y], y);
+  for (let y = y0 - (y0 & 1); y < y1; y += 2) atmosRows2(ctx, P, colK, rowK, y);
 }
 
-function atmosRow(ctx, P, colK, ry, y) {
-  const { W, depth, color, eye, R, U, F, frame } = ctx;
-  const { ar, ag, ab, rr, rg, rb, dens, far, rays, inv, t, bx, bz, cx, cy, cz, sm, smD, smS, ycc } = P;
-  const STEPS = P.steps;
-  for (let x = 0; x < W; x++) {
-    const i = y * W + x, iw = depth[i];
-    const vx = colK[x], vy = ry;
-    const vl = Math.sqrt(vx * vx + vy * vy + 1);
-    const dist = iw === 0 ? far : Math.min(far, vl / iw);
-    const dx = (R[0] * vx + U[0] * vy + F[0]) / vl, dy = (R[1] * vx + U[1] * vy + F[1]) / vl, dz = (R[2] * vx + U[2] * vy + F[2]) / vl;
-    // light shafts along the ray, jittered per pixel and frame (temporal AA smooths them); interleaved gradient
-    // noise instead of white noise: neighbouring pixels get evenly spread offsets, so the grain averages out locally
-    let shaft = 0;
-    if (rays > 0) {
-      const fo = (frame & 63) * 5.588238;
-      let j = 52.9829189 * ((0.06711056 * (x + fo) + 0.00583715 * (y + fo)) % 1);
+function atmosRows2(ctx, P, colK, rowK, y) {
+  const { W, H, depth, color, eye, R, U, F, frame } = ctx;
+  const { ar, ag, ab, rr, rg, rb, dens, far, rays, inv, t, bx, bz, cx, cy, cz, sm, smD, smS, ycc, acc, dist } = P;
+  const STEPS = P.steps, y2 = y + 1 < H ? y + 1 : y, ry = (rowK[y] + rowK[y2]) * 0.5;
+  const fo = (frame & 63) * 5.588238, k = rays * dens * 1.4;
+  for (let x = 0; x < W; x += 2) {
+    const x2 = x + 1 < W ? x + 1 : x;
+    // the block's pixels: distance along their own view rays (background: the far end of the medium)
+    let dmax = 0;
+    for (let q = 0; q < 4; q++) {
+      const px = q & 1 ? x2 : x, py = q & 2 ? y2 : y, i = py * W + px, iw = depth[i];
+      const vx = colK[px], vy = rowK[py], vl = Math.sqrt(vx * vx + vy * vy + 1);
+      const d = iw === 0 ? far : Math.min(far, vl / iw);
+      dist[q] = d;
+      if (d > dmax) dmax = d;
+    }
+    // march along the block's center ray; acc[s] = light scattered in front of sample boundary s
+    acc[0] = 0;
+    if (rays > 0 && dmax > 0) {
+      const vx = (colK[x] + colK[x2]) * 0.5, vl = Math.sqrt(vx * vx + ry * ry + 1);
+      const dx = (R[0] * vx + U[0] * ry + F[0]) / vl, dy = (R[1] * vx + U[1] * ry + F[1]) / vl, dz = (R[2] * vx + U[2] * ry + F[2]) / vl;
+      // interleaved gradient noise per block, shifted every frame (temporal AA averages the march)
+      let j = 52.9829189 * ((0.06711056 * ((x >> 1) + fo) + 0.00583715 * ((y >> 1) + fo)) % 1);
       j -= Math.floor(j);
-      const step = dist / STEPS, fall = Math.exp(-dens * step);
-      let att = Math.exp(-dens * j * step); // light reaching the eye from each sample: one exp per pixel
-      for (let s = 0; s < STEPS; s++, att *= fall) {
-        const d = (s + j) * step, px = eye[0] + dx * d, py = eye[1] + dy * d, pz = eye[2] + dz * d;
+      for (let s = 0; s < STEPS; s++) {
+        // boundaries dmax * (s / STEPS)^2: dense near the eye, where close objects end their rays
+        const u0 = s / STEPS, u1 = (s + 1) / STEPS, us = (s + j) / STEPS, d = dmax * us * us, w = dmax * (u1 * u1 - u0 * u0);
+        const px = eye[0] + dx * d, py = eye[1] + dy * d, pz = eye[2] + dz * d;
         const u = (px * bx + pz * bz) * inv, v = (px * cx + py * cy + pz * cz) * inv;
         // broad beams with a slow shimmer on top; thresholded so dark gaps separate the beams
         let n = noise3(u + t, v * 0.6, t * 0.4) * 0.8 + Math.sin(u * 2.3 - t * 1.3 + v * 0.7) * 0.1;
@@ -775,18 +787,28 @@ function atmosRow(ctx, P, colK, ry, y) {
           const su = Math.floor((sm.R[0] * px + sm.R[1] * py + sm.R[2] * pz - sm.ox) * sm.scale), sv = Math.floor((sm.U[0] * px + sm.U[1] * py + sm.U[2] * pz - sm.oy) * sm.scale);
           if (su >= 0 && sv >= 0 && su < smS && sv < smS && sm.L[0] * px + sm.L[1] * py + sm.L[2] * pz < smD[sv * smS + su] - 0.05) n = 0;
         }
-        shaft += n * att;
+        acc[s + 1] = acc[s] + (n > 0 ? n * Math.exp(-dens * d) * w : 0);
       }
-      shaft *= rays * step * dens * 1.4;
+    } else for (let s = 0; s < STEPS; s++) acc[s + 1] = 0;
+    for (let q = 0; q < 4; q++) {
+      const px = q & 1 ? x2 : x, py = q & 2 ? y2 : y;
+      if ((q & 1 && x2 === x) || (q & 2 && y2 === y)) continue; // edge of the frame: no second column / row
+      const i = py * W + px, d = dist[q];
+      // the running sum read at this pixel's depth (linear inside a step)
+      let shaft = 0;
+      if (rays > 0 && dmax > 0) {
+        const idx = STEPS * Math.sqrt(d / dmax), s0 = idx >= STEPS ? STEPS - 1 : idx | 0, f = idx - s0;
+        shaft = (acc[s0] + (acc[s0 + 1] - acc[s0]) * f) * k;
+      }
+      const fe = 1 - Math.exp(-dens * d), c = color[i];
+      let r = (c & 255) + (ar - (c & 255)) * fe, g = ((c >>> 8) & 255) + (ag - ((c >>> 8) & 255)) * fe, b = ((c >>> 16) & 255) + (ab - ((c >>> 16) & 255)) * fe;
+      // shafts blend towards the ray colour with a soft roll-off, so stacked beams glow instead of clipping to white
+      const kk = 1 - Math.exp(-shaft);
+      r += (rr - r) * kk; g += (rg - g) * kk; b += (rb - b) * kk;
+      color[i] = 0xff000000 | ((b > 255 ? 255 : b | 0) << 16) | ((g > 255 ? 255 : g | 0) << 8) | (r > 255 ? 255 : r | 0);
     }
-    const f = 1 - Math.exp(-dens * dist), c = color[i];
-    let r = (c & 255) + (ar - (c & 255)) * f, g = ((c >>> 8) & 255) + (ag - ((c >>> 8) & 255)) * f, b = ((c >>> 16) & 255) + (ab - ((c >>> 16) & 255)) * f;
-    // shafts blend towards the ray colour with a soft roll-off, so stacked beams glow instead of clipping to white
-    const k = 1 - Math.exp(-shaft);
-    r += (rr - r) * k; g += (rg - g) * k; b += (rb - b) * k;
-    color[i] = 0xff000000 | ((b > 255 ? 255 : b | 0) << 16) | ((g > 255 ? 255 : g | 0) << 8) | (r > 255 ? 255 : r | 0);
   }
-  if (ycc) toYCoCg(color, ycc, y * W, y * W + W); // statistics for temporal AA see the final colours
+  if (ycc) { toYCoCg(color, ycc, y * W, y * W + W); if (y2 !== y) toYCoCg(color, ycc, y2 * W, y2 * W + W); } // statistics for temporal AA see the final colours
 }
 
 // smooth value noise in [-1, 1] (light shafts); written out, no closures: it runs millions of times a frame

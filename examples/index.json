@@ -92,12 +92,12 @@
   {
     "id": "seagrass",
     "title": "Seagrass meadow",
-    "description": "An ambient underwater world: a seagrass meadow of 64,000 blades swaying in the current (wind bends every vertex), tall kelp, rocks, two schools of fish, drifting plankton and volumetric light shafts through the water, seen from a slowly gliding drone.",
+    "description": "An ambient underwater world: a seagrass meadow of 35,000 blades swaying in the current (wind bends every vertex), tall kelp, rocks, two schools of fish, drifting plankton and volumetric light shafts through the water, seen from a slowly gliding drone.",
     "objects": 55,
-    "triangles": 462666,
-    "jsonBytes": 54297,
-    "objBytes": 24856716,
-    "ramBytes": 18280416
+    "triangles": 204162,
+    "jsonBytes": 54134,
+    "objBytes": 11800925,
+    "ramBytes": 8911296
   },
   {
     "id": "castle",

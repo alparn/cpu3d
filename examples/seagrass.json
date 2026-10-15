@@ -86,7 +86,7 @@
       "shape": {
         "type": "terrain",
         "width": 140,
-        "resolution": 140,
+        "resolution": 70,
         "height": 0.6,
         "scale": 0.05,
         "seed": 8,
@@ -103,13 +103,7 @@
         "emissive": 0,
         "flat": false,
         "doubleSided": false,
-        "roughness": 0.9,
-        "pattern": {
-          "type": "concrete",
-          "colors": ["#c2b48c", "#9e906a", "#5f5640"],
-          "scale": 0.7,
-          "bump": 0
-        }
+        "roughness": 0.9
       },
       "visible": true
     },
@@ -118,7 +112,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 11,
@@ -127,9 +121,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -161,7 +155,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 12,
@@ -170,9 +164,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -204,7 +198,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 13,
@@ -213,9 +207,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -247,7 +241,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 18,
@@ -256,9 +250,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -290,7 +284,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 19,
@@ -299,9 +293,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -333,7 +327,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 20,
@@ -342,9 +336,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -376,7 +370,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 25,
@@ -385,9 +379,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -419,7 +413,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 26,
@@ -428,9 +422,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -462,7 +456,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 27,
@@ -471,9 +465,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -505,7 +499,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 32,
@@ -514,9 +508,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -548,7 +542,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 33,
@@ -557,9 +551,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -591,7 +585,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 34,
@@ -600,9 +594,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -634,7 +628,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 39,
@@ -643,9 +637,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -677,7 +671,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 40,
@@ -686,9 +680,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -720,7 +714,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 41,
@@ -729,9 +723,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1021,7 +1015,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 60,
@@ -1030,9 +1024,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1064,7 +1058,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 61,
@@ -1073,9 +1067,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1107,7 +1101,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 62,
@@ -1116,9 +1110,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1150,7 +1144,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 67,
@@ -1159,9 +1153,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1193,7 +1187,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 68,
@@ -1202,9 +1196,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1236,7 +1230,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 69,
@@ -1245,9 +1239,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1537,7 +1531,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 88,
@@ -1546,9 +1540,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1580,7 +1574,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 89,
@@ -1589,9 +1583,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1623,7 +1617,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 90,
@@ -1632,9 +1626,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1666,7 +1660,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 95,
@@ -1675,9 +1669,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1709,7 +1703,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 96,
@@ -1718,9 +1712,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1752,7 +1746,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 97,
@@ -1761,9 +1755,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1795,7 +1789,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 102,
@@ -1804,9 +1798,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1838,7 +1832,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 103,
@@ -1847,9 +1841,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1881,7 +1875,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 104,
@@ -1890,9 +1884,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1924,7 +1918,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 109,
@@ -1933,9 +1927,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -1967,7 +1961,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 110,
@@ -1976,9 +1970,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -2010,7 +2004,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 111,
@@ -2019,9 +2013,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -2053,7 +2047,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1500,
+        "count": 600,
         "width": 10.5,
         "depth": 10.5,
         "seed": 116,
@@ -2062,9 +2056,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.35,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -2096,7 +2090,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1400,
+        "count": 560,
         "width": 10.5,
         "depth": 10.5,
         "seed": 117,
@@ -2105,9 +2099,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 1.05,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -2139,7 +2133,7 @@
       "name": "Seagrass",
       "shape": {
         "type": "scatter",
-        "count": 1100,
+        "count": 440,
         "width": 10.5,
         "depth": 10.5,
         "seed": 118,
@@ -2148,9 +2142,9 @@
         "scale": [0.6, 1.4],
         "shape": {
           "type": "blade",
-          "width": 0.07,
+          "width": 0.085,
           "height": 0.75,
-          "segments": 3,
+          "segments": 2,
           "bend": 0.14
         }
       },
@@ -2259,7 +2253,7 @@
           "type": "concrete",
           "colors": ["#5c625c", "#434843", "#2b2f2b"],
           "scale": 0.4,
-          "bump": 0.6
+          "bump": 0
         }
       },
       "visible": true
@@ -2280,7 +2274,7 @@
           "startAngle": 20,
           "shape": {
             "type": "lathe",
-            "segments": 10,
+            "segments": 12,
             "profile": [
               [0, -0.26],
               [0.03, -0.2],
@@ -2295,7 +2289,7 @@
           "rotation": [90, 0, 0]
         }
       },
-      "position": [6, 3.2, -4],
+      "position": [5, 4.7, -2],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
@@ -2338,7 +2332,7 @@
           "startAngle": 20,
           "shape": {
             "type": "lathe",
-            "segments": 10,
+            "segments": 12,
             "profile": [
               [0, -0.26],
               [0.03, -0.2],
@@ -2353,7 +2347,7 @@
           "rotation": [90, 0, 0]
         }
       },
-      "position": [-9, 4.6, 7],
+      "position": [-10, 5.3, 8],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "material": {
@@ -2392,10 +2386,10 @@
         "height": [0, 12],
         "scale": [0.5, 1.4],
         "shape": {
-          "type": "sphere",
-          "radius": 0.02,
-          "segments": 6,
-          "rings": 4
+          "type": "box",
+          "width": 0.03,
+          "height": 0.03,
+          "depth": 0.03
         }
       },
       "position": [0, 0, 0],
@@ -2434,10 +2428,10 @@
         "height": [12, 24],
         "scale": [0.5, 1.4],
         "shape": {
-          "type": "sphere",
-          "radius": 0.02,
-          "segments": 6,
-          "rings": 4
+          "type": "box",
+          "width": 0.03,
+          "height": 0.03,
+          "depth": 0.03
         }
       },
       "position": [0, 0, 0],
