@@ -475,6 +475,243 @@ scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twi
   await cameraPath(doc, 12, [{ t: 6, yaw: 72, pitch: 22, distance: 4, target: [0.1, 1.45, 0] }]);
 });
 
+scene('fair', 'Fairground at dusk', 'A whole fairground in motion: a Ferris wheel whose gondolas stay upright, a carousel with galloping horses, a wave swinger, a roller coaster train riding its track on spline keyframes with real lift and drop speeds, fireworks, rising balloons and hundreds of lights.', async (doc) => {
+  const rand = rng(77), D = Math.PI / 180, LOOP = 24;
+  await tool(doc, 'set_environment', {
+    background: { top: '#0b0f2e', bottom: '#f08a5d' }, fog: null, ground: false, reflections: 'sky',
+    light: { direction: [-0.75, 0.32, -0.55], color: '#ffb27a', intensity: 1.15, softness: 0.2 },
+    lights: [{ direction: [0.4, 0.8, 0.5], color: '#7d8cff', intensity: 0.45 }, { direction: [0.6, 0.25, -0.8], color: '#ff6fb0', intensity: 0.3 }],
+  });
+  // a cylinder from a to b: rotation [pitch, yaw, 0] turns its Y axis onto the direction
+  const beam = (name, a, b, radius, material, extra = {}) => {
+    const d = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], len = Math.hypot(...d), n = d.map((v) => v / len);
+    return { name, shape: { type: 'cylinder', radiusTop: radius, radiusBottom: radius, height: r4(len), segments: 8 }, position: P((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2),
+      rotation: P(Math.acos(Math.max(-1, Math.min(1, n[1]))) / D, Math.atan2(n[0], n[2]) / D, 0), material, ...extra };
+  };
+  const glow = (color, emissive = 2.2) => ({ color, emissive });
+  const steel = { color: '#d9dde3', metalness: 1, roughness: 0.3 };
+  const white = { color: '#f2efe8', roughness: 0.4, specular: 0.5 };
+  const gold = { color: '#e3b35a', metalness: 1, roughness: 0.25 };
+  const o = [];
+
+  // ---- grounds: asphalt, lawns, paths
+  o.push({ name: 'Ground', shape: { type: 'plane', width: 400, depth: 400 }, material: { color: '#2a2b30', roughness: 0.85, specular: 0.1 } });
+  for (const [x, z, w, d] of [[-14, -4, 26, 14], [13, 4, 17, 17], [21, -9, 18, 18], [-26, 18, 16, 10], [26, 20, 14, 10]]) {
+    o.push({ name: 'Lawn', shape: { type: 'box', width: w, height: 0.06, depth: d }, position: [x, 0.03, z], material: { color: '#2f4a2b', roughness: 0.95, specular: 0 } });
+  }
+  o.push({ name: 'Plaza', shape: { type: 'cylinder', radiusTop: 8, radiusBottom: 8, height: 0.08, segments: 64 }, position: [12, 0.04, 4], material: { color: '#8a7f73', roughness: 0.8 } });
+
+  // ---- Ferris wheel: wheel parts spin around the axle; gondolas orbit and spin back, so they hang upright
+  const C = [-14, 12.5, -4], RW = 10, WS = 15; // center, radius, degrees per second (one turn in the 24 s loop)
+  const wheelSpin = { spin: { axis: [0, 0, 1], speed: WS, pivot: C } };
+  for (const dz of [-0.9, 0.9]) {
+    o.push({ name: 'Wheel rim', shape: { type: 'torus', radius: RW, tube: 0.16, segments: 96, sides: 8 }, position: [C[0], C[1], C[2] + dz], rotation: [90, 0, 0], material: { color: '#f4f4f6', roughness: 0.35, specular: 0.6 }, animation: wheelSpin });
+    o.push({ name: 'Wheel inner rim', shape: { type: 'torus', radius: RW * 0.55, tube: 0.1, segments: 64, sides: 6 }, position: [C[0], C[1], C[2] + dz], rotation: [90, 0, 0], material: { color: '#f4f4f6', roughness: 0.35 }, animation: wheelSpin });
+    o.push({ name: 'Wheel spokes', shape: { type: 'radial', axis: 'z', count: 16, radius: RW / 2, shape: { type: 'cylinder', radiusTop: 0.06, radiusBottom: 0.06, height: RW, segments: 5 }, rotation: [0, 0, 90] }, position: [C[0], C[1], C[2] + dz], material: steel, animation: wheelSpin });
+  }
+  o.push({ name: 'Wheel cross bars', shape: { type: 'radial', axis: 'z', count: 16, radius: RW, shape: { type: 'cylinder', radiusTop: 0.08, radiusBottom: 0.08, height: 1.8, segments: 5 }, rotation: [90, 0, 0] }, position: C, material: steel, animation: wheelSpin });
+  o.push({ name: 'Wheel hub', shape: { type: 'cylinder', radiusTop: 0.9, radiusBottom: 0.9, height: 3.2, segments: 32 }, position: C, rotation: [90, 0, 0], material: { color: '#c8ccd2', metalness: 1, roughness: 0.25 }, animation: wheelSpin });
+  // chasing lights: two interleaved rings that blink in turn
+  for (const [k, color] of [[0, '#ffe2a8'], [1, '#ff7ac8']]) {
+    for (const dz of [-1.0, 1.0]) {
+      o.push({ name: 'Wheel lights', shape: { type: 'radial', axis: 'z', count: 32, radius: RW + 0.25, startAngle: k * 5.625, shape: { type: 'sphere', radius: 0.13, segments: 8, rings: 5 } },
+        position: [C[0], C[1], C[2] + dz], material: glow(color, 2.4), animation: { ...wheelSpin, pulse: { min: 0.25, max: 1.2, period: 1, phase: k * 0.5, blink: true } } });
+    }
+    o.push({ name: 'Spoke lights', shape: { type: 'radial', axis: 'z', count: 16, radius: RW * 0.55 + 0.2, startAngle: 11.25 + k * 0.01, shape: { type: 'sphere', radius: 0.12, segments: 8, rings: 5 } },
+      position: C, material: glow(k ? '#7ad7ff' : '#fff4c8', 2.2), animation: { ...wheelSpin, pulse: { min: 0.4, max: 1.3, period: 2, phase: k * 0.5 } } });
+  }
+  // A-frame legs and braces
+  for (const sz of [-1, 1]) {
+    const top = [C[0], C[1], C[2] + sz * 1.5];
+    for (const sx of [-1, 1]) o.push(beam('Wheel leg', [C[0] + sx * 7, 0, C[2] + sz * 3], top, 0.28, { color: '#e8e9ec', roughness: 0.4 }));
+    o.push(beam('Wheel brace', [C[0] - 3.5, C[1] / 2, C[2] + sz * 2.25], [C[0] + 3.5, C[1] / 2, C[2] + sz * 2.25], 0.14, { color: '#e8e9ec', roughness: 0.4 }));
+  }
+  o.push({ name: 'Wheel platform', shape: { type: 'roundedBox', width: 9, height: 0.6, depth: 7, radius: 0.1 }, position: [C[0], 0.3, C[2]], material: { color: '#55565e', roughness: 0.7 } });
+  const gondolaColors = ['#e8483f', '#2bb3a6', '#f2c230', '#7b5cd6'];
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * 360, p = P(C[0] + RW * Math.cos(a * D), C[1] + RW * Math.sin(a * D), C[2]);
+    const anim = { orbit: { center: C, axis: [0, 0, 1], speed: WS }, spin: { axis: [0, 0, 1], speed: -WS }, swing: { axis: [0, 0, 1], amplitude: 3, period: 3, phase: r4((i * 0.37) % 1) } };
+    const col = gondolaColors[i % 4];
+    o.push({ name: 'Gondola', shape: { type: 'lathe', segments: 24, profile: [[0, -2.35], [0.82, -2.35], [0.98, -2.12], [1.02, -1.5]] }, position: p, material: { color: col, roughness: 0.35, specular: 0.7, doubleSided: true }, animation: anim });
+    o.push({ name: 'Gondola roof', shape: { type: 'lathe', segments: 24, profile: [[0, -0.85], [1.02, -0.85], [1.05, -0.75], [0.3, -0.32], [0, -0.28]] }, position: p, material: { color: '#f4f1ea', roughness: 0.4 }, animation: anim });
+    o.push({ name: 'Gondola hanger', shape: { type: 'radial', count: 1, offset: [0, -0.45, 0], shape: { type: 'cylinder', radiusTop: 0.06, radiusBottom: 0.06, height: 0.9, segments: 6 } }, position: p, material: steel, animation: anim });
+    o.push({ name: 'Gondola lamp', shape: { type: 'radial', count: 1, offset: [0, -0.95, 0], shape: { type: 'sphere', radius: 0.14, segments: 8, rings: 5 } }, position: p, material: glow('#fff1c4', 2.6), animation: anim });
+  }
+
+  // ---- carousel: platform, canopy and lights spin; horses orbit with it and gallop up and down
+  const K = [12, 0, 4], KS = 30;
+  const carouselSpin = { spin: { axis: [0, 1, 0], speed: KS } };
+  o.push({ name: 'Carousel base', shape: { type: 'cylinder', radiusTop: 6.2, radiusBottom: 6.4, height: 0.6, segments: 64 }, position: [K[0], 0.3, K[2]], material: { color: '#7a2f3a', roughness: 0.5 } });
+  o.push({ name: 'Carousel floor', shape: { type: 'cylinder', radiusTop: 6, radiusBottom: 6, height: 0.12, segments: 64 }, position: [K[0], 0.66, K[2]], material: { color: '#b98b5a', roughness: 0.55 }, animation: carouselSpin });
+  o.push({ name: 'Carousel column', shape: { type: 'lathe', segments: 32, profile: [[0, 0.7], [1.3, 0.7], [1.1, 1.2], [0.9, 1.2], [0.9, 4.6], [1.3, 4.9], [0, 4.9]] }, position: [K[0], 0, K[2]], material: { color: '#f3d9a2', metalness: 0.6, roughness: 0.3 }, animation: carouselSpin });
+  for (const [k, color] of [[0, '#e94b5b'], [1, '#fbf3e4']]) {
+    o.push({ name: 'Carousel canopy', shape: { type: 'radial', count: 12, startAngle: k * 15, shape: { type: 'lathe', segments: 3, phiStart: 0, phiLength: 15, profile: [[0, 7.6], [6.9, 5.3], [6.9, 4.95], [6.7, 4.95], [0, 7.3]] } },
+      position: [K[0], 0, K[2]], material: { color, roughness: 0.45, specular: 0.4 }, animation: carouselSpin });
+  }
+  o.push({ name: 'Carousel crown', shape: { type: 'lathe', segments: 24, profile: [[0, 7.4], [0.7, 7.4], [0.5, 8.2], [0.15, 8.5], [0, 8.6]] }, position: [K[0], 0, K[2]], material: gold, animation: carouselSpin });
+  o.push({ name: 'Carousel valance', shape: { type: 'torus', radius: 6.9, tube: 0.12, segments: 96, sides: 6 }, position: [K[0], 4.95, K[2]], material: gold, animation: carouselSpin });
+  o.push({ name: 'Carousel lights', shape: { type: 'radial', count: 48, radius: 6.95, offset: [0, 5.15, 0], shape: { type: 'sphere', radius: 0.11, segments: 8, rings: 5 } }, position: [K[0], 0, K[2]],
+    material: glow('#ffe7b0', 2.4), animation: { ...carouselSpin, pulse: { min: 0.6, max: 1.25, period: 1.5 } } });
+  o.push({ name: 'Carousel inner lights', shape: { type: 'radial', count: 24, radius: 3.2, offset: [0, 6.6, 0], shape: { type: 'sphere', radius: 0.12, segments: 8, rings: 5 } }, position: [K[0], 0, K[2]],
+    material: glow('#ff9ad0', 2.2), animation: { ...carouselSpin, pulse: { min: 0.4, max: 1.3, period: 1.5, phase: 0.5 } } });
+  const horse = [[1.15, 0.62], [0.95, 0.88], [0.75, 0.98], [0.62, 0.9], [0.55, 0.6], [0.45, 0.35], [-0.5, 0.35], [-0.75, 0.45], [-1.12, 0.3], [-0.95, 0.2], [-0.75, 0.15],
+    [-0.7, -0.25], [-0.98, -0.72], [-0.86, -0.8], [-0.55, -0.32], [-0.4, -0.2], [0.3, -0.2], [0.55, -0.45], [0.86, -0.56], [0.92, -0.46], [0.65, -0.3], [0.55, -0.05], [0.62, 0.18], [0.9, 0.46], [1.16, 0.5]];
+  const horseColors = ['#f7f3ea', '#3b2a22', '#d9a066', '#f7f3ea', '#9aa3ad', '#7a4a2e'];
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * 360 + 15, r = i % 2 ? 3.9 : 5.1, x = K[0] + r * Math.cos(a * D), z = K[2] + r * Math.sin(a * D);
+    const orbit = { orbit: { center: K, axis: [0, 1, 0], speed: KS } };
+    o.push({ name: 'Horse', shape: { type: 'extrude', shape: horse, depth: 0.32 }, position: P(x, 2.3, z), rotation: [0, r4(90 - a), 0], scale: 0.95,
+      material: { color: horseColors[i % 6], roughness: 0.35, specular: 0.7 }, animation: { ...orbit, bob: { amplitude: 0.38, period: 2, phase: i % 2 ? 0.5 : 0 } } });
+    o.push({ name: 'Horse pole', shape: { type: 'cylinder', radiusTop: 0.05, radiusBottom: 0.05, height: 4.2, segments: 8 }, position: P(x, 2.85, z), material: gold, animation: orbit });
+  }
+
+  // ---- wave swinger: the crown spins, chairs fly outwards on tilted chains
+  const Wc = [21, 0, -9], WSS = 60, chairR = 7.4, crownR = 4.3, crownY = 12.2, chairY = 7.2;
+  const swingOrbit = { orbit: { center: Wc, axis: [0, 1, 0], speed: WSS } };
+  o.push({ name: 'Swinger tower', shape: { type: 'lathe', segments: 24, profile: [[0, 0], [1.4, 0], [1.2, 0.6], [0.6, 0.9], [0.55, 12], [0, 12]] }, position: Wc, material: { color: '#f0e6d8', roughness: 0.4 } });
+  o.push({ name: 'Swinger crown', shape: { type: 'lathe', segments: 48, profile: [[0, 11.7], [4.6, 11.9], [4.6, 12.3], [1.5, 13.4], [0.3, 14.4], [0, 14.6]] }, position: Wc, material: { color: '#3a63d6', roughness: 0.4, specular: 0.6 }, animation: { spin: { axis: [0, 1, 0], speed: WSS } } });
+  o.push({ name: 'Swinger crown lights', shape: { type: 'radial', count: 40, radius: 4.65, offset: [0, 12.1, 0], shape: { type: 'sphere', radius: 0.12, segments: 8, rings: 5 } }, position: Wc,
+    material: glow('#bfe9ff', 2.4), animation: { spin: { axis: [0, 1, 0], speed: WSS }, pulse: { min: 0.5, max: 1.3, period: 0.5, blink: true } } });
+  const seatColors = ['#f2c230', '#e8483f', '#2bb3a6', '#ffffff'];
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * 360;
+    const top = [Wc[0] + crownR * Math.cos(a * D), crownY, Wc[2] + crownR * Math.sin(a * D)], seat = [Wc[0] + chairR * Math.cos(a * D), chairY, Wc[2] + chairR * Math.sin(a * D)];
+    o.push(beam('Swing chain', top, seat, 0.03, steel, { animation: swingOrbit }));
+    const hang = beam('', seat, top, 0, {}).rotation; // local Y up along the chain
+    o.push({ name: 'Swing seat', shape: { type: 'roundedBox', width: 0.7, height: 0.12, depth: 0.7, radius: 0.05 }, position: P(...seat), rotation: hang, material: { color: seatColors[i % 4], roughness: 0.4 }, animation: swingOrbit });
+    o.push({ name: 'Swing rider', shape: { type: 'radial', count: 1, offset: [0, 0.45, 0], shape: { type: 'sphere', radius: 0.26, segments: 10, rings: 7 } }, position: P(...seat), rotation: hang,
+      material: { color: ['#d8a27a', '#8c5a3c', '#f0c9a0'][i % 3], roughness: 0.6 }, animation: swingOrbit });
+  }
+
+  // ---- roller coaster: a closed track along the back; the train rides it on keyframes timed by energy
+  // conservation (slow over the lift hill, fast in the dips), two laps per loop
+  const track = (a) => P(30 * Math.cos(a), 2.4 + 8 * ((1 + Math.cos(a)) / 2) ** 2 + 2 * (1 - Math.cos(3 * a)) / 2 + 1.2 * Math.sin(2 * a) ** 2, -31 + 8 * Math.sin(a));
+  const N = 240, pts = Array.from({ length: N }, (_, i) => track((i / N) * Math.PI * 2));
+  const lateral = (i) => {
+    const a = pts[(i + N - 1) % N], b = pts[(i + 1) % N], tx = b[0] - a[0], tz = b[2] - a[2], l = Math.hypot(tx, tz);
+    return [-tz / l, 0, tx / l];
+  };
+  for (const side of [-0.55, 0.55]) {
+    o.push({ name: 'Coaster rail', shape: { type: 'tube', path: pts.map((p, i) => { const n = lateral(i); return P(p[0] + n[0] * side, p[1], p[2] + n[2] * side); }), radius: 0.09, sides: 6, closed: true }, material: { color: '#e23b3b', roughness: 0.35, specular: 0.6 } });
+  }
+  o.push({ name: 'Coaster spine', shape: { type: 'tube', path: pts.map((p) => P(p[0], p[1] - 0.45, p[2])), radius: 0.2, sides: 8, closed: true }, material: { color: '#d9d4cb', roughness: 0.5 } });
+  for (let i = 0; i < N; i += 8) {
+    const p = pts[i];
+    o.push(beam('Coaster support', [p[0], 0, p[2]], [p[0], p[1] - 0.6, p[2]], 0.16, { color: '#d9d4cb', roughness: 0.5 }));
+  }
+  o.push({ name: 'Coaster station', shape: { type: 'roundedBox', width: 3, height: 2.6, depth: 8, radius: 0.1 }, position: [track(Math.PI)[0], 1.3, -31 + 2.6], material: { color: '#4e3b6e', roughness: 0.6 } });
+  // arc length and travel time per sample point
+  const sLen = [0];
+  for (let i = 1; i <= N; i++) { const a = pts[i - 1], b = pts[i % N]; sLen.push(sLen[i - 1] + Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2])); }
+  const total = sLen[N], hMax = Math.max(...pts.map((p) => p[1])), tAt = [0];
+  for (let i = 1; i <= N; i++) { const h = (pts[i - 1][1] + pts[i % N][1]) / 2, v = Math.sqrt(16 + 2 * 9.81 * (hMax - h)); tAt.push(tAt[i - 1] + (sLen[i] - sLen[i - 1]) / v); }
+  const lap = LOOP / 2, tScale = lap / tAt[N];
+  const pointAtS = (s) => { // position and tangent at arc length s
+    s = ((s % total) + total) % total;
+    let i = 0;
+    while (sLen[i + 1] < s) i++;
+    const u = (s - sLen[i]) / (sLen[i + 1] - sLen[i]), a = pts[i], b = pts[(i + 1) % N];
+    return { p: [0, 1, 2].map((k) => a[k] + (b[k] - a[k]) * u), d: [0, 1, 2].map((k) => b[k] - a[k]) };
+  };
+  const sAtTime = (t) => { // inverse of the travel time table
+    t = (((t / tScale) % tAt[N]) + tAt[N]) % tAt[N];
+    let i = 0;
+    while (tAt[i + 1] < t) i++;
+    return sLen[i] + ((t - tAt[i]) / (tAt[i + 1] - tAt[i])) * (sLen[i + 1] - sLen[i]);
+  };
+  const carColors = ['#ffd23f', '#3ec1d3', '#ff6b6b', '#a66cff'];
+  for (let c = 0; c < 4; c++) {
+    const keys = [];
+    let lastYaw = null;
+    for (let k = 0; k <= 112; k++) {
+      const t = (k / 112) * LOOP, { p, d } = pointAtS(sAtTime(t) - c * 2.5);
+      const hl = Math.hypot(d[0], d[2]);
+      let yaw = Math.atan2(d[0], d[2]) / D;
+      if (lastYaw !== null) { while (yaw < lastYaw - 180) yaw += 360; while (yaw > lastYaw + 180) yaw -= 360; }
+      lastYaw = yaw;
+      keys.push({ t: r4(t), position: P(p[0], p[1] + 0.75, p[2]), rotation: P(-Math.atan2(d[1], hl) / D, yaw, 0) });
+    }
+    const anim = { keys, ease: 'spline' };
+    o.push({ name: 'Coaster car', shape: { type: 'roundedBox', width: 1.5, height: 0.8, depth: 2.2, radius: 0.18, segments: 4 }, position: keys[0].position, rotation: keys[0].rotation, material: { color: carColors[c], roughness: 0.3, specular: 0.8 }, animation: anim });
+    o.push({ name: 'Coaster riders', shape: { type: 'radial', count: 2, radius: 0.36, offset: [0, 0.6, 0], shape: { type: 'sphere', radius: 0.24, segments: 10, rings: 7 } }, position: keys[0].position, rotation: keys[0].rotation,
+      material: { color: ['#d8a27a', '#f0c9a0'][c % 2], roughness: 0.6 }, animation: anim });
+  }
+
+  // ---- fireworks: a rocket climbs, then a burst of streaks grows and fades (keyframed scale and glow)
+  const shells = [[-4, 34, -22, 3, '#ffcf5a'], [10, 38, -26, 9, '#ff5fa2'], [-20, 30, -16, 15, '#6fe3ff'], [4, 36, -20, 20.5, '#9bff7a']];
+  for (const [x, y, z, t0, color] of shells) {
+    const times = [t0, (t0 + 12) % LOOP].sort((a, b) => a - b);
+    const burst = [], rocket = [];
+    for (const tb of times) {
+      burst.push({ t: r4(tb - 0.02), scale: 0.001, emissive: 0 }, { t: r4(tb), scale: 0.12, emissive: 4 }, { t: r4(tb + 0.6), scale: 1, emissive: 2.6 },
+        { t: r4(tb + 1.9), scale: 1.25, emissive: 0 }, { t: r4(tb + 1.95), scale: 0.001, emissive: 0 });
+      rocket.push({ t: r4(Math.max(0, tb - 1.45)), scale: 0.001, position: [x, 1, z] }, { t: r4(Math.max(0.01, tb - 1.4)), scale: 1, position: [x, 1, z] },
+        { t: r4(tb), scale: 1, position: [x, y, z] }, { t: r4(tb + 0.03), scale: 0.001, position: [x, y, z] });
+    }
+    o.push({ name: 'Firework', shape: { type: 'radial', count: 14, shape: { type: 'radial', axis: 'z', count: 7, angle: 150, startAngle: -75, radius: 3.2, rotation: [0, 0, 90],
+      shape: { type: 'cylinder', radiusTop: 0.07, radiusBottom: 0.02, height: 2, segments: 4, caps: false } } }, position: [x, y, z], scale: 0.001,
+      material: { color, emissive: 0 }, animation: { keys: burst, ease: 'linear' } });
+    o.push({ name: 'Rocket', shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.12, height: 1.4, segments: 6 }, position: [x, 1, z], scale: 0.001,
+      material: { color: '#fff1c4', emissive: 2.5 }, animation: { keys: rocket, ease: 'linear' } });
+  }
+
+  // ---- balloons: a vendor's bunch bobs, a few escaped ones drift up into the sky
+  const balloonColors = ['#ff4f6d', '#ffd23f', '#3ec1d3', '#a66cff', '#7bdc6f', '#ff9f43', '#ff6fb0'];
+  const V = [4, 0, 19];
+  o.push({ name: 'Balloon cart', shape: { type: 'roundedBox', width: 1.6, height: 1, depth: 1, radius: 0.1 }, position: [V[0], 0.5, V[2]], material: { color: '#f2efe8', roughness: 0.5 } });
+  for (let i = 0; i < 7; i++) {
+    const a = i * 51.4, x = V[0] + Math.cos(a * D) * 0.7, z = V[2] + Math.sin(a * D) * 0.7, y = 3.6 + (i % 3) * 0.45;
+    const anim = { bob: { amplitude: 0.12, period: 2.4 + i * 0.2, phase: r4(i / 7) } };
+    o.push({ name: 'Balloon', shape: { type: 'sphere', radius: 0.42, segments: 16, rings: 12 }, position: P(x, y, z), scale: [1, 1.18, 1], material: { color: balloonColors[i], roughness: 0.15, specular: 1.2, shininess: 120 }, animation: anim });
+    o.push(beam('Balloon string', [V[0], 1, V[2]], [x, y - 0.5, z], 0.01, { color: '#ddd' }, { animation: anim }));
+  }
+  for (let i = 0; i < 5; i++) {
+    o.push({ name: 'Escaped balloon', shape: { type: 'sphere', radius: 0.42, segments: 16, rings: 12 }, position: P(V[0] + 0.5, 3.5, V[2] - 0.3), scale: [1, 1.18, 1],
+      material: { color: balloonColors[(i * 2) % 7], roughness: 0.15, specular: 1.2, shininess: 120 },
+      animation: { flow: { axis: [0.25 - i * 0.12, 1, -0.3], distance: 32, speed: 32 / LOOP * 2, phase: r4(i / 5), fade: 0.12 } } });
+  }
+
+  // ---- food stalls with striped awnings and glowing signs
+  const stalls = [[-8, 16, 0], [-14, 16, 0], [16, 17, 0], [22, 17, 0], [-26, 6, 90]];
+  stalls.forEach(([x, z, ry], i) => {
+    const col = ['#e8483f', '#2bb3a6', '#f2c230', '#7b5cd6', '#ff8a3d'][i];
+    o.push({ name: 'Stall', shape: { type: 'roundedBox', width: 4.2, height: 2.2, depth: 2.6, radius: 0.08 }, position: [x, 1.1, z], rotation: [0, ry, 0], material: { color: '#efe7da', roughness: 0.6 } });
+    o.push({ name: 'Awning', shape: { type: 'extrude', shape: [[-2.4, 0], [2.4, 0], [2.4, 0.15], [0, 1.1], [-2.4, 0.15]], depth: 3.2 }, position: [x, 2.25, z], rotation: [0, ry, 0], material: { color: col, roughness: 0.5 } });
+    o.push({ name: 'Stall sign', shape: { type: 'roundedBox', width: 2.4, height: 0.5, depth: 0.12, radius: 0.04 }, position: ry ? [x + 1.36, 1.8, z] : [x, 1.8, z + 1.36], rotation: [0, ry, 0], material: glow(['#ffe08a', '#9ff3ff', '#ffb3d9', '#c9ffb3', '#ffd0a0'][i], 1.6), animation: { pulse: { min: 0.8, max: 1.15, period: 3, phase: i * 0.2 } } });
+  });
+
+  // ---- entrance arch with chasing bulbs, lamp posts, trees
+  o.push({ name: 'Entrance arch', shape: { type: 'torus', radius: 6.5, tube: 0.35, segments: 64, sides: 10 }, position: [0, 1.2, 26], rotation: [90, 0, 0], material: { color: '#f2efe8', roughness: 0.4 } });
+  for (const x of [-6.5, 6.5]) o.push({ name: 'Arch pillar', shape: { type: 'cylinder', radiusTop: 0.6, radiusBottom: 0.7, height: 1.4, segments: 16 }, position: [x, 0.7, 26], material: { color: '#7a2f3a', roughness: 0.5 } });
+  for (const [k, color] of [[0, '#ffe7b0'], [1, '#ff7ac8']]) {
+    o.push({ name: 'Arch lights', shape: { type: 'radial', axis: 'z', count: 30, angle: 174, startAngle: 3 + k * 3, radius: 6.5, offset: [0, 0, 0.42], shape: { type: 'sphere', radius: 0.13, segments: 8, rings: 5 } },
+      position: [0, 1.2, 26], material: glow(color, 2.5), animation: { pulse: { min: 0.2, max: 1.2, period: 0.8, phase: k * 0.5, blink: true } } });
+  }
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2, x = r4(Math.cos(a) * 34), z = r4(Math.sin(a) * 26 - 2);
+    if (z < -20) continue;
+    o.push({ name: 'Lamp post', shape: { type: 'cylinder', radiusTop: 0.07, radiusBottom: 0.1, height: 4.2, segments: 8 }, position: [x, 2.1, z], material: { color: '#2b2d33', metalness: 0.8, roughness: 0.4 } });
+    o.push({ name: 'Lamp', shape: { type: 'sphere', radius: 0.35, segments: 12, rings: 8 }, position: [x, 4.35, z], material: glow('#ffd9a0', 2.4) });
+  }
+  for (let i = 0; i < 26; i++) {
+    const a = rand() * Math.PI * 2, rr = 40 + rand() * 12, x = r4(Math.cos(a) * rr), z = r4(Math.sin(a) * rr * 0.85), h = r4(4 + rand() * 4);
+    o.push({ name: 'Tree', shape: { type: 'cone', radius: r4(1.4 + rand()), height: h, segments: 8 }, position: [x, r4(h / 2 + 1), z], material: { color: '#1f3b2a', flat: true, specular: 0 } });
+    o.push({ name: 'Trunk', shape: { type: 'cylinder', radiusTop: 0.15, radiusBottom: 0.2, height: 1.2, segments: 6 }, position: [x, 0.6, z], material: { color: '#3d2a1e' } });
+  }
+
+  // distant hills close the horizon
+  for (let k = 0; k < 3; k++) {
+    o.push({ name: 'Hills', shape: { type: 'radial', count: 16, radius: 150 + k * 12, startAngle: k * 7.5, shape: { type: 'cone', radius: 26 - k * 4, height: 9 + k * 5, segments: 10 } },
+      position: [0, 2 + k * 2.5, 0], material: { color: ['#251d33', '#1d1830', '#16142a'][k], roughness: 0.9, specular: 0, flat: true } });
+  }
+
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 18, pitch: 17, distance: 66, target: [1, 9, -6] });
+  // establishing shot, past the carousel and the wave swinger, along the Ferris wheel and the coaster, back
+  await cameraPath(doc, LOOP, [{ t: 6, yaw: 44, pitch: 11, distance: 38, target: [13, 5, 0] }, { t: 12, yaw: 4, pitch: 9, distance: 40, target: [-8, 10, -12] },
+    { t: 18, yaw: -28, pitch: 21, distance: 56, target: [0, 10, -10] }]);
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)

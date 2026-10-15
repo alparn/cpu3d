@@ -32,6 +32,12 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 ## Gallery
 
+<img src="docs/fair.png" alt="Fairground at dusk: Ferris wheel, carousel, wave swinger, roller coaster and fireworks" width="100%">
+
+<p align="center"><img src="docs/fair.gif" alt="Fairground animation" width="480"></p>
+
+<sub>Fairground at dusk: 339 objects, 98,046 triangles, everything moving. The Ferris wheel gondolas orbit and counter-rotate so they hang upright, horses gallop on the carousel, chairs fly out on the wave swinger, the roller coaster train follows its track on spline keyframes timed by energy conservation (slow over the lift hill, fast in the dips), fireworks burst with keyframed scale and glow, balloons drift away with <code>flow</code>. Built in about 240 lines of <a href="examples/build.mjs">examples/build.mjs</a>.</sub>
+
 <img src="docs/watch-macro.png" alt="Macro render of the skeleton watch: spoked brass gears, a hairspring, ruby jewels and blued screws" width="100%">
 
 <sub>The skeleton watch scene: 170 parts, every one a JSON recipe (spoked gears are extrudes with holes, the hairspring is a tube along a spiral), rendered on one CPU core. Full view: [docs/watch.png](docs/watch.png).</sub>
@@ -40,31 +46,32 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 <sub>Turbofan cutaway: about 1,350 NACA-profiled blades in radial arrays and casings revolved through 240°. 47 KB of recipes, 4.15 MB once exported as triangles.</sub>
 
-Ten scenes ship with cpu3d. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
+Eleven scenes ship with cpu3d, all of them animated. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
 All of them are built in [`examples/build.mjs`](examples/build.mjs) through the same tool API an agent uses, including `probe_height` to put things on terrain.
 
 <table>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 6.7 KB · as .obj 615.2 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/phone.png" alt="Smartphone"><br><b>Smartphone</b><br><sub>65 objects · 25,188 tris<br>recipes 37.4 KB · as .obj 840.1 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/watch.png" alt="Skeleton watch"><br><b>Skeleton watch</b><br><sub>170 objects · 32,758 tris<br>recipes 168.5 KB · as .obj 1.25 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 7.5 KB · as .obj 615.2 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/phone.png" alt="Smartphone"><br><b>Smartphone</b><br><sub>65 objects · 25,188 tris<br>recipes 46.3 KB · as .obj 840.1 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/watch.png" alt="Skeleton watch"><br><b>Skeleton watch</b><br><sub>170 objects · 32,758 tris<br>recipes 172.0 KB · as .obj 1.25 MB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/engine.png" alt="Turbofan cutaway"><br><b>Turbofan cutaway</b><br><sub>48 objects · 111,978 tris<br>recipes 46.6 KB · as .obj 4.15 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 76.7 KB · as .obj 191.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 70.1 KB · as .obj 1.20 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/engine.png" alt="Turbofan cutaway"><br><b>Turbofan cutaway</b><br><sub>70 objects · 113,968 tris<br>recipes 70.1 KB · as .obj 4.23 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/fair.png" alt="Fairground at dusk"><br><b>Fairground at dusk</b><br><sub>339 objects · 98,046 tris<br>recipes 409.0 KB · as .obj 3.37 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 77.4 KB · as .obj 191.3 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 60.9 KB · as .obj 605.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>315 objects · 12,414 tris<br>recipes 153.0 KB · as .obj 504.9 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 96.3 KB · as .obj 2.19 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 84.9 KB · as .obj 1.20 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 63.5 KB · as .obj 605.3 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>319 objects · 17,694 tris<br>recipes 166.0 KB · as .obj 683.1 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>11 objects · 52,246 tris<br>recipes 6.7 KB · as .obj 1.48 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 108.5 KB · as .obj 2.19 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>11 objects · 52,246 tris<br>recipes 7.5 KB · as .obj 1.48 MB</sub></td>
 </tr>
 </table>
 
-Recipes are compact: the lighthouse island is **6.7 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
+Recipes are compact: the lighthouse island is **7.5 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
 
 ## Quick start
 

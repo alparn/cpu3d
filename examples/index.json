@@ -40,6 +40,16 @@
     "ramBytes": 3434952
   },
   {
+    "id": "fair",
+    "title": "Fairground at dusk",
+    "description": "A whole fairground in motion: a Ferris wheel whose gondolas stay upright, a carousel with galloping horses, a wave swinger, a roller coaster train riding its track on spline keyframes with real lift and drop speeds, fireworks, rising balloons and hundreds of lights.",
+    "objects": 339,
+    "triangles": 98046,
+    "jsonBytes": 418845,
+    "objBytes": 3528583,
+    "ramBytes": 1343256
+  },
+  {
     "id": "castle",
     "title": "Castle",
     "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",
