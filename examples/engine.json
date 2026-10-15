@@ -2181,8 +2181,8 @@
         "startAngle": 0,
         "shape": {
           "type": "cylinder",
-          "radiusTop": 0.004,
-          "radiusBottom": 0.004,
+          "radiusTop": 0.0045,
+          "radiusBottom": 0.0045,
           "height": 2.9800000000000004,
           "segments": 4,
           "caps": false
@@ -2195,7 +2195,7 @@
         "color": "#4f9fe6",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 0.22,
+        "emissive": 0.45,
         "flat": false,
         "doubleSided": false
       },
@@ -2213,26 +2213,34 @@
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.9685],
+            [0.0006, -0.8474],
+            [0.0018, -0.7264],
+            [0.0031, -0.6053],
+            [0.0045, -0.4843],
+            [0.0057, -0.3632],
+            [0.0067, -0.2421],
+            [0.0073, -0.1211],
+            [0.0075, 0],
+            [0.0073, 0.1211],
+            [0.0067, 0.2421],
+            [0.0057, 0.3632],
+            [0.0045, 0.4843],
+            [0.0031, 0.6053],
+            [0.0018, 0.7264],
+            [0.0006, 0.8474],
+            [0, 0.9685]
           ]
         }
       },
-      "position": [4.05, 1.62, 0],
+      "position": [3.4315, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
         "color": "#cdeeff",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
@@ -2240,10 +2248,10 @@
       "animation": {
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
+          "distance": 1.0430000000000001,
+          "speed": 0.6953333333333335,
           "phase": 0,
-          "fade": 0.4
+          "fade": 0.5
         }
       }
     },
@@ -2259,26 +2267,34 @@
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.9685],
+            [0.0006, -0.8474],
+            [0.0018, -0.7264],
+            [0.0031, -0.6053],
+            [0.0045, -0.4843],
+            [0.0057, -0.3632],
+            [0.0067, -0.2421],
+            [0.0073, -0.1211],
+            [0.0075, 0],
+            [0.0073, 0.1211],
+            [0.0067, 0.2421],
+            [0.0057, 0.3632],
+            [0.0045, 0.4843],
+            [0.0031, 0.6053],
+            [0.0018, 0.7264],
+            [0.0006, 0.8474],
+            [0, 0.9685]
           ]
         }
       },
-      "position": [4.05, 1.62, 0],
+      "position": [3.4315, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
         "color": "#cdeeff",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
@@ -2286,61 +2302,15 @@
       "animation": {
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.3333,
-          "fade": 0.4
+          "distance": 1.0430000000000001,
+          "speed": 0.6953333333333335,
+          "phase": 0.5,
+          "fade": 0.5
         }
       }
     },
     {
       "id": "obj_52",
-      "name": "Intake air",
-      "shape": {
-        "type": "radial",
-        "count": 8,
-        "radius": 0.42,
-        "startAngle": 0,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [4.05, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#cdeeff",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.6667,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_53",
       "name": "Intake air lines",
       "shape": {
         "type": "radial",
@@ -2349,8 +2319,8 @@
         "startAngle": 10,
         "shape": {
           "type": "cylinder",
-          "radiusTop": 0.004,
-          "radiusBottom": 0.004,
+          "radiusTop": 0.0045,
+          "radiusBottom": 0.0045,
           "height": 2.9800000000000004,
           "segments": 4,
           "caps": false
@@ -2363,11 +2333,65 @@
         "color": "#4f9fe6",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 0.22,
+        "emissive": 0.45,
         "flat": false,
         "doubleSided": false
       },
       "visible": true
+    },
+    {
+      "id": "obj_53",
+      "name": "Intake air",
+      "shape": {
+        "type": "radial",
+        "count": 12,
+        "radius": 0.68,
+        "startAngle": 10,
+        "shape": {
+          "type": "lathe",
+          "segments": 6,
+          "profile": [
+            [0, -0.9685],
+            [0.0006, -0.8474],
+            [0.0018, -0.7264],
+            [0.0031, -0.6053],
+            [0.0045, -0.4843],
+            [0.0057, -0.3632],
+            [0.0067, -0.2421],
+            [0.0073, -0.1211],
+            [0.0075, 0],
+            [0.0073, 0.1211],
+            [0.0067, 0.2421],
+            [0.0057, 0.3632],
+            [0.0045, 0.4843],
+            [0.0031, 0.6053],
+            [0.0018, 0.7264],
+            [0.0006, 0.8474],
+            [0, 0.9685]
+          ]
+        }
+      },
+      "position": [3.4315, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cdeeff",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "flow": {
+          "axis": [-1, 0, 0],
+          "distance": 1.0430000000000001,
+          "speed": 0.6953333333333335,
+          "phase": 0.17,
+          "fade": 0.5
+        }
+      }
     },
     {
       "id": "obj_54",
@@ -2381,26 +2405,34 @@
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.9685],
+            [0.0006, -0.8474],
+            [0.0018, -0.7264],
+            [0.0031, -0.6053],
+            [0.0045, -0.4843],
+            [0.0057, -0.3632],
+            [0.0067, -0.2421],
+            [0.0073, -0.1211],
+            [0.0075, 0],
+            [0.0073, 0.1211],
+            [0.0067, 0.2421],
+            [0.0057, 0.3632],
+            [0.0045, 0.4843],
+            [0.0031, 0.6053],
+            [0.0018, 0.7264],
+            [0.0006, 0.8474],
+            [0, 0.9685]
           ]
         }
       },
-      "position": [4.05, 1.62, 0],
+      "position": [3.4315, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
         "color": "#cdeeff",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
@@ -2408,107 +2440,15 @@
       "animation": {
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.11,
-          "fade": 0.4
+          "distance": 1.0430000000000001,
+          "speed": 0.6953333333333335,
+          "phase": 0.67,
+          "fade": 0.5
         }
       }
     },
     {
       "id": "obj_55",
-      "name": "Intake air",
-      "shape": {
-        "type": "radial",
-        "count": 12,
-        "radius": 0.68,
-        "startAngle": 10,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [4.05, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#cdeeff",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.4433,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_56",
-      "name": "Intake air",
-      "shape": {
-        "type": "radial",
-        "count": 12,
-        "radius": 0.68,
-        "startAngle": 10,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [4.05, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#cdeeff",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.7767,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_57",
       "name": "Intake air lines",
       "shape": {
         "type": "radial",
@@ -2517,8 +2457,8 @@
         "startAngle": 15,
         "shape": {
           "type": "cylinder",
-          "radiusTop": 0.004,
-          "radiusBottom": 0.004,
+          "radiusTop": 0.0045,
+          "radiusBottom": 0.0045,
           "height": 2.9800000000000004,
           "segments": 4,
           "caps": false
@@ -2531,152 +2471,122 @@
         "color": "#4f9fe6",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 0.22,
+        "emissive": 0.45,
         "flat": false,
         "doubleSided": false
       },
       "visible": true
     },
     {
+      "id": "obj_56",
+      "name": "Intake air",
+      "shape": {
+        "type": "radial",
+        "count": 16,
+        "radius": 0.94,
+        "startAngle": 15,
+        "shape": {
+          "type": "lathe",
+          "segments": 6,
+          "profile": [
+            [0, -0.9685],
+            [0.0006, -0.8474],
+            [0.0018, -0.7264],
+            [0.0031, -0.6053],
+            [0.0045, -0.4843],
+            [0.0057, -0.3632],
+            [0.0067, -0.2421],
+            [0.0073, -0.1211],
+            [0.0075, 0],
+            [0.0073, 0.1211],
+            [0.0067, 0.2421],
+            [0.0057, 0.3632],
+            [0.0045, 0.4843],
+            [0.0031, 0.6053],
+            [0.0018, 0.7264],
+            [0.0006, 0.8474],
+            [0, 0.9685]
+          ]
+        }
+      },
+      "position": [3.4315, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cdeeff",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "flow": {
+          "axis": [-1, 0, 0],
+          "distance": 1.0430000000000001,
+          "speed": 0.6953333333333335,
+          "phase": 0.34,
+          "fade": 0.5
+        }
+      }
+    },
+    {
+      "id": "obj_57",
+      "name": "Intake air",
+      "shape": {
+        "type": "radial",
+        "count": 16,
+        "radius": 0.94,
+        "startAngle": 15,
+        "shape": {
+          "type": "lathe",
+          "segments": 6,
+          "profile": [
+            [0, -0.9685],
+            [0.0006, -0.8474],
+            [0.0018, -0.7264],
+            [0.0031, -0.6053],
+            [0.0045, -0.4843],
+            [0.0057, -0.3632],
+            [0.0067, -0.2421],
+            [0.0073, -0.1211],
+            [0.0075, 0],
+            [0.0073, 0.1211],
+            [0.0067, 0.2421],
+            [0.0057, 0.3632],
+            [0.0045, 0.4843],
+            [0.0031, 0.6053],
+            [0.0018, 0.7264],
+            [0.0006, 0.8474],
+            [0, 0.9685]
+          ]
+        }
+      },
+      "position": [3.4315, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cdeeff",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "flow": {
+          "axis": [-1, 0, 0],
+          "distance": 1.0430000000000001,
+          "speed": 0.6953333333333335,
+          "phase": 0.84,
+          "fade": 0.5
+        }
+      }
+    },
+    {
       "id": "obj_58",
-      "name": "Intake air",
-      "shape": {
-        "type": "radial",
-        "count": 16,
-        "radius": 0.94,
-        "startAngle": 15,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [4.05, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#cdeeff",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.22,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_59",
-      "name": "Intake air",
-      "shape": {
-        "type": "radial",
-        "count": 16,
-        "radius": 0.94,
-        "startAngle": 15,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [4.05, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#cdeeff",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.5533,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_60",
-      "name": "Intake air",
-      "shape": {
-        "type": "radial",
-        "count": 16,
-        "radius": 0.94,
-        "startAngle": 15,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [4.05, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#cdeeff",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.6300000000000003,
-          "speed": 3.5066666666666673,
-          "phase": 0.8867,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_61",
       "name": "Bypass air lines",
       "shape": {
         "type": "radial",
@@ -2685,8 +2595,8 @@
         "startAngle": 0,
         "shape": {
           "type": "cylinder",
-          "radiusTop": 0.004,
-          "radiusBottom": 0.004,
+          "radiusTop": 0.0045,
+          "radiusBottom": 0.0045,
           "height": 1.9,
           "segments": 4,
           "caps": false
@@ -2699,7 +2609,159 @@
         "color": "#4f9fe6",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 0.22,
+        "emissive": 0.45,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 60
+        }
+      }
+    },
+    {
+      "id": "obj_59",
+      "name": "Bypass air",
+      "shape": {
+        "type": "radial",
+        "count": 12,
+        "radius": 0.82,
+        "startAngle": 0,
+        "shape": {
+          "type": "lathe",
+          "segments": 6,
+          "profile": [
+            [0, -0.6175],
+            [0.0006, -0.5403],
+            [0.0018, -0.4631],
+            [0.0031, -0.3859],
+            [0.0045, -0.3087],
+            [0.0057, -0.2316],
+            [0.0067, -0.1544],
+            [0.0073, -0.0772],
+            [0.0075, 0],
+            [0.0073, 0.0772],
+            [0.0067, 0.1544],
+            [0.0057, 0.2316],
+            [0.0045, 0.3087],
+            [0.0031, 0.3859],
+            [0.0018, 0.4631],
+            [0.0006, 0.5403],
+            [0, 0.6175]
+          ]
+        }
+      },
+      "position": [0.2825, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cdeeff",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 60
+        },
+        "flow": {
+          "axis": [-1, 0, 0],
+          "distance": 0.665,
+          "speed": 0.44333333333333336,
+          "phase": 0,
+          "fade": 0.5
+        }
+      }
+    },
+    {
+      "id": "obj_60",
+      "name": "Bypass air",
+      "shape": {
+        "type": "radial",
+        "count": 12,
+        "radius": 0.82,
+        "startAngle": 0,
+        "shape": {
+          "type": "lathe",
+          "segments": 6,
+          "profile": [
+            [0, -0.6175],
+            [0.0006, -0.5403],
+            [0.0018, -0.4631],
+            [0.0031, -0.3859],
+            [0.0045, -0.3087],
+            [0.0057, -0.2316],
+            [0.0067, -0.1544],
+            [0.0073, -0.0772],
+            [0.0075, 0],
+            [0.0073, 0.0772],
+            [0.0067, 0.1544],
+            [0.0057, 0.2316],
+            [0.0045, 0.3087],
+            [0.0031, 0.3859],
+            [0.0018, 0.4631],
+            [0.0006, 0.5403],
+            [0, 0.6175]
+          ]
+        }
+      },
+      "position": [0.2825, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#cdeeff",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.9,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 1, 0],
+          "speed": 60
+        },
+        "flow": {
+          "axis": [-1, 0, 0],
+          "distance": 0.665,
+          "speed": 0.44333333333333336,
+          "phase": 0.5,
+          "fade": 0.5
+        }
+      }
+    },
+    {
+      "id": "obj_61",
+      "name": "Bypass air lines",
+      "shape": {
+        "type": "radial",
+        "count": 16,
+        "radius": 1,
+        "startAngle": 11.25,
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.0045,
+          "radiusBottom": 0.0045,
+          "height": 1.9,
+          "segments": 4,
+          "caps": false
+        }
+      },
+      "position": [-0.05, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#4f9fe6",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.45,
         "flat": false,
         "doubleSided": false
       },
@@ -2716,33 +2778,41 @@
       "name": "Bypass air",
       "shape": {
         "type": "radial",
-        "count": 12,
-        "radius": 0.82,
-        "startAngle": 0,
+        "count": 16,
+        "radius": 1,
+        "startAngle": 11.25,
         "shape": {
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.6175],
+            [0.0006, -0.5403],
+            [0.0018, -0.4631],
+            [0.0031, -0.3859],
+            [0.0045, -0.3087],
+            [0.0057, -0.2316],
+            [0.0067, -0.1544],
+            [0.0073, -0.0772],
+            [0.0075, 0],
+            [0.0073, 0.0772],
+            [0.0067, 0.1544],
+            [0.0057, 0.2316],
+            [0.0045, 0.3087],
+            [0.0031, 0.3859],
+            [0.0018, 0.4631],
+            [0.0006, 0.5403],
+            [0, 0.6175]
           ]
         }
       },
-      "position": [0.55, 1.62, 0],
+      "position": [0.2825, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
         "color": "#cdeeff",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
@@ -2754,10 +2824,10 @@
         },
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 1.5499999999999998,
-          "speed": 2.0666666666666664,
-          "phase": 0,
-          "fade": 0.4
+          "distance": 0.665,
+          "speed": 0.44333333333333336,
+          "phase": 0.17,
+          "fade": 0.5
         }
       }
     },
@@ -2766,33 +2836,41 @@
       "name": "Bypass air",
       "shape": {
         "type": "radial",
-        "count": 12,
-        "radius": 0.82,
-        "startAngle": 0,
+        "count": 16,
+        "radius": 1,
+        "startAngle": 11.25,
         "shape": {
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.6175],
+            [0.0006, -0.5403],
+            [0.0018, -0.4631],
+            [0.0031, -0.3859],
+            [0.0045, -0.3087],
+            [0.0057, -0.2316],
+            [0.0067, -0.1544],
+            [0.0073, -0.0772],
+            [0.0075, 0],
+            [0.0073, 0.0772],
+            [0.0067, 0.1544],
+            [0.0057, 0.2316],
+            [0.0045, 0.3087],
+            [0.0031, 0.3859],
+            [0.0018, 0.4631],
+            [0.0006, 0.5403],
+            [0, 0.6175]
           ]
         }
       },
-      "position": [0.55, 1.62, 0],
+      "position": [0.2825, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
         "color": "#cdeeff",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
@@ -2804,470 +2882,258 @@
         },
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 1.5499999999999998,
-          "speed": 2.0666666666666664,
-          "phase": 0.3333,
-          "fade": 0.4
+          "distance": 0.665,
+          "speed": 0.44333333333333336,
+          "phase": 0.67,
+          "fade": 0.5
         }
       }
     },
     {
       "id": "obj_64",
-      "name": "Bypass air",
+      "name": "Exhaust jet lines",
       "shape": {
         "type": "radial",
-        "count": 12,
-        "radius": 0.82,
+        "count": 6,
+        "radius": 0.14,
+        "startAngle": 0,
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.0045,
+          "radiusBottom": 0.0045,
+          "height": 2.7800000000000002,
+          "segments": 4,
+          "caps": false
+        }
+      },
+      "position": [-3.01, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff7a2e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.45,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_65",
+      "name": "Exhaust jet",
+      "shape": {
+        "type": "radial",
+        "count": 6,
+        "radius": 0.14,
         "startAngle": 0,
         "shape": {
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.9035],
+            [0.0006, -0.7906],
+            [0.0018, -0.6776],
+            [0.0031, -0.5647],
+            [0.0045, -0.4517],
+            [0.0057, -0.3388],
+            [0.0067, -0.2259],
+            [0.0073, -0.1129],
+            [0.0075, 0],
+            [0.0073, 0.1129],
+            [0.0067, 0.2259],
+            [0.0057, 0.3388],
+            [0.0045, 0.4518],
+            [0.0031, 0.5647],
+            [0.0018, 0.6776],
+            [0.0006, 0.7906],
+            [0, 0.9035]
           ]
         }
       },
-      "position": [0.55, 1.62, 0],
+      "position": [-2.5235, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#cdeeff",
+        "color": "#ffc58a",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
       "visible": true,
       "animation": {
-        "spin": {
-          "axis": [0, 1, 0],
-          "speed": 60
+        "pulse": {
+          "min": 0.8,
+          "max": 1.2,
+          "period": 0.25,
+          "phase": 0,
+          "blink": false
         },
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 1.5499999999999998,
-          "speed": 2.0666666666666664,
-          "phase": 0.6667,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_65",
-      "name": "Bypass air lines",
-      "shape": {
-        "type": "radial",
-        "count": 16,
-        "radius": 1,
-        "startAngle": 11.25,
-        "shape": {
-          "type": "cylinder",
-          "radiusTop": 0.004,
-          "radiusBottom": 0.004,
-          "height": 1.9,
-          "segments": 4,
-          "caps": false
-        }
-      },
-      "position": [-0.05, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#4f9fe6",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 0.22,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "spin": {
-          "axis": [0, 1, 0],
-          "speed": 60
+          "distance": 0.9730000000000001,
+          "speed": 0.6486666666666667,
+          "phase": 0,
+          "fade": 0.5
         }
       }
     },
     {
       "id": "obj_66",
-      "name": "Bypass air",
+      "name": "Exhaust jet",
       "shape": {
         "type": "radial",
-        "count": 16,
-        "radius": 1,
-        "startAngle": 11.25,
+        "count": 6,
+        "radius": 0.14,
+        "startAngle": 0,
         "shape": {
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.9035],
+            [0.0006, -0.7906],
+            [0.0018, -0.6776],
+            [0.0031, -0.5647],
+            [0.0045, -0.4517],
+            [0.0057, -0.3388],
+            [0.0067, -0.2259],
+            [0.0073, -0.1129],
+            [0.0075, 0],
+            [0.0073, 0.1129],
+            [0.0067, 0.2259],
+            [0.0057, 0.3388],
+            [0.0045, 0.4518],
+            [0.0031, 0.5647],
+            [0.0018, 0.6776],
+            [0.0006, 0.7906],
+            [0, 0.9035]
           ]
         }
       },
-      "position": [0.55, 1.62, 0],
+      "position": [-2.5235, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#cdeeff",
+        "color": "#ffc58a",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
       "visible": true,
       "animation": {
-        "spin": {
-          "axis": [0, 1, 0],
-          "speed": 60
+        "pulse": {
+          "min": 0.8,
+          "max": 1.2,
+          "period": 0.25,
+          "phase": 0,
+          "blink": false
         },
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 1.5499999999999998,
-          "speed": 2.0666666666666664,
-          "phase": 0.11,
-          "fade": 0.4
+          "distance": 0.9730000000000001,
+          "speed": 0.6486666666666667,
+          "phase": 0.5,
+          "fade": 0.5
         }
       }
     },
     {
       "id": "obj_67",
-      "name": "Bypass air",
+      "name": "Exhaust jet lines",
       "shape": {
         "type": "radial",
-        "count": 16,
-        "radius": 1,
-        "startAngle": 11.25,
+        "count": 10,
+        "radius": 0.27,
+        "startAngle": 18,
         "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
+          "type": "cylinder",
+          "radiusTop": 0.0045,
+          "radiusBottom": 0.0045,
+          "height": 2.7800000000000002,
+          "segments": 4,
+          "caps": false
         }
       },
-      "position": [0.55, 1.62, 0],
+      "position": [-3.01, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#cdeeff",
+        "color": "#ff7a2e",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.45,
         "flat": false,
         "doubleSided": false
       },
-      "visible": true,
-      "animation": {
-        "spin": {
-          "axis": [0, 1, 0],
-          "speed": 60
-        },
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 1.5499999999999998,
-          "speed": 2.0666666666666664,
-          "phase": 0.4433,
-          "fade": 0.4
-        }
-      }
+      "visible": true
     },
     {
       "id": "obj_68",
-      "name": "Bypass air",
+      "name": "Exhaust jet",
       "shape": {
         "type": "radial",
-        "count": 16,
-        "radius": 1,
-        "startAngle": 11.25,
+        "count": 10,
+        "radius": 0.27,
+        "startAngle": 18,
         "shape": {
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.9035],
+            [0.0006, -0.7906],
+            [0.0018, -0.6776],
+            [0.0031, -0.5647],
+            [0.0045, -0.4517],
+            [0.0057, -0.3388],
+            [0.0067, -0.2259],
+            [0.0073, -0.1129],
+            [0.0075, 0],
+            [0.0073, 0.1129],
+            [0.0067, 0.2259],
+            [0.0057, 0.3388],
+            [0.0045, 0.4518],
+            [0.0031, 0.5647],
+            [0.0018, 0.6776],
+            [0.0006, 0.7906],
+            [0, 0.9035]
           ]
         }
       },
-      "position": [0.55, 1.62, 0],
+      "position": [-2.5235, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
-        "color": "#cdeeff",
+        "color": "#ffc58a",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
       "visible": true,
       "animation": {
-        "spin": {
-          "axis": [0, 1, 0],
-          "speed": 60
+        "pulse": {
+          "min": 0.8,
+          "max": 1.2,
+          "period": 0.25,
+          "phase": 0,
+          "blink": false
         },
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 1.5499999999999998,
-          "speed": 2.0666666666666664,
-          "phase": 0.7767,
-          "fade": 0.4
+          "distance": 0.9730000000000001,
+          "speed": 0.6486666666666667,
+          "phase": 0.17,
+          "fade": 0.5
         }
       }
     },
     {
       "id": "obj_69",
-      "name": "Exhaust jet lines",
-      "shape": {
-        "type": "radial",
-        "count": 6,
-        "radius": 0.14,
-        "startAngle": 0,
-        "shape": {
-          "type": "cylinder",
-          "radiusTop": 0.004,
-          "radiusBottom": 0.004,
-          "height": 2.7800000000000002,
-          "segments": 4,
-          "caps": false
-        }
-      },
-      "position": [-3.01, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#ff7a2e",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 0.22,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true
-    },
-    {
-      "id": "obj_70",
-      "name": "Exhaust jet",
-      "shape": {
-        "type": "radial",
-        "count": 6,
-        "radius": 0.14,
-        "startAngle": 0,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [-1.97, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#ffc58a",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "pulse": {
-          "min": 0.8,
-          "max": 1.2,
-          "period": 0.25,
-          "phase": 0,
-          "blink": false
-        },
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.43,
-          "speed": 3.24,
-          "phase": 0,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_71",
-      "name": "Exhaust jet",
-      "shape": {
-        "type": "radial",
-        "count": 6,
-        "radius": 0.14,
-        "startAngle": 0,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [-1.97, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#ffc58a",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "pulse": {
-          "min": 0.8,
-          "max": 1.2,
-          "period": 0.25,
-          "phase": 0,
-          "blink": false
-        },
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.43,
-          "speed": 3.24,
-          "phase": 0.3333,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_72",
-      "name": "Exhaust jet",
-      "shape": {
-        "type": "radial",
-        "count": 6,
-        "radius": 0.14,
-        "startAngle": 0,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [-1.97, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#ffc58a",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "pulse": {
-          "min": 0.8,
-          "max": 1.2,
-          "period": 0.25,
-          "phase": 0,
-          "blink": false
-        },
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.43,
-          "speed": 3.24,
-          "phase": 0.6667,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_73",
-      "name": "Exhaust jet lines",
-      "shape": {
-        "type": "radial",
-        "count": 10,
-        "radius": 0.27,
-        "startAngle": 18,
-        "shape": {
-          "type": "cylinder",
-          "radiusTop": 0.004,
-          "radiusBottom": 0.004,
-          "height": 2.7800000000000002,
-          "segments": 4,
-          "caps": false
-        }
-      },
-      "position": [-3.01, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#ff7a2e",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 0.22,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true
-    },
-    {
-      "id": "obj_74",
       "name": "Exhaust jet",
       "shape": {
         "type": "radial",
@@ -3278,26 +3144,34 @@
           "type": "lathe",
           "segments": 6,
           "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
+            [0, -0.9035],
+            [0.0006, -0.7906],
+            [0.0018, -0.6776],
+            [0.0031, -0.5647],
+            [0.0045, -0.4517],
+            [0.0057, -0.3388],
+            [0.0067, -0.2259],
+            [0.0073, -0.1129],
+            [0.0075, 0],
+            [0.0073, 0.1129],
+            [0.0067, 0.2259],
+            [0.0057, 0.3388],
+            [0.0045, 0.4518],
+            [0.0031, 0.5647],
+            [0.0018, 0.6776],
+            [0.0006, 0.7906],
+            [0, 0.9035]
           ]
         }
       },
-      "position": [-1.97, 1.62, 0],
+      "position": [-2.5235, 1.62, 0],
       "rotation": [0, 0, -90],
       "scale": [1, 1, 1],
       "material": {
         "color": "#ffc58a",
         "specular": 0.25,
         "shininess": 24,
-        "emissive": 1.1,
+        "emissive": 0.9,
         "flat": false,
         "doubleSided": false
       },
@@ -3312,116 +3186,10 @@
         },
         "flow": {
           "axis": [-1, 0, 0],
-          "distance": 2.43,
-          "speed": 3.24,
-          "phase": 0.11,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_75",
-      "name": "Exhaust jet",
-      "shape": {
-        "type": "radial",
-        "count": 10,
-        "radius": 0.27,
-        "startAngle": 18,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [-1.97, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#ffc58a",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "pulse": {
-          "min": 0.8,
-          "max": 1.2,
-          "period": 0.25,
-          "phase": 0,
-          "blink": false
-        },
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.43,
-          "speed": 3.24,
-          "phase": 0.4433,
-          "fade": 0.4
-        }
-      }
-    },
-    {
-      "id": "obj_76",
-      "name": "Exhaust jet",
-      "shape": {
-        "type": "radial",
-        "count": 10,
-        "radius": 0.27,
-        "startAngle": 18,
-        "shape": {
-          "type": "lathe",
-          "segments": 6,
-          "profile": [
-            [0, -0.4],
-            [0.0051, -0.3],
-            [0.0083, -0.2],
-            [0.0103, -0.1],
-            [0.011, 0],
-            [0.0103, 0.1],
-            [0.0083, 0.2],
-            [0.0051, 0.3],
-            [0, 0.4]
-          ]
-        }
-      },
-      "position": [-1.97, 1.62, 0],
-      "rotation": [0, 0, -90],
-      "scale": [1, 1, 1],
-      "material": {
-        "color": "#ffc58a",
-        "specular": 0.25,
-        "shininess": 24,
-        "emissive": 1.1,
-        "flat": false,
-        "doubleSided": false
-      },
-      "visible": true,
-      "animation": {
-        "pulse": {
-          "min": 0.8,
-          "max": 1.2,
-          "period": 0.25,
-          "phase": 0,
-          "blink": false
-        },
-        "flow": {
-          "axis": [-1, 0, 0],
-          "distance": 2.43,
-          "speed": 3.24,
-          "phase": 0.7767,
-          "fade": 0.4
+          "distance": 0.9730000000000001,
+          "speed": 0.6486666666666667,
+          "phase": 0.67,
+          "fade": 0.5
         }
       }
     }

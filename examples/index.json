@@ -33,11 +33,11 @@
     "id": "engine",
     "title": "Turbofan cutaway",
     "description": "A turbofan with the casing cut open: 22 twisted fan blades, booster and high-pressure compressor stages, a glowing combustor, heat-tinted turbines, all as radial arrays of NACA-profiled blades.",
-    "objects": 76,
-    "triangles": 135658,
-    "jsonBytes": 79405,
-    "objBytes": 5136763,
-    "ramBytes": 3582192
+    "objects": 69,
+    "triangles": 143338,
+    "jsonBytes": 75499,
+    "objBytes": 5407130,
+    "ramBytes": 3766512
   },
   {
     "id": "fair",

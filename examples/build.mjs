@@ -458,23 +458,25 @@ scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twi
   await animate(doc, 'Flames', { pulse: { min: 0.6, max: 1.4, period: 0.25 } });
 
   // ---- airflow, like a wind-tunnel visualisation: an even field of faint streamlines in rings around the
-  // axis, and soft light pulses gliding along every line at one speed. Three pulses per line, a third of a
-  // pass apart, overlap into one continuous stream. Behind the fan the bypass air swirls; the core leaves as
-  // a hot jet. A pass takes 0.75 s, so the 3 s and 12 s loops are seamless.
-  const PASS = 0.75;
-  const spindle = (length, radius) => ({ type: 'lathe', segments: 6, profile: Array.from({ length: 9 }, (_, k) => P(radius * Math.sin((k / 8) * Math.PI) ** 0.8, (k / 8 - 0.5) * length)) });
+  // axis, and long soft glows flowing along every line at one speed. Two per line, half a pass apart,
+  // overlap into one continuous stream without gaps. Behind the fan the bypass air swirls; the core leaves as
+  // a hot jet. A pass takes 1.5 s, so the 3 s and 12 s loops are seamless.
+  const PASS = 1.5;
+  // a long, softly tapered glow: as wide as the line itself, so the line brightens instead of showing a dash
+  const spindle = (length, radius) => ({ type: 'lathe', segments: 6, profile: Array.from({ length: 17 }, (_, k) => P(radius * Math.sin((k / 16) * Math.PI) ** 1.5, (k / 16 - 0.5) * length)) });
   const stream = (name, rings, from, to, line, pulse, extra = {}) => {
-    const out = [], len = from - to;
+    const out = [], len = from - to, glowLen = len * 0.65;
     rings.forEach(([radius, count], ri) => {
       const start = (ri * 360) / count / rings.length; // rings are staggered so the field looks even
       out.push(E({ name: `${name} lines`, position: [0, (from + to) / 2, 0],
-        shape: { type: 'radial', count, radius, startAngle: start, shape: { type: 'cylinder', radiusTop: 0.004, radiusBottom: 0.004, height: len, segments: 4, caps: false } },
-        material: { color: line, emissive: 0.22 }, animation: extra.spin ? { spin: extra.spin } : undefined }));
-      for (let k = 0; k < 3; k++) {
-        out.push(E({ name, position: [0, from - 0.35, 0],
-          shape: { type: 'radial', count, radius, startAngle: start, shape: spindle(0.8, 0.011) },
-          material: { color: pulse, emissive: 1.1 },
-          animation: { flow: { axis: [-1, 0, 0], distance: len - 0.35, speed: (len - 0.35) / PASS, phase: r4(k / 3 + ri * 0.11), fade: 0.4 }, ...extra } }));
+        shape: { type: 'radial', count, radius, startAngle: start, shape: { type: 'cylinder', radiusTop: 0.0045, radiusBottom: 0.0045, height: len, segments: 4, caps: false } },
+        material: { color: line, emissive: 0.45 }, animation: extra.spin ? { spin: extra.spin } : undefined }));
+      // two long glows per line, half a pass apart: their soft ends overlap, so the brightness flows without gaps
+      for (let k = 0; k < 2; k++) {
+        out.push(E({ name, position: [0, from - glowLen / 2, 0],
+          shape: { type: 'radial', count, radius, startAngle: start, shape: spindle(glowLen, 0.0075) },
+          material: { color: pulse, emissive: 0.9 },
+          animation: { flow: { axis: [-1, 0, 0], distance: len - glowLen, speed: (len - glowLen) / PASS, phase: r4(k / 2 + ri * 0.17), fade: 0.5 }, ...extra } }));
       }
     });
     return out;
