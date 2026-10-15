@@ -49,7 +49,7 @@ function shape2d(s, name = 'shape') {
     case 'polygon': return G.shapes.circle(num(s.radius, 0.5, `${name}.radius`, 1e-4), int(s.sides, 6, `${name}.sides`, 3, SEG));
     case 'rect': return G.shapes.rect(num(s.width, 1, `${name}.width`, 1e-4), num(s.height, 1, `${name}.height`, 1e-4));
     case 'roundedRect': return G.shapes.roundedRect(num(s.width, 1, `${name}.width`, 1e-4), num(s.height, 1, `${name}.height`, 1e-4),
-      num(s.radius, 0.1, `${name}.radius`, 0), int(s.segments, 6, `${name}.segments`, 1, 64));
+      num(s.radius, 0.1, `${name}.radius`, 0), int(s.segments, 6, `${name}.segments`, 1, 64), bool(s.smooth, false, `${name}.smooth`));
     case 'star': return G.shapes.star(int(s.points, 5, `${name}.points`, 2, SEG),
       num(s.outer, 1, `${name}.outer`, 1e-4), num(s.inner, 0.5, `${name}.inner`, 1e-4));
     default: return fail(`unknown 2D shape type "${s.type}" in "${name}" (use circle, polygon, rect, roundedRect, star or an array of [x, y] points)`);
@@ -104,7 +104,7 @@ export function buildShape(r) {
     case 'roundedBox': {
       const edge = num(r.radius, 0.05, 'radius', 0);
       g = G.roundedBox(num(r.width, 1, 'width', 1e-4), num(r.height, 1, 'height', 1e-4), num(r.depth, 1, 'depth', 1e-4),
-        edge, num(r.cornerRadius, edge, 'cornerRadius', 0), int(r.segments, 6, 'segments', 1, 32));
+        edge, num(r.cornerRadius, edge, 'cornerRadius', 0), int(r.segments, 6, 'segments', 1, 32), bool(r.smooth, false, 'smooth'));
       break;
     }
     case 'sphere':
@@ -189,13 +189,19 @@ export const SHAPE_REFERENCE = `# cpu3d shape recipes
 World: right-handed, Y is up, the ground plane is y = 0, units are meters.
 Every object = { name, shape, position [x,y,z], rotation [x,y,z] in DEGREES, scale (number or [x,y,z]), material }.
 material = { color: "#rrggbb", specular 0..2, shininess 1..256, emissive 0..10 (glowing screens, lamps, windows),
+            metalness 0..1 (1 = metal: colored reflections), roughness 0..1 (0 = mirror/polished, 1 = matte; default 0.7),
+            texture: PNG path in the project or "data:image/png;base64,..." (projected along the object's thinnest local
+            axis: flat in Z -> image top = +Y, flat in Y like plane -> image top = -Z; multiplied by color),
             flat: bool (faceted look), doubleSided: bool (for open surfaces) }.
+Environment: set_environment({ reflections: "sky" | "studio" | "none", light: { direction, color, intensity, softness 0..1 },
+            lights: [{ direction, color, intensity }] (up to 4 extra lights without shadows, e.g. fill and rim) }).
 Shapes are built around their own origin (see "origin" below); use position to place them.
 
 ## Primitives
 - box       { type: "box", width=1, height=1, depth=1 }                       origin: center
-- roundedBox { type: "roundedBox", width=1, height=1, depth=1, radius=0.05, cornerRadius=radius, segments=6 }
+- roundedBox { type: "roundedBox", width=1, height=1, depth=1, radius=0.05, cornerRadius=radius, segments=6, smooth=false }
             box with smooth rounded edges; cornerRadius rounds the corners seen from the front (XY).
+            smooth: true gives squircle corners (continuous curvature, like modern phones and tablets).
             Great for devices, phones, furniture, buttons. Depth is along Z.
 - sphere    { type: "sphere", radius=0.5, segments=32, rings=16 }             origin: center
 - cylinder  { type: "cylinder", radiusTop=0.5, radiusBottom=0.5, height=1, segments=32, caps=true }   origin: center
@@ -224,7 +230,7 @@ Shapes are built around their own origin (see "origin" below); use position to p
 - { type: "circle", radius=0.5, points=32 }
 - { type: "polygon", radius=0.5, sides=6 }
 - { type: "rect", width=1, height=1 }
-- { type: "roundedRect", width=1, height=1, radius=0.1, segments=6 }
+- { type: "roundedRect", width=1, height=1, radius=0.1, segments=6, smooth=false }
 - { type: "star", points=5, outer=1, inner=0.5 }
 
 ## Path3D

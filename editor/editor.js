@@ -5,6 +5,18 @@ import { Renderer, Camera } from '../src/renderer.js';
 import { SceneDocument, worldBounds, objectMatrix } from '../src/document.js';
 import { buildShape } from '../src/recipes.js';
 import { callTool, pretty } from '../src/tools.js';
+import { setTextureLoader } from '../src/textures.js';
+
+// textures are decoded by the browser; when one arrives the viewport redraws
+setTextureLoader(async (src) => {
+  const blob = await (await fetch(src)).blob();
+  const bmp = await createImageBitmap(blob);
+  const c = document.createElement('canvas');
+  c.width = bmp.width; c.height = bmp.height;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(bmp, 0, 0);
+  return { width: bmp.width, height: bmp.height, data: ctx.getImageData(0, 0, bmp.width, bmp.height).data };
+});
 import { buildRenderScene, cameraFromState, pick, frameBounds, unionBounds, exportOBJ, screenRay, raycast, rayPlane } from '../src/scene.js';
 
 const $ = (id) => document.getElementById(id);
@@ -239,6 +251,19 @@ function renderInspector() {
   const glow = Object.assign(document.createElement('input'), { type: 'range', min: 0, max: 3, step: 0.05, value: o.material.emissive || 0, title: 'Self-illumination (screens, lamps)' });
   glow.onchange = () => upd({ material: { emissive: +glow.value } });
   box.append(field('Glow', glow));
+  const slider = (key, title, def) => {
+    const el = Object.assign(document.createElement('input'), { type: 'range', min: 0, max: 1, step: 0.02, value: o.material[key] ?? def, title });
+    el.onchange = () => upd({ material: { [key]: +el.value } });
+    return el;
+  };
+  box.append(field('Metal', slider('metalness', '0 plastic, glass, wood .. 1 metal', 0)));
+  box.append(field('Roughness', slider('roughness', '0 polished mirror .. 1 matte', 0.7)));
+  if (o.material.texture) {
+    const t = document.createElement('span');
+    t.className = 'muted small';
+    t.textContent = o.material.texture.startsWith('data:') ? 'embedded PNG' : o.material.texture;
+    box.append(field('Texture', t));
+  }
 
   const checks = document.createElement('div');
   checks.className = 'checks';
@@ -748,6 +773,7 @@ function frame() {
   renderStats();
 }
 
+renderer.onTextureLoad = () => { state.dirty = true; };
 window.cpu3d = { state, tool, renderer }; // handy in devtools
 
 buildAddMenu();

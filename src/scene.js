@@ -38,6 +38,7 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
     const m = new Mesh(geometryFor(o.shape), {
       color: colorToRGB(o.material.color), specular: o.material.specular,
       shininess: o.material.shininess, doubleSided: o.material.doubleSided, emissive: o.material.emissive || 0,
+      metalness: o.material.metalness || 0, roughness: o.material.roughness, texture: o.material.texture || null,
     });
     m.matrix = objectMatrix(o);
     m.matrixAutoUpdate = false;
@@ -50,7 +51,12 @@ export function buildRenderScene(data, geometryFor, { selected = [], showGround 
   return {
     meshes,
     background: { top: colorToRGB(env.background.top), bottom },
-    light: { direction: env.light.direction, color: colorToRGB(env.light.color), sky: [0.3, 0.33, 0.4], ground: [0.12, 0.1, 0.09] },
+    light: {
+      direction: env.light.direction, color: colorToRGB(env.light.color), intensity: env.light.intensity ?? 1, softness: env.light.softness ?? 0.1,
+      sky: [0.3, 0.33, 0.4], ground: [0.12, 0.1, 0.09],
+    },
+    lights: (env.lights || []).map((l) => ({ direction: l.direction, color: colorToRGB(l.color), intensity: l.intensity ?? 0.5 })),
+    reflections: env.reflections || 'sky',
     fog: env.fog ? { near: env.fog.near, far: env.fog.far, color: bottom } : null,
   };
 }

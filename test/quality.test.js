@@ -56,3 +56,34 @@ test('tone curve is monotonic and maps black to black', () => {
   for (let i = 1; i < lut.length; i += 97) assert.ok(lut[i] >= lut[i - 1]);
   assert.ok(lut[lut.length - 1] > 250);
 });
+
+test('textures are projected along the thinnest axis with the image upright', async () => {
+  const { encodePNG } = await import('../server/png.js');
+  await import('../server/render.js'); // installs the Node texture loader
+  const { loadTextures } = await import('../src/textures.js');
+  // 2x2 image: top row red | green, bottom row blue | white
+  const px = new Uint8ClampedArray([255, 0, 0, 255, 0, 255, 0, 255, 0, 0, 255, 255, 255, 255, 255, 255]);
+  const src = 'data:image/png;base64,' + encodePNG(px, 2, 2).toString('base64');
+  await loadTextures([src]);
+  const doc = new SceneDocument();
+  doc.addObjects([{ shape: { type: 'plane', width: 2, depth: 2 }, rotation: [90, 0, 0], position: [0, 1, 0],
+    material: { color: '#ffffff', texture: src, emissive: 1, doubleSided: true } }], {});
+  doc.setEnvironment({ ground: false, reflections: 'none', fog: null }, {});
+  const scene = buildRenderScene(doc.data, (s) => doc.geometry(s));
+  const r = new Renderer({ width: 100, height: 100 });
+  r.shadows = false; r.ao = false;
+  r.render(scene, cameraFromState({ yaw: 0, pitch: 0, distance: 3, target: [0, 1, 0] }));
+  const at = (x, y) => { const c = r.color[y * 100 + x]; return [c & 255, (c >>> 8) & 255, (c >>> 16) & 255]; };
+  const [tl, tr, bl] = [at(38, 38), at(62, 38), at(38, 62)];
+  assert.ok(tl[0] > 150 && tl[0] > 3 * tl[1] && tl[0] > 3 * tl[2], `top left red, got ${tl}`);
+  assert.ok(tr[1] > 150 && tr[1] > 3 * tr[0] && tr[1] > 3 * tr[2], `top right green, got ${tr}`);
+  assert.ok(bl[2] > 150 && bl[2] > 3 * bl[0] && bl[2] > 3 * bl[1], `bottom left blue, got ${bl}`);
+});
+
+test('PNG decoder round trip', async () => {
+  const { encodePNG, decodePNG } = await import('../server/png.js');
+  const px = new Uint8ClampedArray(5 * 3 * 4).map((_, i) => (i % 4 === 3 ? 255 : (i * 41) % 256));
+  const back = decodePNG(encodePNG(px, 5, 3));
+  assert.equal(back.width, 5);
+  assert.deepEqual([...back.data], [...px]);
+});

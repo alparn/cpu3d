@@ -242,14 +242,16 @@ export const shapes = {
     const a = (Math.PI * i) / points + Math.PI / 2, r = i % 2 ? inner : outer;
     return [r * Math.cos(a), r * Math.sin(a)];
   }),
-  // rectangle with quarter-circle corners, counter-clockwise, 4 * (segments + 1) points
-  roundedRect: (w = 1, h = 1, r = 0.1, segments = 6) => {
+  // rectangle with rounded corners, counter-clockwise, 4 * (segments + 1) points.
+  // smooth = true uses superellipse ("squircle") corners: curvature ramps up instead of jumping,
+  // the continuous-curvature look of modern devices. They need a larger radius for the same look.
+  roundedRect: (w = 1, h = 1, r = 0.1, segments = 6, smooth = false) => {
     r = Math.max(1e-5, Math.min(r, w / 2, h / 2));
-    const cx = w / 2 - r, cy = h / 2 - r, pts = [];
+    const cx = w / 2 - r, cy = h / 2 - r, pts = [], e = smooth ? 0.5 : 1; // |cos|^e, |sin|^e
     for (const [ox, oy, a0] of [[cx, -cy, -90], [cx, cy, 0], [-cx, cy, 90], [-cx, -cy, 180]]) {
       for (let i = 0; i <= segments; i++) {
-        const a = ((a0 + (90 * i) / segments) * Math.PI) / 180;
-        pts.push([ox + r * Math.cos(a), oy + r * Math.sin(a)]);
+        const a = ((a0 + (90 * i) / segments) * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a);
+        pts.push([ox + r * Math.sign(c) * Math.abs(c) ** e, oy + r * Math.sign(s) * Math.abs(s) ** e]);
       }
     }
     return pts;
@@ -411,11 +413,11 @@ export const plane = (w = 1, d = 1) => grid(w, d, 1, 1);
 // Box with rounded edges (edge radius) and rounded corners in the XY plane (corner radius),
 // centered on the origin, depth along Z. Built from rims: rounded rectangles that shrink
 // along a quarter circle towards the front and back faces, so all edges are smooth.
-export function roundedBox(w = 1, h = 1, d = 1, edge = 0.05, corner = edge, segments = 6) {
+export function roundedBox(w = 1, h = 1, d = 1, edge = 0.05, corner = edge, segments = 6, smooth = false) {
   const e = Math.max(1e-5, Math.min(edge, w / 2, h / 2, d / 2));
   const c = Math.max(e, Math.min(corner, w / 2, h / 2));
   const rims = [];
-  const rim = (z, inset) => shapes.roundedRect(w - 2 * inset, h - 2 * inset, Math.max(1e-5, c - inset), segments)
+  const rim = (z, inset) => shapes.roundedRect(w - 2 * inset, h - 2 * inset, Math.max(1e-5, c - inset), segments, smooth)
     .map(([x, y]) => [x, y, z]);
   for (let k = 0; k <= segments; k++) { // back edge: from the back face out to the side
     const phi = -Math.PI / 2 + (k / segments) * (Math.PI / 2);

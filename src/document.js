@@ -3,6 +3,7 @@
 // validates, records undo history and notifies listeners (editor, SSE clients, autosave).
 
 import { buildShape } from './recipes.js';
+import { isValidTextureSrc } from './textures.js';
 import { mat4 } from './math.js';
 
 const HISTORY = 100;
@@ -16,7 +17,9 @@ export function createEmptyScene() {
     environment: {
       background: { top: '#171a21', bottom: '#545a66' },
       fog: { near: 16, far: 45 },
-      light: { direction: [0.55, 0.85, 0.4], color: '#fff5e6' },
+      light: { direction: [0.55, 0.85, 0.4], color: '#fff5e6', intensity: 1, softness: 0.1 },
+      lights: [],
+      reflections: 'sky',
       ground: true,
     },
     objects: [],
@@ -61,8 +64,30 @@ function normalizeMaterial(m = {}, base = {}) {
   if (m.specular !== undefined) out.specular = range(m.specular, 'material.specular', 0, 2);
   if (m.shininess !== undefined) out.shininess = range(m.shininess, 'material.shininess', 1, 256);
   if (m.emissive !== undefined) out.emissive = range(m.emissive, 'material.emissive', 0, 10);
+  if (m.metalness !== undefined) out.metalness = range(m.metalness, 'material.metalness', 0, 1);
+  if (m.roughness !== undefined) {
+    if (m.roughness === null) delete out.roughness;
+    else out.roughness = range(m.roughness, 'material.roughness', 0, 1);
+  }
+  if (m.texture !== undefined) {
+    if (m.texture === null || m.texture === '') delete out.texture;
+    else if (!isValidTextureSrc(m.texture)) fail('"material.texture" must be a PNG path inside the project (e.g. "examples/textures/screen.png") or a "data:image/png;base64,..." URL');
+    else out.texture = m.texture;
+  }
   if (m.flat !== undefined) out.flat = !!m.flat;
   if (m.doubleSided !== undefined) out.doubleSided = !!m.doubleSided;
+  return out;
+}
+
+// main light: direction, color, intensity, softness (shadow penumbra); extra lights cast no shadows
+function normalizeLight(l, base, name, main = true) {
+  if (!l || typeof l !== 'object') fail(`"${name}" must be an object`);
+  const out = {
+    direction: l.direction !== undefined ? vec3(l.direction, `${name}.direction`) : base.direction,
+    color: l.color !== undefined ? parseColor(l.color, `${name}.color`) : base.color,
+    intensity: l.intensity !== undefined ? range(l.intensity, `${name}.intensity`, 0, 20) : base.intensity ?? 1,
+  };
+  if (main) out.softness = l.softness !== undefined ? range(l.softness, `${name}.softness`, 0, 1) : base.softness ?? 0.1;
   return out;
 }
 
@@ -205,11 +230,14 @@ export class SceneDocument {
         if (patch.fog === null || patch.fog === false) e.fog = null;
         else e.fog = { near: range(patch.fog.near, 'fog.near', 0, 1e5), far: range(patch.fog.far, 'fog.far', 0, 1e5) };
       }
-      if (patch.light !== undefined) {
-        e.light = {
-          direction: patch.light.direction !== undefined ? vec3(patch.light.direction, 'light.direction') : e.light.direction,
-          color: patch.light.color !== undefined ? parseColor(patch.light.color, 'light.color') : e.light.color,
-        };
+      if (patch.light !== undefined) e.light = normalizeLight(patch.light, e.light, 'light');
+      if (patch.lights !== undefined) {
+        if (!Array.isArray(patch.lights) || patch.lights.length > 4) fail('"lights" must be an array of up to 4 extra lights');
+        e.lights = patch.lights.map((l, i) => normalizeLight(l, { direction: [0, 1, 0], color: '#ffffff', intensity: 0.5 }, `lights[${i}]`, false));
+      }
+      if (patch.reflections !== undefined) {
+        if (!['sky', 'studio', 'none'].includes(patch.reflections)) fail('"reflections" must be "sky", "studio" or "none"');
+        e.reflections = patch.reflections;
       }
       if (patch.ground !== undefined) e.ground = !!patch.ground;
       return e;
@@ -241,10 +269,9 @@ export class SceneDocument {
       bottom: safe(() => parseColor(e.background?.bottom), base.environment.background.bottom),
     };
     e.fog = e.fog && isNum(e.fog.near) && isNum(e.fog.far) ? { near: e.fog.near, far: e.fog.far } : null;
-    e.light = {
-      direction: safe(() => vec3(e.light?.direction, 'direction'), base.environment.light.direction),
-      color: safe(() => parseColor(e.light?.color), base.environment.light.color),
-    };
+    e.light = safe(() => normalizeLight(e.light || {}, base.environment.light, 'light'), base.environment.light);
+    e.lights = safe(() => (Array.isArray(e.lights) ? e.lights.slice(0, 4).map((l, i) => normalizeLight(l, { direction: [0, 1, 0], color: '#ffffff', intensity: 0.5 }, `lights[${i}]`, false)) : []), []);
+    e.reflections = ['sky', 'studio', 'none'].includes(e.reflections) ? e.reflections : 'sky';
     e.ground = e.ground !== false;
 
     let maxId = 0;

@@ -18,8 +18,12 @@
     },
     "light": {
       "direction": [-0.4, 0.8, 0.5],
-      "color": "#d4f1ff"
+      "color": "#d4f1ff",
+      "intensity": 1,
+      "softness": 0.1
     },
+    "lights": [],
+    "reflections": "sky",
     "ground": false
   },
   "objects": [

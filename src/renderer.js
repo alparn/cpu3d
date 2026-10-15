@@ -8,22 +8,26 @@
 // The canvas is only used at the very end to blit the finished frame (putImageData).
 
 import { mat4 } from './math.js';
-import { buildToneLUT, buildShadowMap, shadePass, halton, SRGB_TO_LINEAR, TONE_SCALE, TONE_MAX_V, TONE_LAST, WIRE_MATERIAL } from './lighting.js';
+import { buildToneLUT, buildInverseToneLUT, buildShadowMap, shadePass, halton, SRGB_TO_LINEAR, TONE_SCALE, TONE_MAX_V, TONE_LAST, WIRE_MATERIAL } from './lighting.js';
+import { getTexture } from './textures.js';
 
 const GUARD = 8; // guard band (in NDC units): only triangles crossing it are clipped in x/y
 const NEAR = 1, FAR = 2, LEFT = 4, RIGHT = 8, BOTTOM = 16, TOP = 32;
 const PLANES = [NEAR, FAR, LEFT, RIGHT, BOTTOM, TOP];
-const STRIDE = 10; // clip vertex: x y z w r g b nx ny nz
+const STRIDE = 12; // clip vertex: x y z w r g b nx ny nz u v
 
 export class Mesh {
   constructor(geometry, { color = [0.8, 0.8, 0.8], specular = 0.25, shininess = 24, doubleSided = false, emissive = 0,
-    position = [0, 0, 0], rotation = [0, 0, 0], scale = 1 } = {}) {
+    position = [0, 0, 0], rotation = [0, 0, 0], scale = 1, metalness = 0, roughness, texture = null } = {}) {
     this.geometry = geometry;
     this.color = color;
     this.specular = specular;
     this.shininess = shininess;
     this.doubleSided = doubleSided;
     this.emissive = emissive; // self-illumination: adds color * emissive, independent of lights and shadows
+    this.metalness = metalness; // 0 dielectric .. 1 metal (colored reflections, no diffuse)
+    this.roughness = roughness; // 0 mirror .. 1 matte; undefined = matte default
+    this.texture = texture;     // texture src (see textures.js), mapped planar onto the local XY bounds
     this.position = position;
     this.rotation = rotation;
     this.scale = typeof scale === 'number' ? [scale, scale, scale] : scale;
@@ -52,7 +56,7 @@ const L = {
   sr: 0.3, sg: 0.3, sb: 0.35, gr: 0.1, gg: 0.1, gb: 0.1,
   ex: 0, ey: 0, ez: 0,
   fog: false, fn: 0, ff: 1, fr: 0, fg: 0, fb: 0, // fog color in display units (0..255)
-  tone: null,
+  tone: null, invTone: null,
   r: 0, g: 0, b: 0,
 };
 const S2L = SRGB_TO_LINEAR;
@@ -67,12 +71,13 @@ function shade(nx, ny, nz, px, py, pz, cr, cg, cb, spec, shin, twoSided, emissiv
   vx /= dist; vy /= dist; vz /= dist;
   if (twoSided && nx * vx + ny * vy + nz * vz < 0) { nx = -nx; ny = -ny; nz = -nz; }
   const hemi = ny * 0.5 + 0.5;
-  let r = mr * (L.gr + (L.sr - L.gr) * hemi);
-  let g = mg * (L.gg + (L.sg - L.gg) * hemi);
-  let b = mb * (L.gb + (L.sb - L.gb) * hemi);
+  const kd = emissive >= 1 ? 0 : 1 - emissive; // emitters do not also scatter light diffusely
+  let r = mr * kd * (L.gr + (L.sr - L.gr) * hemi);
+  let g = mg * kd * (L.gg + (L.sg - L.gg) * hemi);
+  let b = mb * kd * (L.gb + (L.sb - L.gb) * hemi);
   const ndl = nx * L.lx + ny * L.ly + nz * L.lz;
   if (ndl > 0) {
-    r += mr * L.lr * ndl; g += mg * L.lg * ndl; b += mb * L.lb * ndl;
+    r += mr * kd * L.lr * ndl; g += mg * kd * L.lg * ndl; b += mb * kd * L.lb * ndl;
     if (spec > 0) {
       const hx = L.lx + vx, hy = L.ly + vy, hz = L.lz + vz;
       const ndh = (nx * hx + ny * hy + nz * hz) / (Math.sqrt(hx * hx + hy * hy + hz * hz) || 1);
@@ -82,7 +87,10 @@ function shade(nx, ny, nz, px, py, pz, cr, cg, cb, spec, shin, twoSided, emissiv
       }
     }
   }
-  if (emissive > 0) { r += mr * emissive; g += mg * emissive; b += mb * emissive; }
+  if (emissive > 0) {
+    const inv = L.invTone, q = (c) => inv[c >= 1 ? 255 : c <= 0 ? 0 : (c * 255 + 0.5) | 0];
+    r += q(cr) * emissive; g += q(cg) * emissive; b += q(cb) * emissive;
+  }
   let R8 = tone[r >= TONE_MAX_V ? TONE_LAST : (r * TONE_SCALE) | 0];
   let G8 = tone[g >= TONE_MAX_V ? TONE_LAST : (g * TONE_SCALE) | 0];
   let B8 = tone[b >= TONE_MAX_V ? TONE_LAST : (b * TONE_SCALE) | 0];
@@ -118,13 +126,17 @@ export class Renderer {
     this.samples = 0; // accumulated samples of the current high-quality image
     this.stats = { meshes: 0, triangles: 0, drawn: 0, clipped: 0, pixels: 0, ms: 0 };
     this._tone = buildToneLUT(this.exposure);
+    this._invTone = buildInverseToneLUT(this._tone);
     this._toneExposure = this.exposure;
-    this._tv = new Float64Array(27);
+    this._tv = new Float64Array(33); // 3 vertices x [x, y, 1/w, nx/w, ny/w, nz/w, r, g, b, u/w, v/w]
     this._fn = new Float64Array(3);
     this._matSpec = new Float32Array(65536);
     this._matShin = new Float32Array(65536);
     this._matTwo = new Uint8Array(65536);
     this._matEmis = new Float32Array(65536);
+    this._matMetal = new Float32Array(65536);
+    this._matRough = new Float32Array(65536);
+    this.onTextureLoad = null; // called when a texture finished loading (the editor redraws)
     this._proj = mat4.create();
     this._view = mat4.create();
     this._vp = mat4.create();
@@ -175,6 +187,7 @@ export class Renderer {
     this._wx = new Float32Array(c); this._wy = new Float32Array(c); this._wz = new Float32Array(c);
     this._r = new Float32Array(c); this._g = new Float32Array(c); this._b = new Float32Array(c);
     this._vnx = new Float32Array(c); this._vny = new Float32Array(c); this._vnz = new Float32Array(c);
+    this._u = new Float32Array(c); this._v = new Float32Array(c);
     this._oc = new Uint8Array(c);
     this._cap = c;
   }
@@ -218,12 +231,18 @@ export class Renderer {
     mat4.multiply(this._vp, this._proj, this._view);
     this._extractPlanes();
 
-    if (this.exposure !== this._toneExposure) { this._tone = buildToneLUT(this.exposure); this._toneExposure = this.exposure; }
+    if (this.exposure !== this._toneExposure) {
+      this._tone = buildToneLUT(this.exposure);
+      this._invTone = buildInverseToneLUT(this._tone);
+      this._toneExposure = this.exposure;
+    }
+    L.invTone = this._invTone;
     const light = scene.light ?? {};
     const d = light.direction ?? [0.5, 0.9, 0.35], dl = Math.hypot(d[0], d[1], d[2]) || 1;
     const lc = light.color ?? [1, 1, 1], sky = light.sky ?? [0.3, 0.32, 0.38], gnd = light.ground ?? [0.1, 0.09, 0.08];
     L.lx = d[0] / dl; L.ly = d[1] / dl; L.lz = d[2] / dl;
-    [L.lr, L.lg, L.lb] = lc.map((c) => lin(c) * this.sunIntensity);
+    const li = light.intensity ?? 1;
+    [L.lr, L.lg, L.lb] = lc.map((c) => lin(c) * this.sunIntensity * li);
     [L.sr, L.sg, L.sb] = sky.map((c) => c * this.skyIntensity);
     [L.gr, L.gg, L.gb] = gnd.map((c) => c * this.skyIntensity);
     [L.ex, L.ey, L.ez] = camera.position;
@@ -244,15 +263,25 @@ export class Renderer {
       const eye = camera.position;
       const F = norm3(sub3(camera.target, eye)), R = norm3(cross3(F, camera.up)), U = cross3(R, F);
       const tanY = Math.tan((camera.fov * Math.PI) / 360), viewDist = Math.hypot(...sub3(camera.target, eye));
+      const ts = performance.now();
       shadePass({
         W, H, depth: this.depth, color: this.color, NX: this._gNX, NY: this._gNY, NZ: this._gNZ, MAT: this._gMat,
         matSpec: this._matSpec, matShin: this._matShin, matTwo: this._matTwo, matEmis: this._matEmis,
+        matMetal: this._matMetal, matRough: this._matRough,
+        lights: (scene.lights || []).map((x) => {
+          const dd = x.direction, ll = Math.hypot(dd[0], dd[1], dd[2]) || 1, k = this.sunIntensity * (x.intensity ?? 0.5);
+          return { x: dd[0] / ll, y: dd[1] / ll, z: dd[2] / ll, r: lin(x.color[0]) * k, g: lin(x.color[1]) * k, b: lin(x.color[2]) * k };
+        }),
+        environment: this._environment(scene),
+        softness: light.softness ?? 0.1,
+        invTone: this._invTone,
         eye, R, U, F, tanX: tanY * (W / H), tanY, jx, jy, frame, light: L, tone: this._tone,
         shadow: this.shadows ? this._shadowFor(scene, camera, [L.lx, L.ly, L.lz]) : null,
         ao: this.ao ? { radius: Math.min(4, Math.max(0.08, viewDist * 0.045)), strength: this.aoStrength } : null,
         fog: L.fog ? { near: L.fn, far: L.ff, r: L.fr, g: L.fg, b: L.fb } : null,
         debug: this.debug,
       });
+      st.shadeMs = performance.now() - ts;
       this._accumulate(accumulate);
     }
     this.samples = hq ? this._accN : 1;
@@ -260,6 +289,13 @@ export class Renderer {
     st.ms = performance.now() - t0;
     if (this.ctx) this.ctx.putImageData(this.image, 0, 0);
     return this;
+  }
+
+  // Reflection environment: type + linear sky colors from the background gradient.
+  _environment(scene) {
+    const type = this.reflections === false ? 'none' : scene.reflections || 'sky';
+    const top = scene.background?.top ?? [0.1, 0.11, 0.14], bottom = scene.background?.bottom ?? [0.25, 0.27, 0.3];
+    return { type, sky: { tr: lin(top[0]), tg: lin(top[1]), tb: lin(top[2]), br: lin(bottom[0]), bg: lin(bottom[1]), bb: lin(bottom[2]) } };
   }
 
   // Running average of jittered frames.
@@ -350,13 +386,28 @@ export class Renderer {
     this._wire = !!wire;
     this._wireCol = Array.isArray(wire)
       ? 0xff000000 | ((wire[2] * 255) << 16) | ((wire[1] * 255) << 8) | (wire[0] * 255) : 0;
-    const [mr, mg, mb] = mesh.color, spec = mesh.specular, shin = mesh.shininess, two = mesh.doubleSided;
-    const VNX = this._vnx, VNY = this._vny, VNZ = this._vnz;
+    let [mr, mg, mb] = mesh.color;
+    const spec = mesh.specular, shin = mesh.shininess, two = mesh.doubleSided;
+    if (!this._hq && mesh.texture) {
+      const t = getTexture(mesh.texture, this.onTextureLoad);
+      if (t) { mr *= t.avg[0]; mg *= t.avg[1]; mb *= t.avg[2]; }
+    }
+    const VNX = this._vnx, VNY = this._vny, VNZ = this._vnz, UU = this._u, VV = this._v;
+    const tex = mesh.texture ? getTexture(mesh.texture, this.onTextureLoad) : null;
+    this._tex = hq ? tex : null;
+    // planar mapping along the thinnest local axis: flat in Z (displays, extrudes) -> u = x, v = y (top = +Y);
+    // flat in Y (planes, floors) -> u = x, v = z (top = -Z); flat in X -> u = -z, v = y (top = +Y)
+    const ext = [0, 1, 2].map((a) => geo.max[a] - geo.min[a]);
+    const thin = ext[2] <= ext[0] && ext[2] <= ext[1] ? 2 : ext[1] <= ext[0] ? 1 : 0;
+    const ua = thin === 0 ? 2 : 0, va = thin === 1 ? 2 : 1, uflip = thin === 0, vflip = thin !== 1;
+    const umin = geo.min[ua], vmin = geo.min[va], uinv = 1 / (ext[ua] || 1), vinv = 1 / (ext[va] || 1);
     if (hq) {
       const id = this._matCount = Math.min(this._matCount + 1, WIRE_MATERIAL - 1);
       this._mat = id;
       this._matSpec[id] = spec; this._matShin[id] = Math.max(1, shin); this._matTwo[id] = two ? 1 : 0;
       this._matEmis[id] = mesh.emissive || 0;
+      this._matMetal[id] = mesh.metalness || 0;
+      this._matRough[id] = mesh.roughness ?? DEFAULT_ROUGHNESS;
       this._flatHQ = flatMesh;
     }
 
@@ -396,6 +447,10 @@ export class Renderer {
         nx *= il; ny *= il; nz *= il;
         if (mode === 3) {
           VNX[v] = nx; VNY[v] = ny; VNZ[v] = nz;
+          if (tex) {
+            const pu = (P[k + ua] - umin) * uinv, pv = (P[k + va] - vmin) * vinv;
+            UU[v] = uflip ? 1 - pu : pu; VV[v] = vflip ? 1 - pv : pv;
+          }
           const cr = VC ? VC[k] : mr, cg = VC ? VC[k + 1] : mg, cb = VC ? VC[k + 2] : mb;
           R[v] = cr >= 1 ? 255 : cr * 255; G[v] = cg >= 1 ? 255 : cg * 255; B[v] = cb >= 1 ? 255 : cb * 255;
         } else if (mode === 2) {
@@ -430,7 +485,8 @@ export class Renderer {
             T[o] = X[v]; T[o + 1] = Y[v]; T[o + 2] = iw;
             T[o + 3] = (flatMesh ? fn[0] : VNX[v]) * iw; T[o + 4] = (flatMesh ? fn[1] : VNY[v]) * iw; T[o + 5] = (flatMesh ? fn[2] : VNZ[v]) * iw;
             T[o + 6] = R[v]; T[o + 7] = G[v]; T[o + 8] = B[v];
-            o += 9;
+            T[o + 9] = tex ? UU[v] * iw : 0; T[o + 10] = tex ? VV[v] * iw : 0;
+            o += 11;
           }
           this._rasterG();
         } else if (mode === 0) {
@@ -486,6 +542,7 @@ export class Renderer {
       if (this._hq) {
         const fl = this._flatHQ, fn = this._fn;
         inp[o + 7] = fl ? fn[0] : this._vnx[v]; inp[o + 8] = fl ? fn[1] : this._vny[v]; inp[o + 9] = fl ? fn[2] : this._vnz[v];
+        inp[o + 10] = this._tex ? this._u[v] : 0; inp[o + 11] = this._tex ? this._v[v] : 0;
       }
     }
     for (let p = 0; p < 6; p++) {
@@ -526,7 +583,8 @@ export class Renderer {
           T[o] = inp[p]; T[o + 1] = inp[p + 1]; T[o + 2] = iw;
           T[o + 3] = inp[p + 7] * iw; T[o + 4] = inp[p + 8] * iw; T[o + 5] = inp[p + 9] * iw;
           T[o + 6] = inp[p + 4]; T[o + 7] = inp[p + 5]; T[o + 8] = inp[p + 6];
-          o += 9;
+          T[o + 9] = inp[p + 10] * iw; T[o + 10] = inp[p + 11] * iw;
+          o += 11;
         }
         this._rasterG();
       }
@@ -541,17 +599,17 @@ export class Renderer {
   }
 
   // High quality path: rasterize into the G-buffer (depth, perspective-correct normal, albedo, material).
-  // Vertices come from this._tv: per vertex [x, y (1/16 px), 1/w, nx/w, ny/w, nz/w, r, g, b (sRGB 0..255)].
-  // Same edge setup and span solving as _raster below.
+  // Vertices come from this._tv, 11 values each: [x, y (1/16 px), 1/w, nx/w, ny/w, nz/w, r, g, b (sRGB 0..255), u/w, v/w].
+  // With a texture, albedo = bilinear texel * vertex color. Same edge setup and span solving as _raster below.
   _rasterG() {
     const T = this._tv;
     const x0 = T[0], y0 = T[1];
-    let o1 = 9, o2 = 18;
-    let area = (T[9] - x0) * (T[19] - y0) - (T[18] - x0) * (T[10] - y0);
+    let o1 = 11, o2 = 22;
+    let area = (T[11] - x0) * (T[23] - y0) - (T[22] - x0) * (T[12] - y0);
     if (area === 0) return;
     if (area > 0) {
       if (this._cull) return; // back face
-    } else { o1 = 18; o2 = 9; area = -area; }
+    } else { o1 = 22; o2 = 11; area = -area; }
     const x1 = T[o1], y1 = T[o1 + 1], x2 = T[o2], y2 = T[o2 + 1];
     const W = this.width, H = this.height;
     let minX = Math.ceil((Math.min(x0, x1, x2) - 8) / 16), maxX = Math.floor((Math.max(x0, x1, x2) - 8) / 16);
@@ -576,7 +634,7 @@ export class Renderer {
     // attribute planes: value(px, py) = base + dx * px + dy * py
     const k = 16 / area, ex1 = x1 - x0, ey1 = y1 - y0, ex2 = x2 - x0, ey2 = y2 - y0;
     const ox = 0.5 - x0 / 16, oy = 0.5 - y0 / 16;
-    for (let a = 2; a < 9; a++) {
+    for (let a = 2; a < 11; a++) {
       const v0 = T[a], v1 = T[o1 + a], v2 = T[o2 + a];
       const dx = ((v1 - v0) * ey2 - (v2 - v0) * ey1) * k, dy = ((v2 - v0) * ex1 - (v1 - v0) * ex2) * k;
       PL[a * 3] = v0 + dx * ox + dy * oy; PL[a * 3 + 1] = dx; PL[a * 3 + 2] = dy;
@@ -585,9 +643,11 @@ export class Renderer {
     const nxb = PL[9], nxdx = PL[10], nxdy = PL[11], nyb = PL[12], nydx = PL[13], nydy = PL[14];
     const nzb = PL[15], nzdx = PL[16], nzdy = PL[17], rb = PL[18], rdx = PL[19], rdy = PL[20];
     const gb = PL[21], gdx = PL[22], gdy = PL[23], bb = PL[24], bdx = PL[25], bdy = PL[26];
+    const ub = PL[27], udx = PL[28], udy = PL[29], vb = PL[30], vdx = PL[31], vdy = PL[32];
 
     const depth = this.depth, color = this.color, NX = this._gNX, NY = this._gNY, NZ = this._gNZ, MAT = this._gMat;
     const mat = this._mat, wire = this._wire, wireCol = this._wireCol, LW = this.wireWidth;
+    const tex = this._tex, tw = tex ? tex.w : 0, th = tex ? tex.h : 0, tp = tex ? tex.px : null;
     const n0 = wire ? 1 / Math.hypot(A0, B0) : 0, n1 = wire ? 1 / Math.hypot(A1, B1) : 0, n2 = wire ? 1 / Math.hypot(A2, B2) : 0;
     let pix = 0, q;
     for (let py = minY; py <= maxY; py++) {
@@ -603,6 +663,7 @@ export class Renderer {
       let z = zb + zdx * xs + zdy * py;
       let nx = nxb + nxdx * xs + nxdy * py, ny = nyb + nydx * xs + nydy * py, nz = nzb + nzdx * xs + nzdy * py;
       let r = rb + rdx * xs + rdy * py, g = gb + gdx * xs + gdy * py, b = bb + bdx * xs + bdy * py;
+      let uu = ub + udx * xs + udy * py, vv = vb + vdx * xs + vdy * py;
       let d0 = (e0 + A0 * xs) * n0, d1 = (e1 + A1 * xs) * n1, d2 = (e2 + A2 * xs) * n2;
       const s0 = A0 * n0, s1 = A1 * n1, s2 = A2 * n2;
       for (; i <= end; i++) {
@@ -614,11 +675,26 @@ export class Renderer {
           } else {
             const iz = 1 / z;
             NX[i] = nx * iz; NY[i] = ny * iz; NZ[i] = nz * iz;
-            color[i] = 0xff000000 | ((b | 0) << 16) | ((g | 0) << 8) | (r | 0);
+            if (tp) {
+              // bilinear texel (clamped), tinted by the vertex color
+              let fx = uu * iz * tw - 0.5, fy = vv * iz * th - 0.5;
+              if (fx < 0) fx = 0; else if (fx > tw - 1) fx = tw - 1;
+              if (fy < 0) fy = 0; else if (fy > th - 1) fy = th - 1;
+              const ix = fx | 0, iy = fy | 0, ax = fx - ix, ay = fy - iy;
+              const ix1 = ix + 1 < tw ? ix + 1 : ix, iy1 = iy + 1 < th ? iy + 1 : iy;
+              const c00 = tp[iy * tw + ix], c10 = tp[iy * tw + ix1], c01 = tp[iy1 * tw + ix], c11 = tp[iy1 * tw + ix1];
+              const w00 = (1 - ax) * (1 - ay), w10 = ax * (1 - ay), w01 = (1 - ax) * ay, w11 = ax * ay;
+              const tr = (c00 & 255) * w00 + (c10 & 255) * w10 + (c01 & 255) * w01 + (c11 & 255) * w11;
+              const tg = ((c00 >>> 8) & 255) * w00 + ((c10 >>> 8) & 255) * w10 + ((c01 >>> 8) & 255) * w01 + ((c11 >>> 8) & 255) * w11;
+              const tb = ((c00 >>> 16) & 255) * w00 + ((c10 >>> 16) & 255) * w10 + ((c01 >>> 16) & 255) * w01 + ((c11 >>> 16) & 255) * w11;
+              color[i] = 0xff000000 | (((tb * b) / 255) << 16) | (((tg * g) / 255) << 8) | ((tr * r) / 255);
+            } else {
+              color[i] = 0xff000000 | ((b | 0) << 16) | ((g | 0) << 8) | (r | 0);
+            }
             MAT[i] = mat;
           }
         }
-        z += zdx; nx += nxdx; ny += nydx; nz += nzdx; r += rdx; g += gdx; b += bdx;
+        z += zdx; nx += nxdx; ny += nydx; nz += nzdx; r += rdx; g += gdx; b += bdx; uu += udx; vv += vdx;
         d0 += s0; d1 += s1; d2 += s2;
       }
     }
@@ -724,7 +800,8 @@ export class Renderer {
   }
 }
 
-const PL = new Float64Array(27); // attribute plane scratch for _rasterG
+const PL = new Float64Array(33); // attribute plane scratch for _rasterG
+const DEFAULT_ROUGHNESS = 0.7; // materials without an explicit roughness reflect only faintly
 const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const cross3 = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const norm3 = (a) => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };

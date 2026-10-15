@@ -5,19 +5,19 @@
     "description": "Every generator in one place: lathe, sweep with twist, extrude, tubes along knots and helices.",
     "objects": 9,
     "triangles": 20844,
-    "jsonBytes": 6321,
+    "jsonBytes": 6570,
     "objBytes": 630002,
     "ramBytes": 506136
   },
   {
     "id": "phone",
     "title": "Smartphone",
-    "description": "Product shot of two phones: rounded aluminium bodies, a lit home screen with app icons and dock, and a triple camera module.",
-    "objects": 54,
-    "triangles": 17976,
-    "jsonBytes": 31768,
-    "objBytes": 727496,
-    "ramBytes": 319056
+    "description": "Studio product shot: squircle bodies with polished metal frames, a textured home screen under glass, softbox reflections and a stepped triple camera.",
+    "objects": 65,
+    "triangles": 25180,
+    "jsonBytes": 38348,
+    "objBytes": 860114,
+    "ramBytes": 323040
   },
   {
     "id": "castle",
@@ -25,7 +25,7 @@
     "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",
     "objects": 156,
     "triangles": 4703,
-    "jsonBytes": 78098,
+    "jsonBytes": 78215,
     "objBytes": 195902,
     "ramBytes": 39156
   },
@@ -35,7 +35,7 @@
     "description": "Italian opening on a wooden board. Every piece is a lathe profile, the knights are extruded silhouettes.",
     "objects": 109,
     "triangles": 40224,
-    "jsonBytes": 68660,
+    "jsonBytes": 69789,
     "objBytes": 1257425,
     "ramBytes": 178128
   },
@@ -45,7 +45,7 @@
     "description": "A rotating-wheel station with spokes, solar wings, docking modules, an antenna dish, an approaching shuttle and a ringed planet.",
     "objects": 37,
     "triangles": 18876,
-    "jsonBytes": 60931,
+    "jsonBytes": 62141,
     "objBytes": 619787,
     "ramBytes": 476520
   },
@@ -55,7 +55,7 @@
     "description": "A procedural downtown: 36 blocks, towers with setbacks, round glass towers, rooftop details and a park with a pond.",
     "objects": 287,
     "triangles": 7038,
-    "jsonBytes": 141061,
+    "jsonBytes": 141448,
     "objBytes": 343875,
     "ramBytes": 163800
   },
@@ -65,7 +65,7 @@
     "description": "Tapered sweeps along procedural curves, glowing mushrooms, spiral shells and crystals, all placed on the terrain with probe_height.",
     "objects": 83,
     "triangles": 73316,
-    "jsonBytes": 95836,
+    "jsonBytes": 95925,
     "objBytes": 2297658,
     "ramBytes": 1389768
   },
@@ -75,7 +75,7 @@
     "description": "A noise terrain island; the lighthouse and boat were placed on the surface and on the water with probe_height.",
     "objects": 10,
     "triangles": 52244,
-    "jsonBytes": 6084,
+    "jsonBytes": 6173,
     "objBytes": 1550701,
     "ramBytes": 1580316
   }

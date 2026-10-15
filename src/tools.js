@@ -29,6 +29,9 @@ const materialS = {
     flat: { type: 'boolean', description: 'Faceted flat shading' },
     doubleSided: { type: 'boolean', description: 'Render back faces (open surfaces like vases, planes)' },
     emissive: { type: 'number', description: 'Self-illumination 0..10 (screens, lamps, windows, neon); 1 shows the color at full strength' },
+    metalness: { type: 'number', description: '0 dielectric .. 1 metal (reflections tinted by the color, no diffuse)' },
+    roughness: { type: 'number', description: '0 polished/mirror .. 1 matte (default 0.7); controls how sharp reflections are' },
+    texture: { type: 'string', description: 'PNG image: project path (e.g. "examples/textures/screen.png") or "data:image/png;base64,...". Projected along the thinnest local axis of the object (flat in Z: top = +Y; flat in Y like plane: top = -Z)' },
   },
 };
 const shapeS = {
@@ -161,7 +164,9 @@ export const TOOLS = [
       properties: {
         background: { type: ['object', 'string'], description: '"#rrggbb" or { top, bottom }' },
         fog: { type: ['object', 'null'], description: '{ near, far } distances, or null to disable' },
-        light: { type: 'object', description: '{ direction: [x, y, z] pointing towards the light, color }' },
+        light: { type: 'object', description: '{ direction: [x, y, z] pointing towards the light, color, intensity, softness 0..1 (soft shadows) }' },
+        lights: { type: 'array', items: { type: 'object' }, description: 'Up to 4 extra lights without shadows: [{ direction, color, intensity }] (fill, rim)' },
+        reflections: { type: 'string', enum: ['sky', 'studio', 'none'], description: 'What glossy surfaces reflect: the sky gradient, a photo studio with softboxes, or nothing' },
         ground: { type: 'boolean', description: 'Show the checker ground at y = 0' },
       },
     },

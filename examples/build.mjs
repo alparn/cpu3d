@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { SceneDocument, callTool } from '../src/index.js';
 import { pretty } from '../src/tools.js';
 import { exportOBJ } from '../src/scene.js';
-import { renderPNG } from '../server/render.js';
+import { renderPNG, preloadTextures } from '../server/render.js';
 import { mat4 } from '../src/math.js';
 
 const DIR = dirname(fileURLToPath(import.meta.url));
@@ -63,102 +63,98 @@ scene('showcase', 'Shape showcase', 'Every generator in one place: lathe, sweep 
   const vase = [[0, 0]];
   for (let i = 0; i <= 40; i++) { const y = (i / 40) * 1.9; vase.push(P(0.42 + 0.2 * Math.sin(y * 2.6 - 0.6) + 0.04 * Math.sin(y * 11), y)); }
   const p = (i) => P(Math.cos((i / 7) * 2 * Math.PI) * 3.4, Math.sin((i / 7) * 2 * Math.PI) * 3.4);
+  await tool(doc, 'set_environment', { reflections: 'studio' }); // chrome and glossy parts reflect softboxes
   await add(doc, [
-    { name: 'Torus knot', shape: { type: 'tube', path: { type: 'torusKnot', p: 2, q: 3, steps: 256, size: 1.6 }, radius: 0.14, sides: 12 }, position: [0, 1.7, 0], material: { color: '#f28c33', specular: 0.6, shininess: 40 } },
-    { name: 'Vase', shape: { type: 'lathe', profile: vase, segments: 48 }, position: [p(0)[0], 0, p(0)[1]], material: { color: '#4d99d9', specular: 0.5, doubleSided: true } },
+    { name: 'Torus knot', shape: { type: 'tube', path: { type: 'torusKnot', p: 2, q: 3, steps: 256, size: 1.6 }, radius: 0.14, sides: 12 }, position: [0, 1.7, 0], material: { color: '#f28c33', roughness: 0.3, specular: 0.6, shininess: 60 } },
+    { name: 'Vase', shape: { type: 'lathe', profile: vase, segments: 48 }, position: [p(0)[0], 0, p(0)[1]], material: { color: '#4d99d9', roughness: 0.18, specular: 0.7, shininess: 120, doubleSided: true } },
     { name: 'Twisted column', shape: { type: 'sweep', shape: { type: 'star', points: 6, outer: 0.45, inner: 0.28 }, path: { type: 'line', from: [0, 0, 0], to: [0, 1.9, 0], steps: 60 }, twist: 180 }, position: [p(1)[0], 0, p(1)[1]], material: { color: '#d9cc59' } },
     { name: 'Star', shape: { type: 'extrude', shape: { type: 'star', points: 5, outer: 0.75, inner: 0.32 }, depth: 0.3 }, position: [p(2)[0], 1, p(2)[1]], rotation: [0, 30, 0], material: { color: '#d94d59' } },
-    { name: 'Chrome sphere', shape: { type: 'sphere', radius: 0.65, segments: 40, rings: 20 }, position: [p(3)[0], 0.65, p(3)[1]], material: { color: '#ccd1db', specular: 0.9, shininess: 60 } },
+    { name: 'Chrome sphere', shape: { type: 'sphere', radius: 0.65, segments: 40, rings: 20 }, position: [p(3)[0], 0.65, p(3)[1]], material: { color: '#d4d8de', metalness: 1, roughness: 0.3, specular: 0.9, shininess: 120 } },
     { name: 'Torus', shape: { type: 'torus', radius: 0.55, tube: 0.2 }, position: [p(4)[0], 0.8, p(4)[1]], rotation: [70, 0, 0], material: { color: '#59bf73' } },
-    { name: 'Spring', shape: { type: 'tube', path: { type: 'helix', radius: 0.4, height: 1.6, turns: 5, steps: 300 }, radius: 0.07, sides: 10 }, position: [p(5)[0], 0.1, p(5)[1]], material: { color: '#bfbfcc', specular: 0.8 } },
+    { name: 'Spring', shape: { type: 'tube', path: { type: 'helix', radius: 0.4, height: 1.6, turns: 5, steps: 300 }, radius: 0.07, sides: 10 }, position: [p(5)[0], 0.1, p(5)[1]], material: { color: '#c9cbd2', metalness: 1, roughness: 0.25, specular: 0.8, shininess: 120 } },
     { name: 'Base', shape: { type: 'box', width: 0.9, height: 0.4, depth: 0.9 }, position: [p(6)[0], 0.2, p(6)[1]], material: { color: '#a673d9' } },
     { name: 'Spire', shape: { type: 'cone', radius: 0.3, height: 1.0 }, position: [p(6)[0], 0.9, p(6)[1]], material: { color: '#a673d9', flat: true } },
   ]);
   await tool(doc, 'set_camera', { yaw: 28, pitch: 24, distance: 10.5, target: [0, 0.9, 0] });
 });
 
-scene('phone', 'Smartphone', 'Product shot of two phones: rounded aluminium bodies, a lit home screen with app icons and dock, and a triple camera module.', async (doc) => {
-  await tool(doc, 'set_environment', { background: { top: '#07080b', bottom: '#1b1f27' }, fog: null, ground: false, light: { direction: [0.55, 0.9, 0.25], color: '#fff6ec' } });
-  const W = 0.72, H = 1.5, D = 0.08; // phone body, scene units are decimeters
-  const rbox = (w, h, d, radius, cornerRadius, segments = 8) => ({ type: 'roundedBox', width: w, height: h, depth: d, radius, cornerRadius, segments });
-  const slab = (w, h, r, d = 0.003) => ({ type: 'extrude', shape: { type: 'roundedRect', width: w, height: h, radius: r, segments: 8 }, depth: d });
+scene('phone', 'Smartphone', 'Studio product shot: squircle bodies with polished metal frames, a textured home screen under glass, softbox reflections and a stepped triple camera.', async (doc) => {
+  await tool(doc, 'set_environment', {
+    background: { top: '#0a0b0e', bottom: '#20242c' }, fog: null, ground: false, reflections: 'studio',
+    light: { direction: [-0.45, 0.85, 0.45], color: '#fff4e8', intensity: 1, softness: 0.35 },
+    lights: [
+      { direction: [0.9, 0.3, -0.5], color: '#dfe8ff', intensity: 0.9 }, // rim light from behind right
+      { direction: [0.4, 0.2, 0.9], color: '#ffffff', intensity: 0.25 }, // soft fill from the front
+    ],
+  });
+  // real proportions: 146.6 x 70.6 x 8.25 mm, scene unit = 1 dm
+  const W = 0.706, H = 1.466, D = 0.0825, CR = 0.15, E = 0.028;
+  const rbox = (w, h, d, radius, cornerRadius, segments = 10, smooth = true) => ({ type: 'roundedBox', width: w, height: h, depth: d, radius, cornerRadius, segments, smooth });
+  const slab = (w, h, r, d = 0.002, smooth = true) => ({ type: 'extrude', shape: { type: 'roundedRect', width: w, height: h, radius: r, segments: 10, smooth }, depth: d });
+  const cyl = (r, h, segments = 48) => ({ type: 'cylinder', radiusTop: r, radiusBottom: r, height: h, segments });
+  const dark = { color: '#0b0c0e', roughness: 0.6, specular: 0.2 };
   const o = [];
 
-  // studio: round podium on a dark floor
   o.push(
-    { name: 'Floor', shape: { type: 'lathe', profile: [[14, 0], [0, 0]], segments: 64 }, material: { color: '#121418', specular: 0.25, shininess: 30 } },
-    { name: 'Podium', shape: { type: 'lathe', profile: [[0, 0], [1.35, 0], [1.35, 0.13], [1.3, 0.18], [0, 0.18]], segments: 96 }, material: { color: '#2b2f37', specular: 0.4, shininess: 40 } },
+    { name: 'Floor', shape: { type: 'lathe', profile: [[14, 0], [0, 0]], segments: 64 }, material: { color: '#0e1014', roughness: 0.75, specular: 0.1 } },
+    // the top is split into rings: long, thin fan triangles interpolate depth poorly (shadow streaks)
+    { name: 'Podium', shape: { type: 'lathe', profile: [[0, 0], [1.35, 0], [1.35, 0.13], [1.3, 0.18], [1.0, 0.18], [0.7, 0.18], [0.4, 0.18], [0.15, 0.18], [0, 0.18]], segments: 96 }, material: { color: '#24272e', roughness: 0.3, specular: 0.5, shininess: 60 } },
   );
-  const top = 0.18;
+  const top = 0.18, lean = 10, ca = Math.cos((lean * Math.PI) / 180), sa = Math.sin((lean * Math.PI) / 180);
+  const standY = P(top + (H / 2) * ca + (D / 2) * sa)[0];
 
-  // ---- phone A: screen towards the camera, leaning back 10 degrees
-  const lean = 10, ca = Math.cos((lean * Math.PI) / 180), sa = Math.sin((lean * Math.PI) / 180);
-  const A = group([-0.5, P(top + (H / 2) * ca + (D / 2) * sa)[0], 0.35], [-lean, 16, 0]);
-  const front = D / 2;
-  const screen = (x, y, z) => [x, y, front + z];
-  o.push(
-    A({ name: 'Phone A body', shape: rbox(W, H, D, 0.034, 0.11), material: { color: '#3b3e44', specular: 1.4, shininess: 70 } }),
-    A({ name: 'Phone A glass', shape: rbox(W - 0.02, H - 0.02, 0.006, 0.003, 0.1), position: [0, 0, front - 0.002], material: { color: '#050608', specular: 1.6, shininess: 140 } }),
-    A({ name: 'Wallpaper', shape: slab(W - 0.06, H - 0.06, 0.085), position: screen(0, 0, 0.0025), material: { color: '#161a3d', specular: 0.6, shininess: 80 } }),
-    A({ name: 'Glow violet', shape: { type: 'extrude', shape: { type: 'circle', radius: 0.26, points: 48 }, depth: 0.002 }, position: screen(-0.06, 0.28, 0.0045), material: { color: '#4b35b8', specular: 0.5 } }),
-    A({ name: 'Glow pink', shape: { type: 'extrude', shape: { type: 'circle', radius: 0.21, points: 48 }, depth: 0.002 }, position: screen(0.12, -0.08, 0.0055), material: { color: '#a8306a', specular: 0.5 } }),
-    A({ name: 'Glow amber', shape: { type: 'extrude', shape: { type: 'circle', radius: 0.15, points: 40 }, depth: 0.002 }, position: screen(-0.12, -0.38, 0.0065), material: { color: '#b8692a', specular: 0.5 } }),
-    A({ name: 'Camera cutout', shape: slab(0.19, 0.052, 0.026), position: screen(0, 0.655, 0.008), material: { color: '#000000', specular: 1.5, shininess: 120 } }),
-  );
-  // status bar
-  o.push(
-    A({ name: 'Clock', shape: slab(0.07, 0.022, 0.006), position: screen(-0.22, 0.655, 0.008), material: { color: '#f2f3f7', specular: 0.3 } }),
-    A({ name: 'Battery', shape: slab(0.05, 0.022, 0.007), position: screen(0.23, 0.655, 0.008), material: { color: '#f2f3f7', specular: 0.3 } }),
-  );
-  // big widget + app grid
-  o.push(A({ name: 'Weather widget', shape: slab(0.56, 0.26, 0.05), position: screen(0, 0.44, 0.0085), material: { color: '#2a6ff2', specular: 0.6, shininess: 60 } }));
-  o.push(A({ name: 'Widget sun', shape: { type: 'extrude', shape: { type: 'circle', radius: 0.045, points: 32 }, depth: 0.002 }, position: screen(0.17, 0.48, 0.0105), material: { color: '#ffd34d', specular: 0.4 } }));
-  o.push(A({ name: 'Widget temp', shape: slab(0.16, 0.06, 0.012), position: screen(-0.13, 0.46, 0.0105), material: { color: '#eef3ff', specular: 0.3 } }));
-  const icons = ['#34c759', '#0a84ff', '#ff9f0a', '#ff375f', '#5e5ce6', '#64d2ff', '#ffd60a', '#bf5af2', '#30d158', '#ff6b35', '#0fb5ae', '#f2f2f7', '#ff2d55', '#8e8e93', '#32ade6', '#a2845e'];
-  icons.forEach((col, i) => {
-    const cx = -0.21 + (i % 4) * 0.14, cy = 0.22 - Math.floor(i / 4) * 0.165;
-    o.push(A({ name: 'App icon', shape: slab(0.105, 0.105, 0.026), position: screen(P(cx)[0], P(cy)[0], 0.0085), material: { color: col, specular: 0.7, shininess: 60 } }));
-  });
-  o.push(A({ name: 'Dock', shape: slab(0.62, 0.15, 0.055), position: screen(0, -0.6, 0.0085), material: { color: '#3b3f63', specular: 0.6, shininess: 60 } }));
-  ['#34c759', '#0a84ff', '#f2f2f7', '#ff9f0a'].forEach((col, i) => {
-    o.push(A({ name: 'Dock icon', shape: slab(0.105, 0.105, 0.026), position: screen(P(-0.21 + i * 0.14)[0], -0.6, 0.0105), material: { color: col, specular: 0.7, shininess: 60 } }));
-  });
-  o.push(A({ name: 'Home indicator', shape: slab(0.2, 0.012, 0.006), position: screen(0, -0.705, 0.0085), material: { color: '#d8dae3' } }));
-  // side buttons
-  o.push(
-    A({ name: 'Power button', shape: rbox(0.03, 0.18, 0.03, 0.012, 0.012, 4), position: [W / 2 + 0.008, 0.28, 0], material: { color: '#45484e', specular: 1.4, shininess: 70 } }),
-    A({ name: 'Volume up', shape: rbox(0.03, 0.12, 0.03, 0.012, 0.012, 4), position: [-W / 2 - 0.008, 0.33, 0], material: { color: '#45484e', specular: 1.4, shininess: 70 } }),
-    A({ name: 'Volume down', shape: rbox(0.03, 0.12, 0.03, 0.012, 0.012, 4), position: [-W / 2 - 0.008, 0.18, 0], material: { color: '#45484e', specular: 1.4, shininess: 70 } }),
-  );
-
-  // ---- phone B: back towards the camera, camera module
-  const B = group([0.55, P(top + (H / 2) * ca + (D / 2) * sa)[0], -0.2], [lean, 158, 0]);
-  const back = -D / 2;
-  o.push(
-    B({ name: 'Phone B body', shape: rbox(W, H, D, 0.034, 0.11), material: { color: '#26364f', specular: 1.4, shininess: 70 } }),
-    B({ name: 'Back glass', shape: rbox(W - 0.03, H - 0.03, 0.006, 0.003, 0.1), position: [0, 0, back + 0.001], material: { color: '#2d4263', specular: 0.5, shininess: 25 } }),
-    B({ name: 'Camera plateau', shape: rbox(0.33, 0.33, 0.03, 0.012, 0.075), position: [0.165, 0.52, back - 0.012], material: { color: '#34507a', specular: 1.2, shininess: 90 } }),
-  );
-  for (const [x, y] of [[0.08, 0.6], [0.08, 0.44], [0.25, 0.52]]) {
+  // parts every phone has: frame, buttons, antenna bands, USB-C port, speaker holes
+  const shell = (G, frame) => {
+    o.push(G({ name: 'Frame', shape: rbox(W, H, D, E, CR), material: frame }));
     o.push(
-      B({ name: 'Lens ring', shape: { type: 'cylinder', radiusTop: 0.068, radiusBottom: 0.068, height: 0.03, segments: 48 }, position: [x, y, back - 0.035], rotation: [90, 0, 0], material: { color: '#b4bcc8', specular: 1.6, shininess: 90 } }),
-      B({ name: 'Lens', shape: { type: 'cylinder', radiusTop: 0.052, radiusBottom: 0.052, height: 0.034, segments: 48 }, position: [x, y, back - 0.036], rotation: [90, 0, 0], material: { color: '#06080c', specular: 2, shininess: 160 } }),
-      B({ name: 'Lens glass', shape: { type: 'sphere', radius: 0.03, segments: 32, rings: 16 }, position: [x, y, back - 0.047], scale: [1, 1, 0.35], material: { color: '#1b2a4a', specular: 2, shininess: 200 } }),
+      G({ name: 'Action button', shape: rbox(0.03, 0.07, 0.034, 0.012, 0.012, 4, false), position: [-W / 2 - 0.004, 0.44, 0], material: frame }),
+      G({ name: 'Volume up', shape: rbox(0.03, 0.12, 0.034, 0.012, 0.012, 4, false), position: [-W / 2 - 0.004, 0.3, 0], material: frame }),
+      G({ name: 'Volume down', shape: rbox(0.03, 0.12, 0.034, 0.012, 0.012, 4, false), position: [-W / 2 - 0.004, 0.15, 0], material: frame }),
+      G({ name: 'Side button', shape: rbox(0.03, 0.2, 0.034, 0.012, 0.012, 4, false), position: [W / 2 + 0.004, 0.25, 0], material: frame }),
+    );
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
+      o.push(G({ name: 'Antenna band', shape: { type: 'box', width: 0.012, height: 0.008, depth: D * 0.72 }, position: [sx * (W / 2 - 0.003), sy * 0.62, 0], material: { color: '#55575b', roughness: 0.45 } }));
+    }
+    o.push(G({ name: 'USB-C port', shape: rbox(0.09, 0.03, 0.02, 0.009, 0.014, 6, false), position: [0, -H / 2 + 0.006, 0], rotation: [90, 0, 0], material: dark }));
+    for (let k = 0; k < 6; k++) {
+      for (const sx of [-1, 1]) o.push(G({ name: 'Speaker hole', shape: cyl(0.0065, 0.014, 12), position: [P(sx * (0.11 + k * 0.022))[0], -H / 2 + 0.004, 0], material: dark }));
+    }
+  };
+
+  // ---- phone A: front, natural titanium, textured display under glass
+  const A = group([-0.5, standY, 0.35], [-lean, 16, 0]);
+  const front = D / 2;
+  shell(A, { color: '#b9b6b0', metalness: 1, roughness: 0.25, specular: 0.8, shininess: 120 });
+  o.push(
+    A({ name: 'Front glass', shape: rbox(W - 0.012, H - 0.012, 0.004, 0.002, CR - 0.006, 10), position: [0, 0, front - 0.0015], material: { color: '#030405', roughness: 0.04, specular: 1.2, shininess: 256 } }),
+    A({ name: 'Display', shape: slab(W - 0.05, H - 0.05, CR - 0.03, 0.001), position: [0, 0, front + 0.0012],
+      material: { color: '#ffffff', texture: 'examples/textures/screen.png', emissive: 1, roughness: 0.04, specular: 0.6, shininess: 256 } }),
+    A({ name: 'Camera island', shape: slab(0.212, 0.062, 0.031, 0.002, false), position: [0, H / 2 - 0.025 - 0.04, front + 0.0025], material: { color: '#010102', roughness: 0.05, specular: 1, shininess: 256 } }),
+  );
+
+  // ---- phone B: back, deep blue titanium, frosted glass, stepped triple camera
+  const B = group([0.55, standY, -0.2], [lean, 158, 0]);
+  const back = -D / 2, ring = { color: '#8d9bb3', metalness: 1, roughness: 0.18, specular: 1, shininess: 160 };
+  shell(B, { color: '#33425a', metalness: 1, roughness: 0.3, specular: 0.8, shininess: 110 });
+  o.push(
+    B({ name: 'Back glass', shape: rbox(W - 0.012, H - 0.012, 0.004, 0.002, CR - 0.006, 10), position: [0, 0, back + 0.0015], material: { color: '#2e3c54', roughness: 0.5, specular: 0.3, shininess: 20 } }),
+    B({ name: 'Camera plateau', shape: rbox(0.36, 0.36, 0.012, 0.006, 0.095, 8), position: [0.155, 0.535, back - 0.005], material: { color: '#2f3e57', roughness: 0.1, specular: 1, shininess: 220 } }),
+  );
+  for (const [x, y] of [[0.075, 0.615], [0.075, 0.455], [0.235, 0.535]]) {
+    const z = back - 0.011;
+    o.push(
+      B({ name: 'Lens ring', shape: cyl(0.078, 0.024), position: [x, y, z - 0.012], rotation: [90, 0, 0], material: ring }),
+      B({ name: 'Lens barrel', shape: cyl(0.065, 0.03), position: [x, y, z - 0.015], rotation: [90, 0, 0], material: { color: '#121418', roughness: 0.35, specular: 0.4 } }),
+      B({ name: 'Lens element', shape: { type: 'torus', radius: 0.04, tube: 0.004, segments: 40, sides: 8 }, position: [x, y, z - 0.031], rotation: [90, 0, 0], material: { color: '#2b3858', roughness: 0.2, specular: 0.8 } }),
+      B({ name: 'Lens glass', shape: { type: 'sphere', radius: 0.052, segments: 40, rings: 20 }, position: [x, y, z - 0.03], scale: [1, 1, 0.12], material: { color: '#050912', roughness: 0.05, specular: 1.6, shininess: 256 } }),
     );
   }
   o.push(
-    B({ name: 'Flash', shape: { type: 'cylinder', radiusTop: 0.022, radiusBottom: 0.022, height: 0.012, segments: 32 }, position: [0.25, 0.64, back - 0.03], rotation: [90, 0, 0], material: { color: '#f6ead0', specular: 1.2, shininess: 80 } }),
-    B({ name: 'Sensor', shape: { type: 'cylinder', radiusTop: 0.016, radiusBottom: 0.016, height: 0.012, segments: 24 }, position: [0.25, 0.4, back - 0.03], rotation: [90, 0, 0], material: { color: '#0b0d12', specular: 1.4, shininess: 120 } }),
-    B({ name: 'Power button', shape: rbox(0.03, 0.18, 0.03, 0.012, 0.012, 4), position: [W / 2 + 0.008, 0.28, 0], material: { color: '#2c3d58', specular: 1.4, shininess: 70 } }),
+    B({ name: 'Flash', shape: cyl(0.026, 0.01, 32), position: [0.235, 0.648, back - 0.016], rotation: [90, 0, 0], material: { color: '#f3ead6', roughness: 0.3, specular: 0.5, emissive: 0.05 } }),
+    B({ name: 'LiDAR', shape: cyl(0.022, 0.01, 32), position: [0.235, 0.422, back - 0.016], rotation: [90, 0, 0], material: { color: '#07080a', roughness: 0.08, specular: 1.2, shininess: 220 } }),
   );
-  // the display lights itself: everything on the screen is emissive and barely reflects
-  const glow = { Wallpaper: 0.8, 'Glow violet': 0.75, 'Glow pink': 0.75, 'Glow amber': 0.75, Clock: 1.2, Battery: 1.2, 'Weather widget': 1.1,
-    'Widget sun': 1.3, 'Widget temp': 1.3, 'App icon': 1.15, Dock: 0.9, 'Dock icon': 1.15, 'Home indicator': 1.2 };
-  for (const part of o) if (glow[part.name]) part.material = { ...part.material, emissive: glow[part.name], specular: 0.05 };
-  // camera lenses get a faint blue coating glint
-  for (const part of o) if (part.name === 'Lens glass') part.material = { ...part.material, emissive: 0.15 };
   await add(doc, o);
-  await tool(doc, 'set_camera', { yaw: 12, pitch: 7, distance: 2.75, target: [0.02, 0.9, 0] });
+  await tool(doc, 'set_camera', { yaw: 12, pitch: 7, distance: 2.7, target: [0.02, 0.9, 0] });
 });
 
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
@@ -169,7 +165,7 @@ scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, g
   await tool(doc, 'set_environment', { background: { top: '#6f9fd8', bottom: '#dce7f1' }, fog: { near: 45, far: 140 }, ground: false, light: { direction: [0.5, 0.8, 0.35] } });
   const o = [
     { name: 'Meadow', shape: { type: 'plane', width: 90, depth: 90 }, material: { color: '#5a8a42', specular: 0 } },
-    { name: 'Moat', shape: { type: 'lathe', profile: [[12.5, 0.03], [9, 0.03]], segments: 72 }, material: { color: '#2f6290', specular: 1, shininess: 60 } },
+    { name: 'Moat', shape: { type: 'lathe', profile: [[12.5, 0.03], [9, 0.03]], segments: 72 }, material: { color: '#2f6290', roughness: 0.06, specular: 1, shininess: 160 } },
     { name: 'Bridge', shape: { type: 'box', width: 2.4, height: 0.25, depth: 4 }, position: [0, 0.2, 10.7], material: { color: wood } },
     { name: 'Road', shape: { type: 'box', width: 2.4, height: 0.04, depth: 30 }, position: [0, 0.02, 27.7], material: { color: '#a48f6c', specular: 0 } },
   ];
@@ -242,7 +238,7 @@ scene('chess', 'Chess set', 'Italian opening on a wooden board. Every piece is a
   const moves = [[4, 2, 4, 4], [4, 7, 4, 5], [6, 1, 5, 3], [1, 8, 2, 6], [5, 1, 2, 4]];
   for (const [f0, r0, f1, r1] of moves) { const p = pos.find((q) => q[2] === f0 && q[3] === r0); p[2] = f1; p[3] = r1; }
   for (const [side, kind, f, r] of pos) {
-    const x = f - 3.5, z = 3.5 - (r - 1), mat = side === 'w' ? { color: '#efe6d2', specular: 0.6, shininess: 50 } : { color: '#2b2522', specular: 0.9, shininess: 60 };
+    const x = f - 3.5, z = 3.5 - (r - 1), mat = side === 'w' ? { color: '#efe6d2', roughness: 0.3, specular: 0.6, shininess: 60 } : { color: '#2b2522', roughness: 0.2, specular: 0.9, shininess: 80 };
     const label = `${side === 'w' ? 'White' : 'Black'} ${kind}`;
     o.push({ name: label, shape: { type: 'lathe', profile: profiles[kind], segments: 32 }, position: [x, 0.2, z], material: mat });
     if (kind === 'knight') o.push({ name: `${label} head`, shape: { type: 'extrude', shape: horse, depth: 0.26 }, position: [x, 0.43, z], rotation: [0, side === 'w' ? 90 : -90, 0], material: { ...mat, flat: true } });
@@ -258,7 +254,7 @@ scene('chess', 'Chess set', 'Italian opening on a wooden board. Every piece is a
 scene('station', 'Space station', 'A rotating-wheel station with spokes, solar wings, docking modules, an antenna dish, an approaching shuttle and a ringed planet.', async (doc) => {
   const rand = rng(5);
   await tool(doc, 'set_environment', { background: { top: '#020308', bottom: '#0e1832' }, fog: null, ground: false, light: { direction: [0.8, 0.35, 0.5], color: '#fff8ee' } });
-  const hull = { color: '#d7d9de', specular: 0.8, shininess: 50 }, metal = { color: '#9aa0aa', specular: 0.7 };
+  const hull = { color: '#d7d9de', roughness: 0.35, specular: 0.8, shininess: 60 }, metal = { color: '#9aa0aa', metalness: 1, roughness: 0.3, specular: 0.7 };
   const o = [
     { name: 'Hub', shape: { type: 'sphere', radius: 1.7, segments: 40, rings: 20 }, material: hull },
     { name: 'Spine', shape: { type: 'cylinder', radiusTop: 0.45, radiusBottom: 0.45, height: 16, segments: 20 }, material: metal },
@@ -278,7 +274,7 @@ scene('station', 'Space station', 'A rotating-wheel station with spokes, solar w
     );
     for (const side of [-1, 1]) {
       for (let k = 0; k < 3; k++) {
-        o.push({ name: 'Solar panel', shape: { type: 'box', width: 2.7, height: 0.05, depth: 3.8 }, position: [r4(side * (11 + k * 2.9)), 6 * s, 0], material: { color: '#1c3a7a', specular: 1.3, shininess: 90 } });
+        o.push({ name: 'Solar panel', shape: { type: 'box', width: 2.7, height: 0.05, depth: 3.8 }, position: [r4(side * (11 + k * 2.9)), 6 * s, 0], material: { color: '#1c3a7a', roughness: 0.15, specular: 1.3, shininess: 120 } });
       }
     }
   }
@@ -319,7 +315,7 @@ scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setba
       o.push({ name: 'Sidewalk', shape: { type: 'box', width: 8, height: 0.15, depth: 8 }, position: [cx, 0.075, cz], material: { color: '#a8a49c', specular: 0 } });
       if (i === 1 && j === 4) {
         o.push({ name: 'Park lawn', shape: { type: 'box', width: 7.4, height: 0.2, depth: 7.4 }, position: [cx, 0.1, cz], material: { color: '#5d8c45', specular: 0 } });
-        o.push({ name: 'Pond', shape: { type: 'lathe', profile: [[1.7, 0.21], [0, 0.21]], segments: 40 }, position: [cx + 1, 0, cz + 0.8], material: { color: '#3b6f99', specular: 1.2, shininess: 70 } });
+        o.push({ name: 'Pond', shape: { type: 'lathe', profile: [[1.7, 0.21], [0, 0.21]], segments: 40 }, position: [cx + 1, 0, cz + 0.8], material: { color: '#3b6f99', roughness: 0.06, specular: 1.2, shininess: 160 } });
         for (let t = 0; t < 9; t++) {
           const x = r4(cx - 3 + rand() * 6), z = r4(cz - 3 + rand() * 6);
           if (Math.hypot(x - cx - 1, z - cz - 0.8) < 2) continue;
@@ -335,7 +331,7 @@ scene('city', 'City block', 'A procedural downtown: 36 blocks, towers with setba
         const col = palette[Math.floor(rand() * palette.length)];
         if (h > 12 && rand() < 0.35) {
           const g = glass[Math.floor(rand() * glass.length)];
-          o.push({ name: 'Glass tower', shape: { type: 'cylinder', radiusTop: 1.4, radiusBottom: 1.6, height: h, segments: 28 }, position: [x, h / 2 + 0.15, z], material: { color: g, specular: 1.4, shininess: 80 } });
+          o.push({ name: 'Glass tower', shape: { type: 'cylinder', radiusTop: 1.4, radiusBottom: 1.6, height: h, segments: 28 }, position: [x, h / 2 + 0.15, z], material: { color: g, roughness: 0.1, specular: 1.4, shininess: 160 } });
           o.push({ name: 'Crown', shape: { type: 'cylinder', radiusTop: 0.9, radiusBottom: 1.4, height: 1.2, segments: 28 }, position: [x, h + 0.75, z], material: { color: '#d9dde2' } });
           o.push({ name: 'Spire', shape: { type: 'cylinder', radiusTop: 0.02, radiusBottom: 0.08, height: 3, segments: 6 }, position: [x, h + 2.85, z], material: { color: '#d9dde2' } });
           continue;
@@ -407,6 +403,12 @@ scene('lighthouse', 'Lighthouse island', 'A noise terrain island; the lighthouse
 });
 
 // ------------------------------------------------------------------------------------ build
+// the phone's display texture is painted procedurally as well
+const { paintHomeScreen } = await import('./screen-texture.mjs');
+const { encodePNG } = await import('../server/png.js');
+mkdirSync(join(DIR, 'textures'), { recursive: true });
+const screenImg = paintHomeScreen(590);
+writeFileSync(join(DIR, 'textures', 'screen.png'), encodePNG(screenImg.data, screenImg.width, screenImg.height));
 mkdirSync(join(DIR, 'thumbs'), { recursive: true });
 const manifest = [];
 for (const s of SCENES) {
@@ -415,6 +417,7 @@ for (const s of SCENES) {
   await s.build(doc);
   const json = pretty(doc.data) + '\n';
   writeFileSync(join(DIR, `${s.id}.json`), json);
+  await preloadTextures(doc);
   writeFileSync(join(DIR, 'thumbs', `${s.id}.png`), renderPNG(doc, { width: 640, height: 400 }));
   const geos = new Map(doc.data.objects.map((o) => [JSON.stringify(o.shape), doc.geometry(o.shape)]));
   let triangles = 0, ram = 0;

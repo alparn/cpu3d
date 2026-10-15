@@ -7,7 +7,7 @@ import { createInterface } from 'node:readline';
 import { SceneDocument } from '../src/document.js';
 import { createServer } from '../server/http.js';
 import { createMcpHandler } from '../server/mcp.js';
-import { renderPNG, renderBase64 } from '../server/render.js';
+import { renderPNG, renderBase64, preloadTextures } from '../server/render.js';
 import { frameBounds, unionBounds } from '../src/scene.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -146,7 +146,7 @@ async function mcpStdio(opts) {
   rl.on('close', () => queue.then(() => process.exit(0)));
 }
 
-function renderCli(opts) {
+async function renderCli(opts) {
   const [input, output = 'render.png'] = opts._.slice(1);
   if (!input) { console.error(HELP); process.exit(1); }
   const doc = new SceneDocument(JSON.parse(readFileSync(input, 'utf8')));
@@ -156,6 +156,7 @@ function renderCli(opts) {
   if (opts.pitch !== undefined) camera.pitch = +opts.pitch;
   if (opts.distance !== undefined) camera.distance = +opts.distance;
   const t0 = performance.now();
+  await preloadTextures(doc);
   const png = renderPNG(doc, { width: +(opts.width ?? 1280), height: +(opts.height ?? 720), camera, shading: opts.shading || 'gouraud', wireframe: !!opts.wireframe,
     quality: opts.quality || 'high', samples: +(opts.samples ?? 16) });
   writeFileSync(output, png);

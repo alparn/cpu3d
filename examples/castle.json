@@ -18,8 +18,12 @@
     },
     "light": {
       "direction": [0.5, 0.8, 0.35],
-      "color": "#fff5e6"
+      "color": "#fff5e6",
+      "intensity": 1,
+      "softness": 0.1
     },
+    "lights": [],
+    "reflections": "sky",
     "ground": false
   },
   "objects": [
@@ -61,10 +65,11 @@
       "material": {
         "color": "#2f6290",
         "specular": 1,
-        "shininess": 60,
+        "shininess": 160,
         "emissive": 0,
         "flat": false,
-        "doubleSided": false
+        "doubleSided": false,
+        "roughness": 0.06
       },
       "visible": true
     },

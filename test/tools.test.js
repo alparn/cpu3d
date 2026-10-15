@@ -39,6 +39,9 @@ test('invalid input returns helpful errors and leaves the scene untouched', asyn
     ['add_objects', { objects: [{ shape: { type: 'box' }, position: [1, 2] }] }, /position/],
     ['update_object', { id: 'obj_42', name: 'x' }, /no object with id/],
     ['add_objects', { objects: [{ shape: { type: 'box' }, material: { emissive: 50 } }] }, /emissive/],
+    ['add_objects', { objects: [{ shape: { type: 'box' }, material: { texture: '../../etc/passwd.png' } }] }, /texture/],
+    ['add_objects', { objects: [{ shape: { type: 'box' }, material: { texture: 'https://example.com/a.png' } }] }, /texture/],
+    ['set_environment', { reflections: 'disco' }, /reflections/],
     ['nope', {}, /Unknown tool/],
   ]) {
     const r = await call(doc, name, args);

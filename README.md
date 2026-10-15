@@ -37,22 +37,22 @@ All of them are built in [`examples/build.mjs`](examples/build.mjs) through the 
 
 <table>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 6.2 KB · as .obj 615.2 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/phone.png" alt="Smartphone"><br><b>Smartphone</b><br><sub>54 objects · 17,976 tris<br>recipes 31.0 KB · as .obj 710.4 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 76.3 KB · as .obj 191.3 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/showcase.png" alt="Shape showcase"><br><b>Shape showcase</b><br><sub>9 objects · 20,844 tris<br>recipes 6.4 KB · as .obj 615.2 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/phone.png" alt="Smartphone"><br><b>Smartphone</b><br><sub>65 objects · 25,180 tris<br>recipes 37.4 KB · as .obj 840.0 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 76.4 KB · as .obj 191.3 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 67.1 KB · as .obj 1.20 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 59.5 KB · as .obj 605.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>287 objects · 7,038 tris<br>recipes 137.8 KB · as .obj 335.8 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 68.2 KB · as .obj 1.20 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 60.7 KB · as .obj 605.3 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>287 objects · 7,038 tris<br>recipes 138.1 KB · as .obj 335.8 KB</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 93.6 KB · as .obj 2.19 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>10 objects · 52,244 tris<br>recipes 5.9 KB · as .obj 1.48 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 93.7 KB · as .obj 2.19 MB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>10 objects · 52,244 tris<br>recipes 6.0 KB · as .obj 1.48 MB</sub></td>
 </tr>
 </table>
 
-Recipes are compact: the lighthouse island is **5.9 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
+Recipes are compact: the lighthouse island is **6.0 KB** of JSON but **1.48 MB** once exported as triangles. The editor shows these numbers live for the scene and the selected object.
 
 ## Quick start
 
@@ -133,7 +133,7 @@ The MCP server also sends a short guide in its `instructions`, so agents know th
 
 ## Shape recipes
 
-An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and the ground is `y = 0`. Materials have `color`, `specular`, `shininess`, `emissive` (glowing screens and lamps), `flat` and `doubleSided`.
+An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and the ground is `y = 0`.
 
 ```json
 {
@@ -157,7 +157,25 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 | `terrain` | Noise heightfield with water level and height-based colors |
 | `mesh` | Raw triangles |
 
-2D shapes (`circle`, `polygon`, `rect`, `roundedRect`, `star` or point lists) and paths (`line`, `circle`, `helix`, `torusKnot` or point lists) plug into `extrude`, `sweep` and `tube`. The full reference is what `get_shape_reference` returns, see [`src/recipes.js`](src/recipes.js).
+2D shapes (`circle`, `polygon`, `rect`, `roundedRect` with optional squircle corners, `star` or point lists) and paths (`line`, `circle`, `helix`, `torusKnot` or point lists) plug into `extrude`, `sweep` and `tube`. The full reference is what `get_shape_reference` returns, see [`src/recipes.js`](src/recipes.js).
+
+### Materials and light
+
+```json
+"material": { "color": "#b9b6b0", "metalness": 1, "roughness": 0.25 }                       // polished titanium
+"material": { "color": "#ffffff", "texture": "examples/textures/screen.png", "emissive": 1 }  // a lit display
+```
+
+| Property | Meaning |
+|---|---|
+| `color`, `specular`, `shininess` | base color and the sun highlight |
+| `metalness` 0..1 | metals reflect in their own color and have no diffuse light |
+| `roughness` 0..1 | 0 = mirror, 1 = matte (default 0.7); sharp or blurry reflections |
+| `emissive` 0..10 | self-illumination; `1` shows the color or texture exactly as authored |
+| `texture` | PNG in the project or a `data:image/png;base64` URL, projected along the thinnest axis |
+| `flat`, `doubleSided` | faceted shading, open surfaces |
+
+`set_environment` controls what glossy surfaces reflect (`reflections: "sky" | "studio" | "none"`), the main light (`intensity`, `softness` for soft shadows) and up to four extra `lights` for fill and rim lighting.
 
 ## The editor
 
@@ -192,8 +210,9 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 
 | | **High** (default) | **Fast** |
 |---|---|---|
-| Lighting | per pixel (deferred G-buffer), linear color space | per vertex (Gouraud) |
-| Shadows | directional shadow map, soft PCF edges, cached per scene | none |
+| Lighting | per pixel (deferred G-buffer), linear color space, extra fill/rim lights | per vertex (Gouraud) |
+| Materials | metalness, roughness, Fresnel reflections of a sky or studio environment, textures | color only |
+| Shadows | directional shadow map, adjustable soft edges, cached per scene | none |
 | Ambient occlusion | screen-space AO, half resolution, depth-aware blur | none |
 | Tone mapping | ACES filmic + sRGB | ACES filmic + sRGB |
 | Anti-aliasing | progressive: jittered frames are averaged while the view is still | none |
@@ -202,13 +221,17 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 
 <sub>Left: the first release (fast mode). Right: high quality. Same scenes, same recipes.</sub>
 
+<img src="docs/phone-before-after.png" alt="Smartphone scene before and after materials, studio reflections and a textured display" width="100%">
+
+<sub>The Smartphone scene before and after metal and glass materials, studio softbox reflections, a textured display, squircle bodies and camera details. Close-up of the camera module: [docs/phone-camera.png](docs/phone-camera.png).</sub>
+
 The editor refines the image up to 16 samples when the camera stops; `render_view` returns 8-sample renders to agents.
 
 | Scene (1280×720, one core, Node 23, Apple Silicon) | Triangles | Fast | High (1 sample) |
 |---|---:|---:|---:|
-| Showcase | 23k | 3.3 ms | 27 ms |
-| Terrain | 97k | 7.5 ms | 38 ms |
-| Stress test (36 torus knots) | 224k | 16.5 ms | 39 ms |
+| Showcase | 23k | 3.3 ms | 33 ms |
+| Terrain | 97k | 7.5 ms | 45 ms |
+| Stress test (36 torus knots) | 224k | 16.5 ms | 47 ms |
 
 The fast path pushes about 12 million triangles and up to 280 million pixels per second on a single thread. Coverage is verified pixel-exact against a brute-force reference in the test suite. Run `npm run bench` or open [`demo/`](demo/index.html) for the interactive benchmark; the details are in [docs/how-it-works.md](docs/how-it-works.md).
 
@@ -254,7 +277,8 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 ## Roadmap
 
 - Multi-threaded tile renderer (Web Workers / worker_threads)
-- Materials: metalness with sky reflections, Fresnel rim, bloom for emissive surfaces
+- Bloom for emissive surfaces, depth of field, glossy floor reflections
+- Path tracing mode for final renders (global illumination)
 - Bevels for box and extrude, crease angle for smoothing groups
 - Groups and hierarchy, boolean operations (CSG)
 - Textures with perspective-correct UVs

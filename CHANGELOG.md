@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Physically based materials**: `metalness`, `roughness`, Fresnel (split-sum environment BRDF fit), reflections of a `sky` or `studio` environment with softboxes; rough reflections are softened analytically and refined progressively
+- **Textures**: `material.texture` takes a PNG from the project or a `data:` URL, projected along the thinnest axis; built-in PNG decoder for Node, browser decoding in the editor
+- **Studio lighting**: main light `intensity` and `softness` (soft shadows), up to 4 extra lights (fill, rim)
+- Emissive colors are reproduced exactly on screen (inverse tone curve) and emitters no longer pick up diffuse light
+- Sharper highlights: the specular approximation no longer has a long tail (fixes a haze on glossy surfaces) and is cheaper
+- `roundedRect` / `roundedBox` get `smooth: true` for squircle corners
+- Smartphone scene rebuilt: real proportions, polished metal frames, glass, a painted home-screen texture, antenna bands, USB-C, speaker holes, stepped camera lenses
+- Gallery: chrome, glossy water and glass towers; editor sliders for metalness and roughness
 - New gallery scene **Smartphone**: a product shot with two phones, a glowing home screen and a triple camera module
 - New recipe `roundedBox` (box with rounded edges and corners) and 2D shape `roundedRect`
 - New material property `emissive` for self-illuminated surfaces (screens, lamps, windows); the lighthouse lantern now glows

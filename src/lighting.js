@@ -27,6 +27,17 @@ export function buildToneLUT(exposure = 1) {
   return lut;
 }
 
+// Inverse of the tone curve for each display value 0..255: the radiance that tone maps back to it.
+// Emissive surfaces use it so that emissive = 1 reproduces their color (or texture) exactly on screen.
+export function buildInverseToneLUT(tone) {
+  const inv = new Float32Array(256);
+  for (let v = 0, i = 0; v < 256; v++) {
+    while (i < tone.length - 1 && tone[i] < v) i++;
+    inv[v] = i / TONE_SCALE;
+  }
+  return inv;
+}
+
 // low-discrepancy sequence for jitter (base 2 / base 3), in [0, 1)
 export function halton(i, b) {
   let f = 1, r = 0;
@@ -104,6 +115,68 @@ function rasterDepth(depth, S, x0, y0, z0, x1, y1, z1, x2, y2, z2) {
   }
 }
 
+// ---------------------------------------------------------------- environment (reflections)
+// 'sky'   : the background gradient as a sky dome over a darker ground
+// 'studio': a dark photo studio with softboxes (product shots: glass and metal live from these)
+// Rough surfaces see softer softbox edges, so blurry reflections need no prefiltered maps.
+const softbox = (dir, w, h, intensity) => {
+  const l = Math.hypot(...dir), d = dir.map((v) => v / l);
+  const ref = Math.abs(d[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+  let r = [ref[1] * d[2] - ref[2] * d[1], ref[2] * d[0] - ref[0] * d[2], ref[0] * d[1] - ref[1] * d[0]];
+  const rl = Math.hypot(...r);
+  r = r.map((v) => v / rl);
+  const u = [d[1] * r[2] - d[2] * r[1], d[2] * r[0] - d[0] * r[2], d[0] * r[1] - d[1] * r[0]];
+  return { d, r, u, w, h, I: intensity };
+};
+const STUDIO = [
+  softbox([-0.55, 0.75, 0.55], 0.5, 0.32, 6),   // key, front left above
+  softbox([0.95, 0.2, -0.25], 0.1, 0.85, 7),    // tall strip right (rim on the frame)
+  softbox([-0.95, 0.15, -0.35], 0.09, 0.85, 4), // tall strip left
+  softbox([0.05, 1, 0.1], 0.55, 0.55, 2.5),     // overhead
+  softbox([0.35, 0.25, 1], 0.38, 0.12, 1.6),    // low front strip (glints on screens)
+];
+let er = 0, eg = 0, eb = 0; // env() result, linear radiance
+
+function env(type, sky, dx, dy, dz, rough) {
+  if (type === 'studio') {
+    const g = 0.012 + 0.03 * Math.max(0, dy);
+    er = eg = eb = g;
+    const soft = 0.025 + rough * 0.9, peak = 1 / (1 + rough * 2.5);
+    for (let i = 0; i < STUDIO.length; i++) {
+      const b = STUDIO[i], cd = dx * b.d[0] + dy * b.d[1] + dz * b.d[2];
+      if (cd < 0.05) continue;
+      const a = Math.abs((dx * b.r[0] + dy * b.r[1] + dz * b.r[2]) / cd), c = Math.abs((dx * b.u[0] + dy * b.u[1] + dz * b.u[2]) / cd);
+      let wa = (b.w - a) / soft + 0.5, wc = (b.h - c) / soft + 0.5;
+      if (wa <= 0 || wc <= 0) continue;
+      if (wa > 1) wa = 1;
+      if (wc > 1) wc = 1;
+      const v = b.I * wa * wc * peak;
+      er += v; eg += v * 0.98; eb += v * 0.95;
+    }
+    return;
+  }
+  // sky dome from the background colors (linear), ground darker; roughness softens the horizon
+  const t = dy;
+  if (t >= 0) {
+    const k = Math.sqrt(t);
+    er = sky.br + (sky.tr - sky.br) * k; eg = sky.bg + (sky.tg - sky.bg) * k; eb = sky.bb + (sky.tb - sky.bb) * k;
+  } else {
+    let k = -t / (0.06 + rough * 0.6);
+    if (k > 1) k = 1;
+    const gr = sky.br * 0.25, gg = sky.bg * 0.25, gb = sky.bb * 0.25;
+    er = sky.br + (gr - sky.br) * k; eg = sky.bg + (gg - sky.bg) * k; eb = sky.bb + (gb - sky.bb) * k;
+  }
+}
+
+const spec16 = (t) => { if (t <= 0) return 0; t *= t; t *= t; t *= t; return t * t; };
+
+// cheap per-pixel hash in [0, 1) for jittering rough reflections
+const hash = (x, y, f) => {
+  let h = (Math.imul(x, 73856093) ^ Math.imul(y, 19349663) ^ Math.imul(f + 1, 83492791)) >>> 0;
+  h = Math.imul(h ^ (h >>> 15), 2246822519) >>> 0;
+  return ((h ^ (h >>> 13)) >>> 0) / 4294967296;
+};
+
 // ---------------------------------------------------------------- deferred shading
 export const WIRE_MATERIAL = 0xffff;
 const AO_SAMPLES = 8;
@@ -148,7 +221,7 @@ function blurAO(src, depth, W, H) {
 
 // ctx: everything the pass needs, prepared by the renderer for this frame
 export function shadePass(ctx) {
-  const { W, H, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, eye, R, U, F, tanX, tanY, jx, jy,
+  const { W, H, depth, color, NX, NY, NZ, MAT, matSpec, matShin, matTwo, matEmis, matMetal, matRough, lights, environment, softness, invTone, eye, R, U, F, tanX, tanY, jx, jy,
     light, tone, shadow, frame, ao, fog, debug } = ctx;
   const colK = new Float32Array(W), rowK = new Float32Array(H);
   for (let x = 0; x < W; x++) colK[x] = (((x + 0.5) / W) * 2 - 1 - jx) * tanX;
@@ -159,7 +232,11 @@ export function shadePass(ctx) {
 
   // shadow map setup
   const sm = shadow, smS = sm ? sm.size : 0, smD = sm ? sm.depth : null;
-  const texel = sm ? 1 / sm.scale : 0, smJu = halton(frame, 2) - 0.5, smJv = halton(frame, 3) - 0.5;
+  // soft shadows: the PCF sample point wanders over a disc that grows with the light's softness
+  const pen = 1 + (softness || 0) * 22;
+  const texel = sm ? 1 / sm.scale : 0, smJu = (halton(frame, 2) - 0.5) * pen, smJv = (halton(frame, 3) - 0.5) * pen;
+  const envType = environment ? environment.type : 'none', sky = environment ? environment.sky : null;
+  const extra = lights || [], nExtra = extra.length;
 
   // ssao setup
   const kernels = ao ? aoKernels(frame) : null;
@@ -242,12 +319,18 @@ export function shadePass(ctx) {
 
       if (debug === 'ao') { const v = occl * 255; color[i] = 0xff000000 | (v << 16) | (v << 8) | v; continue; }
 
-      // hemisphere ambient
-      const hemi = ny * 0.5 + 0.5;
-      let r = ar * (gr + (sr - gr) * hemi) * occl;
-      let g = ag * (gg + (sg - gg) * hemi) * occl;
-      let b = ab * (gb + (sb - gb) * hemi) * occl;
+      // emissive surfaces (screens, lamps) are dark emitters: they do not also scatter light diffusely
+      const emis = matEmis[mat], metal = matMetal[mat], rough = matRough[mat], kd = (1 - metal) * (emis >= 1 ? 0 : 1 - emis);
+      // highlight color: white for dielectrics, the albedo for metals
+      const scr = 1 + (ar - 1) * metal, scg = 1 + (ag - 1) * metal, scb = 1 + (ab - 1) * metal;
 
+      // hemisphere ambient (diffuse only)
+      const hemi = ny * 0.5 + 0.5;
+      let r = ar * kd * (gr + (sr - gr) * hemi) * occl;
+      let g = ag * kd * (gg + (sg - gg) * hemi) * occl;
+      let b = ab * kd * (gb + (sb - gb) * hemi) * occl;
+
+      const shin = matShin[mat], specK = matSpec[mat], specCut = 1 - 16 / shin; // below that the curve is 0
       // sun
       const ndl = nx * lx + ny * ly + nz * lz;
       if (ndl > 0) {
@@ -270,17 +353,44 @@ export function shadePass(ctx) {
         if (vis > 0) {
           const hx = lx + Vx, hy = ly + Vy, hz = lz + Vz;
           const ndh = (nx * hx + ny * hy + nz * hz) / (Math.sqrt(hx * hx + hy * hy + hz * hz) || 1);
-          const shin = matShin[mat];
-          // Schlick's approximation of pow(ndh, shin)
-          const sp = ndh > 0 ? (matSpec[mat] * ndh) / (shin - shin * ndh + ndh) : 0;
-          r += (ar * ndl + sp) * lr * vis;
-          g += (ag * ndl + sp) * lg * vis;
-          b += (ab * ndl + sp) * lb * vis;
+          // pow(ndh, shin) ~ exp(shin * (ndh - 1)) ~ (1 + shin * (ndh - 1) / 16)^16: four multiplies,
+          // accurate near the peak and exactly zero in the tail (no haze on glossy surfaces)
+          const sp = ndh > specCut ? specK * spec16(1 + shin * (ndh - 1) * 0.0625) : 0;
+          r += (ar * kd * ndl + sp * scr) * lr * vis;
+          g += (ag * kd * ndl + sp * scg) * lg * vis;
+          b += (ab * kd * ndl + sp * scb) * lb * vis;
         }
       }
+      // extra lights (fill, rim): no shadows
+      for (let e = 0; e < nExtra; e++) {
+        const el = extra[e], nd = nx * el.x + ny * el.y + nz * el.z;
+        if (nd <= 0) continue;
+        const hx = el.x + Vx, hy = el.y + Vy, hz = el.z + Vz;
+        const ndh = (nx * hx + ny * hy + nz * hz) / (Math.sqrt(hx * hx + hy * hy + hz * hz) || 1);
+        const sp = ndh > specCut ? specK * spec16(1 + shin * (ndh - 1) * 0.0625) : 0;
+        r += (ar * kd * nd + sp * scr) * el.r; g += (ag * kd * nd + sp * scg) * el.g; b += (ab * kd * nd + sp * scb) * el.b;
+      }
 
-      const emis = matEmis[mat];
-      if (emis > 0) { r += ar * emis; g += ag * emis; b += ab * emis; }
+      // environment reflection with Fresnel; rough surfaces jitter the direction (averaged over frames)
+      // matte dielectrics (most default materials) reflect so little that it is not worth computing
+      if (envType !== 'none' && (rough <= 0.6 || metal > 0)) {
+        const ndv = Math.max(1e-3, nx * Vx + ny * Vy + nz * Vz);
+        let rx = 2 * ndv * nx - Vx, ry = 2 * ndv * ny - Vy, rz = 2 * ndv * nz - Vz;
+        if (rough > 0.02 && frame > 0) {
+          const j = rough * rough * 0.6;
+          rx += (hash(x, y, frame) - 0.5) * j; ry += (hash(y, x, frame) - 0.5) * j; rz += (hash(x + y, x, frame) - 0.5) * j;
+          const rl = 1 / Math.sqrt(rx * rx + ry * ry + rz * rz);
+          rx *= rl; ry *= rl; rz *= rl;
+        }
+        env(envType, sky, rx, ry, rz, rough);
+        // split-sum environment BRDF, analytic fit (Karis / Lazarov): F = f0 * A + B, roughness-aware at grazing angles
+        const c0 = 1 - rough, c1 = 0.0425 - 0.0275 * rough, c2 = 1.04 - 0.572 * rough, c3 = 0.022 * rough - 0.04;
+        const a004 = Math.min(c0 * c0, Math.exp(-6.4325 * ndv)) * c0 + c1, A = c2 - 1.04 * a004, Bf = 1.04 * a004 + c3; // exp(x ln2) = 2^x
+        const f0r = 0.04 + (ar - 0.04) * metal, f0g = 0.04 + (ag - 0.04) * metal, f0b = 0.04 + (ab - 0.04) * metal;
+        r += er * (f0r * A + Bf) * occl; g += eg * (f0g * A + Bf) * occl; b += eb * (f0b * A + Bf) * occl;
+      }
+
+      if (emis > 0) { r += invTone[c & 255] * emis; g += invTone[(c >>> 8) & 255] * emis; b += invTone[(c >>> 16) & 255] * emis; }
 
       // tone map, then fog in display space so it matches the background exactly
       let R8 = tone[r >= TONE_MAX_V ? TONE_LAST : (r * TONE_SCALE) | 0];
