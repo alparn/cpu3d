@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Editor: **New scene** in the File menu, as `Shift+N` and at the top of the gallery: an empty stage or a photo studio (podium, softboxes, key/rim/fill light); undoable
 - **Physically based materials**: `metalness`, `roughness`, Fresnel (split-sum environment BRDF fit), reflections of a `sky` or `studio` environment with softboxes; rough reflections are softened analytically and refined progressively
 - **Textures**: `material.texture` takes a PNG from the project or a `data:` URL, projected along the thinnest axis; built-in PNG decoder for Node, browser decoding in the editor
 - **Studio lighting**: main light `intensity` and `softness` (soft shadows), up to 4 extra lights (fill, rim)

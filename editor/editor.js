@@ -488,6 +488,39 @@ function loadedToast(name, bytes, t0) {
   toast(`Loaded ${name} · ${fmtBytes(bytes)} · ${s.objects.length} objects · ${tris.toLocaleString('en')} triangles · ${(performance.now() - t0).toFixed(0)} ms`, 'info');
 }
 
+// New scenes: an empty stage with the ground grid, or a photo studio (dark backdrop, podium,
+// softbox reflections, key/rim/fill light). Both go through load_scene, so Ctrl/Cmd+Z brings the old scene back.
+const NEW_SCENES = {
+  empty: { title: 'Empty scene', hint: 'ground grid, daylight', scene: { objects: [] } },
+  studio: {
+    title: 'Studio', hint: 'podium, softboxes',
+    scene: {
+      camera: { yaw: 20, pitch: 12, distance: 4.5, target: [0, 0.7, 0] },
+      environment: {
+        background: { top: '#0a0b0e', bottom: '#20242c' }, fog: null, ground: false, reflections: 'studio',
+        light: { direction: [-0.45, 0.85, 0.45], color: '#fff4e8', intensity: 1, softness: 0.35 },
+        lights: [{ direction: [0.9, 0.3, -0.5], color: '#dfe8ff', intensity: 0.8 }, { direction: [0.4, 0.2, 0.9], color: '#ffffff', intensity: 0.25 }],
+      },
+      objects: [
+        { name: 'Floor', shape: { type: 'lathe', profile: [[14, 0], [0, 0]], segments: 64 }, material: { color: '#0e1014', roughness: 0.75, specular: 0.1 } },
+        { name: 'Podium', shape: { type: 'lathe', profile: [[0, 0], [1.35, 0], [1.35, 0.13], [1.3, 0.18], [1.0, 0.18], [0.7, 0.18], [0.4, 0.18], [0.15, 0.18], [0, 0.18]], segments: 96 },
+          material: { color: '#24272e', roughness: 0.3, specular: 0.5, shininess: 60 } },
+      ],
+    },
+  },
+};
+
+async function newScene(kind) {
+  document.querySelectorAll('.dropdown').forEach((m) => { m.hidden = true; });
+  if ($('galleryDialog').open) $('galleryDialog').close();
+  const preset = NEW_SCENES[kind];
+  const r = await tool('load_scene', { scene: structuredClone(preset.scene) });
+  if (!r.isError) {
+    select(null);
+    toast(`${preset.title} · Ctrl/Cmd+Z brings the previous scene back`, 'info');
+  }
+}
+
 async function loadExample(id) {
   $('galleryDialog').close();
   const t0 = performance.now();
@@ -498,7 +531,25 @@ async function loadExample(id) {
 
 async function loadGallery() {
   const items = await fetch('examples/index.json').then((r) => r.json()).catch(() => []);
-  $('galleryList').replaceChildren(...items.map((it) => {
+  const newRows = Object.entries(NEW_SCENES).map(([kind, p]) => {
+    const li = document.createElement('li');
+    li.className = 'new';
+    li.innerHTML = '<span></span><span>new</span>';
+    li.firstChild.textContent = p.title;
+    li.title = p.hint;
+    li.onclick = () => newScene(kind);
+    return li;
+  });
+  const newCards = Object.entries(NEW_SCENES).map(([kind, p]) => {
+    const card = document.createElement('button');
+    card.className = 'card new';
+    card.innerHTML = `<div class="thumb t-${kind}">+</div><div class="body"><h3></h3><p></p></div>`;
+    card.querySelector('h3').textContent = p.title;
+    card.querySelector('p').textContent = `Start a new scene: ${p.hint}.`;
+    card.onclick = () => newScene(kind);
+    return card;
+  });
+  $('galleryList').replaceChildren(...newRows, ...items.map((it) => {
     const li = document.createElement('li');
     li.innerHTML = '<span></span><span></span>';
     li.firstChild.textContent = it.title;
@@ -507,7 +558,7 @@ async function loadGallery() {
     li.onclick = () => loadExample(it.id);
     return li;
   }));
-  $('galleryGrid').replaceChildren(...items.map((it) => {
+  $('galleryGrid').replaceChildren(...newCards, ...items.map((it) => {
     const card = document.createElement('button');
     card.className = 'card';
     card.innerHTML = `<img alt="" loading="lazy"><div class="body"><h3></h3><p></p><div class="stats">
@@ -699,13 +750,14 @@ canvas.addEventListener('wheel', (e) => {
 }, { passive: false });
 
 addEventListener('keydown', (e) => {
-  if (e.target.matches('input, textarea, select') || $('connectDialog').open || $('galleryDialog').open) return;
+  if (e.target.matches?.('input, textarea, select') || $('connectDialog').open || $('galleryDialog').open) return;
   const mod = e.metaKey || e.ctrlKey;
   if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); tool(e.shiftKey ? 'redo' : 'undo'); }
   else if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicateSelected(); }
   else if (e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
   else if (e.key === 'Escape') { if (drag?.move) cancelMove(); else select(null); }
   else if (e.key === 'f' || e.key === 'F') focusObjects(state.selected ? [state.selected] : state.scene.objects.map((o) => o.id));
+  else if (e.shiftKey && !mod && e.code === 'KeyN') { e.preventDefault(); newScene('empty'); }
   else if (e.key === 'w' || e.key === 'W') { $('wire').checked = !$('wire').checked; $('wire').onchange(); }
 });
 
@@ -717,6 +769,7 @@ toggleMenu($('addBtn'), $('addMenu'));
 toggleMenu($('fileBtn'), $('fileMenu'));
 addEventListener('click', () => document.querySelectorAll('.dropdown').forEach((m) => { m.hidden = true; }));
 document.querySelectorAll('[data-file]').forEach((b) => { b.onclick = () => fileAction(b.dataset.file); });
+document.querySelectorAll('[data-new]').forEach((b) => { b.onclick = () => newScene(b.dataset.new); });
 const openGallery = () => $('galleryDialog').showModal();
 $('galleryBtn').onclick = openGallery;
 $('galleryOpen2').onclick = openGallery;
