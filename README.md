@@ -290,7 +290,7 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 ### Multi-threaded, temporal, adaptive
 
 - **All cores**: the main thread rasterizes the G-buffer, a pool of workers does the per-pixel work (AO, blur, lighting, anti-aliasing) in row chunks over `SharedArrayBuffer`s. The result is pixel-identical to one thread. The cpu3d server sends the cross-origin isolation headers this needs; on GitHub Pages a tiny service worker (`coi-sw.js`) adds them. Without isolation the editor falls back to one thread.
-- **Temporal anti-aliasing** while orbiting, zooming or playing an animation: every frame is jittered, the previous result is reprojected with motion vectors (Catmull-Rom sampling), clipped to the variance of the current neighbourhood and blended in, faster when things move fast. Edges, AO and soft shadows stay smooth in motion instead of shimmering.
+- **Temporal anti-aliasing** while orbiting, zooming or playing an animation: every frame is jittered, the previous result is reprojected with motion vectors (Catmull-Rom sampling), clipped to the variance of the current neighbourhood and blended in: as a running average while a pixel stays put (no flicker), faster when it moves. Animated objects bring their own motion vectors. Edges, AO and soft shadows stay smooth in motion instead of shimmering.
 - **Seamless refinement**: when the view stops, the progressive 16-sample average starts from the temporal history, so there is no drop in quality.
 - **Adaptive resolution**: if a full frame would take longer than about 34 ms, motion is rendered at a reduced resolution (down to 40%) and scaled up; the still image is always full resolution.
 - **Shadow cache**: static objects go into a cached shadow map shared by all renderers; during an animation only the moving objects are drawn again.
@@ -351,7 +351,7 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 
 ## Roadmap
 
-- Multi-threaded rasterization (the shading is already parallel), per-object motion vectors for TAA
+- Multi-threaded rasterization (the shading is already parallel)
 - Bloom for emissive surfaces, depth of field, glossy floor reflections
 - Path tracing mode for final renders (global illumination)
 - Bevels for box and extrude, crease angle for smoothing groups

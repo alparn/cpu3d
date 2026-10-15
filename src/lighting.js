@@ -461,13 +461,13 @@ export function temporalRows(ctx, y0, y1) {
 }
 
 function taaRow(ctx, colK, ry, y) {
-  const { W, H, depth, color: c, eye, R, U, F, taa } = ctx;
-  const { prevVP: M, currVP: Q, histPrev: hp, histNext: hn, valid, alpha } = taa;
+  const { W, H, depth, color: c, eye, R, U, F, taa, MAT } = ctx;
+  const { prevVP: M, currVP: Q, histPrev: hp, histNext: hn, valid, alpha, motion: MV, moving, agePrev, ageNext } = taa;
   {
     for (let x = 0; x < W; x++) {
       const i = y * W + x, v = c[i], k = i * 3;
       const cr = v & 255, cg = (v >>> 8) & 255, cb = (v >>> 16) & 255;
-      let a = 1, hr = 0, hg = 0, hb = 0;
+      let a = 1, hr = 0, hg = 0, hb = 0, age = 0;
       const iw = depth[i];
       if (valid) {
         // where was this surface (or, for the background, this view direction) in the previous frame?
@@ -475,8 +475,17 @@ function taaRow(ctx, colK, ry, y) {
         const w = iw === 0 ? 1e4 : 1 / iw, vx = colK[x] * w, vy = ry * w;
         const dx = R[0] * vx + U[0] * vy + F[0] * w, dy = R[1] * vx + U[1] * vy + F[1] * w, dz = R[2] * vx + U[2] * vy + F[2] * w;
         if (iw === 0) { wx = dx; wy = dy; wz = dz; ww = 0; } else { wx = eye[0] + dx; wy = eye[1] + dy; wz = eye[2] + dz; ww = 1; }
-        const cx = M[0] * wx + M[4] * wy + M[8] * wz + M[12] * ww, cy = M[1] * wx + M[5] * wy + M[9] * wz + M[13] * ww;
-        const cw = M[3] * wx + M[7] * wy + M[11] * wz + M[15] * ww;
+        // where this point of a moving object was in the previous frame (per-object motion)
+        let ox = wx, oy = wy, oz = wz;
+        const mat = iw === 0 ? 0 : MAT[i];
+        if (mat && moving[mat]) {
+          const j = mat * 12;
+          ox = MV[j] * wx + MV[j + 1] * wy + MV[j + 2] * wz + MV[j + 3];
+          oy = MV[j + 4] * wx + MV[j + 5] * wy + MV[j + 6] * wz + MV[j + 7];
+          oz = MV[j + 8] * wx + MV[j + 9] * wy + MV[j + 10] * wz + MV[j + 11];
+        }
+        const cx = M[0] * ox + M[4] * oy + M[8] * oz + M[12] * ww, cy = M[1] * ox + M[5] * oy + M[9] * oz + M[13] * ww;
+        const cw = M[3] * ox + M[7] * oy + M[11] * oz + M[15] * ww;
         const qx = Q[0] * wx + Q[4] * wy + Q[8] * wz + Q[12] * ww, qy = Q[1] * wx + Q[5] * wy + Q[9] * wz + Q[13] * ww;
         const qw = Q[3] * wx + Q[7] * wy + Q[11] * wz + Q[15] * ww;
         if (cw > 1e-6 && qw > 1e-6) {
@@ -498,7 +507,7 @@ function taaRow(ctx, colK, ry, y) {
             }
             // neighbourhood clamp: min / max of the 3x3 pixels around (unrolled, borders repeat)
             const rm = (y > 0 ? y - 1 : y) * W, r0 = y * W, rp = (y < H - 1 ? y + 1 : y) * W, xm = x > 0 ? x - 1 : x, xp = x < W - 1 ? x + 1 : x;
-            // variance clipping: mean +- 1.25 standard deviations of the 3x3 neighbourhood (tighter than min / max)
+            // variance clipping: mean +- gamma standard deviations of the 3x3 neighbourhood (tighter than min / max)
             let sr = cr, sg = cg, sb = cb, qr = cr * cr, qg = cg * cg, qb = cb * cb, u = 0, t = 0;
             u = c[rm + xm]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
             u = c[rm + x]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
@@ -509,19 +518,28 @@ function taaRow(ctx, colK, ry, y) {
             u = c[rp + x]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
             u = c[rp + xp]; t = u & 255; sr += t; qr += t * t; t = (u >>> 8) & 255; sg += t; qg += t * t; t = (u >>> 16) & 255; sb += t; qb += t * t;
             const mr = sr / 9, mg = sg / 9, mb = sb / 9;
-            const dr = 1.25 * Math.sqrt(Math.max(0, qr / 9 - mr * mr)) + 2, dg = 1.25 * Math.sqrt(Math.max(0, qg / 9 - mg * mg)) + 2, db = 1.25 * Math.sqrt(Math.max(0, qb / 9 - mb * mb)) + 2;
+            // pixels that do not move keep a wider box: their converged history is better than this noisy frame
+            const gamma = Math.abs(px - x) + Math.abs(py - y) < 0.05 ? 2 : 1.25;
+            const dr = gamma * Math.sqrt(Math.max(0, qr / 9 - mr * mr)) + 2, dg = gamma * Math.sqrt(Math.max(0, qg / 9 - mg * mg)) + 2, db = gamma * Math.sqrt(Math.max(0, qb / 9 - mb * mb)) + 2;
             hr = hr < mr - dr ? mr - dr : hr > mr + dr ? mr + dr : hr;
             hg = hg < mg - dg ? mg - dg : hg > mg + dg ? mg + dg : hg;
             hb = hb < mb - db ? mb - db : hb > mb + db ? mb + db : hb;
-            // fast motion: trust the new frame more (resampling the history blurs a little every frame)
+            // blend weight: a running average while the pixel stays put (1 / frames, down to `alpha`, so still
+            // parts converge like the progressive refinement and stop flickering); fast motion trusts the
+            // new frame more, because resampling the history blurs a little every frame
             const speed = Math.abs(px - x) + Math.abs(py - y);
-            a = alpha + (speed > 8 ? 0.4 : speed * 0.05);
+            age = agePrev[(Math.round(py) * W + Math.round(px))] + 1;
+            if (age > 60) age = 60;
+            const run = 1 / (age + 1), fast = speed < 0.05 ? 0 : 0.2 + (speed > 4 ? 0.4 : speed * 0.1);
+            a = run > alpha ? run : alpha;
+            if (fast > a) a = fast;
             if (a > 1) a = 1;
           }
         }
       }
       const r = hr + (cr - hr) * a, g = hg + (cg - hg) * a, b = hb + (cb - hb) * a;
       hn[k] = r; hn[k + 1] = g; hn[k + 2] = b;
+      ageNext[i] = age;
       c[i] = 0xff000000 | (((b + 0.5) | 0) << 16) | (((g + 0.5) | 0) << 8) | ((r + 0.5) | 0);
     }
   }

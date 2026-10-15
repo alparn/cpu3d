@@ -134,7 +134,7 @@ export class Renderer {
     this.pool = null;
     this._shared = false;
     this._allocMaterials();
-    this.temporalAlpha = 0.25; // weight of the new frame in temporal anti-aliasing (more when things move fast)
+    this.temporalAlpha = 0.035; // smallest weight of a new frame in temporal anti-aliasing (more while things move)
     this.onTextureLoad = null; // called when a texture finished loading (the editor redraws)
     this._proj = mat4.create();
     this._view = mat4.create();
@@ -161,6 +161,10 @@ export class Renderer {
     this._matEmis = this._alloc(Float32Array, 65536);
     this._matMetal = this._alloc(Float32Array, 65536);
     this._matRough = this._alloc(Float32Array, 65536);
+    // per-mesh motion for temporal AA: world(now) -> world(previous frame) as a 3x4 matrix, flagged when moving
+    this._matMotion = this._alloc(Float32Array, 65536 * 12);
+    this._matMoving = this._alloc(Uint8Array, 65536);
+    this._prevModel = new WeakMap(); // mesh -> model matrix of the previous frame of this renderer
   }
 
   // Use a ShadePool (pool.js) for renderAsync; null goes back to single-threaded rendering.
@@ -211,6 +215,7 @@ export class Renderer {
     const ao = ((this.width + 1) >> 1) * ((this.height + 1) >> 1);
     this._aoRaw = A(Float32Array, ao); this._aoDepth = A(Float32Array, ao); this._aoBlur = A(Float32Array, ao);
     this._hist = [A(Float32Array, n * 3), A(Float32Array, n * 3)]; // temporal history (ping-pong)
+    this._age = [A(Uint8Array, n), A(Uint8Array, n)]; // frames each history pixel has been tracked
     this._histWeight = 0; // how many frames the history roughly represents (0 = none)
     this._prevVP = new Float64Array(16);
     this._accN = 0;
@@ -327,6 +332,11 @@ export class Renderer {
     this._hq = hq;
     this._matCount = 0;
     for (const mesh of scene.meshes) if (mesh.visible) this._drawMesh(mesh);
+    // remember where every mesh was (also the culled ones), for the motion vectors of the next frame
+    if (hq) for (const mesh of scene.meshes) {
+      const prev = this._prevModel.get(mesh);
+      if (prev) prev.set(mesh.matrix); else this._prevModel.set(mesh, Float64Array.from(mesh.matrix));
+    }
     this._rasterMs = performance.now() - this._t0;
     if (!hq) return null;
 
@@ -362,7 +372,8 @@ export class Renderer {
     } else {
       const valid = temporal && this._histWeight > 0;
       ctx.post = 'temporal';
-      ctx.taa = { prevVP: this._prevVP, currVP: unjittered, histPrev: this._hist[0], histNext: this._hist[1], valid, alpha: this.temporalAlpha };
+      ctx.taa = { prevVP: this._prevVP, currVP: unjittered, histPrev: this._hist[0], histNext: this._hist[1], valid, alpha: this.temporalAlpha,
+        motion: this._matMotion, moving: this._matMoving, agePrev: this._age[0], ageNext: this._age[1] };
       this._histWeight = valid ? Math.min(8, this._histWeight + 1) : 1;
       this._nextVP = unjittered;
     }
@@ -377,6 +388,7 @@ export class Renderer {
       if (ctx.post === 'accumulate') this._accN = ctx.accN;
       else {
         this._hist.reverse(); // the history just written becomes the previous one
+        this._age.reverse();
         this._prevVP.set(this._nextVP);
         this._accN = 0;
       }
@@ -388,6 +400,34 @@ export class Renderer {
       this.ctx.putImageData(this.image, 0, 0);
     }
     return this;
+  }
+
+  // Motion of a mesh since the previous frame, as D = prev * inverse(now) in _matMotion[id]; false if it did not move.
+  _motionOf(mesh, id) {
+    const p = this._prevModel.get(mesh), m = mesh.matrix;
+    if (!p) return false;
+    let same = true;
+    for (let i = 0; i < 16; i++) if (p[i] !== m[i]) { same = false; break; }
+    if (same) return false;
+    // inverse of the affine model matrix (upper 3x3 by cofactors, then the translation)
+    const a = m[0], b = m[4], c = m[8], d = m[1], e = m[5], f = m[9], g = m[2], h = m[6], k = m[10];
+    const A = e * k - f * h, B = f * g - d * k, C = d * h - e * g, det = a * A + b * B + c * C;
+    if (!det) return false;
+    const id_ = 1 / det;
+    const i00 = A * id_, i01 = (c * h - b * k) * id_, i02 = (b * f - c * e) * id_;
+    const i10 = B * id_, i11 = (a * k - c * g) * id_, i12 = (c * d - a * f) * id_;
+    const i20 = C * id_, i21 = (b * g - a * h) * id_, i22 = (a * e - b * d) * id_;
+    const tx = -(i00 * m[12] + i01 * m[13] + i02 * m[14]), ty = -(i10 * m[12] + i11 * m[13] + i12 * m[14]), tz = -(i20 * m[12] + i21 * m[13] + i22 * m[14]);
+    // D = P * inv(M), rows of the 3x4 result
+    const o = this._matMotion, j = id * 12;
+    for (let r = 0; r < 3; r++) {
+      const p0 = p[r], p1 = p[4 + r], p2 = p[8 + r], p3 = p[12 + r];
+      o[j + r * 4] = p0 * i00 + p1 * i10 + p2 * i20;
+      o[j + r * 4 + 1] = p0 * i01 + p1 * i11 + p2 * i21;
+      o[j + r * 4 + 2] = p0 * i02 + p1 * i12 + p2 * i22;
+      o[j + r * 4 + 3] = p0 * tx + p1 * ty + p2 * tz + p3;
+    }
+    return true;
   }
 
   // Reflection environment: type + linear sky colors from the background gradient.
@@ -503,6 +543,7 @@ export class Renderer {
       this._matMetal[id] = mesh.metalness || 0;
       this._matRough[id] = mesh.roughness ?? DEFAULT_ROUGHNESS;
       this._flatHQ = flatMesh;
+      this._matMoving[id] = this._motionOf(mesh, id) ? 1 : 0;
     }
 
     // ---- vertex stage

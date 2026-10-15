@@ -1059,9 +1059,11 @@ function motionScale(now) {
 let lastTick = performance.now();
 function frame() {
   requestAnimationFrame(frame);
+  if (state.exporting || perf.busy) return; // the GIF export has the CPU, or a frame is still being shaded
+  // animation time follows the wall clock between rendered frames (not between display refreshes),
+  // so playback keeps its real speed and moves evenly however long a frame takes
   const now = performance.now(), dt = Math.min(0.25, (now - lastTick) / 1000);
   lastTick = now;
-  if (state.exporting || perf.busy) return; // the GIF export has the CPU, or a frame is still being shaded
   if (state.playing && state.renderScene && !drag?.move) setTime((state.time + dt) % duration());
   const res = $('res').value, s = res === 'dpr' ? devicePixelRatio : +res;
   const w = Math.max(1, Math.round(canvas.clientWidth * s)), h = Math.max(1, Math.round(canvas.clientHeight * s));

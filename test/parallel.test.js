@@ -52,3 +52,31 @@ test('animated meshes reuse the static shadow map', () => {
   r.render(scene, cam);
   assert.notEqual(scene._shadow.local.base, base, 'staticVersion rebuilds the base');
 });
+
+test('temporal AA: moving objects use their own motion, still parts stop flickering', () => {
+  const doc = new SceneDocument();
+  doc.addObjects([
+    { shape: { type: 'box' }, rotation: [0, 30, 0], position: [-1, 0.5, 0], material: { color: '#d04020' }, animation: { flow: { axis: [1, 0, 0], distance: 100, speed: 0.6, fade: 0 } } },
+    { shape: { type: 'sphere' }, position: [1.5, 0.5, 0], material: { color: '#3070c0', roughness: 0.3 } },
+  ], { source: 'test' });
+  const cam = cameraFromState({ yaw: 20, pitch: 20, distance: 6, target: [0, 0.5, 0] }), W = 160, H = 110;
+  const run = (motionVectors) => {
+    const scene = buildRenderScene(doc.data, (s) => doc.geometry(s)), r = new Renderer({ width: W, height: H });
+    if (!motionVectors) r._motionOf = () => false;
+    let prev = null, flicker = 0;
+    for (let i = 0; i < 30; i++) {
+      updateAnimation(scene, (i + 1) / 30);
+      r.render(scene, cam, { temporal: true });
+      // flicker on the right half (the still sphere and floor)
+      if (i >= 20) for (let y = 0; y < H; y++) for (let x = W * 0.6; x < W; x++) { const p = (y * W + x) * 4; flicker += Math.abs(r.pixels[p] - prev[p]); }
+      prev = r.pixels.slice();
+    }
+    const ref = new Renderer({ width: W, height: H });
+    ref.render(scene, cam);
+    for (let i = 0; i < 15; i++) ref.render(scene, cam, { accumulate: true });
+    return { error: diff(r.pixels, ref.pixels), flicker: flicker / (9 * H * W * 0.4) };
+  };
+  const without = run(false), withMv = run(true);
+  assert.ok(withMv.error < without.error * 0.85, `motion vectors: ${withMv.error.toFixed(2)} vs ${without.error.toFixed(2)}`);
+  assert.ok(withMv.flicker < 0.6, `still parts barely change between frames (${withMv.flicker.toFixed(2)})`);
+});

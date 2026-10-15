@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fix: animation playback advanced unevenly (time was lost while a frame was still rendering), which looked like jitter; time now follows the wall clock between rendered frames
+- Temporal AA: per-object motion vectors (moving parts keep their history), a per-pixel running average for pixels that stay put (static parts of an animated scene flicker 30-75% less), wider clipping for still pixels
+- Editor: timeline above the stats line on medium-width windows
 - **Multi-threaded shading**: a worker pool (`ShadePool`, Web Workers in the browser, worker_threads in Node) shades the frame in row chunks over shared memory; pixel-identical to one thread. `Renderer#setPool` and `renderAsync`; the editor, `render_view`, `render_animation`, `export_gif` and `cpu3d gif` use it. Turbofan in the editor: ~110 ms → 24 ms per moving frame
 - **Temporal anti-aliasing** for camera moves and animation (`render(..., { temporal: true })`): jittered frames, reprojection with motion vectors, Catmull-Rom history sampling, variance clipping, speed-dependent blending; still images continue the progressive refinement from the temporal history
 - **Adaptive resolution** in the editor: motion renders at a reduced resolution when a full frame would miss ~30 fps
