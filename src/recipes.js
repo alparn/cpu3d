@@ -3,6 +3,7 @@
 // No code is ever evaluated, so recipes from untrusted agents are safe to build.
 
 import * as G from './geometry.js';
+import { mat4 } from './math.js';
 
 export const LIMITS = { maxSegments: 512, maxPoints: 20000, maxTrianglesPerObject: 1_000_000 };
 
@@ -91,13 +92,34 @@ export function fbm(x, y, seed = 1, octaves = 5) {
 }
 
 // ---- builder --------------------------------------------------------------------------------
-export const SHAPE_TYPES = ['box', 'roundedBox', 'sphere', 'cylinder', 'cone', 'torus', 'plane', 'terrain',
+export const SHAPE_TYPES = ['radial', 'box', 'roundedBox', 'sphere', 'cylinder', 'cone', 'torus', 'plane', 'terrain',
   'lathe', 'extrude', 'sweep', 'tube', 'mesh'];
 
-export function buildShape(r) {
+export function buildShape(r, depth = 0) {
   if (!r || typeof r !== 'object' || Array.isArray(r)) fail('shape must be an object with a "type"');
   let g;
   switch (r.type) {
+    case 'radial': {
+      // repeat a shape around an axis: blade rings, spokes, colonnades, petals
+      if (depth >= 3) fail('"radial" can be nested at most 3 levels deep');
+      const child = buildShape(r.shape, depth + 1);
+      const count = int(r.count, 8, 'count', 1, 2048), radius = num(r.radius, 0, 'radius', -1e4, 1e4);
+      const off = vec3(r.offset, [0, 0, 0], 'offset'), rot = vec3(r.rotation, [0, 0, 0], 'rotation');
+      const axis = r.axis ?? 'y', total = num(r.angle, 360, 'angle', -36000, 36000), start = num(r.startAngle, 0, 'startAngle', -36000, 36000);
+      if (!['x', 'y', 'z'].includes(axis)) fail('"axis" must be "x", "y" or "z"');
+      if (child.triangleCount * count > LIMITS.maxTrianglesPerObject) fail(`radial would create ${child.triangleCount * count} triangles, the limit is ${LIMITS.maxTrianglesPerObject}`);
+      const D = Math.PI / 180, out = axis === 'x' ? [0, radius, 0] : [radius, 0, 0];
+      const local = mat4.compose(mat4.create(), [out[0] + off[0], out[1] + off[1], out[2] + off[2]], rot.map((v) => v * D), [1, 1, 1]);
+      const step = Math.abs(total) % 360 === 0 ? total / count : total / Math.max(1, count - 1);
+      const copies = [];
+      for (let i = 0; i < count; i++) {
+        const a = (start + step * i) * D, e = [0, 0, 0];
+        e[{ x: 0, y: 1, z: 2 }[axis]] = a;
+        copies.push(child.clone().applyMatrix(mat4.multiply(mat4.create(), mat4.compose(mat4.create(), [0, 0, 0], e, [1, 1, 1]), local)));
+      }
+      g = G.Geometry.merge(...copies);
+      break;
+    }
     case 'box':
       g = G.box(num(r.width, 1, 'width', 1e-4), num(r.height, 1, 'height', 1e-4), num(r.depth, 1, 'depth', 1e-4));
       break;
@@ -143,7 +165,8 @@ export function buildShape(r) {
       break;
     }
     case 'lathe':
-      g = G.lathe(points(r.profile, 2, 'profile', 2), int(r.segments, 48, 'segments', 3, SEG));
+      g = G.lathe(points(r.profile, 2, 'profile', 2), int(r.segments, 48, 'segments', 3, SEG),
+        { phiStart: num(r.phiStart, 0, 'phiStart', -36000, 36000), phiLength: num(r.phiLength, 360, 'phiLength', 1, 360) });
       break;
     case 'extrude':
       if (r.holes !== undefined && (!Array.isArray(r.holes) || r.holes.length > 256)) fail('"holes" must be an array of up to 256 2D shapes');
@@ -213,10 +236,16 @@ Shapes are built around their own origin (see "origin" below); use position to p
             noise heightfield in XZ, y from 0 (flat water) to height
 
 ## Generative (the interesting part)
-- lathe     { type: "lathe", profile: [[r, y], ...], segments=48 }
+- lathe     { type: "lathe", profile: [[r, y], ...], segments=48, phiStart=0, phiLength=360 }
             Revolves a 2D profile around the Y axis. List points from BOTTOM to TOP, r >= 0.
             Start/end with r = 0 to close the bottom/top. Open profiles (vases) need material.doubleSided.
             Example vase: [[0,0],[0.4,0],[0.5,0.3],[0.3,1.0],[0.35,1.4]]
+            phiLength < 360 revolves only partly (cutaway models). Closed profiles (first point = last point,
+            or both ends at r = 0) then get flat caps on the cut faces.
+- radial    { type: "radial", shape: Recipe, count=8, radius=0, offset=[0,0,0], rotation=[0,0,0], axis="y", angle=360, startAngle=0 }
+            Repeats a shape around an axis: the child (rotated by rotation, moved by radius along +X, or +Y for
+            axis x, plus offset) is copied count times over angle degrees. Turbine blade rings, spokes, columns,
+            petals, bolts on a flange. Cheap: one object no matter how many copies.
 - extrude   { type: "extrude", shape: Shape2D, depth=0.2, holes: [Shape2D, ...] }
             Extrudes a 2D polygon (concave allowed) along Z, centered on z = 0. Rotate [-90,0,0] to lay it flat.
             holes cut through it: rings, frames, gears with spokes, letters like O and A.

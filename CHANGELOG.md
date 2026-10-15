@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- New recipe `radial`: repeats any shape around an axis (blade rings, spokes, colonnades); hundreds of copies stay one small object
+- `lathe` takes `phiStart` / `phiLength` for cutaway models; closed profiles get capped cut faces
+- New gallery scene **Turbofan cutaway**: 22 twisted fan blades, booster and HP compressor stages, a glowing combustor and heat-tinted turbines from NACA-profiled radial arrays; 47 KB of JSON, 112k triangles
 - `extrude` takes `holes` (rings, frames, gears with spokes, letters); holes are bridged into the outline so ear clipping handles them, and side walls face into the holes
 - New gallery scene **Skeleton watch**: 170 parts with spoked brass gears, a hairspring, ruby jewels in polished chatons, blued screws, luminous hands at 10:10 and a stitched leather strap
 - Studio environment: an extra high back softbox, so flat metal parts seen from above have something bright to reflect

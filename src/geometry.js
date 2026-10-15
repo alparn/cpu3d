@@ -301,8 +301,37 @@ export function box(w = 1, h = 1, d = 1) {
 }
 
 // Surface of revolution around Y. profile: [[r, y], ...] from bottom to top, outside at +r.
-export function lathe(profile, segments = 32) {
-  return fromRims(profile.map(([r, y]) => ring(r, y, segments)));
+// phiStart / phiLength (degrees) revolve only part of the way (cutaway models, half pipes).
+// A partial lathe of a closed profile (first point = last point, or both ends on the axis)
+// gets flat caps on its two cut faces, so it stays a closed solid.
+export function lathe(profile, segments = 32, { phiStart = 0, phiLength = 360 } = {}) {
+  if (phiLength >= 360 && phiStart === 0) return fromRims(profile.map(([r, y]) => ring(r, y, segments)));
+  const full = phiLength >= 360, a0 = (phiStart * Math.PI) / 180, len = (Math.min(360, phiLength) * Math.PI) / 180;
+  const first = profile[0], last = profile[profile.length - 1];
+  const loop = first[0] === last[0] && first[1] === last[1];
+  const closed = loop || (first[0] === 0 && last[0] === 0);
+  let prof = profile;
+  if (closed) {
+    const poly = loop ? profile.slice(0, -1) : profile;
+    if (polygonArea(poly) < 0) prof = loop ? [...poly].reverse().concat([poly[poly.length - 1]]) : [...profile].reverse(); // sides face out when the loop runs counter-clockwise in (r, y)
+  }
+  const n = full ? segments : segments + 1;
+  const rims = prof.map(([r, y]) => Array.from({ length: n }, (_, j) => {
+    const a = a0 + (len * j) / segments;
+    return [r * Math.cos(a), y, r * Math.sin(a)];
+  }));
+  const sides = fromRims(rims, { closeRims: full });
+  if (full || !closed) return sides;
+  const poly = loop ? prof.slice(0, -1) : prof, tri = triangulate(poly), pos = [], idx = [];
+  for (const [a, flip] of [[a0, true], [a0 + len, false]]) {
+    const base = pos.length / 3;
+    for (const [r, y] of poly) pos.push(r * Math.cos(a), y, r * Math.sin(a));
+    for (let t = 0; t < tri.length; t += 3) {
+      if (flip) idx.push(base + tri[t], base + tri[t + 2], base + tri[t + 1]);
+      else idx.push(base + tri[t], base + tri[t + 1], base + tri[t + 2]);
+    }
+  }
+  return Geometry.merge(sides, new Geometry(pos, idx));
 }
 
 export function sphere(r = 1, segments = 32, rings = 16) {

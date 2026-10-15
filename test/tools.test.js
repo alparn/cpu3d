@@ -52,9 +52,19 @@ test('invalid input returns helpful errors and leaves the scene untouched', asyn
   assert.equal(doc.revision, 0);
 });
 
+test('radial arrays and partial lathes', () => {
+  const ring = buildShape({ type: 'radial', count: 12, radius: 2, shape: { type: 'box', width: 0.2, height: 0.3, depth: 0.1 } });
+  assert.equal(ring.triangleCount, 144);
+  assert.ok(Math.abs(ring.signedVolume() - 12 * 0.006) < 1e-5);
+  // a 3/4 pipe from a closed profile loop is a closed solid with capped cut faces
+  const pipe = buildShape({ type: 'lathe', profile: [[1, 0], [1.2, 0], [1.2, 1], [1, 1], [1, 0]], segments: 96, phiLength: 270 });
+  assert.ok(Math.abs(pipe.signedVolume() - Math.PI * 0.44 * 0.75) / (Math.PI * 0.44 * 0.75) < 2e-3);
+  assert.throws(() => buildShape({ type: 'radial', count: 5000, shape: { type: 'box' } }), /count/);
+});
+
 test('every shape type in the reference builds', () => {
   const samples = {
-    box: {}, roundedBox: { radius: 0.1, cornerRadius: 0.3 }, sphere: {}, cylinder: {}, cone: {}, torus: {}, plane: {}, terrain: { resolution: 16 },
+    radial: { count: 6, radius: 1, shape: { type: 'sphere', segments: 8, rings: 4 } }, box: {}, roundedBox: { radius: 0.1, cornerRadius: 0.3 }, sphere: {}, cylinder: {}, cone: {}, torus: {}, plane: {}, terrain: { resolution: 16 },
     lathe: { profile: [[0, 0], [1, 0], [0.5, 1]] }, extrude: { shape: { type: 'star' } },
     sweep: { shape: { type: 'rect', width: 0.2, height: 0.1 }, path: { type: 'helix' }, twist: 90 },
     tube: { path: [[0, 0, 0], [1, 1, 0], [2, 0, 0]] }, mesh: { positions: [0, 0, 0, 1, 0, 0, 0, 1, 0], indices: [0, 1, 2] },

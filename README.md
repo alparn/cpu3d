@@ -36,7 +36,11 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 <sub>The skeleton watch scene: 170 parts, every one a JSON recipe (spoked gears are extrudes with holes, the hairspring is a tube along a spiral), rendered on one CPU core. Full view: [docs/watch.png](docs/watch.png).</sub>
 
-Nine scenes ship with cpu3d. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
+<img src="docs/engine.png" alt="Turbofan cutaway: fan, compressor stages, glowing combustor and turbines" width="100%">
+
+<sub>Turbofan cutaway: about 1,350 NACA-profiled blades in radial arrays and casings revolved through 240°. 47 KB of recipes, 4.15 MB once exported as triangles.</sub>
+
+Ten scenes ship with cpu3d. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
 All of them are built in [`examples/build.mjs`](examples/build.mjs) through the same tool API an agent uses, including `probe_height` to put things on terrain.
 
 <table>
@@ -46,13 +50,16 @@ All of them are built in [`examples/build.mjs`](examples/build.mjs) through the 
 <td width="33%" valign="top"><img src="examples/thumbs/watch.png" alt="Skeleton watch"><br><b>Skeleton watch</b><br><sub>170 objects · 32,758 tris<br>recipes 168.5 KB · as .obj 1.25 MB</sub></td>
 </tr>
 <tr>
+<td width="33%" valign="top"><img src="examples/thumbs/engine.png" alt="Turbofan cutaway"><br><b>Turbofan cutaway</b><br><sub>48 objects · 111,978 tris<br>recipes 46.6 KB · as .obj 4.15 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 76.7 KB · as .obj 191.3 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 70.1 KB · as .obj 1.20 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 60.9 KB · as .obj 605.3 KB</sub></td>
 </tr>
 <tr>
+<td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 60.9 KB · as .obj 605.3 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>315 objects · 12,414 tris<br>recipes 153.0 KB · as .obj 504.9 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 96.3 KB · as .obj 2.19 MB</sub></td>
+</tr>
+<tr>
 <td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>11 objects · 52,246 tris<br>recipes 6.7 KB · as .obj 1.48 MB</sub></td>
 </tr>
 </table>
@@ -155,7 +162,8 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 |---|---|
 | `box` `sphere` `cylinder` `cone` `torus` `plane` | Primitives |
 | `roundedBox` | Box with smooth rounded edges and corners (devices, furniture, buttons) |
-| `lathe` | Revolve a 2D profile around Y (vases, towers, bottles, columns) |
+| `lathe` | Revolve a 2D profile around Y (vases, towers, bottles, columns); partial revolutions for cutaways |
+| `radial` | Repeat any shape around an axis (blade rings, spokes, columns), one object for hundreds of copies |
 | `extrude` | Push any 2D polygon (concave too, with `holes`) into depth, caps triangulated by ear clipping |
 | `sweep` | Move a cross-section along a 3D path, with twist and taper (rails, frames, twisted columns, horns) |
 | `tube` | Sweep of a circle (pipes, cables, springs, handles, knots) |

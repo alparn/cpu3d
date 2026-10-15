@@ -1,0 +1,1996 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 38,
+    "pitch": 14,
+    "distance": 4.7,
+    "target": [0.1, 1.5, 0]
+  },
+  "environment": {
+    "background": {
+      "top": "#07080a",
+      "bottom": "#1d2027"
+    },
+    "fog": null,
+    "light": {
+      "direction": [-0.35, 0.85, 0.55],
+      "color": "#fff3e6",
+      "intensity": 1.05,
+      "softness": 0.3
+    },
+    "lights": [
+      {
+        "direction": [0.7, 0.4, -0.6],
+        "color": "#d6e2ff",
+        "intensity": 0.75
+      },
+      {
+        "direction": [0.2, 0.3, 0.95],
+        "color": "#ffffff",
+        "intensity": 0.2
+      }
+    ],
+    "reflections": "studio",
+    "ground": false
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Floor",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [16, 0],
+          [0, 0]
+        ],
+        "segments": 64
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0f1115",
+        "specular": 0.15,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.7
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Base",
+      "shape": {
+        "type": "roundedBox",
+        "width": 3.8,
+        "height": 0.12,
+        "depth": 1.9,
+        "radius": 0.04,
+        "cornerRadius": 0.12,
+        "segments": 4
+      },
+      "position": [0, 0.06, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2a2d33",
+        "specular": 0.4,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.45
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Cradle",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [-0.75, 0],
+          [0.75, 0],
+          [0.75, 0.4751],
+          [0.695, 0.4371],
+          [0.6381, 0.402],
+          [0.5795, 0.3699],
+          [0.5192, 0.341],
+          [0.4575, 0.3153],
+          [0.3945, 0.2928],
+          [0.3304, 0.2737],
+          [0.2655, 0.2581],
+          [0.1997, 0.2458],
+          [0.1335, 0.237],
+          [0.0668, 0.2318],
+          [0, 0.23],
+          [-0.0668, 0.2318],
+          [-0.1335, 0.237],
+          [-0.1997, 0.2458],
+          [-0.2655, 0.2581],
+          [-0.3304, 0.2737],
+          [-0.3945, 0.2928],
+          [-0.4575, 0.3153],
+          [-0.5192, 0.341],
+          [-0.5795, 0.3699],
+          [-0.6381, 0.402],
+          [-0.695, 0.4371],
+          [-0.75, 0.4751]
+        ],
+        "depth": 0.16
+      },
+      "position": [-0.95, 0.12, 0],
+      "rotation": [0, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f0b400",
+        "specular": 0.6,
+        "shininess": 60,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Cradle",
+      "shape": {
+        "type": "extrude",
+        "shape": [
+          [-0.75, 0],
+          [0.75, 0],
+          [0.75, 0.4751],
+          [0.695, 0.4371],
+          [0.6381, 0.402],
+          [0.5795, 0.3699],
+          [0.5192, 0.341],
+          [0.4575, 0.3153],
+          [0.3945, 0.2928],
+          [0.3304, 0.2737],
+          [0.2655, 0.2581],
+          [0.1997, 0.2458],
+          [0.1335, 0.237],
+          [0.0668, 0.2318],
+          [0, 0.23],
+          [-0.0668, 0.2318],
+          [-0.1335, 0.237],
+          [-0.1997, 0.2458],
+          [-0.2655, 0.2581],
+          [-0.3304, 0.2737],
+          [-0.3945, 0.2928],
+          [-0.4575, 0.3153],
+          [-0.5192, 0.341],
+          [-0.5795, 0.3699],
+          [-0.6381, 0.402],
+          [-0.695, 0.4371],
+          [-0.75, 0.4751]
+        ],
+        "depth": 0.16
+      },
+      "position": [0.95, 0.12, 0],
+      "rotation": [0, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f0b400",
+        "specular": 0.6,
+        "shininess": 60,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Spinner",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, 1.2],
+          [0.29, 1.2],
+          [0.27, 1.36],
+          [0.19, 1.5],
+          [0.09, 1.6],
+          [0, 1.64]
+        ],
+        "segments": 64
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#eef0f3",
+        "specular": 0.8,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Spinner swirl",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [0.2934, 1.22, 0],
+          [0.292, 1.225, 0.0207],
+          [0.2892, 1.23, 0.0412],
+          [0.285, 1.235, 0.0613],
+          [0.2793, 1.24, 0.0811],
+          [0.2723, 1.245, 0.1004],
+          [0.2639, 1.25, 0.1192],
+          [0.2543, 1.255, 0.1372],
+          [0.2434, 1.26, 0.1545],
+          [0.2314, 1.265, 0.1709],
+          [0.2183, 1.27, 0.1864],
+          [0.2041, 1.275, 0.2009],
+          [0.189, 1.28, 0.2144],
+          [0.173, 1.285, 0.2267],
+          [0.1562, 1.29, 0.2378],
+          [0.1387, 1.295, 0.2477],
+          [0.1206, 1.3, 0.2563],
+          [0.102, 1.305, 0.2636],
+          [0.0829, 1.31, 0.2695],
+          [0.0635, 1.315, 0.2741],
+          [0.0439, 1.32, 0.2773],
+          [0.0242, 1.325, 0.2791],
+          [0.0044, 1.33, 0.2795],
+          [-0.0153, 1.335, 0.2784],
+          [-0.0349, 1.34, 0.276],
+          [-0.0542, 1.345, 0.2723],
+          [-0.0731, 1.35, 0.2671],
+          [-0.0916, 1.355, 0.2607],
+          [-0.1091, 1.36, 0.2522],
+          [-0.1253, 1.365, 0.2413],
+          [-0.1406, 1.37, 0.2294],
+          [-0.1548, 1.375, 0.2166],
+          [-0.1678, 1.38, 0.2029],
+          [-0.1798, 1.385, 0.1884],
+          [-0.1905, 1.39, 0.1733],
+          [-0.2, 1.395, 0.1577],
+          [-0.2083, 1.4, 0.1415],
+          [-0.2153, 1.405, 0.125],
+          [-0.221, 1.41, 0.1083],
+          [-0.2254, 1.415, 0.0913],
+          [-0.2286, 1.42, 0.0743],
+          [-0.2305, 1.425, 0.0573],
+          [-0.2311, 1.43, 0.0403],
+          [-0.2305, 1.435, 0.0236],
+          [-0.2288, 1.44, 0.0072],
+          [-0.2258, 1.445, -0.0089],
+          [-0.2218, 1.45, -0.0245],
+          [-0.2167, 1.455, -0.0396],
+          [-0.2106, 1.46, -0.0541],
+          [-0.2035, 1.465, -0.0679],
+          [-0.1955, 1.47, -0.081],
+          [-0.1868, 1.475, -0.0933],
+          [-0.1772, 1.48, -0.1048],
+          [-0.167, 1.485, -0.1154],
+          [-0.1562, 1.49, -0.1252],
+          [-0.1449, 1.495, -0.1339],
+          [-0.1329, 1.5, -0.1415],
+          [-0.1194, 1.505, -0.1467],
+          [-0.1059, 1.51, -0.1507],
+          [-0.0925, 1.515, -0.1536],
+          [-0.0792, 1.52, -0.1554],
+          [-0.0661, 1.525, -0.156],
+          [-0.0533, 1.53, -0.1556],
+          [-0.0409, 1.535, -0.1542],
+          [-0.029, 1.54, -0.1519],
+          [-0.0176, 1.545, -0.1487],
+          [-0.0068, 1.55, -0.1446],
+          [0.0033, 1.555, -0.1398],
+          [0.0127, 1.56, -0.1343],
+          [0.0213, 1.565, -0.1282],
+          [0.0292, 1.57, -0.1216],
+          [0.0362, 1.575, -0.1145],
+          [0.0424, 1.58, -0.1071],
+          [0.0477, 1.585, -0.0994],
+          [0.0522, 1.59, -0.0914],
+          [0.0557, 1.595, -0.0834],
+          [0.0585, 1.6, -0.0754],
+          [0.0556, 1.605, -0.0621],
+          [0.0516, 1.61, -0.05],
+          [0.0462, 1.615, -0.0389],
+          [0.0396, 1.62, -0.0287]
+        ],
+        "radius": 0.011,
+        "sides": 6
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#16181c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Fan disk",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.3,
+        "radiusBottom": 0.32,
+        "height": 0.24,
+        "segments": 48
+      },
+      "position": [1.04, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5d636b",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Fan blades",
+      "shape": {
+        "type": "radial",
+        "count": 22,
+        "offset": [0, 1.04, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0954, -0.1526],
+            [-0.0962, -0.1394],
+            [-0.0844, -0.1099],
+            [-0.0613, -0.0678],
+            [-0.0297, -0.0183],
+            [0.0059, 0.0332],
+            [0.0405, 0.0808],
+            [0.0695, 0.1192],
+            [0.0886, 0.1441],
+            [0.0954, 0.1526],
+            [0.0906, 0.1428],
+            [0.0767, 0.1147],
+            [0.0548, 0.0719],
+            [0.0272, 0.0198],
+            [-0.0034, -0.0347],
+            [-0.0341, -0.0848],
+            [-0.0617, -0.124],
+            [-0.0831, -0.1475]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.26, 0, 0],
+            "to": [1.08, 0, 0],
+            "steps": 12
+          },
+          "twist": -46,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a7aeb7",
+        "specular": 0.9,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.26
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Nacelle",
+      "shape": {
+        "type": "lathe",
+        "segments": 96,
+        "phiStart": 171.7,
+        "phiLength": 240,
+        "profile": [
+          [1.12, 1.34],
+          [1.2, 1.3],
+          [1.25, 1.1],
+          [1.25, 0.3],
+          [1.21, -0.5],
+          [1.13, -0.95],
+          [1.09, -0.95],
+          [1.12, -0.5],
+          [1.15, 0.3],
+          [1.14, 1.1],
+          [1.12, 1.34]
+        ]
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e9ebef",
+        "specular": 0.6,
+        "shininess": 80,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_10",
+      "name": "Fan case liner",
+      "shape": {
+        "type": "lathe",
+        "segments": 96,
+        "phiStart": 171.7,
+        "phiLength": 240,
+        "profile": [
+          [1.115, 1.25],
+          [1.14, 1.25],
+          [1.14, 0.8],
+          [1.115, 0.8],
+          [1.115, 1.25]
+        ]
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3b3f46",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.6
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_11",
+      "name": "Core casing",
+      "shape": {
+        "type": "lathe",
+        "segments": 96,
+        "phiStart": 171.7,
+        "phiLength": 240,
+        "profile": [
+          [0.52, 0.86],
+          [0.57, 0.8],
+          [0.59, 0.2],
+          [0.57, -0.6],
+          [0.52, -1.15],
+          [0.5, -1.5],
+          [0.46, -1.5],
+          [0.48, -1.15],
+          [0.53, -0.6],
+          [0.55, 0.2],
+          [0.53, 0.8],
+          [0.52, 0.86]
+        ]
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8e949c",
+        "specular": 0.8,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.32
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_12",
+      "name": "Outlet guide vanes",
+      "shape": {
+        "type": "radial",
+        "count": 40,
+        "radius": 0.86,
+        "offset": [0, 0.62, 0],
+        "rotation": [0, 12, 0],
+        "shape": {
+          "type": "box",
+          "width": 0.54,
+          "height": 0.16,
+          "depth": 0.018
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_13",
+      "name": "Booster rotor 1",
+      "shape": {
+        "type": "radial",
+        "count": 36,
+        "offset": [0, 0.74, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0241, -0.0287],
+            [-0.0201, -0.0178],
+            [-0.003, 0.0025],
+            [0.0159, 0.0212],
+            [0.0241, 0.0287],
+            [0.0182, 0.0194],
+            [0.003, -0.0025],
+            [-0.014, -0.0229]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.2, 0, 0],
+            "to": [0.5, 0, 0],
+            "steps": 3
+          },
+          "twist": -20,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a7aeb7",
+        "specular": 0.9,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.26
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_14",
+      "name": "Booster stator 1",
+      "shape": {
+        "type": "radial",
+        "count": 44,
+        "offset": [0, 0.6799999999999999, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0192, 0.0161],
+            [-0.0118, 0.0134],
+            [0.0017, 0.002],
+            [0.0142, -0.0106],
+            [0.0192, -0.0161],
+            [0.0129, -0.0121],
+            [-0.0017, -0.002],
+            [-0.0152, 0.0093]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.24, 0, 0],
+            "to": [0.51, 0, 0],
+            "steps": 3
+          },
+          "twist": 8,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_15",
+      "name": "Booster rotor 2",
+      "shape": {
+        "type": "radial",
+        "count": 36,
+        "offset": [0, 0.62, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0241, -0.0287],
+            [-0.0201, -0.0178],
+            [-0.003, 0.0025],
+            [0.0159, 0.0212],
+            [0.0241, 0.0287],
+            [0.0182, 0.0194],
+            [0.003, -0.0025],
+            [-0.014, -0.0229]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.2, 0, 0],
+            "to": [0.5, 0, 0],
+            "steps": 3
+          },
+          "twist": -20,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a7aeb7",
+        "specular": 0.9,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.26
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_16",
+      "name": "Booster stator 2",
+      "shape": {
+        "type": "radial",
+        "count": 44,
+        "offset": [0, 0.56, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0192, 0.0161],
+            [-0.0118, 0.0134],
+            [0.0017, 0.002],
+            [0.0142, -0.0106],
+            [0.0192, -0.0161],
+            [0.0129, -0.0121],
+            [-0.0017, -0.002],
+            [-0.0152, 0.0093]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.24, 0, 0],
+            "to": [0.51, 0, 0],
+            "steps": 3
+          },
+          "twist": 8,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_17",
+      "name": "Booster rotor 3",
+      "shape": {
+        "type": "radial",
+        "count": 36,
+        "offset": [0, 0.5, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0241, -0.0287],
+            [-0.0201, -0.0178],
+            [-0.003, 0.0025],
+            [0.0159, 0.0212],
+            [0.0241, 0.0287],
+            [0.0182, 0.0194],
+            [0.003, -0.0025],
+            [-0.014, -0.0229]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.2, 0, 0],
+            "to": [0.5, 0, 0],
+            "steps": 3
+          },
+          "twist": -20,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a7aeb7",
+        "specular": 0.9,
+        "shininess": 140,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.26
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_18",
+      "name": "Booster stator 3",
+      "shape": {
+        "type": "radial",
+        "count": 44,
+        "offset": [0, 0.44, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0192, 0.0161],
+            [-0.0118, 0.0134],
+            [0.0017, 0.002],
+            [0.0142, -0.0106],
+            [0.0192, -0.0161],
+            [0.0129, -0.0121],
+            [-0.0017, -0.002],
+            [-0.0152, 0.0093]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.24, 0, 0],
+            "to": [0.51, 0, 0],
+            "steps": 3
+          },
+          "twist": 8,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_19",
+      "name": "Compressor drum",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, -0.2],
+          [0.26, -0.2],
+          [0.21, 0.44],
+          [0, 0.44]
+        ],
+        "segments": 64
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7c828a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_20",
+      "name": "HP rotor 1",
+      "shape": {
+        "type": "radial",
+        "count": 44,
+        "offset": [0, 0.38, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0184, -0.0204],
+            [-0.0152, -0.0125],
+            [-0.0022, 0.0019],
+            [0.0122, 0.0152],
+            [0.0184, 0.0204],
+            [0.0138, 0.0137],
+            [0.0022, -0.0019],
+            [-0.0108, -0.0164]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.215, 0, 0],
+            "to": [0.47, 0, 0],
+            "steps": 3
+          },
+          "twist": -14,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_21",
+      "name": "HP stator 1",
+      "shape": {
+        "type": "radial",
+        "count": 52,
+        "offset": [0, 0.33, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0158, 0.0123],
+            [-0.0098, 0.0104],
+            [0.0013, 0.0017],
+            [0.0116, -0.0081],
+            [0.0158, -0.0123],
+            [0.0107, -0.0093],
+            [-0.0013, -0.0017],
+            [-0.0125, 0.007]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.245, 0, 0],
+            "to": [0.48, 0, 0],
+            "steps": 3
+          },
+          "twist": 6,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_22",
+      "name": "HP rotor 2",
+      "shape": {
+        "type": "radial",
+        "count": 48,
+        "offset": [0, 0.28, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0184, -0.0204],
+            [-0.0152, -0.0125],
+            [-0.0022, 0.0019],
+            [0.0122, 0.0152],
+            [0.0184, 0.0204],
+            [0.0138, 0.0137],
+            [0.0022, -0.0019],
+            [-0.0108, -0.0164]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.222, 0, 0],
+            "to": [0.45199999999999996, 0, 0],
+            "steps": 3
+          },
+          "twist": -14,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_23",
+      "name": "HP stator 2",
+      "shape": {
+        "type": "radial",
+        "count": 56,
+        "offset": [0, 0.23000000000000004, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0158, 0.0123],
+            [-0.0098, 0.0104],
+            [0.0013, 0.0017],
+            [0.0116, -0.0081],
+            [0.0158, -0.0123],
+            [0.0107, -0.0093],
+            [-0.0013, -0.0017],
+            [-0.0125, 0.007]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.252, 0, 0],
+            "to": [0.46199999999999997, 0, 0],
+            "steps": 3
+          },
+          "twist": 6,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_24",
+      "name": "HP rotor 3",
+      "shape": {
+        "type": "radial",
+        "count": 52,
+        "offset": [0, 0.18, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0184, -0.0204],
+            [-0.0152, -0.0125],
+            [-0.0022, 0.0019],
+            [0.0122, 0.0152],
+            [0.0184, 0.0204],
+            [0.0138, 0.0137],
+            [0.0022, -0.0019],
+            [-0.0108, -0.0164]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.229, 0, 0],
+            "to": [0.434, 0, 0],
+            "steps": 3
+          },
+          "twist": -14,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_25",
+      "name": "HP stator 3",
+      "shape": {
+        "type": "radial",
+        "count": 60,
+        "offset": [0, 0.13, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0158, 0.0123],
+            [-0.0098, 0.0104],
+            [0.0013, 0.0017],
+            [0.0116, -0.0081],
+            [0.0158, -0.0123],
+            [0.0107, -0.0093],
+            [-0.0013, -0.0017],
+            [-0.0125, 0.007]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.259, 0, 0],
+            "to": [0.444, 0, 0],
+            "steps": 3
+          },
+          "twist": 6,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_26",
+      "name": "HP rotor 4",
+      "shape": {
+        "type": "radial",
+        "count": 56,
+        "offset": [0, 0.07999999999999996, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0184, -0.0204],
+            [-0.0152, -0.0125],
+            [-0.0022, 0.0019],
+            [0.0122, 0.0152],
+            [0.0184, 0.0204],
+            [0.0138, 0.0137],
+            [0.0022, -0.0019],
+            [-0.0108, -0.0164]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.236, 0, 0],
+            "to": [0.416, 0, 0],
+            "steps": 3
+          },
+          "twist": -14,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_27",
+      "name": "HP stator 4",
+      "shape": {
+        "type": "radial",
+        "count": 64,
+        "offset": [0, 0.029999999999999957, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0158, 0.0123],
+            [-0.0098, 0.0104],
+            [0.0013, 0.0017],
+            [0.0116, -0.0081],
+            [0.0158, -0.0123],
+            [0.0107, -0.0093],
+            [-0.0013, -0.0017],
+            [-0.0125, 0.007]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.266, 0, 0],
+            "to": [0.426, 0, 0],
+            "steps": 3
+          },
+          "twist": 6,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_28",
+      "name": "HP rotor 5",
+      "shape": {
+        "type": "radial",
+        "count": 60,
+        "offset": [0, -0.020000000000000018, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0184, -0.0204],
+            [-0.0152, -0.0125],
+            [-0.0022, 0.0019],
+            [0.0122, 0.0152],
+            [0.0184, 0.0204],
+            [0.0138, 0.0137],
+            [0.0022, -0.0019],
+            [-0.0108, -0.0164]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.243, 0, 0],
+            "to": [0.39799999999999996, 0, 0],
+            "steps": 3
+          },
+          "twist": -14,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_29",
+      "name": "HP stator 5",
+      "shape": {
+        "type": "radial",
+        "count": 68,
+        "offset": [0, -0.07000000000000002, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0158, 0.0123],
+            [-0.0098, 0.0104],
+            [0.0013, 0.0017],
+            [0.0116, -0.0081],
+            [0.0158, -0.0123],
+            [0.0107, -0.0093],
+            [-0.0013, -0.0017],
+            [-0.0125, 0.007]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.273, 0, 0],
+            "to": [0.408, 0, 0],
+            "steps": 3
+          },
+          "twist": 6,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_30",
+      "name": "HP rotor 6",
+      "shape": {
+        "type": "radial",
+        "count": 64,
+        "offset": [0, -0.12, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0184, -0.0204],
+            [-0.0152, -0.0125],
+            [-0.0022, 0.0019],
+            [0.0122, 0.0152],
+            [0.0184, 0.0204],
+            [0.0138, 0.0137],
+            [0.0022, -0.0019],
+            [-0.0108, -0.0164]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.25, 0, 0],
+            "to": [0.38, 0, 0],
+            "steps": 3
+          },
+          "twist": -14,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_31",
+      "name": "HP stator 6",
+      "shape": {
+        "type": "radial",
+        "count": 72,
+        "offset": [0, -0.16999999999999998, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0158, 0.0123],
+            [-0.0098, 0.0104],
+            [0.0013, 0.0017],
+            [0.0116, -0.0081],
+            [0.0158, -0.0123],
+            [0.0107, -0.0093],
+            [-0.0013, -0.0017],
+            [-0.0125, 0.007]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.28, 0, 0],
+            "to": [0.39, 0, 0],
+            "steps": 3
+          },
+          "twist": 6,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#727880",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.38
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_32",
+      "name": "Combustor liner",
+      "shape": {
+        "type": "lathe",
+        "segments": 96,
+        "phiStart": 171.7,
+        "phiLength": 240,
+        "profile": [
+          [0.3, -0.24],
+          [0.46, -0.24],
+          [0.48, -0.36],
+          [0.44, -0.5],
+          [0.32, -0.5],
+          [0.28, -0.36],
+          [0.3, -0.24]
+        ]
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9b8a78",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_33",
+      "name": "Combustion glow",
+      "shape": {
+        "type": "torus",
+        "radius": 0.38,
+        "tube": 0.065,
+        "segments": 64,
+        "sides": 12
+      },
+      "position": [-0.37, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff6a12",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 1.8,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_34",
+      "name": "Fuel nozzles",
+      "shape": {
+        "type": "radial",
+        "count": 20,
+        "radius": 0.38,
+        "offset": [0, -0.27, 0],
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.022,
+          "radiusBottom": 0.03,
+          "height": 0.08,
+          "segments": 10
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_35",
+      "name": "Flames",
+      "shape": {
+        "type": "radial",
+        "count": 20,
+        "radius": 0.38,
+        "offset": [0, -0.4, 0],
+        "rotation": [180, 0, 0],
+        "shape": {
+          "type": "cone",
+          "radius": 0.035,
+          "height": 0.16,
+          "segments": 10
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ffd27a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.4,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_36",
+      "name": "HP turbine 1",
+      "shape": {
+        "type": "radial",
+        "count": 50,
+        "offset": [0, -0.56, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0185, 0.0236],
+            [-0.0106, 0.0187],
+            [0.0025, 0.002],
+            [0.014, -0.016],
+            [0.0185, -0.0236],
+            [0.0121, -0.0174],
+            [-0.0025, -0.002],
+            [-0.0156, 0.0148]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.25, 0, 0],
+            "to": [0.44, 0, 0],
+            "steps": 3
+          },
+          "twist": 12,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c99550",
+        "specular": 1,
+        "shininess": 150,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_37",
+      "name": "HP turbine 2",
+      "shape": {
+        "type": "radial",
+        "count": 50,
+        "offset": [0, -0.65, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0185, 0.0236],
+            [-0.0106, 0.0187],
+            [0.0025, 0.002],
+            [0.014, -0.016],
+            [0.0185, -0.0236],
+            [0.0121, -0.0174],
+            [-0.0025, -0.002],
+            [-0.0156, 0.0148]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.25, 0, 0],
+            "to": [0.44, 0, 0],
+            "steps": 3
+          },
+          "twist": 12,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c99550",
+        "specular": 1,
+        "shininess": 150,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_38",
+      "name": "LP turbine 1",
+      "shape": {
+        "type": "radial",
+        "count": 46,
+        "offset": [0, -0.77, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0225, 0.0268],
+            [-0.0131, 0.0213],
+            [0.0028, 0.0024],
+            [0.017, -0.0181],
+            [0.0225, -0.0268],
+            [0.0149, -0.0198],
+            [-0.0028, -0.0024],
+            [-0.0188, 0.0166]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.24, 0, 0],
+            "to": [0.45, 0, 0],
+            "steps": 3
+          },
+          "twist": 18,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6f7fae",
+        "specular": 1,
+        "shininess": 150,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_39",
+      "name": "LP turbine vanes 1",
+      "shape": {
+        "type": "radial",
+        "count": 40,
+        "offset": [0, -0.715, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0192, -0.0161],
+            [-0.0152, -0.0093],
+            [-0.0017, 0.002],
+            [0.0129, 0.0121],
+            [0.0192, 0.0161],
+            [0.0142, 0.0106],
+            [0.0017, -0.002],
+            [-0.0118, -0.0134]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.26, 0, 0],
+            "to": [0.46, 0, 0],
+            "steps": 3
+          },
+          "twist": -8,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a6446",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_40",
+      "name": "LP turbine 2",
+      "shape": {
+        "type": "radial",
+        "count": 46,
+        "offset": [0, -0.88, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0225, 0.0268],
+            [-0.0131, 0.0213],
+            [0.0028, 0.0024],
+            [0.017, -0.0181],
+            [0.0225, -0.0268],
+            [0.0149, -0.0198],
+            [-0.0028, -0.0024],
+            [-0.0188, 0.0166]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.24, 0, 0],
+            "to": [0.462, 0, 0],
+            "steps": 3
+          },
+          "twist": 18,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6f7fae",
+        "specular": 1,
+        "shininess": 150,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_41",
+      "name": "LP turbine vanes 2",
+      "shape": {
+        "type": "radial",
+        "count": 40,
+        "offset": [0, -0.825, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0192, -0.0161],
+            [-0.0152, -0.0093],
+            [-0.0017, 0.002],
+            [0.0129, 0.0121],
+            [0.0192, 0.0161],
+            [0.0142, 0.0106],
+            [0.0017, -0.002],
+            [-0.0118, -0.0134]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.26, 0, 0],
+            "to": [0.47200000000000003, 0, 0],
+            "steps": 3
+          },
+          "twist": -8,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a6446",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_42",
+      "name": "LP turbine 3",
+      "shape": {
+        "type": "radial",
+        "count": 46,
+        "offset": [0, -0.99, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0225, 0.0268],
+            [-0.0131, 0.0213],
+            [0.0028, 0.0024],
+            [0.017, -0.0181],
+            [0.0225, -0.0268],
+            [0.0149, -0.0198],
+            [-0.0028, -0.0024],
+            [-0.0188, 0.0166]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.24, 0, 0],
+            "to": [0.47400000000000003, 0, 0],
+            "steps": 3
+          },
+          "twist": 18,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6f7fae",
+        "specular": 1,
+        "shininess": 150,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_43",
+      "name": "LP turbine vanes 3",
+      "shape": {
+        "type": "radial",
+        "count": 40,
+        "offset": [0, -0.9349999999999999, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0192, -0.0161],
+            [-0.0152, -0.0093],
+            [-0.0017, 0.002],
+            [0.0129, 0.0121],
+            [0.0192, 0.0161],
+            [0.0142, 0.0106],
+            [0.0017, -0.002],
+            [-0.0118, -0.0134]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.26, 0, 0],
+            "to": [0.48400000000000004, 0, 0],
+            "steps": 3
+          },
+          "twist": -8,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a6446",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_44",
+      "name": "LP turbine 4",
+      "shape": {
+        "type": "radial",
+        "count": 46,
+        "offset": [0, -1.1, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0225, 0.0268],
+            [-0.0131, 0.0213],
+            [0.0028, 0.0024],
+            [0.017, -0.0181],
+            [0.0225, -0.0268],
+            [0.0149, -0.0198],
+            [-0.0028, -0.0024],
+            [-0.0188, 0.0166]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.24, 0, 0],
+            "to": [0.486, 0, 0],
+            "steps": 3
+          },
+          "twist": 18,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6f7fae",
+        "specular": 1,
+        "shininess": 150,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_45",
+      "name": "LP turbine vanes 4",
+      "shape": {
+        "type": "radial",
+        "count": 40,
+        "offset": [0, -1.0450000000000002, 0],
+        "shape": {
+          "type": "sweep",
+          "shape": [
+            [-0.0192, -0.0161],
+            [-0.0152, -0.0093],
+            [-0.0017, 0.002],
+            [0.0129, 0.0121],
+            [0.0192, 0.0161],
+            [0.0142, 0.0106],
+            [0.0017, -0.002],
+            [-0.0118, -0.0134]
+          ],
+          "path": {
+            "type": "line",
+            "from": [0.26, 0, 0],
+            "to": [0.496, 0, 0],
+            "steps": 3
+          },
+          "twist": -8,
+          "caps": true
+        }
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#8a6446",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_46",
+      "name": "Shaft",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.07,
+        "radiusBottom": 0.07,
+        "height": 2.7,
+        "segments": 32
+      },
+      "position": [-0.15, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9cdd3",
+        "specular": 1,
+        "shininess": 180,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_47",
+      "name": "Turbine disks",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, -1.18],
+          [0.24, -1.18],
+          [0.25, -0.52],
+          [0, -0.52]
+        ],
+        "segments": 64
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6a5f57",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_48",
+      "name": "Exhaust cone",
+      "shape": {
+        "type": "lathe",
+        "profile": [
+          [0, -1.78],
+          [0.12, -1.68],
+          [0.22, -1.42],
+          [0.24, -1.18],
+          [0, -1.18]
+        ],
+        "segments": 64
+      },
+      "position": [0, 1.62, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#55504c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 1,
+        "roughness": 0.42
+      },
+      "visible": true
+    }
+  ]
+}

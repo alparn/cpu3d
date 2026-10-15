@@ -311,6 +311,113 @@ scene('watch', 'Skeleton watch', 'A mechanical skeleton watch at 10:10: spoked b
   await tool(doc, 'set_camera', { yaw: 28, pitch: 50, distance: 6.1, target: [0.2, 0.62, 0.25] });
 });
 
+scene('engine', 'Turbofan cutaway', 'A turbofan with the casing cut open: 22 twisted fan blades, booster and high-pressure compressor stages, a glowing combustor, heat-tinted turbines, all as radial arrays of NACA-profiled blades.', async (doc) => {
+  await tool(doc, 'set_environment', {
+    background: { top: '#07080a', bottom: '#1d2027' }, fog: null, ground: false, reflections: 'studio',
+    light: { direction: [-0.35, 0.85, 0.55], color: '#fff3e6', intensity: 1.05, softness: 0.3 },
+    lights: [{ direction: [0.7, 0.4, -0.6], color: '#d6e2ff', intensity: 0.75 }, { direction: [0.2, 0.3, 0.95], color: '#ffffff', intensity: 0.2 }],
+  });
+  const TAU = Math.PI * 2, H0 = 1.62;
+  // the engine is modelled along the local Y axis (lathes and radial arrays), then laid along world X
+  const E = group([0, H0, 0], [0, 0, -90]);
+  // symmetric NACA 00xx airfoil, chord along x, rotated by the blade pitch
+  const airfoil = (chord, thick, pitch, n = 9) => {
+    const t = thick / chord, up = [], lo = [];
+    for (let i = 0; i <= n; i++) {
+      const u = (1 - Math.cos((i / n) * Math.PI)) / 2;
+      const yt = 5 * t * chord * (0.2969 * Math.sqrt(u) - 0.126 * u - 0.3516 * u * u + 0.2843 * u ** 3 - 0.1036 * u ** 4);
+      up.push([u * chord - chord / 2, yt]);
+      if (i > 0 && i < n) lo.push([u * chord - chord / 2, -yt]);
+    }
+    const a = (pitch * Math.PI) / 180, c = Math.cos(a), sn = Math.sin(a);
+    return [...up, ...lo.reverse()].map(([x, y]) => P(x * c - y * sn, x * sn + y * c));
+  };
+  // a ring of blades: one blade swept radially from rHub to rTip with twist, repeated around the axis
+  // small blades get a coarser profile: hundreds of them, each only a few pixels wide
+  const bladeRing = (name, y, count, rHub, rTip, chord, pitch, twist, mat, thick = 0.12, fine = false) => E({
+    name, shape: { type: 'radial', count, offset: [0, y, 0], shape: { type: 'sweep', shape: airfoil(chord, chord * thick, pitch, fine ? 9 : 4),
+      path: { type: 'line', from: [rHub, 0, 0], to: [rTip, 0, 0], steps: fine ? 12 : 3 }, twist, caps: true } }, material: mat,
+  });
+  const titanium = { color: '#a7aeb7', metalness: 1, roughness: 0.26, specular: 0.9, shininess: 140 };
+  const steel = { color: '#c9cdd3', metalness: 1, roughness: 0.18, specular: 1, shininess: 180 };
+  const stator = { color: '#727880', metalness: 1, roughness: 0.38, specular: 0.6 };
+  const hotGold = { color: '#c99550', metalness: 1, roughness: 0.25, specular: 1, shininess: 150 };
+  const hotBlue = { color: '#6f7fae', metalness: 1, roughness: 0.25, specular: 1, shininess: 150 };
+  // casing parts are revolved through 240 degrees: the open side faces the camera
+  const cut = { phiStart: 171.7, phiLength: 240 };
+  const o = [];
+
+  // ---- studio and stand
+  o.push(
+    { name: 'Floor', shape: { type: 'lathe', profile: [[16, 0], [0, 0]], segments: 64 }, material: { color: '#0f1115', roughness: 0.7, specular: 0.15 } },
+    { name: 'Base', shape: { type: 'roundedBox', width: 3.8, height: 0.12, depth: 1.9, radius: 0.04, cornerRadius: 0.12, segments: 4 }, position: [0, 0.06, 0], material: { color: '#2a2d33', roughness: 0.45, specular: 0.4 } },
+  );
+  const R = 1.27, c0 = H0 - 0.12, half = 0.75, aEdge = Math.acos(half / R);
+  const cradle = [[-half, 0], [half, 0]];
+  for (let i = 0; i <= 24; i++) { const a = -aEdge - (Math.PI - 2 * aEdge) * (i / 24); cradle.push([Math.cos(a) * R, c0 + Math.sin(a) * R]); }
+  for (const x of [-0.95, 0.95]) {
+    o.push({ name: 'Cradle', shape: { type: 'extrude', shape: cradle.map(([a, b]) => P(a, b)), depth: 0.16 }, position: [x, 0.12, 0], rotation: [0, 90, 0], material: { color: '#f0b400', roughness: 0.4, specular: 0.6, shininess: 60 } });
+  }
+
+  // ---- intake: spinner with a spiral marking, fan
+  const spinner = [[0, 1.2], [0.29, 1.2], [0.27, 1.36], [0.19, 1.5], [0.09, 1.6], [0, 1.64]];
+  o.push(E({ name: 'Spinner', shape: { type: 'lathe', profile: spinner, segments: 64 }, material: { color: '#eef0f3', roughness: 0.25, specular: 0.8, shininess: 120 } }));
+  const swirl = [];
+  for (let i = 0; i <= 80; i++) {
+    const t = i / 80, y = 1.22 + t * 0.4, k = (y - 1.2) / 0.44;
+    const r = (k < 0.36 ? 0.29 - k * 0.055 : k < 0.68 ? 0.27 - (k - 0.36) * 0.25 : k < 0.91 ? 0.19 - (k - 0.68) * 0.43 : 0.09 - (k - 0.91) * 1) * 1.01 + 0.003;
+    const a = t * TAU * 0.9;
+    swirl.push(P(Math.cos(a) * r, y, Math.sin(a) * r));
+  }
+  o.push(E({ name: 'Spinner swirl', shape: { type: 'tube', path: swirl, radius: 0.011, sides: 6 }, material: { color: '#16181c', roughness: 0.4 } }));
+  o.push(E({ name: 'Fan disk', shape: { type: 'cylinder', radiusTop: 0.3, radiusBottom: 0.32, height: 0.24, segments: 48 }, position: [0, 1.04, 0], material: { color: '#5d636b', metalness: 1, roughness: 0.35 } }));
+  o.push(bladeRing('Fan blades', 1.04, 22, 0.26, 1.08, 0.36, 58, -46, titanium, 0.09, true));
+
+  // ---- casings (cut open)
+  o.push(E({ name: 'Nacelle', shape: { type: 'lathe', segments: 96, ...cut,
+    profile: [[1.12, 1.34], [1.2, 1.3], [1.25, 1.1], [1.25, 0.3], [1.21, -0.5], [1.13, -0.95], [1.09, -0.95], [1.12, -0.5], [1.15, 0.3], [1.14, 1.1], [1.12, 1.34]] },
+    material: { color: '#e9ebef', roughness: 0.3, specular: 0.6, shininess: 80 } }));
+  o.push(E({ name: 'Fan case liner', shape: { type: 'lathe', segments: 96, ...cut, profile: [[1.115, 1.25], [1.14, 1.25], [1.14, 0.8], [1.115, 0.8], [1.115, 1.25]] }, material: { color: '#3b3f46', roughness: 0.6 } }));
+  o.push(E({ name: 'Core casing', shape: { type: 'lathe', segments: 96, ...cut,
+    profile: [[0.52, 0.86], [0.57, 0.8], [0.59, 0.2], [0.57, -0.6], [0.52, -1.15], [0.5, -1.5], [0.46, -1.5], [0.48, -1.15], [0.53, -0.6], [0.55, 0.2], [0.53, 0.8], [0.52, 0.86]] },
+    material: { color: '#8e949c', metalness: 0.85, roughness: 0.32, specular: 0.8 } }));
+  o.push(E({ name: 'Outlet guide vanes', shape: { type: 'radial', count: 40, radius: 0.86, offset: [0, 0.62, 0], rotation: [0, 12, 0], shape: { type: 'box', width: 0.54, height: 0.16, depth: 0.018 } }, material: stator }));
+
+  // ---- booster (low-pressure compressor)
+  for (const [k, y] of [0.74, 0.62, 0.5].entries()) {
+    o.push(bladeRing(`Booster rotor ${k + 1}`, y, 36, 0.2, 0.5, 0.075, 50, -20, titanium));
+    o.push(bladeRing(`Booster stator ${k + 1}`, y - 0.06, 44, 0.24, 0.51, 0.05, -40, 8, stator));
+  }
+  // ---- high-pressure compressor on a conical drum
+  o.push(E({ name: 'Compressor drum', shape: { type: 'lathe', profile: [[0, -0.2], [0.26, -0.2], [0.21, 0.44], [0, 0.44]], segments: 64 }, material: { color: '#7c828a', metalness: 1, roughness: 0.3 } }));
+  for (let k = 0; k < 6; k++) {
+    const y = 0.38 - k * 0.1, hub = 0.215 + k * 0.007;
+    o.push(bladeRing(`HP rotor ${k + 1}`, y, 44 + k * 4, hub, 0.47 - k * 0.018, 0.055, 48, -14, steel));
+    o.push(bladeRing(`HP stator ${k + 1}`, y - 0.05, 52 + k * 4, hub + 0.03, 0.48 - k * 0.018, 0.04, -38, 6, stator));
+  }
+
+  // ---- combustor: liner, fuel nozzles, flames
+  o.push(E({ name: 'Combustor liner', shape: { type: 'lathe', segments: 96, ...cut, profile: [[0.3, -0.24], [0.46, -0.24], [0.48, -0.36], [0.44, -0.5], [0.32, -0.5], [0.28, -0.36], [0.3, -0.24]] },
+    material: { color: '#9b8a78', metalness: 1, roughness: 0.4 } }));
+  o.push(E({ name: 'Combustion glow', shape: { type: 'torus', radius: 0.38, tube: 0.065, segments: 64, sides: 12 }, position: [0, -0.37, 0], material: { color: '#ff6a12', emissive: 1.8 } }));
+  o.push(E({ name: 'Fuel nozzles', shape: { type: 'radial', count: 20, radius: 0.38, offset: [0, -0.27, 0], shape: { type: 'cylinder', radiusTop: 0.022, radiusBottom: 0.03, height: 0.08, segments: 10 } }, material: steel }));
+  o.push(E({ name: 'Flames', shape: { type: 'radial', count: 20, radius: 0.38, offset: [0, -0.4, 0], rotation: [180, 0, 0], shape: { type: 'cone', radius: 0.035, height: 0.16, segments: 10 } }, material: { color: '#ffd27a', emissive: 2.4 } }));
+
+  // ---- turbines: heat-tinted, high pressure gold, low pressure blue
+  for (const [k, y] of [-0.56, -0.65].entries()) o.push(bladeRing(`HP turbine ${k + 1}`, y, 50, 0.25, 0.44, 0.06, -52, 12, hotGold));
+  for (let k = 0; k < 4; k++) {
+    const y = -0.77 - k * 0.11;
+    o.push(bladeRing(`LP turbine ${k + 1}`, y, 46, 0.24, 0.45 + k * 0.012, 0.07, -50, 18, hotBlue));
+    o.push(bladeRing(`LP turbine vanes ${k + 1}`, y + 0.055, 40, 0.26, 0.46 + k * 0.012, 0.05, 40, -8, { color: '#8a6446', metalness: 1, roughness: 0.4 }));
+  }
+  o.push(E({ name: 'Shaft', shape: { type: 'cylinder', radiusTop: 0.07, radiusBottom: 0.07, height: 2.7, segments: 32 }, position: [0, -0.15, 0], material: steel }));
+  o.push(E({ name: 'Turbine disks', shape: { type: 'lathe', profile: [[0, -1.18], [0.24, -1.18], [0.25, -0.52], [0, -0.52]], segments: 64 }, material: { color: '#6a5f57', metalness: 1, roughness: 0.4 } }));
+  o.push(E({ name: 'Exhaust cone', shape: { type: 'lathe', profile: [[0, -1.78], [0.12, -1.68], [0.22, -1.42], [0.24, -1.18], [0, -1.18]], segments: 64 }, material: { color: '#55504c', metalness: 1, roughness: 0.42 } }));
+
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 38, pitch: 14, distance: 4.7, target: [0.1, 1.5, 0] });
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)
