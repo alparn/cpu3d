@@ -121,12 +121,25 @@ export function raycast(meshes, origin, dir) {
   return best;
 }
 
-// Ray through a screen position (NDC -1..1) of the camera.
-export function pick(meshes, camera, ndcX, ndcY, aspect) {
+// World-space ray through a screen position (NDC -1..1) of the camera.
+export function screenRay(camera, ndcX, ndcY, aspect) {
   const f = vec3.normalize(vec3.sub(camera.target, camera.position));
   const r = vec3.normalize(vec3.cross(f, camera.up));
   const u = vec3.cross(r, f);
   const th = Math.tan(((camera.fov / 2) * Math.PI) / 180);
   const dir = vec3.normalize(vec3.add(f, vec3.add(vec3.scale(r, ndcX * th * aspect), vec3.scale(u, ndcY * th))));
-  return raycast(meshes, camera.position, dir);
+  return { origin: [...camera.position], dir };
+}
+
+export function pick(meshes, camera, ndcX, ndcY, aspect) {
+  const { origin, dir } = screenRay(camera, ndcX, ndcY, aspect);
+  return raycast(meshes, origin, dir);
+}
+
+// Intersection of a ray with the plane through `point` with normal `n`, or null if parallel / behind.
+export function rayPlane(ray, point, n) {
+  const d = vec3.dot(ray.dir, n);
+  if (Math.abs(d) < 1e-6) return null;
+  const t = vec3.dot(vec3.sub(point, ray.origin), n) / d;
+  return t > 0 && t < 1e5 ? vec3.add(ray.origin, vec3.scale(ray.dir, t)) : null;
 }

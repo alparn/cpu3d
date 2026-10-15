@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Editor: move the selected object by dragging it with the mouse (ground plane, Alt for height, Shift to snap to 0.25 m, Esc cancels); committed as one undoable `update_object`
+
 ## 0.1.0 (2026-10-15)
 
 First public release.

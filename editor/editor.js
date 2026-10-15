@@ -2,10 +2,10 @@
 //   live mode  -> POST /api/tools/<name> on the cpu3d server, changes stream back over SSE
 //   local mode -> no server (e.g. GitHub Pages): an in-browser SceneDocument runs the tools
 import { Renderer, Camera } from '../src/renderer.js';
-import { SceneDocument, worldBounds } from '../src/document.js';
+import { SceneDocument, worldBounds, objectMatrix } from '../src/document.js';
 import { buildShape } from '../src/recipes.js';
 import { callTool, pretty } from '../src/tools.js';
-import { buildRenderScene, cameraFromState, pick, frameBounds, unionBounds, exportOBJ } from '../src/scene.js';
+import { buildRenderScene, cameraFromState, pick, frameBounds, unionBounds, exportOBJ, screenRay, raycast, rayPlane } from '../src/scene.js';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('viewport');
@@ -543,28 +543,62 @@ function openConnect() {
 }
 
 // ---------------------------------------------------------------- viewport input
+// left-drag: orbit · shift/right-drag: pan · wheel/pinch: zoom · click: select
+// left-drag ON the selected object: move it on the ground plane (Alt: up/down, Shift: snap 0.25 m)
 const pointers = new Map();
 let drag = null, pinch = 0;
+const SNAP = 0.25;
+
+function rayAt(e) {
+  const r = canvas.getBoundingClientRect();
+  return screenRay(camera, ((e.clientX - r.left) / r.width) * 2 - 1, 1 - ((e.clientY - r.top) / r.height) * 2, r.width / r.height);
+}
+const meshOf = (id) => state.renderScene?.meshes.find((m) => m.objectId === id);
+
+// grab point + plane for the current move mode; called at start and whenever Alt toggles
+function moveBase(e, d) {
+  const ray = rayAt(e), v = vec(camera.position, camera.target);
+  d.vertical = e.altKey;
+  // ground mode: horizontal plane through the grab point; vertical mode: upright plane facing the camera
+  d.normal = d.vertical ? normalizeXZ(v) : [0, 1, 0];
+  d.base = [...d.pos];
+  d.grab = rayPlane(ray, d.grabPoint, d.normal) || d.grabPoint;
+}
+const vec = (a, b) => [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
+const normalizeXZ = (v) => { const l = Math.hypot(v[0], v[2]) || 1; return [v[0] / l, 0, v[2] / l]; };
 
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 canvas.addEventListener('pointerdown', (e) => {
-  canvas.setPointerCapture(e.pointerId);
+  try { canvas.setPointerCapture(e.pointerId); } catch { /* synthetic or already released pointer */ }
   pointers.set(e.pointerId, [e.clientX, e.clientY]);
   drag = { x: e.clientX, y: e.clientY, moved: 0, pan: e.button === 2 || e.shiftKey };
+  const o = selectedObject(), mesh = o && meshOf(o.id);
+  if (e.button === 0 && mesh && pointers.size === 1) {
+    const ray = rayAt(e), hit = raycast([mesh], ray.origin, ray.dir);
+    if (hit) {
+      drag = { ...drag, pan: false, move: true, id: o.id, start: [...o.position], pos: [...o.position],
+        grabPoint: [0, 1, 2].map((a) => ray.origin[a] + ray.dir[a] * hit.distance) };
+      moveBase(e, drag);
+    }
+  }
 });
+
 canvas.addEventListener('pointermove', (e) => {
   const p = pointers.get(e.pointerId);
-  if (!p) return;
+  if (!p) return hoverCursor(e);
   const dx = e.clientX - p[0], dy = e.clientY - p[1];
   pointers.set(e.pointerId, [e.clientX, e.clientY]);
   if (pointers.size === 2) {
+    if (drag?.move) cancelMove();
     const [a, b] = [...pointers.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
     if (pinch) state.view.distance = Math.max(0.2, Math.min(500, state.view.distance * (pinch / d)));
     pinch = d;
     state.dirty = true;
     return;
   }
+  if (!drag) return;
   drag.moved += Math.abs(dx) + Math.abs(dy);
+  if (drag.move) return moveSelected(e);
   const v = state.view;
   if (drag.pan) {
     const y = (v.yaw * Math.PI) / 180, s = v.distance * 0.0016;
@@ -576,9 +610,49 @@ canvas.addEventListener('pointermove', (e) => {
   }
   state.dirty = true;
 });
+
+function moveSelected(e) {
+  const d = drag, o = state.scene.objects.find((x) => x.id === d.id), mesh = meshOf(d.id);
+  if (!o || !mesh) return cancelMove();
+  if (e.altKey !== d.vertical) moveBase(e, d); // switched mode mid-drag: continue from here
+  const hit = rayPlane(rayAt(e), d.grabPoint, d.normal);
+  if (!hit) return;
+  const pos = [...d.base];
+  if (d.vertical) pos[1] += hit[1] - d.grab[1];
+  else { pos[0] += hit[0] - d.grab[0]; pos[2] += hit[2] - d.grab[2]; }
+  if (e.shiftKey) for (const a of d.vertical ? [1] : [0, 2]) pos[a] = Math.round(pos[a] / SNAP) * SNAP;
+  d.pos = pos.map((v) => Math.round(v * 1000) / 1000);
+  mesh.matrix = objectMatrix({ ...o, position: d.pos }); // live preview, committed on release
+  state.dirty = true;
+  canvas.style.cursor = d.vertical ? 'ns-resize' : 'move';
+  state.frameStats = `moving "${o.name}" to [${d.pos.map((v) => v.toFixed(2)).join(', ')}]${e.shiftKey ? ' · snap' : ''}`;
+  renderStats();
+}
+
+function cancelMove() {
+  if (!drag?.move) return;
+  drag = null;
+  rebuild(); // restores the committed position
+}
+
+function hoverCursor(e) {
+  const mesh = state.selected && meshOf(state.selected);
+  if (!mesh) { canvas.style.cursor = ''; return; }
+  const ray = rayAt(e);
+  canvas.style.cursor = raycast([mesh], ray.origin, ray.dir) ? 'move' : '';
+}
+
 const endPointer = (e) => {
   pointers.delete(e.pointerId);
   pinch = 0;
+  if (drag?.move) {
+    const { id, pos, start } = drag;
+    drag = null;
+    canvas.style.cursor = '';
+    if (e.type === 'pointerup' && pos.some((v, i) => v !== start[i])) tool('update_object', { id, position: pos });
+    else rebuild();
+    return;
+  }
   if (drag && drag.moved < 4 && e.type === 'pointerup' && e.button === 0 && state.renderScene) {
     const r = canvas.getBoundingClientRect();
     const hit = pick(state.renderScene.meshes, camera, ((e.clientX - r.left) / r.width) * 2 - 1, 1 - ((e.clientY - r.top) / r.height) * 2, r.width / r.height);
@@ -600,7 +674,7 @@ addEventListener('keydown', (e) => {
   if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); tool(e.shiftKey ? 'redo' : 'undo'); }
   else if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicateSelected(); }
   else if (e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
-  else if (e.key === 'Escape') select(null);
+  else if (e.key === 'Escape') { if (drag?.move) cancelMove(); else select(null); }
   else if (e.key === 'f' || e.key === 'F') focusObjects(state.selected ? [state.selected] : state.scene.objects.map((o) => o.id));
   else if (e.key === 'w' || e.key === 'W') { $('wire').checked = !$('wire').checked; $('wire').onchange(); }
 });
@@ -657,6 +731,7 @@ function frame() {
   renderer.render(state.renderScene, cameraFromState(state.view, camera));
   lastMs = renderer.stats.ms;
   const st = renderer.stats;
+  if (drag?.move) return; // the move readout owns the stats line while dragging
   state.frameStats = `CPU ${lastMs.toFixed(1)} ms · ${st.triangles.toLocaleString('en')} tris · ${st.drawn.toLocaleString('en')} rasterized · ${w}×${h}`;
   renderStats();
 }

@@ -161,13 +161,16 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 
 - Live sync over Server-Sent Events: agent changes appear instantly, with an **activity feed** that attributes each step to its agent (`claude-code`, `cursor`, `you`, ...)
 - **Follow agent**: the viewport jumps to whatever the agent is looking at with `render_view`
-- Outliner, inspector (transform, material, editable JSON recipe), click-to-select (CPU ray picking), undo/redo
+- Click to select (CPU ray picking), then **drag the selected object with the mouse** to move it on the ground; hold **Alt** to move it up/down, **Shift** to snap to a 0.25 m grid. Each drag is one `update_object` call, so it is undoable and visible to agents
+- Outliner, inspector (transform, material, editable JSON recipe), undo/redo
 - Gallery of example scenes; add menu with presets; OBJ and scene JSON import/export
 - Size readouts: what the scene weighs as `scene.json` and as `.obj`, geometry RAM, and the same for the selected object; load and download times and sizes are reported too
 - Orbit / pan / zoom, smooth, flat and normal shading, wireframe, resolution scaling
 - **Local mode**: without a server (for example on GitHub Pages) the same tools run in the browser
 
-Keyboard: `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` deselect
+Mouse: drag rotate · shift/right-drag pan · wheel zoom · click select · drag selected object to move (Alt up/down, Shift snap)
+
+Keyboard: `F` focus · `W` wireframe · `Del` delete · `Ctrl/Cmd+Z` undo · `Shift+Ctrl/Cmd+Z` redo · `Ctrl/Cmd+D` duplicate · `Esc` cancel move / deselect
 
 ## Rendering on the CPU
 
