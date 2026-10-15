@@ -37,7 +37,7 @@ const materialS = {
     texture: { type: 'string', description: 'PNG image: project path (e.g. "examples/textures/screen.png") or "data:image/png;base64,...". By default projected along the thinnest local axis (flat in Z: top = +Y; flat in Y like plane: top = -Z)' },
     mapping: { type: 'string', enum: ['planar', 'box', 'cylinder', 'sphere'], description: 'How the texture wraps: planar (default), box (from all sides, for patterns on any shape), cylinder (labels around Y), sphere' },
     repeat: { type: ['number', 'array'], items: { type: 'number' }, description: 'Tile the texture: a number or [u, v]' },
-    pattern: { type: ['object', 'null'], description: 'Procedural surface, no image needed: { type: wood | marble | leather | carbon | fabric | brushed | checker | stripes | knurl, colors: [2 or 3 colours], scale: size of one feature in units, bump: 0..2 relief }' },
+    pattern: { type: ['object', 'null'], description: 'Procedural surface, no image needed: { type: wood | marble | leather | carbon | fabric | brushed | checker | stripes | knurl | concrete | brick, colors: [2 or 3 colours], scale: size of one feature in units, bump: 0..2 relief }' },
   },
 };
 const shapeS = {

@@ -1,0 +1,4261 @@
+{
+  "format": "cpu3d-scene",
+  "version": 1,
+  "camera": {
+    "yaw": 32,
+    "pitch": 10,
+    "distance": 23,
+    "target": [0, 5.5, 0]
+  },
+  "environment": {
+    "background": {
+      "top": "#0b0b0d",
+      "bottom": "#1b1a1d"
+    },
+    "fog": null,
+    "light": {
+      "direction": [0.18, 1, 0.3],
+      "color": "#ffdcae",
+      "intensity": 1.05,
+      "softness": 0.3
+    },
+    "lights": [
+      {
+        "direction": [-0.8, 0.45, 0.4],
+        "color": "#8fb0ff",
+        "intensity": 0.3
+      },
+      {
+        "direction": [0.1, 0.35, -1],
+        "color": "#ff5040",
+        "intensity": 0.22
+      },
+      {
+        "direction": [0.5, 0.25, 1],
+        "color": "#ffffff",
+        "intensity": 0.18
+      }
+    ],
+    "reflections": "studio",
+    "ground": false
+  },
+  "animation": {
+    "duration": 24,
+    "camera": {
+      "keys": [
+        {
+          "t": 0,
+          "yaw": 32,
+          "pitch": 10,
+          "distance": 23,
+          "target": [0, 5.5, 0]
+        },
+        {
+          "t": 7,
+          "yaw": 78,
+          "pitch": 7,
+          "distance": 16,
+          "target": [4, 6.5, 0]
+        },
+        {
+          "t": 13,
+          "yaw": 170,
+          "pitch": 16,
+          "distance": 20,
+          "target": [-3, 5.5, 0]
+        },
+        {
+          "t": 19,
+          "yaw": 300,
+          "pitch": 6,
+          "distance": 15,
+          "target": [1, 5, 0]
+        },
+        {
+          "t": 24,
+          "yaw": 392,
+          "pitch": 10,
+          "distance": 23,
+          "target": [0, 5.5, 0]
+        }
+      ],
+      "ease": "spline"
+    }
+  },
+  "objects": [
+    {
+      "id": "obj_1",
+      "name": "Front tyre",
+      "shape": {
+        "type": "torus",
+        "radius": 2.85,
+        "tube": 0.45,
+        "segments": 96,
+        "sides": 20
+      },
+      "position": [7.2, 3.3, 0],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.09,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_2",
+      "name": "Rim",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 2.43,
+        "radiusBottom": 2.43,
+        "height": 0.5,
+        "segments": 96,
+        "caps": false
+      },
+      "position": [7.2, 3.3, 0],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_3",
+      "name": "Rim lip",
+      "shape": {
+        "type": "torus",
+        "radius": 2.43,
+        "tube": 0.05,
+        "segments": 96,
+        "sides": 8
+      },
+      "position": [7.2, 3.3, -0.26],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_4",
+      "name": "Rim lip",
+      "shape": {
+        "type": "torus",
+        "radius": 2.43,
+        "tube": 0.05,
+        "segments": 96,
+        "sides": 8
+      },
+      "position": [7.2, 3.3, 0.26],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_5",
+      "name": "Spokes",
+      "shape": {
+        "type": "radial",
+        "axis": "z",
+        "count": 18,
+        "radius": 1.3,
+        "startAngle": 0,
+        "rotation": [0, 0, 84],
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.022,
+          "radiusBottom": 0.022,
+          "height": 2.3,
+          "segments": 5
+        }
+      },
+      "position": [7.2, 3.3, -0.17],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_6",
+      "name": "Spokes",
+      "shape": {
+        "type": "radial",
+        "axis": "z",
+        "count": 18,
+        "radius": 1.3,
+        "startAngle": 10,
+        "rotation": [0, 0, 96],
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.022,
+          "radiusBottom": 0.022,
+          "height": 2.3,
+          "segments": 5
+        }
+      },
+      "position": [7.2, 3.3, 0.17],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_7",
+      "name": "Hub",
+      "shape": {
+        "type": "lathe",
+        "segments": 32,
+        "profile": [
+          [0, -0.6],
+          [0.3, -0.6],
+          [0.45, -0.3],
+          [0.42, 0.3],
+          [0.3, 0.6],
+          [0, 0.6]
+        ]
+      },
+      "position": [7.2, 3.3, 0],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_8",
+      "name": "Brake disc",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.35,
+        "radiusBottom": 1.35,
+        "height": 0.05,
+        "segments": 64
+      },
+      "position": [7.2, 3.3, 0.68],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9a9ea4",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.9,
+        "roughness": 0.28,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#8e9298", "#b4b8bd"],
+          "scale": 0.6,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_9",
+      "name": "Disc holes",
+      "shape": {
+        "type": "radial",
+        "axis": "z",
+        "count": 14,
+        "radius": 1.05,
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.07,
+          "radiusBottom": 0.07,
+          "height": 0.07,
+          "segments": 10
+        },
+        "rotation": [90, 0, 0]
+      },
+      "position": [7.2, 3.3, 0.68],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#111111",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.6
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_10",
+      "name": "Brake caliper",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.9,
+        "height": 0.55,
+        "depth": 0.45,
+        "radius": 0.12
+      },
+      "position": [6.3, 4.1, 0.85],
+      "rotation": [0, 0, 40],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1a1a1c",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_11",
+      "name": "Rear tyre",
+      "shape": {
+        "type": "torus",
+        "radius": 2.85,
+        "tube": 0.45,
+        "segments": 96,
+        "sides": 20
+      },
+      "position": [-7, 3.6, 0],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.09,
+          "bump": 0.8
+        }
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_12",
+      "name": "Rim",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 2.43,
+        "radiusBottom": 2.43,
+        "height": 0.5,
+        "segments": 96,
+        "caps": false
+      },
+      "position": [-7, 3.6, 0],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_13",
+      "name": "Rim lip",
+      "shape": {
+        "type": "torus",
+        "radius": 2.43,
+        "tube": 0.05,
+        "segments": 96,
+        "sides": 8
+      },
+      "position": [-7, 3.6, -0.26],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_14",
+      "name": "Rim lip",
+      "shape": {
+        "type": "torus",
+        "radius": 2.43,
+        "tube": 0.05,
+        "segments": 96,
+        "sides": 8
+      },
+      "position": [-7, 3.6, 0.26],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_15",
+      "name": "Spokes",
+      "shape": {
+        "type": "radial",
+        "axis": "z",
+        "count": 18,
+        "radius": 1.3,
+        "startAngle": 0,
+        "rotation": [0, 0, 84],
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.022,
+          "radiusBottom": 0.022,
+          "height": 2.3,
+          "segments": 5
+        }
+      },
+      "position": [-7, 3.6, -0.17],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_16",
+      "name": "Spokes",
+      "shape": {
+        "type": "radial",
+        "axis": "z",
+        "count": 18,
+        "radius": 1.3,
+        "startAngle": 10,
+        "rotation": [0, 0, 96],
+        "shape": {
+          "type": "cylinder",
+          "radiusTop": 0.022,
+          "radiusBottom": 0.022,
+          "height": 2.3,
+          "segments": 5
+        }
+      },
+      "position": [-7, 3.6, 0.17],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_17",
+      "name": "Hub",
+      "shape": {
+        "type": "lathe",
+        "segments": 32,
+        "profile": [
+          [0, -0.6],
+          [0.3, -0.6],
+          [0.45, -0.3],
+          [0.42, 0.3],
+          [0.3, 0.6],
+          [0, 0.6]
+        ]
+      },
+      "position": [-7, 3.6, 0],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_18",
+      "name": "Sprocket",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 1.15,
+        "radiusBottom": 1.15,
+        "height": 0.06,
+        "segments": 64
+      },
+      "position": [-7, 3.6, -0.72],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2c2f",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.8,
+        "roughness": 0.4
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_19",
+      "name": "Sprocket teeth",
+      "shape": {
+        "type": "radial",
+        "axis": "z",
+        "count": 42,
+        "radius": 1.2,
+        "shape": {
+          "type": "box",
+          "width": 0.12,
+          "height": 0.06,
+          "depth": 0.06
+        }
+      },
+      "position": [-7, 3.6, -0.72],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2b2c2f",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.8,
+        "roughness": 0.4
+      },
+      "visible": true,
+      "animation": {
+        "spin": {
+          "axis": [0, 0, 1],
+          "speed": -270,
+          "pivot": [-7, 3.6, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_20",
+      "name": "Fork stanchion",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.19,
+        "radiusBottom": 0.19,
+        "height": 3.9894,
+        "segments": 16
+      },
+      "position": [5.9845, 7.6615, -0.85],
+      "rotation": [164.4275, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_21",
+      "name": "Fork slider",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.27,
+        "radiusBottom": 0.27,
+        "height": 3.2929,
+        "segments": 16
+      },
+      "position": [6.792, 4.764, -0.85],
+      "rotation": [164.4275, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1a1a1c",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_22",
+      "name": "Fork gaiter",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.3,
+        "radiusBottom": 0.3,
+        "height": 0.4433,
+        "segments": 16
+      },
+      "position": [6.3245, 6.4415, -0.85],
+      "rotation": [164.4275, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0d0d0e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.7
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_23",
+      "name": "Fork stanchion",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.19,
+        "radiusBottom": 0.19,
+        "height": 3.9894,
+        "segments": 16
+      },
+      "position": [5.9845, 7.6615, 0.85],
+      "rotation": [164.4275, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_24",
+      "name": "Fork slider",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.27,
+        "radiusBottom": 0.27,
+        "height": 3.2929,
+        "segments": 16
+      },
+      "position": [6.792, 4.764, 0.85],
+      "rotation": [164.4275, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1a1a1c",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_25",
+      "name": "Fork gaiter",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.3,
+        "radiusBottom": 0.3,
+        "height": 0.4433,
+        "segments": 16
+      },
+      "position": [6.3245, 6.4415, 0.85],
+      "rotation": [164.4275, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0d0d0e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.7
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_26",
+      "name": "Yoke",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.9,
+        "height": 0.28,
+        "depth": 2.3,
+        "radius": 0.1
+      },
+      "position": [5.5, 9.4, 0],
+      "rotation": [0, 0, -15.6],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_27",
+      "name": "Yoke",
+      "shape": {
+        "type": "roundedBox",
+        "width": 0.9,
+        "height": 0.28,
+        "depth": 2.3,
+        "radius": 0.1
+      },
+      "position": [5.721, 8.607, 0],
+      "rotation": [0, 0, -15.6],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_28",
+      "name": "Headlight shell",
+      "shape": {
+        "type": "lathe",
+        "segments": 48,
+        "profile": [
+          [0, -0.95],
+          [0.45, -0.9],
+          [0.82, -0.55],
+          [0.96, -0.05],
+          [0.99, 0.05],
+          [0.92, 0.08]
+        ]
+      },
+      "position": [7.55, 8.3, 0],
+      "rotation": [0, 0, -90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_29",
+      "name": "Headlight",
+      "shape": {
+        "type": "sphere",
+        "radius": 1,
+        "segments": 48,
+        "rings": 24
+      },
+      "position": [7.6, 8.3, 0],
+      "rotation": [0, 0, 0],
+      "scale": [0.14, 0.9, 0.9],
+      "material": {
+        "color": "#fff3dc",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 1.4,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.05
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_30",
+      "name": "Headlight ring",
+      "shape": {
+        "type": "torus",
+        "radius": 0.92,
+        "tube": 0.06,
+        "segments": 48,
+        "sides": 8
+      },
+      "position": [7.62, 8.3, 0],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_31",
+      "name": "Gauge",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.45,
+        "radiusBottom": 0.42,
+        "height": 0.32,
+        "segments": 40
+      },
+      "position": [5.05, 10.05, 0],
+      "rotation": [0, 0, 28],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_32",
+      "name": "Gauge face",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.38,
+        "radiusBottom": 0.38,
+        "height": 0.02,
+        "segments": 40
+      },
+      "position": [5.13, 10.2, 0],
+      "rotation": [0, 0, 28],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#f1ead8",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0.15,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_33",
+      "name": "Clip-on",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [5.4, 9.25, -0.8],
+          [5.1, 9.15, -1.6],
+          [4.9, 9.05, -2.2]
+        ],
+        "radius": 0.12,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_34",
+      "name": "Grip",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.17,
+        "radiusBottom": 0.17,
+        "height": 0.8906,
+        "segments": 16
+      },
+      "position": [4.825, 9.025, -2.425],
+      "rotation": [95.8002, -163.6105, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.05,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_35",
+      "name": "Lever",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.04,
+        "radiusBottom": 0.04,
+        "height": 0.9341,
+        "segments": 16
+      },
+      "position": [4.65, 9.075, -2.3],
+      "rotation": [99.2409, -130.6013, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_36",
+      "name": "Clip-on",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [5.4, 9.25, 0.8],
+          [5.1, 9.15, 1.6],
+          [4.9, 9.05, 2.2]
+        ],
+        "radius": 0.12,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_37",
+      "name": "Grip",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.17,
+        "radiusBottom": 0.17,
+        "height": 0.8906,
+        "segments": 16
+      },
+      "position": [4.825, 9.025, 2.425],
+      "rotation": [95.8002, -16.3895, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.05,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_38",
+      "name": "Lever",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.04,
+        "radiusBottom": 0.04,
+        "height": 0.9341,
+        "segments": 16
+      },
+      "position": [4.65, 9.075, 2.3],
+      "rotation": [99.2409, -49.3987, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_39",
+      "name": "Backbone",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [5.2, 8.6, 0],
+          [4.9905, 8.6167, 0],
+          [4.7074, 8.6444, 0],
+          [4.3688, 8.675, 0],
+          [3.9926, 8.7, 0],
+          [3.597, 8.7111, 0],
+          [3.2, 8.7, 0],
+          [2.7824, 8.6657, 0],
+          [2.3259, 8.6148, 0],
+          [1.85, 8.55, 0],
+          [1.3741, 8.4741, 0],
+          [0.9176, 8.3898, 0],
+          [0.5, 8.3, 0],
+          [0.103, 8.1926, 0],
+          [-0.2926, 8.063, 0],
+          [-0.6687, 7.925, 0],
+          [-1.0074, 7.7926, 0],
+          [-1.2905, 7.6796, 0],
+          [-1.5, 7.6, 0]
+        ],
+        "radius": 0.22,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0e0e10",
+        "specular": 0.9,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.22
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_40",
+      "name": "Cradle",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [5.1, 8.2, 0],
+          [5.025, 7.9023, -0.0903],
+          [4.9222, 7.4963, -0.2222],
+          [4.8, 7.0125, -0.375],
+          [4.6667, 6.4815, -0.5278],
+          [4.5306, 5.9338, -0.6597],
+          [4.4, 5.4, -0.75],
+          [4.2991, 4.8322, -0.7934],
+          [4.2259, 4.1963, -0.8056],
+          [4.15, 3.5438, -0.7969],
+          [4.0407, 2.9259, -0.7778],
+          [3.8676, 2.3942, -0.7587],
+          [3.6, 2, -0.75],
+          [3.2014, 1.759, -0.7494],
+          [2.6889, 1.6333, -0.7481],
+          [2.1125, 1.5938, -0.7469],
+          [1.5222, 1.6111, -0.7463],
+          [0.9681, 1.6563, -0.7471],
+          [0.5, 1.7, -0.75],
+          [0.1074, 1.7426, -0.756],
+          [-0.2519, 1.8074, -0.7648],
+          [-0.575, 1.9, -0.775],
+          [-0.8593, 2.0259, -0.7852],
+          [-1.1019, 2.1907, -0.794],
+          [-1.3, 2.4, -0.8],
+          [-1.4414, 2.6574, -0.8104],
+          [-1.5259, 2.9593, -0.8278],
+          [-1.5687, 3.3, -0.8437],
+          [-1.5852, 3.6741, -0.85],
+          [-1.5905, 4.0759, -0.8382],
+          [-1.6, 4.5, -0.8],
+          [-1.6053, 4.9947, -0.7218],
+          [-1.5926, 5.5741, -0.6074],
+          [-1.5687, 6.1813, -0.475],
+          [-1.5407, 6.7593, -0.3426],
+          [-1.5155, 7.2512, -0.2282],
+          [-1.5, 7.6, -0.15]
+        ],
+        "radius": 0.17,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0e0e10",
+        "specular": 0.9,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.22
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_41",
+      "name": "Seat rail",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [-1.5, 7.6, -0.15],
+          [-1.7014, 7.6163, -0.2282],
+          [-1.9667, 7.6389, -0.3426],
+          [-2.2875, 7.6656, -0.475],
+          [-2.6556, 7.6944, -0.6074],
+          [-3.0625, 7.7233, -0.7218],
+          [-3.5, 7.75, -0.8],
+          [-4.0204, 7.7762, -0.8422],
+          [-4.6407, 7.8037, -0.863],
+          [-5.3, 7.8313, -0.8656],
+          [-5.937, 7.8574, -0.8537],
+          [-6.4907, 7.8808, -0.8307],
+          [-6.9, 7.9, -0.8],
+          [-7.1449, 7.9147, -0.7519],
+          [-7.2704, 7.9259, -0.6815],
+          [-7.3125, 7.9344, -0.6],
+          [-7.3074, 7.9407, -0.5185],
+          [-7.2912, 7.9457, -0.4481],
+          [-7.3, 7.95, -0.4]
+        ],
+        "radius": 0.14,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0e0e10",
+        "specular": 0.9,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.22
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_42",
+      "name": "Swingarm",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.22,
+        "radiusBottom": 0.22,
+        "height": 5.4,
+        "segments": 16
+      },
+      "position": [-4.3, 3.6, -1],
+      "rotation": [90, -90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0e0e10",
+        "specular": 0.9,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.22
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_43",
+      "name": "Damper",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.13,
+        "radiusBottom": 0.13,
+        "height": 3.9259,
+        "segments": 16
+      },
+      "position": [-5.375, 5.75, -1.18],
+      "rotation": [6.5819, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#18181a",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_44",
+      "name": "Shock spring",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [-5.248, 4.2336, -1.18],
+          [-5.3187, 4.2706, -0.9822],
+          [-5.5005, 4.3204, -0.8826],
+          [-5.7017, 4.3724, -0.9306],
+          [-5.8207, 4.415, -1.1024],
+          [-5.7969, 4.441, -1.3127],
+          [-5.6404, 4.4518, -1.4572],
+          [-5.4272, 4.456, -1.4641],
+          [-5.2617, 4.4657, -1.33],
+          [-5.2242, 4.4902, -1.1215],
+          [-5.3318, 4.5314, -0.942],
+          [-5.5294, 4.5831, -0.8806],
+          [-5.7174, 4.6336, -0.9679],
+          [-5.8007, 4.672, -1.1604],
+          [-5.7365, 4.6934, -1.3626],
+          [-5.5549, 4.7013, -1.4742],
+          [-5.3445, 4.7058, -1.4398],
+          [-5.208, 4.7189, -1.2764],
+          [-5.2116, 4.7481, -1.0652],
+          [-5.3518, 4.7931, -0.9109],
+          [-5.5575, 4.8457, -0.8902],
+          [-5.7249, 4.8938, -1.0133],
+          [-5.7693, 4.9277, -1.2192],
+          [-5.667, 4.9447, -1.4056],
+          [-5.4672, 4.9505, -1.48],
+          [-5.2675, 4.9563, -1.4056],
+          [-5.1652, 4.9733, -1.2192],
+          [-5.2096, 5.0072, -1.0133],
+          [-5.377, 5.0553, -0.8902],
+          [-5.5827, 5.1079, -0.9109],
+          [-5.7229, 5.1529, -1.0652],
+          [-5.7265, 5.1821, -1.2764],
+          [-5.59, 5.1952, -1.4398],
+          [-5.3796, 5.1997, -1.4742],
+          [-5.198, 5.2076, -1.3626],
+          [-5.1338, 5.229, -1.1604],
+          [-5.2171, 5.2674, -0.9679],
+          [-5.4051, 5.3179, -0.8806],
+          [-5.6027, 5.3696, -0.942],
+          [-5.7103, 5.4108, -1.1215],
+          [-5.6728, 5.4353, -1.33],
+          [-5.5073, 5.445, -1.4641],
+          [-5.2941, 5.4492, -1.4572],
+          [-5.1376, 5.46, -1.3127],
+          [-5.1138, 5.486, -1.1024],
+          [-5.2328, 5.5286, -0.9306],
+          [-5.434, 5.5806, -0.8826],
+          [-5.6158, 5.6304, -0.9822],
+          [-5.6865, 5.6674, -1.18],
+          [-5.6093, 5.6873, -1.3778],
+          [-5.4208, 5.6944, -1.4774],
+          [-5.2131, 5.6992, -1.4294],
+          [-5.0875, 5.7135, -1.2576],
+          [-5.1048, 5.7443, -1.0473],
+          [-5.2548, 5.7905, -0.9028],
+          [-5.4613, 5.8431, -0.8959],
+          [-5.6203, 5.8903, -1.03],
+          [-5.6513, 5.9227, -1.2385],
+          [-5.5371, 5.9383, -1.418],
+          [-5.3329, 5.9436, -1.4794],
+          [-5.1384, 5.9499, -1.3921],
+          [-5.0485, 5.9684, -1.1996],
+          [-5.1061, 6.0038, -0.9974],
+          [-5.2811, 6.0529, -0.8858],
+          [-5.485, 6.1052, -0.9202],
+          [-5.6149, 6.149, -1.0836],
+          [-5.6048, 6.1766, -1.2948],
+          [-5.458, 6.1885, -1.4491],
+          [-5.2457, 6.1928, -1.4698],
+          [-5.0718, 6.2016, -1.3467],
+          [-5.0208, 6.2245, -1.1408],
+          [-5.1165, 6.2644, -0.9544],
+          [-5.3097, 6.3155, -0.88],
+          [-5.503, 6.3666, -0.9544],
+          [-5.5987, 6.4065, -1.1408],
+          [-5.5477, 6.4294, -1.3467],
+          [-5.3738, 6.4382, -1.4698],
+          [-5.1615, 6.4425, -1.4491],
+          [-5.0147, 6.4544, -1.2948],
+          [-5.0046, 6.482, -1.0836],
+          [-5.1345, 6.5258, -0.9202],
+          [-5.3384, 6.5781, -0.8858],
+          [-5.5134, 6.6272, -0.9974],
+          [-5.571, 6.6626, -1.1996],
+          [-5.4811, 6.6811, -1.3921],
+          [-5.2866, 6.6874, -1.4794],
+          [-5.0824, 6.6927, -1.418],
+          [-4.9682, 6.7083, -1.2385],
+          [-4.9992, 6.7407, -1.03],
+          [-5.1582, 6.7879, -0.8959],
+          [-5.3647, 6.8405, -0.9028],
+          [-5.5147, 6.8867, -1.0473],
+          [-5.532, 6.9175, -1.2576],
+          [-5.4064, 6.9318, -1.4294],
+          [-5.1987, 6.9366, -1.4774],
+          [-5.0102, 6.9437, -1.3778],
+          [-4.933, 6.9636, -1.18]
+        ],
+        "radius": 0.055,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_45",
+      "name": "Cradle",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [5.1, 8.2, 0],
+          [5.025, 7.9023, 0.0903],
+          [4.9222, 7.4963, 0.2222],
+          [4.8, 7.0125, 0.375],
+          [4.6667, 6.4815, 0.5278],
+          [4.5306, 5.9338, 0.6597],
+          [4.4, 5.4, 0.75],
+          [4.2991, 4.8322, 0.7934],
+          [4.2259, 4.1963, 0.8056],
+          [4.15, 3.5438, 0.7969],
+          [4.0407, 2.9259, 0.7778],
+          [3.8676, 2.3942, 0.7587],
+          [3.6, 2, 0.75],
+          [3.2014, 1.759, 0.7494],
+          [2.6889, 1.6333, 0.7481],
+          [2.1125, 1.5938, 0.7469],
+          [1.5222, 1.6111, 0.7463],
+          [0.9681, 1.6563, 0.7471],
+          [0.5, 1.7, 0.75],
+          [0.1074, 1.7426, 0.756],
+          [-0.2519, 1.8074, 0.7648],
+          [-0.575, 1.9, 0.775],
+          [-0.8593, 2.0259, 0.7852],
+          [-1.1019, 2.1907, 0.794],
+          [-1.3, 2.4, 0.8],
+          [-1.4414, 2.6574, 0.8104],
+          [-1.5259, 2.9593, 0.8278],
+          [-1.5687, 3.3, 0.8438],
+          [-1.5852, 3.6741, 0.85],
+          [-1.5905, 4.0759, 0.8382],
+          [-1.6, 4.5, 0.8],
+          [-1.6053, 4.9947, 0.7218],
+          [-1.5926, 5.5741, 0.6074],
+          [-1.5687, 6.1813, 0.475],
+          [-1.5407, 6.7593, 0.3426],
+          [-1.5155, 7.2512, 0.2282],
+          [-1.5, 7.6, 0.15]
+        ],
+        "radius": 0.17,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0e0e10",
+        "specular": 0.9,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.22
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_46",
+      "name": "Seat rail",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [-1.5, 7.6, 0.15],
+          [-1.7014, 7.6163, 0.2282],
+          [-1.9667, 7.6389, 0.3426],
+          [-2.2875, 7.6656, 0.475],
+          [-2.6556, 7.6944, 0.6074],
+          [-3.0625, 7.7233, 0.7218],
+          [-3.5, 7.75, 0.8],
+          [-4.0204, 7.7762, 0.8422],
+          [-4.6407, 7.8037, 0.863],
+          [-5.3, 7.8313, 0.8656],
+          [-5.937, 7.8574, 0.8537],
+          [-6.4907, 7.8808, 0.8307],
+          [-6.9, 7.9, 0.8],
+          [-7.1449, 7.9147, 0.7519],
+          [-7.2704, 7.9259, 0.6815],
+          [-7.3125, 7.9344, 0.6],
+          [-7.3074, 7.9407, 0.5185],
+          [-7.2912, 7.9457, 0.4481],
+          [-7.3, 7.95, 0.4]
+        ],
+        "radius": 0.14,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0e0e10",
+        "specular": 0.9,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.22
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_47",
+      "name": "Swingarm",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.22,
+        "radiusBottom": 0.22,
+        "height": 5.4,
+        "segments": 16
+      },
+      "position": [-4.3, 3.6, 1],
+      "rotation": [90, -90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#0e0e10",
+        "specular": 0.9,
+        "shininess": 120,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.22
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_48",
+      "name": "Damper",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.13,
+        "radiusBottom": 0.13,
+        "height": 3.9259,
+        "segments": 16
+      },
+      "position": [-5.375, 5.75, 1.18],
+      "rotation": [6.5819, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#18181a",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_49",
+      "name": "Shock spring",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [-5.248, 4.2336, 1.18],
+          [-5.3187, 4.2706, 1.3778],
+          [-5.5005, 4.3204, 1.4774],
+          [-5.7017, 4.3724, 1.4294],
+          [-5.8207, 4.415, 1.2576],
+          [-5.7969, 4.441, 1.0473],
+          [-5.6404, 4.4518, 0.9028],
+          [-5.4272, 4.456, 0.8959],
+          [-5.2617, 4.4657, 1.03],
+          [-5.2242, 4.4902, 1.2385],
+          [-5.3318, 4.5314, 1.418],
+          [-5.5294, 4.5831, 1.4794],
+          [-5.7174, 4.6336, 1.3921],
+          [-5.8007, 4.672, 1.1996],
+          [-5.7365, 4.6934, 0.9974],
+          [-5.5549, 4.7013, 0.8858],
+          [-5.3445, 4.7058, 0.9202],
+          [-5.208, 4.7189, 1.0836],
+          [-5.2116, 4.7481, 1.2948],
+          [-5.3518, 4.7931, 1.4491],
+          [-5.5575, 4.8457, 1.4698],
+          [-5.7249, 4.8938, 1.3467],
+          [-5.7693, 4.9277, 1.1408],
+          [-5.667, 4.9447, 0.9544],
+          [-5.4672, 4.9505, 0.88],
+          [-5.2675, 4.9563, 0.9544],
+          [-5.1652, 4.9733, 1.1408],
+          [-5.2096, 5.0072, 1.3467],
+          [-5.377, 5.0553, 1.4698],
+          [-5.5827, 5.1079, 1.4491],
+          [-5.7229, 5.1529, 1.2948],
+          [-5.7265, 5.1821, 1.0836],
+          [-5.59, 5.1952, 0.9202],
+          [-5.3796, 5.1997, 0.8858],
+          [-5.198, 5.2076, 0.9974],
+          [-5.1338, 5.229, 1.1996],
+          [-5.2171, 5.2674, 1.3921],
+          [-5.4051, 5.3179, 1.4794],
+          [-5.6027, 5.3696, 1.418],
+          [-5.7103, 5.4108, 1.2385],
+          [-5.6728, 5.4353, 1.03],
+          [-5.5073, 5.445, 0.8959],
+          [-5.2941, 5.4492, 0.9028],
+          [-5.1376, 5.46, 1.0473],
+          [-5.1138, 5.486, 1.2576],
+          [-5.2328, 5.5286, 1.4294],
+          [-5.434, 5.5806, 1.4774],
+          [-5.6158, 5.6304, 1.3778],
+          [-5.6865, 5.6674, 1.18],
+          [-5.6093, 5.6873, 0.9822],
+          [-5.4208, 5.6944, 0.8826],
+          [-5.2131, 5.6992, 0.9306],
+          [-5.0875, 5.7135, 1.1024],
+          [-5.1048, 5.7443, 1.3127],
+          [-5.2548, 5.7905, 1.4572],
+          [-5.4613, 5.8431, 1.4641],
+          [-5.6203, 5.8903, 1.33],
+          [-5.6513, 5.9227, 1.1215],
+          [-5.5371, 5.9383, 0.942],
+          [-5.3329, 5.9436, 0.8806],
+          [-5.1384, 5.9499, 0.9679],
+          [-5.0485, 5.9684, 1.1604],
+          [-5.1061, 6.0038, 1.3626],
+          [-5.2811, 6.0529, 1.4742],
+          [-5.485, 6.1052, 1.4398],
+          [-5.6149, 6.149, 1.2764],
+          [-5.6048, 6.1766, 1.0652],
+          [-5.458, 6.1885, 0.9109],
+          [-5.2457, 6.1928, 0.8902],
+          [-5.0718, 6.2016, 1.0133],
+          [-5.0208, 6.2245, 1.2192],
+          [-5.1165, 6.2644, 1.4056],
+          [-5.3097, 6.3155, 1.48],
+          [-5.503, 6.3666, 1.4056],
+          [-5.5987, 6.4065, 1.2192],
+          [-5.5477, 6.4294, 1.0133],
+          [-5.3738, 6.4382, 0.8902],
+          [-5.1615, 6.4425, 0.9109],
+          [-5.0147, 6.4544, 1.0652],
+          [-5.0046, 6.482, 1.2764],
+          [-5.1345, 6.5258, 1.4398],
+          [-5.3384, 6.5781, 1.4742],
+          [-5.5134, 6.6272, 1.3626],
+          [-5.571, 6.6626, 1.1604],
+          [-5.4811, 6.6811, 0.9679],
+          [-5.2866, 6.6874, 0.8806],
+          [-5.0824, 6.6927, 0.942],
+          [-4.9682, 6.7083, 1.1215],
+          [-4.9992, 6.7407, 1.33],
+          [-5.1582, 6.7879, 1.4641],
+          [-5.3647, 6.8405, 1.4572],
+          [-5.5147, 6.8867, 1.3127],
+          [-5.532, 6.9175, 1.1024],
+          [-5.4064, 6.9318, 0.9306],
+          [-5.1987, 6.9366, 0.8826],
+          [-5.0102, 6.9437, 0.9822],
+          [-4.933, 6.9636, 1.18]
+        ],
+        "radius": 0.055,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_50",
+      "name": "Crankcase",
+      "shape": {
+        "type": "roundedBox",
+        "width": 4.2,
+        "height": 2.3,
+        "depth": 2.5,
+        "radius": 0.4,
+        "segments": 4
+      },
+      "position": [0.7, 3.4, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_51",
+      "name": "Engine cover",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.95,
+        "radiusBottom": 1.05,
+        "height": 0.22,
+        "segments": 48
+      },
+      "position": [0.2, 3.5, -1.32],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_52",
+      "name": "Engine cover",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.95,
+        "radiusBottom": 1.05,
+        "height": 0.22,
+        "segments": 48
+      },
+      "position": [0.2, 3.5, 1.32],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.18
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_53",
+      "name": "Cylinder block",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2,
+        "height": 2.4,
+        "depth": 2.4,
+        "radius": 0.15
+      },
+      "position": [1.35, 5.95, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#9fa3a8",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_54",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.1421, 4.9719, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_55",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.1941, 5.2164, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_56",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.246, 5.4609, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_57",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.298, 5.7055, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_58",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.35, 5.95, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_59",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.402, 6.1945, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_60",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.454, 6.4391, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_61",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.5059, 6.6836, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_62",
+      "name": "Cooling fin",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.7,
+        "height": 0.07,
+        "depth": 2.9,
+        "radius": 0.03,
+        "segments": 2
+      },
+      "position": [1.5579, 6.9281, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a9adb2",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_63",
+      "name": "Cylinder head",
+      "shape": {
+        "type": "roundedBox",
+        "width": 2.6,
+        "height": 0.6,
+        "depth": 3,
+        "radius": 0.2
+      },
+      "position": [1.6619, 7.4172, 0],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.2
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_64",
+      "name": "Rocker cover",
+      "shape": {
+        "type": "roundedBox",
+        "width": 1.2,
+        "height": 0.38,
+        "depth": 1,
+        "radius": 0.15
+      },
+      "position": [1.7554, 7.8574, -0.65],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_65",
+      "name": "Rocker cover",
+      "shape": {
+        "type": "roundedBox",
+        "width": 1.2,
+        "height": 0.38,
+        "depth": 1,
+        "radius": 0.15
+      },
+      "position": [1.7554, 7.8574, 0.65],
+      "rotation": [0, 0, -12],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_66",
+      "name": "Carburettor",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.32,
+        "radiusBottom": 0.32,
+        "height": 1.1102,
+        "segments": 16
+      },
+      "position": [-0.65, 6.575, -0.62],
+      "rotation": [82.2348, -90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_67",
+      "name": "Velocity stack",
+      "shape": {
+        "type": "lathe",
+        "segments": 32,
+        "profile": [
+          [0.3, 0],
+          [0.33, 0.3],
+          [0.48, 0.6],
+          [0.55, 0.66],
+          [0.5, 0.68],
+          [0.42, 0.6],
+          [0.28, 0.3],
+          [0.26, 0]
+        ]
+      },
+      "position": [-1.2, 6.65, -0.62],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_68",
+      "name": "Header",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [2.55, 6.6, -0.62],
+          [2.6414, 6.5051, -0.6574],
+          [2.7759, 6.3852, -0.7104],
+          [2.9312, 6.2375, -0.7725],
+          [3.0852, 6.0593, -0.8374],
+          [3.2155, 5.8477, -0.8987],
+          [3.3, 5.6, -0.95],
+          [3.3453, 5.2912, -0.9917],
+          [3.3704, 4.9185, -1.0289],
+          [3.3719, 4.5125, -1.0625],
+          [3.3463, 4.1037, -1.0933],
+          [3.2902, 3.7227, -1.1222],
+          [3.2, 3.4, -1.15],
+          [3.0903, 3.1259, -1.1768],
+          [2.9667, 2.8741, -1.2019],
+          [2.8125, 2.65, -1.225],
+          [2.6111, 2.4593, -1.2459],
+          [2.3458, 2.3074, -1.2644],
+          [2, 2.2, -1.28],
+          [1.5382, 2.1413, -1.2916],
+          [0.9667, 2.1278, -1.2993],
+          [0.3313, 2.1531, -1.3044],
+          [-0.3222, 2.2111, -1.3085],
+          [-0.9479, 2.2955, -1.3132],
+          [-1.5, 2.4, -1.32],
+          [-2.0035, 2.55, -1.3295],
+          [-2.5, 2.7556, -1.3407],
+          [-2.9687, 2.9875, -1.3525],
+          [-3.3889, 3.2167, -1.3637],
+          [-3.7396, 3.4139, -1.3732],
+          [-4, 3.55, -1.38]
+        ],
+        "radius": 0.2,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_69",
+      "name": "Megaphone",
+      "shape": {
+        "type": "lathe",
+        "segments": 40,
+        "profile": [
+          [0, -0.05],
+          [0.22, 0],
+          [0.26, 0.5],
+          [0.5, 4],
+          [0.52, 4.1],
+          [0.42, 4.12],
+          [0, 4.1]
+        ]
+      },
+      "position": [-4, 3.55, -1.38],
+      "rotation": [0, 0, 82],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_70",
+      "name": "Carburettor",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.32,
+        "radiusBottom": 0.32,
+        "height": 1.1102,
+        "segments": 16
+      },
+      "position": [-0.65, 6.575, 0.62],
+      "rotation": [82.2348, -90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b8bbc0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.75,
+        "roughness": 0.32,
+        "pattern": {
+          "type": "brushed",
+          "colors": ["#aeb2b8", "#cfd2d6"],
+          "scale": 3,
+          "bump": 0.12
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_71",
+      "name": "Velocity stack",
+      "shape": {
+        "type": "lathe",
+        "segments": 32,
+        "profile": [
+          [0.3, 0],
+          [0.33, 0.3],
+          [0.48, 0.6],
+          [0.55, 0.66],
+          [0.5, 0.68],
+          [0.42, 0.6],
+          [0.28, 0.3],
+          [0.26, 0]
+        ]
+      },
+      "position": [-1.2, 6.65, 0.62],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_72",
+      "name": "Header",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [2.55, 6.6, 0.62],
+          [2.6414, 6.5051, 0.6574],
+          [2.7759, 6.3852, 0.7104],
+          [2.9312, 6.2375, 0.7725],
+          [3.0852, 6.0593, 0.8374],
+          [3.2155, 5.8477, 0.8987],
+          [3.3, 5.6, 0.95],
+          [3.3453, 5.2912, 0.9917],
+          [3.3704, 4.9185, 1.0289],
+          [3.3719, 4.5125, 1.0625],
+          [3.3463, 4.1037, 1.0933],
+          [3.2902, 3.7227, 1.1222],
+          [3.2, 3.4, 1.15],
+          [3.0903, 3.1259, 1.1768],
+          [2.9667, 2.8741, 1.2019],
+          [2.8125, 2.65, 1.225],
+          [2.6111, 2.4593, 1.2459],
+          [2.3458, 2.3074, 1.2644],
+          [2, 2.2, 1.28],
+          [1.5382, 2.1413, 1.2916],
+          [0.9667, 2.1278, 1.2993],
+          [0.3313, 2.1531, 1.3044],
+          [-0.3222, 2.2111, 1.3085],
+          [-0.9479, 2.2955, 1.3132],
+          [-1.5, 2.4, 1.32],
+          [-2.0035, 2.55, 1.3295],
+          [-2.5, 2.7556, 1.3407],
+          [-2.9687, 2.9875, 1.3525],
+          [-3.3889, 3.2167, 1.3637],
+          [-3.7396, 3.4139, 1.3732],
+          [-4, 3.55, 1.38]
+        ],
+        "radius": 0.2,
+        "sides": 14
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_73",
+      "name": "Megaphone",
+      "shape": {
+        "type": "lathe",
+        "segments": 40,
+        "profile": [
+          [0, -0.05],
+          [0.22, 0],
+          [0.26, 0.5],
+          [0.5, 4],
+          [0.52, 4.1],
+          [0.42, 4.12],
+          [0, 4.1]
+        ]
+      },
+      "position": [-4, 3.55, 1.38],
+      "rotation": [0, 0, 82],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_74",
+      "name": "Chain",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [0.65, 3.2, -0.72],
+          [0.6478, 3.2441, -0.72],
+          [0.6414, 3.2878, -0.72],
+          [0.6306, 3.3306, -0.72],
+          [0.6157, 3.3722, -0.72],
+          [0.5969, 3.4121, -0.72],
+          [0.5742, 3.45, -0.72],
+          [0.5479, 3.4855, -0.72],
+          [0.5182, 3.5182, -0.72],
+          [0.4855, 3.5479, -0.72],
+          [0.45, 3.5742, -0.72],
+          [0.4121, 3.5969, -0.72],
+          [0.3722, 3.6157, -0.72],
+          [0.3306, 3.6306, -0.72],
+          [0.2878, 3.6414, -0.72],
+          [0.2441, 3.6478, -0.72],
+          [0.2, 3.65, -0.72],
+          [-7.1157, 4.7743, -0.72],
+          [-7.2302, 4.7573, -0.72],
+          [-7.3425, 4.7292, -0.72],
+          [-7.4516, 4.6902, -0.72],
+          [-7.5562, 4.6407, -0.72],
+          [-7.6556, 4.5811, -0.72],
+          [-7.7486, 4.5122, -0.72],
+          [-7.8344, 4.4344, -0.72],
+          [-7.9122, 4.3486, -0.72],
+          [-7.9811, 4.2556, -0.72],
+          [-8.0407, 4.1562, -0.72],
+          [-8.0902, 4.0516, -0.72],
+          [-8.1292, 3.9425, -0.72],
+          [-8.1573, 3.8302, -0.72],
+          [-8.1743, 3.7157, -0.72],
+          [-8.18, 3.6, -0.72],
+          [-8.1743, 3.4843, -0.72],
+          [-8.1573, 3.3698, -0.72],
+          [-8.1292, 3.2575, -0.72],
+          [-8.0902, 3.1484, -0.72],
+          [-8.0407, 3.0438, -0.72],
+          [-7.9811, 2.9444, -0.72],
+          [-7.9122, 2.8514, -0.72],
+          [-7.8344, 2.7656, -0.72],
+          [-7.7486, 2.6878, -0.72],
+          [-7.6556, 2.6189, -0.72],
+          [-7.5562, 2.5593, -0.72],
+          [-7.4516, 2.5098, -0.72],
+          [-7.3425, 2.4708, -0.72],
+          [-7.2302, 2.4427, -0.72],
+          [-7.1157, 2.4257, -0.72],
+          [-7, 2.42, -0.72],
+          [0.2441, 2.7522, -0.72],
+          [0.2878, 2.7586, -0.72],
+          [0.3306, 2.7694, -0.72],
+          [0.3722, 2.7843, -0.72],
+          [0.4121, 2.8031, -0.72],
+          [0.45, 2.8258, -0.72],
+          [0.4855, 2.8521, -0.72],
+          [0.5182, 2.8818, -0.72],
+          [0.5479, 2.9145, -0.72],
+          [0.5742, 2.95, -0.72],
+          [0.5969, 2.9879, -0.72],
+          [0.6157, 3.0278, -0.72],
+          [0.6306, 3.0694, -0.72],
+          [0.6414, 3.1122, -0.72],
+          [0.6478, 3.1559, -0.72],
+          [0.65, 3.2, -0.72]
+        ],
+        "radius": 0.07,
+        "sides": 6,
+        "closed": true
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3a3b3e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.8,
+        "roughness": 0.45,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#4a4b4f", "#1a1a1c"],
+          "scale": 0.06,
+          "bump": 1.2
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_75",
+      "name": "Tank",
+      "shape": {
+        "type": "sphere",
+        "radius": 1,
+        "segments": 64,
+        "rings": 32
+      },
+      "position": [2.35, 9.35, 0],
+      "rotation": [0, 0, -4],
+      "scale": [3.3, 1.25, 1.35],
+      "material": {
+        "color": "#123a2c",
+        "specular": 1.2,
+        "shininess": 200,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.35,
+        "roughness": 0.08
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_76",
+      "name": "Filler cap",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.36,
+        "radiusBottom": 0.4,
+        "height": 0.14,
+        "segments": 40
+      },
+      "position": [2.7, 10.6, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_77",
+      "name": "Tank badge",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.34,
+        "radiusBottom": 0.34,
+        "height": 0.05,
+        "segments": 40
+      },
+      "position": [2.2, 9.3, -1.33],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e4d3a8",
+        "specular": 0.9,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.2,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_78",
+      "name": "Badge rim",
+      "shape": {
+        "type": "torus",
+        "radius": 0.34,
+        "tube": 0.035,
+        "segments": 40,
+        "sides": 8
+      },
+      "position": [2.2, 9.3, -1.36],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_79",
+      "name": "Knee pad",
+      "shape": {
+        "type": "roundedBox",
+        "width": 1.2,
+        "height": 0.7,
+        "depth": 0.12,
+        "radius": 0.1
+      },
+      "position": [0.4, 9, -1.08],
+      "rotation": [0, 8, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.05,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_80",
+      "name": "Tank badge",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.34,
+        "radiusBottom": 0.34,
+        "height": 0.05,
+        "segments": 40
+      },
+      "position": [2.2, 9.3, 1.33],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e4d3a8",
+        "specular": 0.9,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.2,
+        "roughness": 0.25
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_81",
+      "name": "Badge rim",
+      "shape": {
+        "type": "torus",
+        "radius": 0.34,
+        "tube": 0.035,
+        "segments": 40,
+        "sides": 8
+      },
+      "position": [2.2, 9.3, 1.36],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_82",
+      "name": "Knee pad",
+      "shape": {
+        "type": "roundedBox",
+        "width": 1.2,
+        "height": 0.7,
+        "depth": 0.12,
+        "radius": 0.1
+      },
+      "position": [0.4, 9, 1.08],
+      "rotation": [0, -8, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.05,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_83",
+      "name": "Seat",
+      "shape": {
+        "type": "roundedBox",
+        "width": 4.4,
+        "height": 0.65,
+        "depth": 2.3,
+        "radius": 0.3,
+        "segments": 4
+      },
+      "position": [-3.3, 8.3, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a3018",
+        "specular": 0.4,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.55,
+        "pattern": {
+          "type": "leather",
+          "colors": ["#6b391c", "#4c2712", "#2a1409"],
+          "scale": 0.1,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_84",
+      "name": "Seat hump",
+      "shape": {
+        "type": "roundedBox",
+        "width": 1.5,
+        "height": 1.35,
+        "depth": 2.3,
+        "radius": 0.45,
+        "segments": 4
+      },
+      "position": [-6, 8.65, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a3018",
+        "specular": 0.4,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.55,
+        "pattern": {
+          "type": "leather",
+          "colors": ["#6b391c", "#4c2712", "#2a1409"],
+          "scale": 0.1,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_85",
+      "name": "Tail light",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.28,
+        "radiusBottom": 0.28,
+        "height": 0.15,
+        "segments": 32
+      },
+      "position": [-6.85, 8.5, 0],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff2a1a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 1.6,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.1
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_86",
+      "name": "Stand upright",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.16,
+        "radiusBottom": 0.16,
+        "height": 3.1325,
+        "segments": 16
+      },
+      "position": [-6.9, 1.85, -1.475],
+      "rotation": [8.2594, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b81f17",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_87",
+      "name": "Stand arm",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.16,
+        "radiusBottom": 0.16,
+        "height": 3.4,
+        "segments": 16
+      },
+      "position": [-5.2, 0.3, -1.7],
+      "rotation": [90, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b81f17",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_88",
+      "name": "Stand wheel",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.3,
+        "radiusBottom": 0.3,
+        "height": 0.2,
+        "segments": 24
+      },
+      "position": [-7.2, 0.3, -1.7],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.03,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_89",
+      "name": "Stand upright",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.16,
+        "radiusBottom": 0.16,
+        "height": 3.1325,
+        "segments": 16
+      },
+      "position": [-6.9, 1.85, 1.475],
+      "rotation": [8.2594, 180, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b81f17",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_90",
+      "name": "Stand arm",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.16,
+        "radiusBottom": 0.16,
+        "height": 3.4,
+        "segments": 16
+      },
+      "position": [-5.2, 0.3, 1.7],
+      "rotation": [90, 90, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b81f17",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_91",
+      "name": "Stand wheel",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.3,
+        "radiusBottom": 0.3,
+        "height": 0.2,
+        "segments": 24
+      },
+      "position": [-7.2, 0.3, 1.7],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.03,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_92",
+      "name": "Stand bar",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.16,
+        "radiusBottom": 0.16,
+        "height": 3.4,
+        "segments": 16
+      },
+      "position": [-6.9, 0.3, 0],
+      "rotation": [90, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b81f17",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_93",
+      "name": "Floor",
+      "shape": {
+        "type": "box",
+        "width": 160,
+        "height": 0.2,
+        "depth": 110
+      },
+      "position": [0, -0.1, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#55534f",
+        "specular": 0.75,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.25,
+        "pattern": {
+          "type": "concrete",
+          "colors": ["#5f5d59", "#4a4845", "#24231f"],
+          "scale": 4,
+          "bump": 0.2
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_94",
+      "name": "Brick wall",
+      "shape": {
+        "type": "box",
+        "width": 160,
+        "height": 60,
+        "depth": 1
+      },
+      "position": [0, 30, -22.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7a3424",
+        "specular": 0.15,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.9,
+        "pattern": {
+          "type": "brick",
+          "colors": ["#7a3424", "#4f2016", "#8f877c"],
+          "scale": 0.7,
+          "bump": 0.9
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_95",
+      "name": "Roller door",
+      "shape": {
+        "type": "box",
+        "width": 60,
+        "height": 32,
+        "depth": 0.6
+      },
+      "position": [6, 16, 34],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7d8186",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.6,
+        "roughness": 0.45,
+        "pattern": {
+          "type": "stripes",
+          "colors": ["#868a90", "#5e6166"],
+          "scale": 0.8,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_96",
+      "name": "Door frame",
+      "shape": {
+        "type": "box",
+        "width": 62,
+        "height": 1.2,
+        "depth": 1
+      },
+      "position": [6, 32.4, 33.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2a2b2e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_97",
+      "name": "Right wall",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 60,
+        "depth": 110
+      },
+      "position": [48, 30, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#7a3424",
+        "specular": 0.15,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.9,
+        "pattern": {
+          "type": "brick",
+          "colors": ["#7a3424", "#4f2016", "#8f877c"],
+          "scale": 0.7,
+          "bump": 0.9
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_98",
+      "name": "Side wall",
+      "shape": {
+        "type": "box",
+        "width": 1,
+        "height": 60,
+        "depth": 110
+      },
+      "position": [-48, 30, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#55534f",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "concrete",
+          "colors": ["#5f5d59", "#4a4845", "#2a2927"],
+          "scale": 6,
+          "bump": 0.2
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_99",
+      "name": "Workbench top",
+      "shape": {
+        "type": "box",
+        "width": 22,
+        "height": 0.7,
+        "depth": 6.5
+      },
+      "position": [22, 9, -18.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6a4428",
+        "specular": 0.3,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5,
+        "pattern": {
+          "type": "wood",
+          "colors": ["#8a5f3c", "#6b4527", "#3a2414"],
+          "scale": 0.3,
+          "bump": 0.3
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_100",
+      "name": "Bench leg",
+      "shape": {
+        "type": "box",
+        "width": 0.6,
+        "height": 8.7,
+        "depth": 0.6
+      },
+      "position": [11.5, 4.35, -21.2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f3d4a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.6,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_101",
+      "name": "Bench leg",
+      "shape": {
+        "type": "box",
+        "width": 0.6,
+        "height": 8.7,
+        "depth": 0.6
+      },
+      "position": [32.5, 4.35, -21.2],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f3d4a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.6,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_102",
+      "name": "Bench leg",
+      "shape": {
+        "type": "box",
+        "width": 0.6,
+        "height": 8.7,
+        "depth": 0.6
+      },
+      "position": [11.5, 4.35, -15.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f3d4a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.6,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_103",
+      "name": "Bench leg",
+      "shape": {
+        "type": "box",
+        "width": 0.6,
+        "height": 8.7,
+        "depth": 0.6
+      },
+      "position": [32.5, 4.35, -15.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#2f3d4a",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.6,
+        "roughness": 0.4
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_104",
+      "name": "Pegboard",
+      "shape": {
+        "type": "box",
+        "width": 20,
+        "height": 11,
+        "depth": 0.3
+      },
+      "position": [22, 17, -21.8],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#a88f69",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.85,
+        "pattern": {
+          "type": "checker",
+          "colors": ["#a88f69", "#9c8460"],
+          "scale": 0.25,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_105",
+      "name": "Wrench",
+      "shape": {
+        "type": "extrude",
+        "depth": 0.08,
+        "shape": [
+          [-0.12, -1.1],
+          [0.12, -1.1],
+          [0.14, 0.8500000000000001],
+          [0.32, 1.05],
+          [0.18, 1.25],
+          [0.06, 1.08],
+          [-0.06, 1.08],
+          [-0.18, 1.25],
+          [-0.32, 1.05],
+          [-0.14, 0.8500000000000001]
+        ]
+      },
+      "position": [14, 18.4, -21.55],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_106",
+      "name": "Wrench",
+      "shape": {
+        "type": "extrude",
+        "depth": 0.08,
+        "shape": [
+          [-0.12, -1.3250000000000002],
+          [0.12, -1.3250000000000002],
+          [0.14, 1.0750000000000002],
+          [0.32, 1.2750000000000001],
+          [0.18, 1.475],
+          [0.06, 1.3050000000000002],
+          [-0.06, 1.3050000000000002],
+          [-0.18, 1.475],
+          [-0.32, 1.2750000000000001],
+          [-0.14, 1.0750000000000002]
+        ]
+      },
+      "position": [15.5, 18.175, -21.55],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_107",
+      "name": "Wrench",
+      "shape": {
+        "type": "extrude",
+        "depth": 0.08,
+        "shape": [
+          [-0.12, -1.55],
+          [0.12, -1.55],
+          [0.14, 1.3],
+          [0.32, 1.5],
+          [0.18, 1.7],
+          [0.06, 1.53],
+          [-0.06, 1.53],
+          [-0.18, 1.7],
+          [-0.32, 1.5],
+          [-0.14, 1.3]
+        ]
+      },
+      "position": [17, 17.95, -21.55],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_108",
+      "name": "Wrench",
+      "shape": {
+        "type": "extrude",
+        "depth": 0.08,
+        "shape": [
+          [-0.12, -1.7750000000000001],
+          [0.12, -1.7750000000000001],
+          [0.14, 1.5250000000000001],
+          [0.32, 1.725],
+          [0.18, 1.925],
+          [0.06, 1.7550000000000001],
+          [-0.06, 1.7550000000000001],
+          [-0.18, 1.925],
+          [-0.32, 1.725],
+          [-0.14, 1.5250000000000001]
+        ]
+      },
+      "position": [18.5, 17.725, -21.55],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_109",
+      "name": "Wrench",
+      "shape": {
+        "type": "extrude",
+        "depth": 0.08,
+        "shape": [
+          [-0.12, -2],
+          [0.12, -2],
+          [0.14, 1.75],
+          [0.32, 1.95],
+          [0.18, 2.15],
+          [0.06, 1.98],
+          [-0.06, 1.98],
+          [-0.18, 2.15],
+          [-0.32, 1.95],
+          [-0.14, 1.75]
+        ]
+      },
+      "position": [20, 17.5, -21.55],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_110",
+      "name": "Wrench",
+      "shape": {
+        "type": "extrude",
+        "depth": 0.08,
+        "shape": [
+          [-0.12, -2.225],
+          [0.12, -2.225],
+          [0.14, 1.975],
+          [0.32, 2.1750000000000003],
+          [0.18, 2.375],
+          [0.06, 2.205],
+          [-0.06, 2.205],
+          [-0.18, 2.375],
+          [-0.32, 2.1750000000000003],
+          [-0.14, 1.975]
+        ]
+      },
+      "position": [21.5, 17.275, -21.55],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_111",
+      "name": "Wrench",
+      "shape": {
+        "type": "extrude",
+        "depth": 0.08,
+        "shape": [
+          [-0.12, -2.45],
+          [0.12, -2.45],
+          [0.14, 2.2],
+          [0.32, 2.4000000000000004],
+          [0.18, 2.6],
+          [0.06, 2.43],
+          [-0.06, 2.43],
+          [-0.18, 2.6],
+          [-0.32, 2.4000000000000004],
+          [-0.14, 2.2]
+        ]
+      },
+      "position": [23, 17.05, -21.55],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_112",
+      "name": "Hammer head",
+      "shape": {
+        "type": "roundedBox",
+        "width": 1.6,
+        "height": 0.5,
+        "depth": 0.5,
+        "radius": 0.08
+      },
+      "position": [27, 20.5, -21.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#3a3b3e",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.8,
+        "roughness": 0.35
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_113",
+      "name": "Hammer handle",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.16,
+        "radiusBottom": 0.18,
+        "height": 3.4,
+        "segments": 12
+      },
+      "position": [27, 18.6, -21.4],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#6a4428",
+        "specular": 0.3,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5,
+        "pattern": {
+          "type": "wood",
+          "colors": ["#8a5f3c", "#6b4527", "#3a2414"],
+          "scale": 0.3,
+          "bump": 0.3
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_114",
+      "name": "Oil can",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.8,
+        "radiusBottom": 0.8,
+        "height": 2,
+        "segments": 32
+      },
+      "position": [16, 10.35, -18],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#c9a227",
+        "specular": 0.7,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.3,
+        "pattern": {
+          "type": "stripes",
+          "colors": ["#c9a227", "#1d1d1f"],
+          "scale": 0.6,
+          "bump": 0
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_115",
+      "name": "Tool chest",
+      "shape": {
+        "type": "roundedBox",
+        "width": 9,
+        "height": 11,
+        "depth": 5,
+        "radius": 0.25
+      },
+      "position": [-24, 5.5, -18.5],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#b3201b",
+        "specular": 1,
+        "shininess": 160,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.2
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_116",
+      "name": "Drawer line",
+      "shape": {
+        "type": "box",
+        "width": 8.6,
+        "height": 0.06,
+        "depth": 0.05
+      },
+      "position": [-24, 2.2, -15.97],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a0f0c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_117",
+      "name": "Drawer handle",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.1,
+        "radiusBottom": 0.1,
+        "height": 5,
+        "segments": 12
+      },
+      "position": [-24, 3, -15.85],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_118",
+      "name": "Drawer line",
+      "shape": {
+        "type": "box",
+        "width": 8.6,
+        "height": 0.06,
+        "depth": 0.05
+      },
+      "position": [-24, 4.1, -15.97],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a0f0c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_119",
+      "name": "Drawer handle",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.1,
+        "radiusBottom": 0.1,
+        "height": 5,
+        "segments": 12
+      },
+      "position": [-24, 4.9, -15.85],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_120",
+      "name": "Drawer line",
+      "shape": {
+        "type": "box",
+        "width": 8.6,
+        "height": 0.06,
+        "depth": 0.05
+      },
+      "position": [-24, 6, -15.97],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a0f0c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_121",
+      "name": "Drawer handle",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.1,
+        "radiusBottom": 0.1,
+        "height": 5,
+        "segments": 12
+      },
+      "position": [-24, 6.8, -15.85],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_122",
+      "name": "Drawer line",
+      "shape": {
+        "type": "box",
+        "width": 8.6,
+        "height": 0.06,
+        "depth": 0.05
+      },
+      "position": [-24, 7.8999999999999995, -15.97],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a0f0c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_123",
+      "name": "Drawer handle",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.1,
+        "radiusBottom": 0.1,
+        "height": 5,
+        "segments": 12
+      },
+      "position": [-24, 8.7, -15.85],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_124",
+      "name": "Drawer line",
+      "shape": {
+        "type": "box",
+        "width": 8.6,
+        "height": 0.06,
+        "depth": 0.05
+      },
+      "position": [-24, 9.8, -15.97],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#5a0f0c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_125",
+      "name": "Drawer handle",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.1,
+        "radiusBottom": 0.1,
+        "height": 5,
+        "segments": 12
+      },
+      "position": [-24, 10.6, -15.85],
+      "rotation": [0, 0, 90],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#e2e4e8",
+        "specular": 1,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "metalness": 0.85,
+        "roughness": 0.12
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_126",
+      "name": "Spare tyre",
+      "shape": {
+        "type": "torus",
+        "radius": 2.85,
+        "tube": 0.45,
+        "segments": 96,
+        "sides": 20
+      },
+      "position": [-34, 3, -20.5],
+      "rotation": [76, 18, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#141415",
+        "specular": 0.2,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.8,
+        "pattern": {
+          "type": "knurl",
+          "colors": ["#1d1d1f", "#0a0a0b"],
+          "scale": 0.09,
+          "bump": 0.8
+        }
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_127",
+      "name": "Neon bolt",
+      "shape": {
+        "type": "tube",
+        "path": [
+          [-8, 30, -21.7],
+          [-10.2, 24.6, -21.7],
+          [-8.4, 24.6, -21.7],
+          [-9.6, 19, -21.7],
+          [-5.6, 25.2, -21.7],
+          [-7.5, 25.2, -21.7],
+          [-6.2, 30, -21.7]
+        ],
+        "radius": 0.14,
+        "sides": 8,
+        "closed": true
+      },
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#ff3b2f",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.4,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "pulse": {
+          "min": 0.5,
+          "max": 1.1,
+          "period": 0.12,
+          "phase": 0.3,
+          "blink": true
+        }
+      }
+    },
+    {
+      "id": "obj_128",
+      "name": "Neon backing",
+      "shape": {
+        "type": "box",
+        "width": 7,
+        "height": 14,
+        "depth": 0.15
+      },
+      "position": [-8, 24, -21.9],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1a1a1c",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false,
+        "roughness": 0.5
+      },
+      "visible": true
+    },
+    {
+      "id": "obj_129",
+      "name": "Lamp cord",
+      "shape": {
+        "type": "cylinder",
+        "radiusTop": 0.04,
+        "radiusBottom": 0.04,
+        "height": 36,
+        "segments": 6
+      },
+      "position": [0, 42, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#111111",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [1, 0, 0.4],
+          "amplitude": 2.5,
+          "period": 6,
+          "phase": 0,
+          "pivot": [0, 60, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_130",
+      "name": "Lamp shade",
+      "shape": {
+        "type": "lathe",
+        "segments": 48,
+        "profile": [
+          [0.35, 0.9],
+          [0.9, 0.6],
+          [2.6, -0.8],
+          [2.65, -0.9]
+        ]
+      },
+      "position": [0, 23.3, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#1f4d3a",
+        "specular": 0.6,
+        "shininess": 24,
+        "emissive": 0,
+        "flat": false,
+        "doubleSided": true,
+        "roughness": 0.35
+      },
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [1, 0, 0.4],
+          "amplitude": 2.5,
+          "period": 6,
+          "phase": 0,
+          "pivot": [0, 60, 0]
+        }
+      }
+    },
+    {
+      "id": "obj_131",
+      "name": "Lamp bulb",
+      "shape": {
+        "type": "sphere",
+        "radius": 0.65,
+        "segments": 24,
+        "rings": 14
+      },
+      "position": [0, 22.8, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "material": {
+        "color": "#fff1d0",
+        "specular": 0.25,
+        "shininess": 24,
+        "emissive": 2.8,
+        "flat": false,
+        "doubleSided": false
+      },
+      "visible": true,
+      "animation": {
+        "swing": {
+          "axis": [1, 0, 0.4],
+          "amplitude": 2.5,
+          "period": 6,
+          "phase": 0,
+          "pivot": [0, 60, 0]
+        }
+      }
+    }
+  ]
+}

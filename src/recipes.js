@@ -227,7 +227,7 @@ material = { color: "#rrggbb", specular 0..2, shininess 1..256, emissive 0..10 (
             mapping: "planar" | "box" | "cylinder" | "sphere" and repeat: n or [u, v] (how a texture wraps and tiles),
             pattern: { type, colors: [2-3 colours], scale, bump } procedural surface with relief, no image needed:
               wood (grain along X), marble, leather (pebbled grain), carbon, fabric, brushed (streaks along X), checker,
-              stripes (across Y), knurl (diamond grip around Y). scale = size of one feature in units (leather ~1 mm,
+              stripes (across Y), knurl (diamond grip around Y), concrete, brick (running bond, one brick high per unit). scale = size of one feature in units (leather ~1 mm,
               wood rings ~1 cm at real scale), bump 0..2. Example: { type: "wood", colors: ["#62402a", "#2e1b0e"], scale: 0.01 } }.
 Animation: set_animation({ id, animation: { spin | swing | bob | orbit | pulse | flow | keys } }), e.g. { "spin": { "axis": [0,1,0], "speed": 90 } }
             or keyframes { "keys": [{ "t": 0, "position": [0,1,0] }, { "t": 2, "position": [3,1,0] }], "ease": "spline" };

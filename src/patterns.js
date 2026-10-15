@@ -2,7 +2,7 @@
 // Each pattern gives a mix factor t (0..1, between the material's pattern colors) and a height h (for bump
 // mapping). Coordinates are object space divided by the pattern scale (one feature per unit).
 
-export const PATTERN_TYPES = ['wood', 'marble', 'leather', 'carbon', 'fabric', 'brushed', 'checker', 'stripes', 'knurl'];
+export const PATTERN_TYPES = ['wood', 'marble', 'leather', 'carbon', 'fabric', 'brushed', 'checker', 'stripes', 'knurl', 'concrete', 'brick'];
 export const PATTERN_ID = Object.fromEntries(PATTERN_TYPES.map((t, i) => [t, i + 1]));
 
 const hash = (x, y, z) => {
@@ -110,6 +110,27 @@ export function evalPattern(type, x, y, z, nx, ny, nz) {
       const a = Math.atan2(z, x) * Math.sqrt(x * x + z * z), d1 = a + y, d2 = a - y;
       const h = Math.abs(Math.sin(d1 * Math.PI)) * Math.abs(Math.sin(d2 * Math.PI));
       PT = 1 - h; PH = h;
+      return;
+    }
+    case 10: { // concrete: cloudy trowelled surface, fine aggregate speckles, a few darker stains
+      const cloud = fbm(x * 0.35, y * 0.35, z * 0.35, 4);
+      worley(x * 4, y * 4, z * 4);
+      const speck = F1 < 0.12 ? 1 - F1 / 0.12 : 0;
+      const stain = Math.max(0, fbm(x * 0.08 + 9, y * 0.08, z * 0.08, 3) - 0.2) * 1.6;
+      PT = Math.min(1, Math.max(0, 0.45 + cloud * 0.3 + speck * 0.35 + stain * 0.5));
+      PH = cloud * 0.3 - speck * 0.4;
+      return;
+    }
+    case 11: { // brick: running bond on the facing plane, bricks one unit high and two long, recessed mortar
+      const ax = Math.abs(nx), ay = Math.abs(ny), az = Math.abs(nz);
+      const u = ax >= ay && ax >= az ? z : x, v = ax >= ay && ax >= az ? y : ay >= az ? z : y;
+      const row = Math.floor(v), uu = u * 0.5 + (row & 1) * 0.5, col = Math.floor(uu);
+      const fu = uu - col, fv = v - row, m = 0.045;
+      const mortar = fu < m * 0.5 || fu > 1 - m * 0.5 || fv < m || fv > 1 - m;
+      if (mortar) { PT = 1; PH = -1; return; }
+      const tone = hash(col, row, 7), grain = noise(u * 6, v * 6, col * 1.7) * 0.5 + 0.5;
+      PT = tone * 0.32 + grain * 0.14; // between the two brick colours; the third colour is the mortar
+      PH = 0.2 + grain * 0.3;
       return;
     }
     default: PT = 0; PH = 0;

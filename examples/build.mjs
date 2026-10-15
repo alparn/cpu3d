@@ -1124,6 +1124,198 @@ scene('desk', "Photographer's desk", 'A vintage rangefinder camera on a walnut d
   await cameraPath(doc, LOOP, [{ t: 5, yaw: -8, pitch: 9, distance: 2.3, target: [0.05, 0.42, 0.35] }, { t: 10.5, yaw: -42, pitch: 32, distance: 3.6, target: [0.2, 0.5, 0] }]);
 });
 
+scene('garage', 'Café racer garage', 'A café racer on a paddock stand in a workshop at night, at real scale: wire-spoke wheels with tread, a finned parallel twin, chrome headers into megaphone silencers, a glossy tank, a leather hump seat, chain and shocks; brick wall, sealed concrete, a workbench with tools and a swinging work lamp. The rear wheel spins on the stand.', async (doc) => {
+  const LOOP = 24, D = Math.PI / 180; // 1 unit = 10 cm
+  await tool(doc, 'set_environment', {
+    background: { top: '#0b0b0d', bottom: '#1b1a1d' }, fog: null, ground: false, reflections: 'studio',
+    light: { direction: [0.18, 1, 0.3], color: '#ffdcae', intensity: 1.05, softness: 0.3 },
+    lights: [{ direction: [-0.8, 0.45, 0.4], color: '#8fb0ff', intensity: 0.3 }, { direction: [0.1, 0.35, -1], color: '#ff5040', intensity: 0.22 }, { direction: [0.5, 0.25, 1], color: '#ffffff', intensity: 0.18 }],
+  });
+  const beam = (name, a, b, radius, material, extra = {}) => {
+    const d = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], len = Math.hypot(...d), n = d.map((v) => v / len);
+    return { name, shape: { type: 'cylinder', radiusTop: radius, radiusBottom: radius, height: r4(len), segments: 16, ...extra.shape }, position: P((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2),
+      rotation: P(Math.acos(Math.max(-1, Math.min(1, n[1]))) / D, Math.atan2(n[0], n[2]) / D, 0), material, ...(extra.animation ? { animation: extra.animation } : {}) };
+  };
+  const pipe = (name, pts, radius, material, extra = {}) => ({ name, shape: { type: 'tube', path: pts.map((p) => P(...p)), radius, sides: 14, ...extra }, material });
+  // smooth a polyline (Catmull-Rom) so bent tubes look bent, not kinked
+  const smooth = (pts, n = 6) => {
+    const out = [];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+      for (let k = 0; k < n; k++) {
+        const t = k / n, t2 = t * t, t3 = t2 * t;
+        out.push([0, 1, 2].map((a) => 0.5 * (2 * p1[a] + (-p0[a] + p2[a]) * t + (2 * p0[a] - 5 * p1[a] + 4 * p2[a] - p3[a]) * t2 + (-p0[a] + 3 * p1[a] - 3 * p2[a] + p3[a]) * t3)));
+      }
+    }
+    out.push(pts.at(-1));
+    return out;
+  };
+  const chrome = { color: '#e2e4e8', metalness: 0.85, roughness: 0.12, specular: 1 };
+  const alu = { color: '#b8bbc0', metalness: 0.75, roughness: 0.32, pattern: { type: 'brushed', colors: ['#aeb2b8', '#cfd2d6'], scale: 3 } };
+  const frameBlack = { color: '#0e0e10', roughness: 0.22, specular: 0.9, shininess: 120 };
+  const rubber = (scale = 0.1) => ({ color: '#141415', roughness: 0.8, specular: 0.2, pattern: { type: 'knurl', colors: ['#1d1d1f', '#0a0a0b'], scale, bump: 0.8 } });
+  const o = [];
+
+  // ---- wheels: tread, rim, crossed spokes, hub; the rear one spins on the stand
+  const F = [7.2, 3.3, 0], R = [-7.0, 3.6, 0];
+  const wheel = (c, rear) => {
+    const anim = rear ? { animation: { spin: { axis: [0, 0, 1], speed: -270, pivot: c } } } : {};
+    const at = (z) => [c[0], c[1], c[2] + z];
+    o.push({ name: rear ? 'Rear tyre' : 'Front tyre', shape: { type: 'torus', radius: 2.85, tube: 0.45, segments: 96, sides: 20 }, position: c, rotation: [90, 0, 0], material: rubber(0.09), ...anim });
+    o.push({ name: 'Rim', shape: { type: 'cylinder', radiusTop: 2.43, radiusBottom: 2.43, height: 0.5, segments: 96, caps: false }, position: c, rotation: [90, 0, 0], material: { ...chrome, doubleSided: true }, ...anim });
+    for (const z of [-0.26, 0.26]) o.push({ name: 'Rim lip', shape: { type: 'torus', radius: 2.43, tube: 0.05, segments: 96, sides: 8 }, position: at(z), material: chrome, rotation: [90, 0, 0], ...anim });
+    for (const [z, a] of [[-0.17, 0], [0.17, 10]]) {
+      o.push({ name: 'Spokes', shape: { type: 'radial', axis: 'z', count: 18, radius: 1.3, startAngle: a, rotation: [0, 0, 90 + (z > 0 ? 6 : -6)], shape: { type: 'cylinder', radiusTop: 0.022, radiusBottom: 0.022, height: 2.3, segments: 5 } }, position: at(z), material: chrome, ...anim });
+    }
+    o.push({ name: 'Hub', shape: { type: 'lathe', segments: 32, profile: [[0, -0.6], [0.3, -0.6], [0.45, -0.3], [0.42, 0.3], [0.3, 0.6], [0, 0.6]] }, position: c, rotation: [90, 0, 0], material: alu, ...anim });
+    if (!rear) {
+      o.push({ name: 'Brake disc', shape: { type: 'cylinder', radiusTop: 1.35, radiusBottom: 1.35, height: 0.05, segments: 64 }, position: at(0.68), rotation: [90, 0, 0], material: { color: '#9a9ea4', metalness: 0.9, roughness: 0.28, pattern: { type: 'brushed', colors: ['#8e9298', '#b4b8bd'], scale: 0.6 } } });
+      o.push({ name: 'Disc holes', shape: { type: 'radial', axis: 'z', count: 14, radius: 1.05, shape: { type: 'cylinder', radiusTop: 0.07, radiusBottom: 0.07, height: 0.07, segments: 10 }, rotation: [90, 0, 0] }, position: at(0.68), material: { color: '#111', roughness: 0.6 } });
+      o.push({ name: 'Brake caliper', shape: { type: 'roundedBox', width: 0.9, height: 0.55, depth: 0.45, radius: 0.12 }, position: [c[0] - 0.9, c[1] + 0.8, 0.85], rotation: [0, 0, 40], material: { color: '#1a1a1c', roughness: 0.4, specular: 0.6 } });
+    } else {
+      o.push({ name: 'Sprocket', shape: { type: 'cylinder', radiusTop: 1.15, radiusBottom: 1.15, height: 0.06, segments: 64 }, position: at(-0.72), rotation: [90, 0, 0], material: { color: '#2b2c2f', metalness: 0.8, roughness: 0.4 }, ...anim });
+      o.push({ name: 'Sprocket teeth', shape: { type: 'radial', axis: 'z', count: 42, radius: 1.2, shape: { type: 'box', width: 0.12, height: 0.06, depth: 0.06 } }, position: at(-0.72), material: { color: '#2b2c2f', metalness: 0.8, roughness: 0.4 }, ...anim });
+    }
+  };
+  wheel(F, false);
+  wheel(R, true);
+
+  // ---- front end: fork, yokes, headlight, gauge, clip-on bars
+  const T = [5.5, 9.4, 0], along = (t, z) => [T[0] + (F[0] - T[0]) * t, T[1] + (F[1] - T[1]) * t, z];
+  for (const z of [-0.85, 0.85]) {
+    o.push(beam('Fork stanchion', along(-0.03, z), along(0.6, z), 0.19, chrome));
+    o.push(beam('Fork slider', along(0.5, z), along(1.02, z), 0.27, { color: '#1a1a1c', roughness: 0.3, specular: 0.7 }));
+    o.push(beam('Fork gaiter', along(0.45, z), along(0.52, z), 0.3, { color: '#0d0d0e', roughness: 0.7 }));
+  }
+  for (const t of [0, 0.13]) o.push({ name: 'Yoke', shape: { type: 'roundedBox', width: 0.9, height: 0.28, depth: 2.3, radius: 0.1 }, position: along(t, 0), rotation: [0, 0, -15.6], material: alu });
+  o.push({ name: 'Headlight shell', shape: { type: 'lathe', segments: 48, profile: [[0, -0.95], [0.45, -0.9], [0.82, -0.55], [0.96, -0.05], [0.99, 0.05], [0.92, 0.08]] }, position: [7.55, 8.3, 0], rotation: [0, 0, -90], material: chrome });
+  o.push({ name: 'Headlight', shape: { type: 'sphere', radius: 1, segments: 48, rings: 24 }, position: [7.6, 8.3, 0], scale: [0.14, 0.9, 0.9], material: { color: '#fff3dc', emissive: 1.4, roughness: 0.05 } });
+  o.push({ name: 'Headlight ring', shape: { type: 'torus', radius: 0.92, tube: 0.06, segments: 48, sides: 8 }, position: [7.62, 8.3, 0], rotation: [0, 0, 90], material: chrome });
+  o.push({ name: 'Gauge', shape: { type: 'cylinder', radiusTop: 0.45, radiusBottom: 0.42, height: 0.32, segments: 40 }, position: [5.05, 10.05, 0], rotation: [0, 0, 28], material: chrome });
+  o.push({ name: 'Gauge face', shape: { type: 'cylinder', radiusTop: 0.38, radiusBottom: 0.38, height: 0.02, segments: 40 }, position: [5.13, 10.2, 0], rotation: [0, 0, 28], material: { color: '#f1ead8', roughness: 0.3, emissive: 0.15 } });
+  for (const s of [-1, 1]) {
+    o.push(pipe('Clip-on', [[5.4, 9.25, s * 0.8], [5.1, 9.15, s * 1.6], [4.9, 9.05, s * 2.2]], 0.12, chrome));
+    o.push(beam('Grip', [4.95, 9.07, s * 2.0], [4.7, 8.98, s * 2.85], 0.17, rubber(0.05)));
+    o.push(beam('Lever', [5.0, 9.15, s * 2.0], [4.3, 9.0, s * 2.6], 0.04, alu));
+  }
+
+  // ---- frame: backbone, cradle, seat rails, swingarm, shocks
+  o.push(pipe('Backbone', smooth([[5.2, 8.6, 0], [3.2, 8.7, 0], [0.5, 8.3, 0], [-1.5, 7.6, 0]]), 0.22, frameBlack));
+  for (const s of [-1, 1]) {
+    o.push(pipe('Cradle', smooth([[5.1, 8.2, 0], [4.4, 5.4, s * 0.75], [3.6, 2.0, s * 0.75], [0.5, 1.7, s * 0.75], [-1.3, 2.4, s * 0.8], [-1.6, 4.5, s * 0.8], [-1.5, 7.6, s * 0.15]]), 0.17, frameBlack));
+    o.push(pipe('Seat rail', smooth([[-1.5, 7.6, s * 0.15], [-3.5, 7.75, s * 0.8], [-6.9, 7.9, s * 0.8], [-7.3, 7.95, s * 0.4]]), 0.14, frameBlack));
+    o.push(beam('Swingarm', [-1.6, 3.6, s * 1.0], [R[0], R[1], s * 1.0], 0.22, frameBlack));
+    // shock absorber: chrome spring around a damper
+    const a = [-5.6, 3.8, s * 1.18], b = [-5.15, 7.7, s * 1.18], len = Math.hypot(b[0] - a[0], b[1] - a[1]), dir = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
+    o.push(beam('Damper', a, b, 0.13, { color: '#18181a', roughness: 0.35, specular: 0.7 }));
+    const coil = [];
+    for (let k = 0; k <= 96; k++) {
+      const t = 0.12 + (k / 96) * 0.7, ang = k * (11 * 360 / 96) * D, along2 = len * t;
+      const px = a[0] + dir[0] * along2, py = a[1] + dir[1] * along2;
+      coil.push([px + Math.cos(ang) * 0.3 * dir[1], py - Math.cos(ang) * 0.3 * dir[0], s * 1.18 + Math.sin(ang) * 0.3]);
+    }
+    o.push(pipe('Shock spring', coil, 0.055, chrome));
+  }
+
+  // ---- engine: crankcase, finned barrels, polished head and rocker covers, carbs with velocity stacks
+  o.push({ name: 'Crankcase', shape: { type: 'roundedBox', width: 4.2, height: 2.3, depth: 2.5, radius: 0.4, segments: 4 }, position: [0.7, 3.4, 0], material: alu });
+  for (const s of [-1, 1]) o.push({ name: 'Engine cover', shape: { type: 'cylinder', radiusTop: 0.95, radiusBottom: 1.05, height: 0.22, segments: 48 }, position: [0.2, 3.5, s * 1.32], rotation: [90, 0, 0], material: { ...chrome, roughness: 0.18 } });
+  const E = group([1.35, 5.95, 0], [0, 0, -12]);
+  o.push(E({ name: 'Cylinder block', shape: { type: 'roundedBox', width: 2.0, height: 2.4, depth: 2.4, radius: 0.15 }, position: [0, 0, 0], material: { ...alu, color: '#9fa3a8' } }));
+  for (let k = 0; k < 9; k++) o.push(E({ name: 'Cooling fin', shape: { type: 'roundedBox', width: 2.7, height: 0.07, depth: 2.9, radius: 0.03, segments: 2 }, position: [0, -1.0 + k * 0.25, 0], material: { ...alu, color: '#a9adb2' } }));
+  o.push(E({ name: 'Cylinder head', shape: { type: 'roundedBox', width: 2.6, height: 0.6, depth: 3.0, radius: 0.2 }, position: [0, 1.5, 0], material: { ...chrome, roughness: 0.2 } }));
+  for (const z of [-0.65, 0.65]) o.push(E({ name: 'Rocker cover', shape: { type: 'roundedBox', width: 1.2, height: 0.38, depth: 1.0, radius: 0.15 }, position: [0, 1.95, z], material: chrome }));
+  for (const s of [-1, 1]) {
+    o.push(beam('Carburettor', [-0.1, 6.5, s * 0.62], [-1.2, 6.65, s * 0.62], 0.32, alu));
+    o.push({ name: 'Velocity stack', shape: { type: 'lathe', segments: 32, profile: [[0.3, 0], [0.33, 0.3], [0.48, 0.6], [0.55, 0.66], [0.5, 0.68], [0.42, 0.6], [0.28, 0.3], [0.26, 0]] }, position: [-1.2, 6.65, s * 0.62], rotation: [0, 0, 90], material: { ...chrome, doubleSided: true } });
+    // chrome headers from the front of the head down and back into megaphones
+    o.push(pipe('Header', smooth([[2.55, 6.6, s * 0.62], [3.3, 5.6, s * 0.95], [3.2, 3.4, s * 1.15], [2.0, 2.2, s * 1.28], [-1.5, 2.4, s * 1.32], [-4.0, 3.55, s * 1.38]]), 0.2, chrome));
+    o.push({ name: 'Megaphone', shape: { type: 'lathe', segments: 40, profile: [[0, -0.05], [0.22, 0], [0.26, 0.5], [0.5, 4.0], [0.52, 4.1], [0.42, 4.12], [0, 4.1]] }, position: [-4.0, 3.55, s * 1.38], rotation: [0, 0, 82], material: chrome });
+  }
+  // chain loop between the gearbox sprocket and the rear sprocket
+  const chainPts = [];
+  for (let k = 0; k <= 64; k++) {
+    const t = (k / 64) * 2 * Math.PI;
+    const front = Math.cos(t) > 0, cx = front ? 0.2 : R[0], cy = front ? 3.2 : R[1], rr = front ? 0.45 : 1.18;
+    chainPts.push([cx + Math.cos(t) * rr, cy + Math.sin(t) * rr, -0.72]);
+  }
+  o.push(pipe('Chain', chainPts, 0.07, { color: '#3a3b3e', metalness: 0.8, roughness: 0.45, pattern: { type: 'knurl', colors: ['#4a4b4f', '#1a1a1c'], scale: 0.06 } }, { sides: 6, closed: true }));
+
+  // ---- tank, seat and tail
+  o.push({ name: 'Tank', shape: { type: 'sphere', radius: 1, segments: 64, rings: 32 }, position: [2.35, 9.35, 0], rotation: [0, 0, -4], scale: [3.3, 1.25, 1.35], material: { color: '#123a2c', metalness: 0.35, roughness: 0.08, specular: 1.2, shininess: 200 } });
+  o.push({ name: 'Filler cap', shape: { type: 'cylinder', radiusTop: 0.36, radiusBottom: 0.4, height: 0.14, segments: 40 }, position: [2.7, 10.6, 0], material: chrome });
+  for (const s of [-1, 1]) {
+    o.push({ name: 'Tank badge', shape: { type: 'cylinder', radiusTop: 0.34, radiusBottom: 0.34, height: 0.05, segments: 40 }, position: [2.2, 9.3, s * 1.33], rotation: [90, 0, 0], material: { color: '#e4d3a8', metalness: 0.2, roughness: 0.25, specular: 0.9 } });
+    o.push({ name: 'Badge rim', shape: { type: 'torus', radius: 0.34, tube: 0.035, segments: 40, sides: 8 }, position: [2.2, 9.3, s * 1.36], rotation: [90, 0, 0], material: chrome });
+    o.push({ name: 'Knee pad', shape: { type: 'roundedBox', width: 1.2, height: 0.7, depth: 0.12, radius: 0.1 }, position: [0.4, 9.0, s * 1.08], rotation: [0, s * -8, 0], material: rubber(0.05) });
+  }
+  const seatLeather = { color: '#5a3018', roughness: 0.55, specular: 0.4, pattern: { type: 'leather', colors: ['#6b391c', '#4c2712', '#2a1409'], scale: 0.1, bump: 0.8 } };
+  o.push({ name: 'Seat', shape: { type: 'roundedBox', width: 4.4, height: 0.65, depth: 2.3, radius: 0.3, segments: 4 }, position: [-3.3, 8.3, 0], material: seatLeather });
+  o.push({ name: 'Seat hump', shape: { type: 'roundedBox', width: 1.5, height: 1.35, depth: 2.3, radius: 0.45, segments: 4 }, position: [-6.0, 8.65, 0], material: seatLeather });
+  o.push({ name: 'Tail light', shape: { type: 'cylinder', radiusTop: 0.28, radiusBottom: 0.28, height: 0.15, segments: 32 }, position: [-6.85, 8.5, 0], rotation: [0, 0, 90], material: { color: '#ff2a1a', emissive: 1.6, roughness: 0.1 } });
+
+  // ---- paddock stand under the rear axle
+  const stand = { color: '#b81f17', roughness: 0.35, specular: 0.7 };
+  for (const s of [-1, 1]) {
+    o.push(beam('Stand upright', [-6.9, 0.3, s * 1.7], [-6.9, 3.4, s * 1.25], 0.16, stand));
+    o.push(beam('Stand arm', [-6.9, 0.3, s * 1.7], [-3.5, 0.3, s * 1.7], 0.16, stand));
+    o.push({ name: 'Stand wheel', shape: { type: 'cylinder', radiusTop: 0.3, radiusBottom: 0.3, height: 0.2, segments: 24 }, position: [-7.2, 0.3, s * 1.7], rotation: [90, 0, 0], material: rubber(0.03) });
+  }
+  o.push(beam('Stand bar', [-6.9, 0.3, -1.7], [-6.9, 0.3, 1.7], 0.16, stand));
+
+  // ---- the workshop: brick wall, sealed concrete, workbench and tools, tool chest, spare tyre, neon, work lamp
+  o.push({ name: 'Floor', shape: { type: 'box', width: 160, height: 0.2, depth: 110 }, position: [0, -0.1, 0],
+    material: { color: '#55534f', roughness: 0.25, specular: 0.75, pattern: { type: 'concrete', colors: ['#5f5d59', '#4a4845', '#24231f'], scale: 4 } } });
+  o.push({ name: 'Brick wall', shape: { type: 'box', width: 160, height: 60, depth: 1 }, position: [0, 30, -22.5],
+    material: { color: '#7a3424', roughness: 0.9, specular: 0.15, pattern: { type: 'brick', colors: ['#7a3424', '#4f2016', '#8f877c'], scale: 0.7, bump: 0.9 } } });
+  // the rest of the room: a steel roller door behind the camera's way round and a second brick wall
+  o.push({ name: 'Roller door', shape: { type: 'box', width: 60, height: 32, depth: 0.6 }, position: [6, 16, 34],
+    material: { color: '#7d8186', metalness: 0.6, roughness: 0.45, pattern: { type: 'stripes', colors: ['#868a90', '#5e6166'], scale: 0.8 } } });
+  o.push({ name: 'Door frame', shape: { type: 'box', width: 62, height: 1.2, depth: 1 }, position: [6, 32.4, 33.8], material: { color: '#2a2b2e', roughness: 0.5 } });
+  o.push({ name: 'Right wall', shape: { type: 'box', width: 1, height: 60, depth: 110 }, position: [48, 30, 0],
+    material: { color: '#7a3424', roughness: 0.9, specular: 0.15, pattern: { type: 'brick', colors: ['#7a3424', '#4f2016', '#8f877c'], scale: 0.7, bump: 0.9 } } });
+  o.push({ name: 'Side wall', shape: { type: 'box', width: 1, height: 60, depth: 110 }, position: [-48, 30, 0], material: { color: '#55534f', roughness: 0.8, pattern: { type: 'concrete', colors: ['#5f5d59', '#4a4845', '#2a2927'], scale: 6 } } });
+  const wood = { color: '#6a4428', roughness: 0.5, specular: 0.3, pattern: { type: 'wood', colors: ['#8a5f3c', '#6b4527', '#3a2414'], scale: 0.3, bump: 0.3 } };
+  o.push({ name: 'Workbench top', shape: { type: 'box', width: 22, height: 0.7, depth: 6.5 }, position: [22, 9, -18.5], material: wood });
+  for (const [x, z] of [[11.5, -21.2], [32.5, -21.2], [11.5, -15.8], [32.5, -15.8]]) o.push({ name: 'Bench leg', shape: { type: 'box', width: 0.6, height: 8.7, depth: 0.6 }, position: [x, 4.35, z], material: { color: '#2f3d4a', metalness: 0.6, roughness: 0.4 } });
+  o.push({ name: 'Pegboard', shape: { type: 'box', width: 20, height: 11, depth: 0.3 }, position: [22, 17, -21.8], material: { color: '#a88f69', roughness: 0.85, pattern: { type: 'checker', colors: ['#a88f69', '#9c8460'], scale: 0.25 } } });
+  for (let k = 0; k < 7; k++) {
+    const len = 2.2 + k * 0.45, x = 14 + k * 1.5;
+    o.push({ name: 'Wrench', shape: { type: 'extrude', depth: 0.08, shape: [[-0.12, -len / 2], [0.12, -len / 2], [0.14, len / 2 - 0.25], [0.32, len / 2 - 0.05], [0.18, len / 2 + 0.15], [0.06, len / 2 - 0.02], [-0.06, len / 2 - 0.02], [-0.18, len / 2 + 0.15], [-0.32, len / 2 - 0.05], [-0.14, len / 2 - 0.25]] },
+      position: [x, 19.5 - len / 2, -21.55], material: chrome });
+  }
+  o.push({ name: 'Hammer head', shape: { type: 'roundedBox', width: 1.6, height: 0.5, depth: 0.5, radius: 0.08 }, position: [27, 20.5, -21.4], material: { color: '#3a3b3e', metalness: 0.8, roughness: 0.35 } });
+  o.push({ name: 'Hammer handle', shape: { type: 'cylinder', radiusTop: 0.16, radiusBottom: 0.18, height: 3.4, segments: 12 }, position: [27, 18.6, -21.4], material: wood });
+  o.push({ name: 'Oil can', shape: { type: 'cylinder', radiusTop: 0.8, radiusBottom: 0.8, height: 2, segments: 32 }, position: [16, 10.35, -18], material: { color: '#c9a227', roughness: 0.3, specular: 0.7, pattern: { type: 'stripes', colors: ['#c9a227', '#1d1d1f'], scale: 0.6 } } });
+  o.push({ name: 'Tool chest', shape: { type: 'roundedBox', width: 9, height: 11, depth: 5, radius: 0.25 }, position: [-24, 5.5, -18.5], material: { color: '#b3201b', roughness: 0.2, specular: 1, shininess: 160 } });
+  for (let k = 0; k < 5; k++) {
+    o.push({ name: 'Drawer line', shape: { type: 'box', width: 8.6, height: 0.06, depth: 0.05 }, position: [-24, 2.2 + k * 1.9, -15.97], material: { color: '#5a0f0c', roughness: 0.5 } });
+    o.push({ name: 'Drawer handle', shape: { type: 'cylinder', radiusTop: 0.1, radiusBottom: 0.1, height: 5, segments: 12 }, position: [-24, 3.0 + k * 1.9, -15.85], rotation: [0, 0, 90], material: chrome });
+  }
+  o.push({ name: 'Spare tyre', shape: { type: 'torus', radius: 2.85, tube: 0.45, segments: 96, sides: 20 }, position: [-34, 3.0, -20.5], rotation: [76, 18, 0], material: rubber(0.09) });
+  // neon on the brick wall: a lightning bolt that flickers now and then
+  const bolt = [[0, 6], [-2.2, 0.6], [-0.4, 0.6], [-1.6, -5], [2.4, 1.2], [0.5, 1.2], [1.8, 6]].map(([x, y]) => [x - 8, y + 24, -21.7]);
+  o.push({ name: 'Neon bolt', shape: { type: 'tube', path: bolt, radius: 0.14, sides: 8, closed: true }, material: { color: '#ff3b2f', emissive: 2.4 },
+    animation: { pulse: { min: 0.5, max: 1.1, period: 0.12, blink: true, phase: 0.3 } } });
+  o.push({ name: 'Neon backing', shape: { type: 'box', width: 7, height: 14, depth: 0.15 }, position: [-8, 24, -21.9], material: { color: '#1a1a1c', roughness: 0.5 } });
+  // hanging work lamp above the bike, swinging a little
+  const lampSwing = { swing: { axis: [1, 0, 0.4], amplitude: 2.5, period: 6, pivot: [0, 60, 0] } };
+  o.push({ name: 'Lamp cord', shape: { type: 'cylinder', radiusTop: 0.04, radiusBottom: 0.04, height: 36, segments: 6 }, position: [0, 42, 0], material: { color: '#111' }, animation: lampSwing });
+  o.push({ name: 'Lamp shade', shape: { type: 'lathe', segments: 48, profile: [[0.35, 0.9], [0.9, 0.6], [2.6, -0.8], [2.65, -0.9]] }, position: [0, 23.3, 0], material: { color: '#1f4d3a', roughness: 0.35, specular: 0.6, doubleSided: true }, animation: lampSwing });
+  o.push({ name: 'Lamp bulb', shape: { type: 'sphere', radius: 0.65, segments: 24, rings: 14 }, position: [0, 22.8, 0], material: { color: '#fff1d0', emissive: 2.8 }, animation: lampSwing });
+
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 32, pitch: 10, distance: 23, target: [0, 5.5, 0] });
+  // one turn around the bike: 3/4 front, close on the headlight, the spinning rear wheel and silencers, the engine, back
+  await tool(doc, 'set_animation', { duration: LOOP, camera: { ease: 'spline', keys: [
+    { t: 0, yaw: 32, pitch: 10, distance: 23, target: [0, 5.5, 0] },
+    { t: 7, yaw: 78, pitch: 7, distance: 16, target: [4, 6.5, 0] },
+    { t: 13, yaw: 170, pitch: 16, distance: 20, target: [-3, 5.5, 0] },
+    { t: 19, yaw: 300, pitch: 6, distance: 15, target: [1, 5, 0] },
+    { t: 24, yaw: 392, pitch: 10, distance: 23, target: [0, 5.5, 0] },
+  ] } });
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)

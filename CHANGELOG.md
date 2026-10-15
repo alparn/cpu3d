@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New gallery scene **Café racer garage**: a motorcycle at real scale on a paddock stand (spinning rear wheel) with wire-spoke wheels and tread, a finned parallel twin, chrome headers and megaphones, shocks, chain, glossy tank and leather seat, in a brick workshop at night with a workbench, tools, a roller door, a neon sign and a swinging work lamp
+- New patterns **concrete** and **brick** (running bond with recessed mortar)
 - Editor resolution **Auto** (new default): renders at the display's pixel density (Retina) when the view is still and never below 1 pixel per CSS pixel while moving; the choice is remembered. Before, high-density screens showed a 1x image stretched to twice its size
 - Patterns get a level of detail: features smaller than about two pixels fade to the pattern's average, relief included, so fine leather grain or knurling no longer flickers at a distance
 - **Procedural patterns with relief**: `material.pattern` = wood, marble, leather, carbon, fabric, brushed, checker, stripes or knurl, with 2-3 colours, a feature `scale` and `bump`. Evaluated per visible pixel in object space by the (multi-threaded) shading stage, so they work on any shape without UVs, move with the object and tilt the normal for real relief

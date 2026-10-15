@@ -80,6 +80,16 @@
     "ramBytes": 750072
   },
   {
+    "id": "garage",
+    "title": "Café racer garage",
+    "description": "A café racer on a paddock stand in a workshop at night, at real scale: wire-spoke wheels with tread, a finned parallel twin, chrome headers into megaphone silencers, a glossy tank, a leather hump seat, chain and shocks; brick wall, sealed concrete, a workbench with tools and a swinging work lamp. The rear wheel spins on the stand.",
+    "objects": 131,
+    "triangles": 60220,
+    "jsonBytes": 101498,
+    "objBytes": 2066256,
+    "ramBytes": 1075440
+  },
+  {
     "id": "castle",
     "title": "Castle",
     "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",

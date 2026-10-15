@@ -60,8 +60,8 @@ function range(v, name, min, max) {
 }
 
 // procedural pattern { type, colors: [2..3 colours], scale (size of one feature in units), bump 0..2 }
-const PATTERN_SCALE = { wood: 0.25, marble: 0.6, leather: 0.012, carbon: 0.02, fabric: 0.006, brushed: 1, checker: 0.25, stripes: 0.2, knurl: 0.02 };
-const PATTERN_BUMP = { wood: 0.35, marble: 0, leather: 0.9, carbon: 0.5, fabric: 0.8, brushed: 0.12, checker: 0, stripes: 0, knurl: 1.2 };
+const PATTERN_SCALE = { wood: 0.25, marble: 0.6, leather: 0.012, carbon: 0.02, fabric: 0.006, brushed: 1, checker: 0.25, stripes: 0.2, knurl: 0.02, concrete: 0.5, brick: 0.65 };
+const PATTERN_BUMP = { wood: 0.35, marble: 0, leather: 0.9, carbon: 0.5, fabric: 0.8, brushed: 0.12, checker: 0, stripes: 0, knurl: 1.2, concrete: 0.2, brick: 0.9 };
 function normalizePattern(p) {
   if (!p || typeof p !== 'object' || Array.isArray(p)) fail('"material.pattern" must be an object like { "type": "wood", "colors": ["#8a5a35", "#4a2c18"] }');
   if (!PATTERN_TYPES.includes(p.type)) fail(`"material.pattern.type" must be one of ${PATTERN_TYPES.join(', ')}`);
