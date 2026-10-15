@@ -2,21 +2,82 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { SceneDocument, Renderer, buildRenderScene, cameraFromState, updateAnimation } from '../src/index.js';
-import { ShadePool } from '../src/pool.js';
+import { RenderPool } from '../src/pool.js';
 
 const load = (id) => new SceneDocument(JSON.parse(readFileSync(new URL(`../examples/${id}.json`, import.meta.url), 'utf8')));
 const diff = (a, b) => { let s = 0; for (let i = 0; i < a.length; i += 4) s += Math.abs(a[i] - b[i]) + Math.abs(a[i + 1] - b[i + 1]) + Math.abs(a[i + 2] - b[i + 2]); return s / (a.length * 0.75); };
 
-test('worker pool renders exactly the same pixels as one thread', async () => {
-  const pool = await ShadePool.create({ threads: 3 });
+test('render threads produce exactly the same pixels as one thread', async () => {
+  const pool = await RenderPool.create({ threads: 3 });
   assert.ok(pool, 'worker threads available');
   try {
-    const doc = load('castle'), scene = buildRenderScene(doc.data, (s) => doc.geometry(s)), cam = cameraFromState(doc.data.camera);
-    const a = new Renderer({ width: 160, height: 100 }), b = new Renderer({ width: 160, height: 100 }).setPool(pool);
-    for (const opts of [{}, { accumulate: true }, { accumulate: true }]) { a.render(scene, cam, opts); await b.renderAsync(scene, cam, opts); }
-    assert.equal(diff(a.pixels, b.pixels), 0);
-    assert.equal(a.samples, 3);
+    // castle: plain geometry; seagrass: wind in the vertex stage, scatter, atmosphere; fair: animation, many draws
+    for (const [id, time] of [['castle', 0], ['seagrass', 3], ['fair', 2]]) {
+      const doc = load(id), scene = buildRenderScene(doc.data, (s) => doc.geometry(s), { time }), cam = cameraFromState(doc.data.camera);
+      const a = new Renderer({ width: 160, height: 100 }), b = new Renderer({ width: 160, height: 100 }).setPool(pool);
+      for (const opts of [{}, { accumulate: true }, { temporal: true }, { temporal: true }]) {
+        a.render(scene, cam, opts);
+        await b.renderAsync(scene, cam, opts);
+        assert.equal(b.pool, pool, `${id}: the frame ran on the threads (no fallback)`);
+        assert.equal(diff(a.pixels, b.pixels), 0, `${id} ${JSON.stringify(opts)}`);
+      }
+      assert.equal(b.stats.drawn, a.stats.drawn, `${id}: every triangle counted once`);
+      // the fast path and the debug views go through the threads too
+      for (const [quality, shading, wireframe] of [['fast', 'gouraud', false], ['fast', 'flat', true], ['high', 'normals', false]]) {
+        for (const r of [a, b]) { r.quality = quality; r.shading = shading; r.wireframe = wireframe; }
+        a.render(scene, cam);
+        await b.renderAsync(scene, cam);
+        assert.equal(diff(a.pixels, b.pixels), 0, `${id} ${quality} ${shading}${wireframe ? ' wireframe' : ''}`);
+      }
+    }
+    assert.ok(pool.frames >= 21);
   } finally { pool.terminate(); }
+});
+
+test('frames from several renderers queue up on one pool', async () => {
+  const pool = await RenderPool.create({ threads: 2 });
+  try {
+    const doc = load('chess'), scene = buildRenderScene(doc.data, (s) => doc.geometry(s)), cam = cameraFromState(doc.data.camera);
+    const ref = new Renderer({ width: 120, height: 80 }).render(scene, cam);
+    const rs = [0, 1, 2].map(() => new Renderer({ width: 120, height: 80 }).setPool(pool));
+    await Promise.all(rs.map((r) => r.renderAsync(scene, cam))); // all requested at once
+    for (const r of rs) assert.equal(diff(r.pixels, ref.pixels), 0);
+  } finally { pool.terminate(); }
+});
+
+test('a failing or crashed pool falls back to one thread instead of hanging', async () => {
+  const doc = load('chess'), scene = buildRenderScene(doc.data, (s) => doc.geometry(s)), cam = cameraFromState(doc.data.camera);
+  const ref = new Renderer({ width: 120, height: 80 }).render(scene, cam);
+  const warn = console.warn, error = console.error;
+  console.warn = console.error = () => {};
+  try {
+    const failing = { size: 2, frame: async () => { throw new Error('boom'); } };
+    const r = new Renderer({ width: 120, height: 80 }).setPool(failing);
+    await r.renderAsync(scene, cam);
+    assert.equal(r.pool, null, 'the renderer dropped the failing pool');
+    assert.equal(diff(r.pixels, ref.pixels), 0);
+
+    const pool = await RenderPool.create({ threads: 3 });
+    const c = new Renderer({ width: 120, height: 80 }).setPool(pool);
+    await c.renderAsync(scene, cam);
+    pool.workers[1].terminate(); // one thread dies
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    await c.renderAsync(scene, cam);
+    assert.ok(pool.broken, 'the pool knows a thread is gone');
+    assert.equal(c.pool, null);
+    assert.equal(diff(c.pixels, ref.pixels), 0);
+    pool.terminate();
+
+    // a frame that does not finish in time (here: a watchdog of 1 ms) is aborted, nothing hangs
+    const slow = await RenderPool.create({ threads: 2 });
+    slow.timeout = 1;
+    const d = new Renderer({ width: 120, height: 80 }).setPool(slow);
+    await d.renderAsync(scene, cam);
+    assert.match(slow.broken.message, /longer than/);
+    assert.equal(d.pool, null);
+    assert.equal(diff(d.pixels, ref.pixels), 0);
+    slow.terminate();
+  } finally { console.warn = warn; console.error = error; }
 });
 
 test('temporal anti-aliasing converges on a still view and follows a moving one', () => {

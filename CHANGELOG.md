@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Render threads for the whole frame** (`RenderPool`, replaces the shading-only `ShadePool`, which stays as an alias): the vertex stage, rasterization, shadow maps of moving objects, AO, lighting, atmosphere and TAA all run on the worker pool; the main thread only builds the draw list (0.2-0.6 ms per frame). One message per thread and frame, barriers in shared memory, work claimed from atomic counters (no thread idles while another is busy), sort-middle binning of triangles into interleaved row bands, frames queued across renderers, geometry and textures shared once, and a clean fallback to one thread if a thread fails. Pixel-identical to one thread; a watchdog aborts a frame that hangs. 960x540 with TAA, 8 threads: Seagrass meadow 105 -> 39 ms, Neon district 42 -> 21 ms, Fairground 23 -> 16 ms, Skeleton watch 24 -> 17 ms, Café racer garage 115 -> 92 ms
+- `pool.profile`: time of the slowest thread and the average per stage of the last frame
+- Light shafts march 4 steps instead of 8 while things move (temporal AA fills in), and the editor's Auto resolution may go a little below one pixel per CSS pixel while moving heavy scenes, so they stay fluid
 - New gallery scene **Seagrass meadow**: an ambient underwater world after the Gaussian-splat demos, but rasterized: 64,000 seagrass blades swaying in one current, kelp, rocks, two circling fish schools, rising plankton and light shafts through the water on a 24 s drone glide (463k triangles from 53 KB of JSON)
 - **`wind` behaviour**: bends every vertex of an object with the height above its base (stiff at the root, loose at the tip) in travelling gusts (`strength`, `wavelength`, `speed`, `direction`); applied in the vertex stage, so one scatter of thousands of blades sways like a field
 - Recipes **`blade`** (tapered, bent ribbon) and **`scatter`** (up to 200,000 copies of a shape over an area with random scale, yaw, tilt, clumping and a height range)

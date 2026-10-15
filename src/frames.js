@@ -11,7 +11,7 @@ export const timelineDuration = (data) => data.animation?.duration || 12;
 // frame interval: anti-aliasing, soft shadows and motion blur in one go.
 // camera: fixed camera state, or null to follow the scene's camera path.
 // Yields { index, time, pixels }; pixels is reused between frames, copy it to keep it.
-// pool: optional ShadePool (pool.js) to shade on several threads.
+// pool: optional RenderPool (pool.js) to render on several threads.
 export async function* renderFrames(data, geometryFor, { width = 480, height = 320, times, samples = 4, shutter = 0.5, fps = 15,
   quality = 'high', camera = null, shading = 'gouraud', pool = null, effects = true } = {}) {
   const r = new Renderer({ width, height }).setPool(pool);

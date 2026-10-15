@@ -318,7 +318,7 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 | Ambient occlusion | screen-space AO, half resolution, depth-aware blur | none |
 | Tone mapping | ACES filmic + sRGB | ACES filmic + sRGB |
 | Anti-aliasing | temporal (TAA) while things move, progressive averaging of jittered frames when the view is still | none |
-| Threads | lighting, AO and anti-aliasing on all cores (Web Workers / worker_threads, shared memory) | one |
+| Threads | the whole frame on all cores: vertex stage, rasterization, shadows, AO, lighting, anti-aliasing (Web Workers / worker_threads, shared memory) | one |
 
 <img src="docs/before-after.png" alt="Before (left) and after (right): per-vertex lighting versus shadows, ambient occlusion, tone mapping and anti-aliasing" width="100%">
 
@@ -330,7 +330,7 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 
 ### Multi-threaded, temporal, adaptive
 
-- **All cores**: the main thread rasterizes the G-buffer, a pool of workers does the per-pixel work (AO, blur, lighting, anti-aliasing) in row chunks over `SharedArrayBuffer`s. The result is pixel-identical to one thread. The cpu3d server sends the cross-origin isolation headers this needs; on GitHub Pages a tiny service worker (`coi-sw.js`) adds them. Without isolation the editor falls back to one thread.
+- **All cores**: the main thread only builds the draw list (well under a millisecond); a pool of render threads does the rest over `SharedArrayBuffer`s: vertex stage, triangle binning, rasterization in interleaved row bands, shadow maps of moving objects, AO, lighting, atmosphere and anti-aliasing. One message per thread and frame, barriers in shared memory, work claimed from atomic counters so no core idles, and a fallback to one thread if a thread fails. The result is pixel-identical to one thread. The cpu3d server sends the cross-origin isolation headers this needs; on GitHub Pages a tiny service worker (`coi-sw.js`) adds them. Without isolation the editor falls back to one thread.
 - **Temporal anti-aliasing** while orbiting, zooming or playing an animation: every frame is jittered, the previous result is reprojected with motion vectors (Catmull-Rom sampling), clipped to the variance of the current neighbourhood and blended in: as a running average while a pixel stays put (no flicker), faster when it moves. Animated objects bring their own motion vectors. Edges, AO and soft shadows stay smooth in motion instead of shimmering.
 - **Seamless refinement**: when the view stops, the progressive 16-sample average starts from the temporal history, so there is no drop in quality.
 - **Adaptive resolution**: if a full frame would take longer than about 34 ms, motion is rendered at a reduced resolution (down to 40%) and scaled up; the still image is always full resolution.
@@ -340,6 +340,13 @@ The pipeline is the same one a GPU runs, written out in JavaScript:
 |---|---:|---:|
 | Frame while orbiting or playing (with TAA) | ~110 ms | 24 ms |
 | GIF export, 45 frames × 6 samples, 560×350 | 12.7 s | 5.7 s |
+
+| Frame with TAA, 960×540, 8 threads (Node, Apple Silicon) | Triangles | Shading on threads only | Whole frame on threads |
+|---|---:|---:|---:|
+| Seagrass meadow | 463k | 105 ms | 39 ms |
+| Neon district | 29k | 42 ms | 21 ms |
+| Fairground at dusk | 98k | 23 ms | 16 ms |
+| Skeleton watch | 33k | 24 ms | 17 ms |
 
 The editor refines the image up to 16 samples when the camera stops; `render_view` returns 8-sample renders to agents.
 
@@ -392,7 +399,6 @@ The server binds to `127.0.0.1` and rejects requests whose `Host` or `Origin` is
 
 ## Roadmap
 
-- Multi-threaded rasterization (the shading is already parallel)
 - Bloom for emissive surfaces, depth of field, glossy floor reflections
 - Path tracing mode for final renders (global illumination)
 - Bevels for box and extrude, crease angle for smoothing groups

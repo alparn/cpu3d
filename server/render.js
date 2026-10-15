@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { Renderer } from '../src/renderer.js';
 import { buildRenderScene, cameraFromState } from '../src/scene.js';
 import { renderContactSheet, renderGIF } from '../src/frames.js';
-import { ShadePool } from '../src/pool.js';
+import { RenderPool } from '../src/pool.js';
 import { setTextureLoader, loadTextures, isValidTextureSrc } from '../src/textures.js';
 import { encodePNG, decodePNG } from './png.js';
 
@@ -41,7 +41,7 @@ export function renderPNG(doc, { width = 768, height = 512, camera = doc.data.ca
 // one pool of shading threads for the server (render_view, render_animation, export_gif); idle threads
 // do not keep the process alive
 let poolPromise = null;
-export const getPool = () => (poolPromise ??= ShadePool.create());
+export const getPool = () => (poolPromise ??= RenderPool.create());
 
 export async function renderPNGAsync(doc, { width = 768, height = 512, camera = doc.data.camera, shading = 'gouraud', wireframe = false,
   highlight = [], quality = 'high', samples = 8, time = 0, effects = true } = {}) {

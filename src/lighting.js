@@ -53,7 +53,9 @@ export function halton(i, b) {
 // ---------------------------------------------------------------- shadow map
 // Orthographic depth render from the light. Stores "closeness" = dot(p, L) (L points to the light),
 // so the standard "greater wins" depth test keeps the surface nearest to the light.
-export function buildShadowMap(meshes, L, center, radius, size, alloc = (n) => new Float32Array(n), time = 0) {
+
+// An empty map (basis, texel-snapped origin, depth buffer) around center; draw into it with a shadow plan.
+export function shadowBasis(L, center, radius, size, alloc = (n) => new Float32Array(n)) {
   const up = Math.abs(L[1]) < 0.95 ? [0, 1, 0] : [1, 0, 0];
   // basis: R, U span the shadow map plane, L is the depth axis
   let R = [up[1] * L[2] - up[2] * L[1], up[2] * L[0] - up[0] * L[2], up[0] * L[1] - up[1] * L[0]];
@@ -64,37 +66,95 @@ export function buildShadowMap(meshes, L, center, radius, size, alloc = (n) => n
   // origin snapped to whole texels: when the framing moves, shadow edges do not swim
   const ox = Math.floor((R[0] * center[0] + R[1] * center[1] + R[2] * center[2] - radius) * scale) / scale;
   const oy = Math.floor((U[0] * center[0] + U[1] * center[1] + U[2] * center[2] - radius) * scale) / scale;
-  const sm = { depth: alloc(size * size).fill(-Infinity), size, R, U, L, ox, oy, scale };
-  drawShadowCasters(sm, meshes, time);
+  return { depth: alloc(size * size), size, R, U, L, ox, oy, scale };
+}
+
+export function buildShadowMap(meshes, L, center, radius, size, alloc, time = 0) {
+  const sm = shadowBasis(L, center, radius, size, alloc);
+  runShadowPlan(shadowPlan([{ map: sm, fill: 'clear', casters: meshes }], time, (T, n) => new T(n)));
   return sm;
 }
 
 // Adds meshes to an existing shadow map (moving objects on top of the cached static ones).
 export function drawShadowCasters(sm, meshes, time = 0) {
-  const { depth, size, R, U, L, ox, oy, scale } = sm, s16 = scale * 16;
-  for (const mesh of meshes) {
-    if (mesh.castShadow === false) continue;
-    const g = mesh.geometry, m = mesh.matrix, P = g.positions, I = g.indices, n = P.length / 3, wind = mesh.wind, base = g.min[1];
-    const X = new Int32Array(n), Y = new Int32Array(n), Z = new Float32Array(n);
-    for (let v = 0, k = 0; v < n; v++, k += 3) {
-      const x = P[k], y = P[k + 1], z = P[k + 2];
-      let wx = m[0] * x + m[4] * y + m[8] * z + m[12];
-      let wy = m[1] * x + m[5] * y + m[9] * z + m[13];
-      let wz = m[2] * x + m[6] * y + m[10] * z + m[14];
-      if (wind) { windAt(wind, y, base, wx, wz, time); wx += WIND.DX; wy += WIND.DY; wz += WIND.DZ; }
-      X[v] = Math.round((R[0] * wx + R[1] * wy + R[2] * wz - ox) * s16);
-      Y[v] = Math.round((U[0] * wx + U[1] * wy + U[2] * wz - oy) * s16);
-      Z[v] = L[0] * wx + L[1] * wy + L[2] * wz;
-    }
-    for (let t = 0; t < I.length; t += 3) {
-      const a = I[t], b = I[t + 1], c = I[t + 2];
-      rasterDepth(depth, size, X[a], Y[a], Z[a], X[b], Y[b], Z[b], X[c], Y[c], Z[c]);
+  runShadowPlan(shadowPlan([{ map: sm, fill: null, casters: meshes }], time, (T, n) => new T(n)));
+}
+
+// The shadow drawing of a frame as units of work that any thread can take (pool.js):
+//   tasks: [{ map, fill: 'clear' | null (draw on top) | Float32Array (start from a copy of it), casters: meshes }]
+//   stage A units: clear or copy a block of rows; transform a range of a caster's vertices into light space
+//   stage B units: rasterize every caster's triangles into one block of rows (after all of stage A)
+// Depth is "greater wins", so the result does not depend on which thread draws what.
+const SHADOW_ROWS = 32, SHADOW_VERTS = 8192;
+export function shadowPlan(tasks, time, alloc) {
+  let verts = 0;
+  const list = tasks.map((t) => ({
+    map: t.map, fill: t.fill,
+    casters: t.casters.filter((m) => m.castShadow !== false).map((m) => {
+      const c = { geo: m.geometry, m: Float64Array.from(m.matrix), wind: m.wind || null, base: verts };
+      verts += m.geometry.positions.length / 3;
+      return c;
+    }),
+  }));
+  const A = [], B = [];
+  list.forEach((t, ti) => {
+    const S = t.map.size;
+    if (t.fill) for (let y = 0; y < S; y += SHADOW_ROWS) A.push(ti, 0, y, Math.min(S, y + SHADOW_ROWS));
+    t.casters.forEach((c, ci) => {
+      const n = c.geo.positions.length / 3;
+      for (let v = 0; v < n; v += SHADOW_VERTS) A.push(ti, ci + 1, v, Math.min(n, v + SHADOW_VERTS));
+    });
+    if (t.casters.length) for (let y = 0; y < S; y += SHADOW_ROWS) B.push(ti, y, Math.min(S, y + SHADOW_ROWS));
+  });
+  const XY = alloc(Int32Array, verts * 2); // one allocation per type (alloc may hand out reused scratch arrays)
+  return { tasks: list, time, A: Int32Array.from(A), B: Int32Array.from(B), X: XY.subarray(0, verts), Y: XY.subarray(verts), Z: alloc(Float32Array, verts) };
+}
+
+export function runShadowPlan(plan) {
+  for (let u = 0; u < plan.A.length / 4; u++) shadowUnitA(plan, u);
+  for (let u = 0; u < plan.B.length / 3; u++) shadowUnitB(plan, u);
+}
+
+export function shadowUnitA(plan, u) {
+  const t = plan.tasks[plan.A[u * 4]], kind = plan.A[u * 4 + 1], a = plan.A[u * 4 + 2], b = plan.A[u * 4 + 3];
+  const { depth, size, R, U, L, ox, oy, scale } = t.map;
+  if (kind === 0) {
+    if (t.fill === 'clear') depth.fill(-Infinity, a * size, b * size);
+    else depth.set(t.fill.subarray(a * size, b * size), a * size);
+    return;
+  }
+  const c = t.casters[kind - 1], m = c.m, P = c.geo.positions, wind = c.wind, wbase = c.geo.min[1], time = plan.time, s16 = scale * 16;
+  const X = plan.X, Y = plan.Y, Z = plan.Z;
+  for (let v = a, k = a * 3; v < b; v++, k += 3) {
+    const x = P[k], y = P[k + 1], z = P[k + 2], j = c.base + v;
+    let wx = m[0] * x + m[4] * y + m[8] * z + m[12];
+    let wy = m[1] * x + m[5] * y + m[9] * z + m[13];
+    let wz = m[2] * x + m[6] * y + m[10] * z + m[14];
+    if (wind) { windAt(wind, y, wbase, wx, wz, time); wx += WIND.DX; wy += WIND.DY; wz += WIND.DZ; }
+    X[j] = Math.round((R[0] * wx + R[1] * wy + R[2] * wz - ox) * s16);
+    Y[j] = Math.round((U[0] * wx + U[1] * wy + U[2] * wz - oy) * s16);
+    Z[j] = L[0] * wx + L[1] * wy + L[2] * wz;
+  }
+}
+
+export function shadowUnitB(plan, u) {
+  const t = plan.tasks[plan.B[u * 3]], r0 = plan.B[u * 3 + 1], r1 = plan.B[u * 3 + 2] - 1;
+  const { depth, size } = t.map, X = plan.X, Y = plan.Y, Z = plan.Z;
+  // rows [r0, r1] in sub-pixel units, to skip triangles outside the block before any setup
+  const lo = r0 * 16 + 8 - 16, hi = r1 * 16 + 8 + 16;
+  for (const c of t.casters) {
+    const I = c.geo.indices, base = c.base;
+    for (let i = 0; i < I.length; i += 3) {
+      const a = base + I[i], b = base + I[i + 1], d = base + I[i + 2];
+      const ya = Y[a], yb = Y[b], yc = Y[d];
+      if ((ya < lo && yb < lo && yc < lo) || (ya > hi && yb > hi && yc > hi)) continue;
+      rasterDepth(depth, size, X[a], ya, Z[a], X[b], yb, Z[b], X[d], yc, Z[d], r0, r1);
     }
   }
 }
 
-// Depth-only triangle rasterizer (same sub-pixel edge functions as the main rasterizer, no culling).
-function rasterDepth(depth, S, x0, y0, z0, x1, y1, z1, x2, y2, z2) {
+// Depth-only triangle rasterizer (same sub-pixel edge functions as the main rasterizer, no culling), rows rowLo..rowHi.
+function rasterDepth(depth, S, x0, y0, z0, x1, y1, z1, x2, y2, z2, rowLo, rowHi) {
   let area = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0);
   if (area === 0) return;
   if (area < 0) {
@@ -104,9 +164,9 @@ function rasterDepth(depth, S, x0, y0, z0, x1, y1, z1, x2, y2, z2) {
   let minX = Math.ceil((Math.min(x0, x1, x2) - 8) / 16), maxX = Math.floor((Math.max(x0, x1, x2) - 8) / 16);
   let minY = Math.ceil((Math.min(y0, y1, y2) - 8) / 16), maxY = Math.floor((Math.max(y0, y1, y2) - 8) / 16);
   if (minX < 0) minX = 0;
-  if (minY < 0) minY = 0;
+  if (minY < rowLo) minY = rowLo;
   if (maxX > S - 1) maxX = S - 1;
-  if (maxY > S - 1) maxY = S - 1;
+  if (maxY > rowHi) maxY = rowHi;
   if (minX > maxX || minY > maxY) return;
   const A0 = (y1 - y2) * 16, B0 = (x2 - x1) * 16, C0 = (x2 - x1) * (8 - y1) - (y2 - y1) * (8 - x1);
   const A1 = (y2 - y0) * 16, B1 = (x0 - x2) * 16, C1 = (x0 - x2) * (8 - y2) - (y0 - y2) * (8 - x2);
@@ -214,7 +274,7 @@ function aoKernels(frame) {
 
 // ---------------------------------------------------------------- staged shading
 // The pass is split into stages that work on row ranges, so they can run on several threads
-// (see pool.js / shade-worker.js) or one after the other (shadePass):
+// (see pool.js / render-worker.js) or one after the other (shadePass):
 //   1. aoRows      SSAO at half resolution, block rows [b0, b1)
 //   2. blurRows    depth-aware blur of the AO, block rows [b0, b1)   (needs all of stage 1)
 //      shadeRows   lighting of pixel rows [2*b0, 2*b1)               (needs its own blurred rows)
@@ -680,6 +740,8 @@ export function atmosphereRows(ctx, y0, y1) {
     dens: A.density / 10, far: A.far, rays: A.rays, inv: 1 / A.scale, t: A.time * A.speed,
     bx, bz, cx: ly * bz, cy: lz * bx - lx * bz, cz: -ly * bx, sm, smD: sm ? sm.depth : null, smS: sm ? sm.size : 0,
     ycc: ctx.post === 'temporal' ? ctx.taa.ycc : null,
+    // fewer march steps while things move: the per-frame jitter and temporal AA fill in between
+    steps: ctx.post === 'temporal' && ctx.taa.valid ? 4 : 8,
   };
   for (let y = y0; y < y1; y++) atmosRow(ctx, P, colK, rowK[y], y);
 }
@@ -687,7 +749,7 @@ export function atmosphereRows(ctx, y0, y1) {
 function atmosRow(ctx, P, colK, ry, y) {
   const { W, depth, color, eye, R, U, F, frame } = ctx;
   const { ar, ag, ab, rr, rg, rb, dens, far, rays, inv, t, bx, bz, cx, cy, cz, sm, smD, smS, ycc } = P;
-  const STEPS = 8;
+  const STEPS = P.steps;
   for (let x = 0; x < W; x++) {
     const i = y * W + x, iw = depth[i];
     const vx = colK[x], vy = ry;

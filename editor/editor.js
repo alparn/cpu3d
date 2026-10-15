@@ -2,7 +2,7 @@
 //   live mode  -> POST /api/tools/<name> on the cpu3d server, changes stream back over SSE
 //   local mode -> no server (e.g. GitHub Pages): an in-browser SceneDocument runs the tools
 import { Renderer, Camera } from '../src/renderer.js';
-import { ShadePool } from '../src/pool.js';
+import { RenderPool } from '../src/pool.js';
 import { SceneDocument, worldBounds, objectMatrix } from '../src/document.js';
 import { buildShape } from '../src/recipes.js';
 import { callTool, pretty } from '../src/tools.js';
@@ -1073,8 +1073,9 @@ function motionScale(now) {
   if (!perf.fullMs || renderer.quality !== 'high') return 1;
   if (now - perf.lastMotion < 400) return perf.scale; // keep it during a motion (stable temporal history)
   const s = Math.sqrt(BUDGET_MS / perf.fullMs);
-  // Auto on a high-density display: never go below 1 pixel per CSS pixel while moving
-  const floor = $('res').value === 'auto' && devicePixelRatio > 1 ? Math.min(1, 1 / devicePixelRatio) : 0.4;
+  // Auto on a high-density display: about 1 pixel per CSS pixel while moving, a bit less for heavy scenes
+  // (smooth motion first; the still image refines at full resolution)
+  const floor = $('res').value === 'auto' && devicePixelRatio > 1 ? Math.min(1, 0.7 / devicePixelRatio) : 0.3;
   return s >= 0.9 ? 1 : Math.max(floor, Math.round(s * 10) / 10);
 }
 
@@ -1125,13 +1126,13 @@ function frame() {
     if (r === quick && perf.frames > 3) perf.fullMs = perf.fullMs * 0.8 + (st.ms / (perf.scale * perf.scale)) * 0.2;
     if (drag?.move) return; // the move readout owns the stats line while dragging
     const q = hq ? (r === quick ? ` · ${Math.round(perf.scale * 100)}% while moving` : motion ? ' · temporal AA' : ` · ${r.samples}/${MAX_SAMPLES} samples`) : '';
-    const threads = pool ? ` · ${pool.size} threads` : '';
+    const threads = r.pool ? ` · ${r.pool.size} threads` : '';
     state.frameStats = `CPU ${lastMs.toFixed(1)} ms${threads} · ${st.triangles.toLocaleString('en')} tris · ${st.drawn.toLocaleString('en')} rasterized · ${r.width}×${r.height}${q}`;
     renderStats();
   }, (e) => { perf.busy = false; toast(e.message); });
 }
 
-ShadePool.create().then((p) => {
+RenderPool.create().then((p) => {
   if (!p) return;
   pool = p;
   renderer.setPool(p);

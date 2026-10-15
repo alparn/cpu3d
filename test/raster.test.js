@@ -1,6 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Renderer } from '../src/renderer.js';
+import { RasterCore } from '../src/raster.js';
+
+// a raster core drawing flat, unculled triangles into W x H buffers
+function core(W, H) {
+  const r = new RasterCore();
+  r.color = new Uint32Array(W * H); r.depth = new Float32Array(W * H);
+  r.begin({ W, H, color: r.color, depth: r.depth, wireWidth: 0.75, vlight: {} }, null);
+  r._flat = true; r._cull = false; r._wire = false;
+  return r;
+}
 
 // Reference: brute-force pixel-center test with the same sub-pixel grid and top-left rule.
 function reference(W, H, x0, y0, x1, y1, x2, y2) {
@@ -18,8 +27,7 @@ function reference(W, H, x0, y0, x1, y1, x2, y2) {
 }
 
 test('rasterizer coverage matches a brute-force reference exactly', () => {
-  const W = 48, H = 48, r = new Renderer({ width: W, height: H });
-  r._flat = true; r._cull = false; r._wire = false;
+  const W = 48, H = 48, r = core(W, H);
   let seed = 12345;
   const rnd = () => { seed = (Math.imul(seed, 1103515245) + 12345) >>> 0; return (seed >>> 8) % (W * 16 + 160) - 80; };
   for (let n = 0; n < 1500; n++) {
@@ -34,8 +42,7 @@ test('rasterizer coverage matches a brute-force reference exactly', () => {
 });
 
 test('shared edges are drawn exactly once (no cracks, no overlap)', () => {
-  const W = 32, H = 32, r = new Renderer({ width: W, height: H });
-  r._flat = true; r._cull = false; r._wire = false;
+  const W = 32, H = 32, r = core(W, H);
   const count = new Uint8Array(W * H);
   // a fan of triangles around a shared center covering the whole screen
   const c = [256 + 3, 256 + 7], pts = [[-40, -40], [552, -40], [552, 552], [-40, 552]];
