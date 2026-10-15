@@ -204,6 +204,13 @@ export function buildShape(r, depth = 0) {
   if (g.triangleCount > LIMITS.maxTrianglesPerObject) {
     fail(`shape has ${g.triangleCount} triangles, the limit is ${LIMITS.maxTrianglesPerObject}. Reduce segments/resolution.`);
   }
+  // any shape: noise displaces the surface along its normals (fur, rocks, bark, organic forms)
+  if (r.noise !== undefined) {
+    const n = r.noise;
+    if (!n || typeof n !== 'object' || Array.isArray(n)) fail('"noise" must be an object like { "amplitude": 0.02, "scale": 12 }');
+    g = G.displaceNoise(g.clone ? g.clone() : g, { amplitude: num(n.amplitude, 0.02, 'noise.amplitude', -10, 10), scale: num(n.scale, 10, 'noise.scale', 0.001, 1000),
+      octaves: int(n.octaves, 3, 'noise.octaves', 1, 6), seed: int(n.seed, 1, 'noise.seed', 0, 1e6) });
+  }
   return g;
 }
 
@@ -259,6 +266,12 @@ Shapes are built around their own origin (see "origin" below); use position to p
             Sweep of a circle: pipes, cables, springs, handles, knots.
 - mesh      { type: "mesh", positions: [x0,y0,z0, ...], indices: [a,b,c, ...] }
             Raw triangles, counter-clockwise when seen from outside.
+
+## Surface noise (any shape)
+- noise     { amplitude=0.02, scale=10, octaves=3, seed=1 } on any recipe, e.g. { type: "sphere", noise: { amplitude: 0.05, scale: 4 } }
+            Moves the surface along its normals by fractal noise: rocks and terrain bumps (low scale, larger amplitude),
+            fur and plush (high scale, small amplitude, use enough segments), bark, clay. amplitude is in units,
+            scale is roughly features per unit.
 
 ## Shape2D (cross sections, in the XY plane)
 - [[x, y], ...]                              any simple polygon, at least 3 points

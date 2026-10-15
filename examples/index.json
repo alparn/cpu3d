@@ -50,6 +50,16 @@
     "ramBytes": 1343256
   },
   {
+    "id": "plush",
+    "title": "Plush dancer",
+    "description": "A fluffy plush character with headphones dancing on a light-up floor: fur from surface noise, a baked skeleton (root bounce, sway and twist, arm and leg swings) turned into keyframes for every part, a disco ball and pumping speakers.",
+    "objects": 59,
+    "triangles": 69566,
+    "jsonBytes": 239609,
+    "objBytes": 2295552,
+    "ramBytes": 1177752
+  },
+  {
     "id": "castle",
     "title": "Castle",
     "description": "Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.",

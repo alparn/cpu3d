@@ -34,9 +34,11 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 <img src="docs/fair.png" alt="Fairground at dusk: Ferris wheel, carousel, wave swinger, roller coaster and fireworks" width="100%">
 
-<p align="center"><img src="docs/fair.gif" alt="Fairground animation" width="480"></p>
+<p align="center"><img src="docs/fair.gif" alt="Fairground animation" height="270"> <img src="docs/plush.gif" alt="Plush dancer animation" height="270"></p>
 
 <sub>Fairground at dusk: 339 objects, 98,046 triangles, everything moving. The Ferris wheel gondolas orbit and counter-rotate so they hang upright, horses gallop on the carousel, chairs fly out on the wave swinger, the roller coaster train follows its track on spline keyframes timed by energy conservation (slow over the lift hill, fast in the dips), fireworks burst with keyframed scale and glow, balloons drift away with <code>flow</code>. Built in about 240 lines of <a href="examples/build.mjs">examples/build.mjs</a>.</sub>
+
+<sub>Plush dancer (right): a fluffy character whose fur is surface <code>noise</code>, dancing to a 120 bpm beat. cpu3d has no object hierarchy, so the build script poses a small skeleton (root bounce, sway and twist; shoulders and hips) and bakes it into keyframes for each of the 59 parts; a slow <code>orbit</code> turns the whole dancer.</sub>
 
 <img src="docs/watch-macro.png" alt="Macro render of the skeleton watch: spoked brass gears, a hairspring, ruby jewels and blued screws" width="100%">
 
@@ -46,7 +48,7 @@ Most 3D tools are built for hands on a mouse. cpu3d is built for agents first:
 
 <sub>Turbofan cutaway: about 1,350 NACA-profiled blades in radial arrays and casings revolved through 240°. 47 KB of recipes, 4.15 MB once exported as triangles.</sub>
 
-Eleven scenes ship with cpu3d, all of them animated. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
+Twelve scenes ship with cpu3d, all of them animated. Open them from the **Gallery** in the editor, or start with `cpu3d serve --example castle`.
 All of them are built in [`examples/build.mjs`](examples/build.mjs) through the same tool API an agent uses, including `probe_height` to put things on terrain.
 
 <table>
@@ -58,14 +60,15 @@ All of them are built in [`examples/build.mjs`](examples/build.mjs) through the 
 <tr>
 <td width="33%" valign="top"><img src="examples/thumbs/engine.png" alt="Turbofan cutaway"><br><b>Turbofan cutaway</b><br><sub>70 objects · 113,968 tris<br>recipes 70.1 KB · as .obj 4.23 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/fair.png" alt="Fairground at dusk"><br><b>Fairground at dusk</b><br><sub>339 objects · 98,046 tris<br>recipes 409.0 KB · as .obj 3.37 MB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 77.4 KB · as .obj 191.3 KB</sub></td>
+<td width="33%" valign="top"><img src="examples/thumbs/plush.png" alt="Plush dancer"><br><b>Plush dancer</b><br><sub>59 objects · 69,566 tris<br>recipes 234.0 KB · as .obj 2.19 MB</sub></td>
 </tr>
 <tr>
+<td width="33%" valign="top"><img src="examples/thumbs/castle.png" alt="Castle"><br><b>Castle</b><br><sub>156 objects · 4,703 tris<br>recipes 77.4 KB · as .obj 191.3 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/chess.png" alt="Chess set"><br><b>Chess set</b><br><sub>109 objects · 40,224 tris<br>recipes 84.9 KB · as .obj 1.20 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/station.png" alt="Space station"><br><b>Space station</b><br><sub>37 objects · 18,876 tris<br>recipes 63.5 KB · as .obj 605.3 KB</sub></td>
-<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>319 objects · 17,694 tris<br>recipes 166.0 KB · as .obj 683.1 KB</sub></td>
 </tr>
 <tr>
+<td width="33%" valign="top"><img src="examples/thumbs/city.png" alt="City block"><br><b>City block</b><br><sub>319 objects · 17,694 tris<br>recipes 166.0 KB · as .obj 683.1 KB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/garden.png" alt="Alien garden"><br><b>Alien garden</b><br><sub>83 objects · 73,316 tris<br>recipes 108.5 KB · as .obj 2.19 MB</sub></td>
 <td width="33%" valign="top"><img src="examples/thumbs/lighthouse.png" alt="Lighthouse island"><br><b>Lighthouse island</b><br><sub>11 objects · 52,246 tris<br>recipes 7.5 KB · as .obj 1.48 MB</sub></td>
 </tr>
@@ -180,6 +183,7 @@ An object is plain JSON. Rotations are in degrees, colors are hex, Y is up and t
 | `tube` | Sweep of a circle (pipes, cables, springs, handles, knots) |
 | `terrain` | Noise heightfield with water level and height-based colors |
 | `mesh` | Raw triangles |
+| `noise` on any recipe | Displace the surface along its normals by fractal noise: fur and plush, rocks, bark, clay |
 
 2D shapes (`circle`, `polygon`, `rect`, `roundedRect` with optional squircle corners, `star` or point lists) and paths (`line`, `circle`, `helix`, `torusKnot` or point lists) plug into `extrude`, `sweep` and `tube`. The full reference is what `get_shape_reference` returns, see [`src/recipes.js`](src/recipes.js).
 

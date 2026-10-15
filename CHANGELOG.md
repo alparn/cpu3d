@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New gallery scene **Plush dancer**: a fluffy character with headphones dancing on a light-up floor, with a disco ball, pumping speakers and a neon backdrop; a small skeleton baked into keyframes for every part
+- Recipes: **`noise`** on any shape displaces the surface along its normals by fractal noise (fur, plush, rocks, bark), deterministic and seamless (normals of coincident vertices are welded)
 - New gallery scene **Fairground at dusk** (339 objects, 98k triangles, everything animated): a Ferris wheel with upright gondolas (orbit plus counter-spin), a carousel with galloping horses, a wave swinger, a roller coaster train on spline keyframes timed by energy conservation, keyframed fireworks, drifting balloons, chasing light bulbs and a camera flight
 - Shadows in motion: the soft-shadow jitter moved every shadow edge in the image at once each frame; it is now random per pixel (fine noise that temporal AA averages away). Shadow map origins snap to whole texels (no swimming when the framing moves) and the map size changes only when it has to (no popping along camera paths)
 - Detail shadow cascade around the view center for scenes with fairly hard light; soft light keeps one map (its penumbra hides the extra resolution)

@@ -712,6 +712,128 @@ scene('fair', 'Fairground at dusk', 'A whole fairground in motion: a Ferris whee
     { t: 18, yaw: -28, pitch: 21, distance: 56, target: [0, 10, -10] }]);
 });
 
+scene('plush', 'Plush dancer', 'A fluffy plush character with headphones dancing on a light-up floor: fur from surface noise, a baked skeleton (root bounce, sway and twist, arm and leg swings) turned into keyframes for every part, a disco ball and pumping speakers.', async (doc) => {
+  const D = Math.PI / 180, LOOP = 8, BEAT = 0.5;
+  await tool(doc, 'set_environment', {
+    background: { top: '#140f26', bottom: '#3b2a57' }, fog: null, ground: false, reflections: 'studio',
+    light: { direction: [0.45, 0.85, 0.65], color: '#fff1e2', intensity: 1.1, softness: 0.35 },
+    lights: [{ direction: [-0.8, 0.35, -0.5], color: '#ff5fc8', intensity: 0.55 }, { direction: [0.85, 0.3, -0.45], color: '#4fd8ff', intensity: 0.5 }, { direction: [0, 0.3, 1], color: '#ffffff', intensity: 0.25 }],
+  });
+  const fur = { color: '#e2c1b2', roughness: 0.95, specular: 0.08 };
+  const furNoise = { amplitude: 0.013, scale: 48, octaves: 4, seed: 5 };
+  // capsule-like lathe profile from y0 (bottom) to y1, radius r(t) with a little taper
+  const bean = (y0, y1, r0, r1, n = 40, pow = 0.7) => Array.from({ length: n + 1 }, (_, i) => {
+    const t = (i / n) * Math.PI, y = y0 + ((y1 - y0) * (1 - Math.cos(t))) / 2, k = (y - y0) / (y1 - y0);
+    return P(i === 0 || i === n ? 0 : (r0 + (r1 - r0) * k) * Math.sin(t) ** pow, y);
+  });
+
+  // the face is an ellipsoid; features sit on its surface
+  const FACE = { c: [0, 1.02, 0.335], r: [0.26, 0.2, 0.07] };
+  const onFace = (x, y, lift = 0) => P(x, y, FACE.c[2] + FACE.r[2] * Math.sqrt(Math.max(0, 1 - (x / FACE.r[0]) ** 2 - ((y - FACE.c[1]) / FACE.r[1]) ** 2)) + lift);
+  // ---- parts in the character's rest pose (feet at the origin, facing +Z); `joint` = what moves them
+  const parts = [
+    { name: 'Body', joint: 'root', shape: { type: 'lathe', segments: 160, profile: bean(0.1, 1.36, 0.43, 0.36, 72), noise: furNoise }, material: fur },
+    { name: 'Face', joint: 'root', shape: { type: 'sphere', radius: 1, segments: 48, rings: 24 }, position: FACE.c, scale: FACE.r, material: { color: '#f7e0d4', roughness: 0.45, specular: 0.3 } },
+    { name: 'Eye', joint: 'root', shape: { type: 'sphere', radius: 0.026, segments: 16, rings: 10 }, position: onFace(-0.075, 1.05, -0.006), material: { color: '#161214', roughness: 0.08, specular: 1.4, shininess: 220 } },
+    { name: 'Eye', joint: 'root', shape: { type: 'sphere', radius: 0.026, segments: 16, rings: 10 }, position: onFace(0.075, 1.05, -0.006), material: { color: '#161214', roughness: 0.08, specular: 1.4, shininess: 220 } },
+    { name: 'Blush', joint: 'root', shape: { type: 'sphere', radius: 0.042, segments: 16, rings: 10 }, position: onFace(-0.14, 0.99, -0.008), scale: [1, 0.55, 0.3], material: { color: '#f3a2a6', roughness: 0.8 } },
+    { name: 'Blush', joint: 'root', shape: { type: 'sphere', radius: 0.042, segments: 16, rings: 10 }, position: onFace(0.14, 0.99, -0.008), scale: [1, 0.55, 0.3], material: { color: '#f3a2a6', roughness: 0.8 } },
+    { name: 'Smile', joint: 'root', shape: { type: 'tube', radius: 0.0055, sides: 6, path: Array.from({ length: 9 }, (_, i) => { const x = -0.03 + (i / 8) * 0.06; return onFace(x, 0.982 + 0.013 * (x / 0.03) ** 2, 0.001); }) }, material: { color: '#3a2420', roughness: 0.6 } },
+    { name: 'Headphone band', joint: 'root', shape: { type: 'tube', radius: 0.026, sides: 10, path: Array.from({ length: 25 }, (_, i) => { const a = (12 + (i / 24) * 156) * D; return P(0.405 * Math.cos(a), 1.03 + 0.37 * Math.sin(a), -0.02); }) }, material: { color: '#1d1d22', roughness: 0.35, specular: 0.6 } },
+  ];
+  for (const sx of [-1, 1]) {
+    parts.push({ name: 'Ear cup', joint: 'root', shape: { type: 'cylinder', radiusTop: 0.105, radiusBottom: 0.105, height: 0.09, segments: 32 }, position: [sx * 0.405, 1.04, -0.02], rotation: [0, 0, 90], material: { color: '#26262c', roughness: 0.3, specular: 0.7 } });
+    parts.push({ name: 'Ear cup light', joint: 'root', shape: { type: 'torus', radius: 0.075, tube: 0.012, segments: 32, sides: 6 }, position: [sx * 0.452, 1.04, -0.02], rotation: [0, 0, 90], material: { color: '#59e6ff', emissive: 2.2 },
+      animation: { pulse: { min: 0.3, max: 1.4, period: BEAT } } });
+    parts.push({ name: 'Arm', joint: sx > 0 ? 'armR' : 'armL', shape: { type: 'lathe', segments: 64, profile: bean(-0.6, 0.04, 0.1, 0.09, 36, 0.6), noise: { ...furNoise, seed: sx > 0 ? 7 : 8 } }, material: fur });
+    parts.push({ name: 'Leg', joint: sx > 0 ? 'legR' : 'legL', shape: { type: 'lathe', segments: 56, profile: bean(-0.26, 0.06, 0.13, 0.11, 24, 0.55), noise: { ...furNoise, seed: sx > 0 ? 9 : 10 } }, material: fur });
+  }
+  const joints = { armR: [0.31, 0.9, 0.02], armL: [-0.31, 0.9, 0.02], legR: [0.15, 0.24, 0], legL: [-0.15, 0.24, 0] };
+
+  // ---- the dance: root bounce / sway / twist, arm and leg swings; phrase B (4..8 s) puts the hands up
+  const ss = (x) => { const k = Math.max(0, Math.min(1, x)); return k * k * (3 - 2 * k); };
+  const pose = (t) => {
+    const b = t / BEAT, wB = ss((t - 3.5) / 0.5) - ss((t - 7.5) / 0.5);
+    const bounce = (0.045 + 0.06 * wB) * (1 - Math.cos(2 * Math.PI * b)) / 2;
+    const root = { pos: [0, 0.04 + bounce, 0], rot: [3 * Math.sin(2 * Math.PI * b) - 4 * wB, 12 * Math.sin((Math.PI * b) / 2), 7 * Math.sin(Math.PI * b) * (1 - 0.4 * wB)] };
+    const wave = Math.max(0, Math.sin(Math.PI * b));
+    const armA = { R: [18 * Math.sin(Math.PI * b), 0, 22 + 115 * wave], L: [-18 * Math.sin(Math.PI * b), 0, -(20 + 30 * (1 - wave))] };
+    const armB = { R: [6 * Math.sin(2 * Math.PI * b), 0, 150 + 14 * Math.sin(2 * Math.PI * b)], L: [-6 * Math.sin(2 * Math.PI * b), 0, -(150 + 14 * Math.sin(2 * Math.PI * b + Math.PI))] };
+    const mix = (a, c) => a.map((v, i) => v + (c[i] - v) * wB);
+    const step = (side) => Math.max(0, Math.sin(Math.PI * b + (side > 0 ? 0 : Math.PI)));
+    return {
+      root, armR: mix(armA.R, armB.R), armL: mix(armA.L, armB.L),
+      legR: { lift: 0.05 * step(1), rot: [-14 * step(1), 0, 4] }, legL: { lift: 0.05 * step(-1), rot: [-14 * step(-1), 0, -4] },
+    };
+  };
+  const M = (pos, rotDeg, scale = [1, 1, 1]) => mat4.compose(mat4.create(), pos, rotDeg.map((v) => v * D), scale);
+  // Euler (applied X, Y, Z) of a rotation matrix; of the two solutions take the one closest to the previous key
+  const euler = (m, prev) => {
+    const sx = Math.hypot(m[0], m[1], m[2]), sy = Math.hypot(m[4], m[5], m[6]), sz = Math.hypot(m[8], m[9], m[10]);
+    const ry = Math.asin(Math.max(-1, Math.min(1, -m[2] / sx))), rx = Math.atan2(m[6] / sy, m[10] / sz), rz = Math.atan2(m[1] / sx, m[0] / sx);
+    const sols = [[rx, ry, rz], [rx + Math.PI, Math.PI - ry, rz + Math.PI]].map((s) => s.map((v) => v / D));
+    if (!prev) return sols[0];
+    const near = (s) => s.map((v, i) => { while (v - prev[i] > 180) v -= 360; while (v - prev[i] < -180) v += 360; return v; });
+    const cand = sols.map(near), cost = (s) => s.reduce((a, v, i) => a + Math.abs(v - prev[i]), 0);
+    return cost(cand[0]) <= cost(cand[1]) ? cand[0] : cand[1];
+  };
+  const keysFor = parts.map(() => []);
+  for (let k = 0; k <= LOOP * 10; k++) {
+    const t = k / 10, p = pose(t), R = M(p.root.pos, p.root.rot);
+    parts.forEach((part, i) => {
+      let J = R;
+      if (part.joint.startsWith('arm')) J = mat4.multiply(mat4.create(), R, M(joints[part.joint], p[part.joint]));
+      if (part.joint.startsWith('leg')) { const l = p[part.joint]; J = mat4.multiply(mat4.create(), R, M([joints[part.joint][0], joints[part.joint][1] + l.lift, 0], l.rot)); }
+      const W = mat4.multiply(mat4.create(), J, M(part.position || [0, 0, 0], part.rotation || [0, 0, 0], part.scale || [1, 1, 1]));
+      const prev = keysFor[i].at(-1)?.rotation;
+      keysFor[i].push({ t: r4(t), position: P(W[12], W[13], W[14]), rotation: P(...euler(W, prev)) });
+    });
+  }
+  // the whole dancer also turns slowly once per loop, so every side shows
+  const turn = { orbit: { center: [0, 0, 0], axis: [0, 1, 0], speed: 360 / LOOP } };
+  await add(doc, parts.map((part, i) => ({ name: part.name, shape: part.shape, material: part.material, scale: part.scale || 1,
+    position: keysFor[i][0].position, rotation: keysFor[i][0].rotation, animation: { ...part.animation, ...turn, keys: keysFor[i], ease: 'spline' } })));
+
+  // ---- the stage: light-up dance floor, disco ball, speakers, neon backdrop, a plant
+  const tileColors = ['#ff4fb8', '#4fd8ff', '#a66cff', '#ffd23f'];
+  const o = [{ name: 'Floor', shape: { type: 'plane', width: 30, depth: 30 }, material: { color: '#120e1c', roughness: 0.28, specular: 0.6 } }];
+  for (let i = -2; i <= 2; i++) {
+    for (let j = -2; j <= 2; j++) {
+      // glossy coloured glass (metal: no diffuse light, so a dark tile stays dark) that lights up on the beat
+      o.push({ name: 'Dance tile', shape: { type: 'roundedBox', width: 0.96, height: 0.04, depth: 0.96, radius: 0.015 }, position: [i, 0.02, j], material: { color: tileColors[(i + j + 8) % 4], emissive: 0.85, metalness: 1, roughness: 0.16 },
+        animation: { pulse: { min: 0.04, max: 1, period: 2 * BEAT, phase: r4((((i * 3 + j * 5) % 4) + 4) % 4 / 4), blink: true } } });
+    }
+  }
+  o.push({ name: 'Disco ball', shape: { type: 'sphere', radius: 0.32, segments: 18, rings: 12 }, position: [0, 2.75, -0.6], material: { color: '#e8ecf2', metalness: 1, roughness: 0.04, flat: true }, animation: { spin: { axis: [0, 1, 0], speed: 45 } } });
+  o.push({ name: 'Disco cord', shape: { type: 'cylinder', radiusTop: 0.008, radiusBottom: 0.008, height: 1.5, segments: 4 }, position: [0, 3.8, -0.6], material: { color: '#888' } });
+  for (const sx of [-1, 1]) {
+    const x = sx * 2.25;
+    o.push({ name: 'Speaker', shape: { type: 'roundedBox', width: 0.75, height: 1.25, depth: 0.6, radius: 0.04 }, position: [x, 0.625, -1.1], rotation: [0, -sx * 18, 0], material: { color: '#1a1a20', roughness: 0.6 } });
+    for (const [y, r] of [[0.45, 0.24], [0.95, 0.09]]) {
+      const pos = [x + Math.sin(-sx * 18 * D) * 0.31, y, -1.1 + Math.cos(-sx * 18 * D) * 0.31];
+      o.push({ name: r > 0.1 ? 'Woofer' : 'Tweeter', shape: { type: 'lathe', segments: 32, profile: [[0, -0.06], [r * 0.25, -0.05], [r * 0.85, 0], [r, 0.01], [r, -0.01], [0, -0.02]] }, position: P(...pos), rotation: [90, -sx * 18, 0],
+        material: { color: '#2b2b33', roughness: 0.5, specular: 0.5 }, animation: r > 0.1 ? { bob: { axis: [Math.sin(-sx * 18 * D), 0, Math.cos(-sx * 18 * D)], amplitude: 0.012, period: BEAT } } : undefined });
+    }
+    o.push({ name: 'Speaker light', shape: { type: 'roundedBox', width: 0.6, height: 0.03, depth: 0.03, radius: 0.01 }, position: P(x + Math.sin(-sx * 18 * D) * 0.31, 0.1, -1.1 + Math.cos(-sx * 18 * D) * 0.31), rotation: [0, -sx * 18, 0],
+      material: { color: sx > 0 ? '#4fd8ff' : '#ff4fb8', emissive: 2 }, animation: { pulse: { min: 0.3, max: 1.3, period: BEAT, phase: 0.25 } } });
+  }
+  o.push({ name: 'Backdrop', shape: { type: 'lathe', segments: 48, phiStart: 200, phiLength: 140, profile: [[5.2, 0], [5.2, 4.2]] }, position: [0, 0, 1.2], material: { color: '#241a38', roughness: 0.8, doubleSided: true } });
+  for (const [y, color] of [[2.2, '#ff4fb8'], [2.5, '#4fd8ff']]) {
+    o.push({ name: 'Neon', shape: { type: 'tube', radius: 0.022, sides: 8, path: Array.from({ length: 41 }, (_, i) => { const a = (205 + (i / 40) * 130) * D; return P(5.1 * Math.sin(a), y, 1.2 + 5.1 * Math.cos(a)); }) },
+      material: { color, emissive: 2.4 }, animation: { pulse: { min: 0.7, max: 1.2, period: 4 * BEAT, phase: y > 2.3 ? 0.5 : 0 } } });
+  }
+  // potted plant
+  o.push({ name: 'Pot', shape: { type: 'lathe', segments: 32, profile: [[0, 0], [0.2, 0], [0.26, 0.42], [0.24, 0.44], [0, 0.4]] }, position: [-2.6, 0, 0.6], material: { color: '#d8cfc2', roughness: 0.7 } });
+  const leaf = [[0, 0], [0.06, 0.12], [0.07, 0.35], [0.03, 0.6], [0, 0.68], [-0.03, 0.6], [-0.07, 0.35], [-0.06, 0.12]];
+  for (const [k, tilt, h] of [[0, 30, 0.95], [1, 45, 0.8], [2, 20, 1.1]]) {
+    o.push({ name: 'Leaves', shape: { type: 'radial', count: 7, startAngle: k * 17, shape: { type: 'extrude', shape: leaf, depth: 0.01 }, rotation: [0, 90, -tilt] }, position: [-2.6, 0.4, 0.6], scale: [1, h, 1],
+      material: { color: ['#3f8a3c', '#4f9a45', '#367a35'][k], roughness: 0.55, doubleSided: true }, animation: { swing: { axis: [0, 0, 1], amplitude: 2, period: 4 * BEAT, phase: k / 3, pivot: [-2.6, 0.4, 0.6] } } });
+  }
+  await add(doc, o);
+  await tool(doc, 'set_camera', { yaw: 16, pitch: 8, distance: 3.1, target: [0, 0.82, 0] });
+  await cameraPath(doc, LOOP, [{ t: 4, yaw: -14, pitch: 12, distance: 2.7, target: [0, 0.9, 0] }]);
+});
+
 scene('castle', 'Castle', 'Curtain walls with 48 merlons, four towers, a keep, gatehouse, moat ring, bridge and a forest. About 190 objects.', async (doc) => {
   const rand = rng(11);
   // round-arched gate: rectangle with a half circle on top (counter-clockwise)

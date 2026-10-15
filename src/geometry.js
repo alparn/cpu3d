@@ -42,6 +42,25 @@ export class Geometry {
     return this;
   }
 
+  // Averages the normals of vertices at the same position (seams of lathes, spheres, tubes), so a
+  // displaced surface shows no seam lines.
+  weldNormals() {
+    const p = this.positions, n = this.normals, groups = new Map();
+    for (let v = 0; v < p.length / 3; v++) {
+      const k = `${Math.round(p[v * 3] * 1e5)},${Math.round(p[v * 3 + 1] * 1e5)},${Math.round(p[v * 3 + 2] * 1e5)}`;
+      const g = groups.get(k);
+      if (g) g.push(v); else groups.set(k, [v]);
+    }
+    for (const g of groups.values()) {
+      if (g.length < 2) continue;
+      let x = 0, y = 0, z = 0;
+      for (const v of g) { x += n[v * 3]; y += n[v * 3 + 1]; z += n[v * 3 + 2]; }
+      const l = Math.hypot(x, y, z) || 1;
+      for (const v of g) { n[v * 3] = x / l; n[v * 3 + 1] = y / l; n[v * 3 + 2] = z / l; }
+    }
+    return this;
+  }
+
   // Bounding sphere (AABB center + max distance), used for frustum culling.
   computeBounds() {
     const p = this.positions;
@@ -578,4 +597,32 @@ export function parseOBJ(text) {
     }
   }
   return new Geometry(pos, idx);
+}
+
+// ---- noise displacement: organic surfaces, fur, rocks, bark
+const hash3 = (x, y, z, seed) => {
+  let h = Math.imul(x, 374761393) ^ Math.imul(y, 668265263) ^ Math.imul(z, 1440662683) ^ Math.imul(seed, 2246822519);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return (((h ^ (h >>> 16)) >>> 0) / 4294967295) * 2 - 1;
+};
+const fade = (t) => t * t * (3 - 2 * t);
+// smooth value noise in [-1, 1]
+export function noise3(x, y, z, seed = 0) {
+  const x0 = Math.floor(x), y0 = Math.floor(y), z0 = Math.floor(z), u = fade(x - x0), v = fade(y - y0), w = fade(z - z0);
+  const l = (a, b, t) => a + (b - a) * t;
+  const c = (i, j, k) => hash3(x0 + i, y0 + j, z0 + k, seed);
+  return l(l(l(c(0, 0, 0), c(1, 0, 0), u), l(c(0, 1, 0), c(1, 1, 0), u), v), l(l(c(0, 0, 1), c(1, 0, 1), u), l(c(0, 1, 1), c(1, 1, 1), u), v), w);
+}
+
+// Moves every vertex along its (seam-averaged) normal by fractal noise: amplitude in units, scale = features per unit.
+export function displaceNoise(g, { amplitude = 0.02, scale = 10, octaves = 3, seed = 1 } = {}) {
+  g.computeNormals().weldNormals();
+  const p = g.positions, n = g.normals, out = new Float32Array(p.length);
+  for (let k = 0; k < p.length; k += 3) {
+    let f = 0, a = 1, s = scale, norm = 0;
+    for (let o = 0; o < octaves; o++) { f += a * noise3(p[k] * s, p[k + 1] * s, p[k + 2] * s, seed + o * 7); norm += a; a *= 0.5; s *= 2.03; }
+    const d = (f / norm) * amplitude;
+    out[k] = p[k] + n[k] * d; out[k + 1] = p[k + 1] + n[k + 1] * d; out[k + 2] = p[k + 2] + n[k + 2] * d;
+  }
+  return new Geometry(out, g.indices).weldNormals();
 }
